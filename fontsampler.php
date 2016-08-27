@@ -58,7 +58,7 @@ class Fontsampler {
 		$attributes = shortcode_atts( array('id' => '0'), $atts);
 		// do nothing for missing id
 		if ($attributes['id'] != 0) {
-			$font = $this->get_font($attributes['id']);
+			$fonts = $this->get_webfonts(intval($attributes['id']));
 			$interface = file_get_contents(plugin_dir_url(__FILE__) . 'interface.html');
 
 			$search = array(
@@ -99,7 +99,8 @@ class Fontsampler {
 
 			$interface = str_replace($search, $replace, $interface);
 
-			return '<div class="fontsampler-wrapper">' . $interface . '<div class="fontsampler" data-fontfile="' . $font['guid'] . '">FONTSAMPLER</div></div>';
+			// TODO option to pass in @fontface file stack
+			return '<div class="fontsampler-wrapper">' . $interface . '<div class="fontsampler" data-fontfile="' . $fonts['woff'] . '">FONTSAMPLER</div></div>';
 		}
 	}
 
@@ -292,6 +293,17 @@ class Fontsampler {
 		$sql = "SELECT p.post_name, p.guid FROM " . $this->table_sets . " f
 				LEFT JOIN " . $this->db->prefix . "posts p
 				ON f.upload_id = p.ID";
+		return $this->db->get_row($sql, ARRAY_A);
+	}
+
+
+	function get_webfonts($setId) {
+		$sql = "SELECT s.id, f.name,
+				( SELECT guid FROM " . $this->db->prefix . "posts WHERE ID = f.woff ) AS woff,
+				( SELECT guid FROM " . $this->db->prefix . "posts WHERE ID = f.woff2 ) AS woff2
+				FROM " . $this->table_sets . " s 
+				LEFT JOIN " . $this->table_fonts . " f ON s.font_id = f.id 
+				WHERE s.id = " . intval($setId);
 		return $this->db->get_row($sql, ARRAY_A);
 	}
 
