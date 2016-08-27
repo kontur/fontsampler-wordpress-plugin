@@ -1,5 +1,58 @@
+.fontsampler-wrapper .fontsampler-interface .fontsampler-interface-row {
+  clear: both;
+  overflow: auto;
+  position: relative;
+  margin: 0 0 0.5em;
+}
 .fontsampler-wrapper .fontsampler-interface label.fontsampler-slider {
+  box-sizing: border-box;
   display: block;
   float: left;
+  padding-right: 3%;
   width: 33%;
+}
+.fontsampler-wrapper .fontsampler-interface label.fontsampler-slider span {
+  font-size: smaller;
+}
+.fontsampler-wrapper .fontsampler-interface label.fontsampler-slider .slider-label {
+  float: left;
+}
+.fontsampler-wrapper .fontsampler-interface label.fontsampler-slider .slider-value {
+  float: right;
+}
+.fontsampler-wrapper .fontsampler-interface label.fontsampler-slider input {
+  clear: left;
+  display: block;
+  width: 100%;
+}
+.fontsampler-wrapper .fontsampler-interface select {
+  display: block;
+  float: left;
+}
+.fontsampler-wrapper .fontsampler-interface select[name="font-selector"],
+.fontsampler-wrapper .fontsampler-interface select[name="sample-text"] {
+  width: 40%;
+}
+.fontsampler-wrapper .fontsampler-interface select[name="alignment"] {
+  width: 10%;
+}
+.fontsampler-wrapper .fontsampler-interface select[name="invert"] {
+  width: 10%;
+}
+.fontsampler-wrapper .fontsampler {
+  border: 1px solid;
+  clear: both;
+  margin-top: 1em;
+  padding: 0.5em;
+  transition: all 0.2s ease-out;
+}
+.fontsampler-wrapper .fontsampler.invert {
+  background: #333333;
+  color: #ffffff;
+}
+.fontsampler-wrapper .fontsampler:hover,
+.fontsampler-wrapper .fontsampler:focus {
+  background: #eeeeee;
+  border: 1px solid #eeeeee;
+  outline: none;
 }

@@ -1,10 +1,72 @@
 .fontsampler-wrapper {
 
 	.fontsampler-interface {
+
+		.fontsampler-interface-row {
+			clear: both;
+			overflow: auto;
+			position: relative;
+			margin: 0 0 0.5em;
+		}
+
 		label.fontsampler-slider {
+			box-sizing: border-box;
 			display: block;
 			float: left;
+			padding-right: 3%;
 			width: 33%;
+
+			span {
+				font-size: smaller;
+			}
+			.slider-label {
+				float: left;
+			}
+			.slider-value {
+				float: right;
+			}
+
+			input {
+				clear: left;
+				display: block;
+				width: 100%;
+			}
 		}
-	}	
+
+		select {
+			display: block;
+			float: left;
+		}
+
+		select[name="font-selector"],
+		select[name="sample-text"] {
+			width: 40%;
+		}
+		select[name="alignment"] {
+			width: 10%;
+		}
+		select[name="invert"] {
+			width: 10%;
+		}
+	}
+
+	.fontsampler {
+	    border: 1px solid;
+	    clear: both;
+	    margin-top: 1em;
+	    padding: 0.5em;
+		transition: all 0.2s ease-out;
+
+		&.invert {
+			background: #333333;
+			color: #ffffff;
+		}
+
+		&:hover,
+		&:focus {
+			background: #eeeeee;
+			border: 1px solid #eeeeee;
+			outline: none;
+		}
+	}
 }

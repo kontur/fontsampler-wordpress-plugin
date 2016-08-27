@@ -91,10 +91,10 @@ class Fontsampler {
 				'0',
 				'px',
 				'Line height',
-				'8',
-				'96',
-				'14',
-				'px'
+				'70',
+				'300',
+				'110',
+				'%'
 			);
 
 			$interface = str_replace($search, $replace, $interface);
