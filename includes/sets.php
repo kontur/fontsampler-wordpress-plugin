@@ -1,5 +1,3 @@
-<?php global $f; ?>
-
 <h1>Fontsamplers</h1>
 
 <?php if (empty($sets)) : ?>
@@ -13,8 +11,11 @@
         <thead>
         <tr>
             <th>Id</th>
+            <th>Name</th>
             <th>Files</th>
             <th>Settings</th>
+            <th>Shortcode</th>
+            <th>Edit</th>
             <th>Delete</th>
         </tr>
         </thead>
@@ -22,10 +23,18 @@
     <?php foreach ($sets as $set): ?>
         <tr>
             <th><?php echo $set['id']; ?></th>
-            <th><?php echo $set['post_name']; ?></th>
+            <th><?php echo $set['name']; ?></th>
+            <th></th>
+            <th></th>
             <th></th>
             <th>
-                <form method="post" style="display: inline-block;">
+                <form method="post" action="?page=fontsampler&amp;subpage=edit&amp;id=<?php echo $set['id']; ?>" style="display: inline-block;">
+                    <input type="hidden" name="action" value="editSet">
+                    <?php submit_button('Edit set'); ?>
+                </form>
+                </th>
+            <th>
+                <form method="post" action="?page=fontsampler" style="display: inline-block;">
                     <input type="hidden" name="action" value="deleteSet">
                     <input type="hidden" name="id" value="<?php echo $set['id']; ?>">
                     <?php submit_button('Delete set'); ?>
@@ -37,3 +46,6 @@
         </tbody>
     </table>
 <?php endif; ?>
+
+
+<a href="?page=fontsampler&subpage=create">Create a new font sampler</a>

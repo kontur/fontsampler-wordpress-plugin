@@ -151,11 +151,16 @@ class Fontsampler {
 
         include('includes/header.php');
 
-        // check the fontsampler table exists, and if not, create it now
-        $this->db->query("SHOW TABLES LIKE '" . $this->db->prefix . "fontsampler'");
+        // check the fontsampler tables exist, and if not, create it now
+        $this->db->query("SHOW TABLES LIKE '" . $this->table_sets . "'");
         if ($this->db->num_rows === 0) {
-            $this->create_table();
+            $this->create_table_sets();
         }
+        $this->db->query("SHOW TABLES LIKE '" . $this->table_fonts . "'");
+        if ($this->db->num_rows === 0) {
+            $this->create_table_fonts();
+        }
+
 
         // check upload folder is writable
         $dir = wp_upload_dir();
@@ -168,24 +173,26 @@ class Fontsampler {
 
 
 		$this->handle_font_edit();
+		$this->handle_set_edit();
 		$this->handle_set_delete();
-		$this->handle_set_create();
 
 		switch ($_GET['subpage']) {
             case 'create':
                 $set = NULL;
+                $fonts = $this->get_fonts();
                 include('includes/edit.php');
                 break;
 
             case 'edit':
-                $set = $this->get_set($_GET['id']);
+                $set = $this->get_set(intval($_GET['id']));
+                $fonts = $this->get_fonts();
                 include('includes/edit.php');
                 break;
-
+/*
             case 'delete':
                 include('includes/delete.php');
                 break;
-
+*/
             case 'fonts':
                 $fonts = $this->get_fonts();
                 include('includes/fonts.php');
@@ -203,7 +210,7 @@ class Fontsampler {
 
 			default:
 				$sets = $this->get_sets();
-				include('includes/list-sets.php');
+				include('includes/sets.php');
 			    break;
 		}
         echo '</section>';
@@ -217,8 +224,8 @@ class Fontsampler {
 	/*
 	 * setup fontsampler sets table
 	 */
-	function create_table() {
-		$sql = "CREATE TABLE " . $this->db->prefix . "fontsampler (
+	function create_table_sets() {
+		$sql = "CREATE TABLE " . $this->table_sets . " (
 				  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 				  `upload_id` int(11) NOT NULL,
 				  PRIMARY KEY (`id`)
@@ -227,6 +234,14 @@ class Fontsampler {
 	}
 
     function create_table_fonts() {
+    	$sql = "CREATE TABLE " . $this->table_fonts . " (
+			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+			  `name` varchar(255) NOT NULL DEFAULT '',
+			  `woff` int(11) unsigned DEFAULT NULL,
+			  `woff2` int(11) unsigned DEFAULT NULL,
+			  PRIMARY KEY (`id`)
+			)";
+		$this->db->query($sql);
     }
 
 
@@ -234,10 +249,19 @@ class Fontsampler {
 	 * Read from fontsampler sets table
 	 */
 	function get_sets() {
-		$sql = "SELECT * FROM " . $this->db->prefix . "fontsampler f
-				LEFT JOIN " . $this->db->prefix . "posts p
-				ON f.upload_id = p.ID";
+		$sql = "SELECT s.id, f.name FROM " . $this->table_sets . " s
+				LEFT JOIN " . $this->table_fonts . " f
+				ON s.font_id = f.id";
 		return $this->db->get_results($sql, ARRAY_A);
+	}
+
+
+	function get_set($id) {
+		$sql = "SELECT * FROM " . $this->table_sets . " s
+				LEFT JOIN " . $this->table_fonts . " f
+				ON s.font_id = f.id
+				WHERE s.id = " . $id;
+		return $this->db->get_row($sql, ARRAY_A);
 	}
 
 
@@ -245,7 +269,7 @@ class Fontsampler {
 	 * Remove a fontsampler set
 	 */
 	function delete_set($id) {
-		return $this->db->delete($this->db->prefix . "fontsampler", array('id' => $id));
+		return $this->db->delete($this->table_sets, array('id' => $id));
 	}
 
 
@@ -257,7 +281,7 @@ class Fontsampler {
                     (SELECT guid FROM " . $this->db->prefix . "posts WHERE ID = " . $this->table_fonts . ".woff) AS woff_file,
                     (SELECT guid FROM " . $this->db->prefix . "posts WHERE ID = " . $this->table_fonts . ".woff2) AS woff2_file
                 FROM " . $this->table_fonts;
-		return $this->db->get_results($sql, ARRAY_A);
+        return $this->db->get_results($sql, ARRAY_A);
 	}
 
 
@@ -265,7 +289,7 @@ class Fontsampler {
 	 * read per id from custom table
 	 */
 	function get_font($id) {
-		$sql = "SELECT p.post_name, p.guid FROM " . $this->db->prefix . "fontsampler f
+		$sql = "SELECT p.post_name, p.guid FROM " . $this->table_sets . " f
 				LEFT JOIN " . $this->db->prefix . "posts p
 				ON f.upload_id = p.ID";
 		return $this->db->get_row($sql, ARRAY_A);
@@ -280,7 +304,7 @@ class Fontsampler {
 	 * Dealing with new fonts being defined and uploaded explicitly via the plugin (instead of the media gallery)
 	 */
 	function handle_font_edit() {
-        if (isset($_POST['action']) && $_POST['action'] == 'font-edit' && !empty($_POST['fontname'])) {
+        if ($_POST['action'] == 'font-edit' && !empty($_POST['fontname'])) {
 
             echo '<div class="notice">';
 
@@ -315,21 +339,22 @@ class Fontsampler {
 	/*
 	 * Creating a fontsampler 
 	 */
-	function handle_set_create() {
-		if ($_POST['fontfile']) {
-			$this->db->insert($this->db->prefix . 'fontsampler', array('upload_id' => $_POST['fontfile']));
-			echo "Created set with it " . $this->db->insert_id;
+	function handle_set_edit() {
+		if ($_POST['action'] == "editSet") {
+			if (!isset($_POST['id'])) {
+				// insert new
+				$this->db->insert($this->table_sets, array('font_id' => intval($_POST['font_id'])));
+				echo "Created set with it " . $this->db->insert_id;
+			} else {
+				// update existing
+			}
 		}
-	}
-
-	function handle_set_update($setId) {
-
 	}
 
 	function handle_set_delete() {
 		$id = (int)($_POST['id']);
 		if ($_POST['action'] == 'deleteSet' && isset($id) && is_int($id) && $id > 0) {
-			if ($this->delete_set($_POST['id'])) {
+			if ($this->delete_set(intval($_POST['id']))) {
 				echo 'Deleted ' . $id;
 			}
 		}
