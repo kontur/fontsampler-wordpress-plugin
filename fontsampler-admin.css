@@ -1,0 +1,24 @@
+/*
+ * Scope all css to be contained only within the fontsampler wrapper
+ */
+#fontsampler-admin label {
+  display: block;
+}
+#fontsampler-admin .notice {
+  border: 1px solid;
+  padding: 1em;
+}
+#fontsampler-admin .info,
+#fontsampler-admin .notice,
+#fontsampler-admin .error {
+  display: block;
+}
+#fontsampler-admin .info {
+  color: blue;
+}
+#fontsampler-admin .note {
+  color: orange;
+}
+#fontsampler-admin .error {
+  color: red;
+}

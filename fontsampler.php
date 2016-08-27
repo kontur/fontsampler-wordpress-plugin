@@ -2,19 +2,17 @@
 /*
 Plugin Name: Fontsampler
 Plugin URI:  http://URI_Of_Page_Describing_Plugin_and_Updates
-Description: This describes my plugin in a short sentence
+Description: Create editable webfont previews via shortcodes
 Version:     0.0.1
 Author:      Johannes Neumeier
-Author URI:  http://URI_Of_The_Plugin_Author
-License:     GPL2
-License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Domain Path: /languages
+Author URI:  http://johannesneumeier.com
+License:
+License URI:
 Text Domain: fontsampler
 */
 defined('ABSPATH') or die('Nope.');
 
-$wpdb->show_errors();
-
+global $wpdb;
 $f = new Fontsampler($wpdb);
 
 // frontend
@@ -24,6 +22,7 @@ add_shortcode( 'fontsampler', array($f, 'fontsampler_shortcode'));
 
 // backend
 add_action('admin_menu', array($f, 'fontsampler_plugin_setup_menu'));
+add_action('admin_enqueue_scripts', array($f, 'fontsampler_admin_enqueues'));
 add_filter('upload_mimes', array($f, 'allow_font_upload_types'));
 register_activation_hook( __FILE__, array($f, 'fontsampler_activate'));
 
@@ -32,9 +31,13 @@ register_activation_hook( __FILE__, array($f, 'fontsampler_activate'));
 class Fontsampler {
 
 	private $db;
+    private $table_sets;
+    private $table_fonts;
 
 	function Fontsampler ($wpdb) {
 		$this->db = $wpdb;
+        $this->table_sets = $this->db->prefix . "fontsampler_sets";
+        $this->table_fonts = $this->db->prefix . "fontsampler_fonts";
 	}
 
 
@@ -60,6 +63,15 @@ class Fontsampler {
 	}
 
 
+    /*
+     * Register scripts and styles needed in the admin panel
+     */
+    function fontsampler_admin_enqueues() {
+        wp_register_style( 'fontsampler_admin_css', plugin_dir_url(__FILE__) . '/fontsampler-admin.css', false, '1.0.0' );
+        wp_enqueue_style( 'fontsampler_admin_css' );
+    }
+
+
 	/*
 	 * Add the fontsampler admin menu to the sidebar
 	 */
@@ -82,8 +94,6 @@ class Fontsampler {
 	 * React to the plugin being activated
 	 */
 	function fontsampler_activate() {
-		echo 'hello activate';
-		// TODO check table exists?
 		$this->create_table();
 	}
 
@@ -95,31 +105,67 @@ class Fontsampler {
 	 */
 
 	function fontsampler_admin_init() {
-		$this->handle_font_upload();
+
+        echo '<section id="fontsampler-admin">';
+
+        include('header.php');
+
+        // check the fontsampler table exists, and if not, create it now
+        $this->db->query("SHOW TABLES LIKE '" . $this->db->prefix . "fontsampler'");
+        if ($this->db->num_rows === 0) {
+            $this->create_table();
+        }
+
+        // check upload folder is writable
+        $dir = wp_upload_dir();
+        $upload = $dir['basedir'];
+
+        if (!is_dir($upload)) {
+            echo '<p>Uploads folder does not exist! Make sure Wordpress has writing permissions to create the
+                    uploads folder at: <em>' . $upload . '</em></p>';
+        }
+
+
+		$this->handle_font_edit();
 		$this->handle_set_delete();
 		$this->handle_set_create();
 
 		switch ($_GET['subpage']) {
-			case 'create':
-				echo include('create.php');
-			break;
+            case 'create':
+                $set = NULL;
+                include('edit.php');
+                break;
+
+            case 'edit':
+                $set = $this->get_set($_GET['id']);
+                include('edit.php');
+                break;
+
+            case 'delete':
+                include('delete.php');
+                break;
+
+            case 'fonts':
+                $fonts = $this->get_fonts();
+                include('fonts.php');
+                break;
+
+            case 'font_create':
+                $font = NULL;
+                include('font-edit.php');
+                break;
+
+            case 'font_edit':
+                $font = $this->get_font(1);
+                include('font-edit.php');
+                break;
 
 			default:
-				//$fonts = $this->get_fonts();
 				$sets = $this->get_sets();
-				echo include('list-sets.php');
-			break;
+				include('list-sets.php');
+			    break;
 		}
-		?>
-
-		<a href="admin.php?page=fontsampler&subpage=create">Create fontsampler shortcode</a>
-
-		<h1>Upload new font file</h1>
-		<form method="post" enctype="multipart/form-data">
-		<input type="file" name="fontfile">
-		<?php submit_button('Upload'); ?>
-		</form>
-		<?php
+        echo '</section>';
 	}
 
 
@@ -131,13 +177,16 @@ class Fontsampler {
 	 * setup fontsampler sets table
 	 */
 	function create_table() {
-		$sql = "CREATE TABLE " . $this->db->prefix . "`fontsampler` (
+		$sql = "CREATE TABLE " . $this->db->prefix . "fontsampler (
 				  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 				  `upload_id` int(11) NOT NULL,
 				  PRIMARY KEY (`id`)
-				) ENGINE=InnoDB DEFAULT CHARSET=latin1;";
+				)";
 		$this->db->query($sql);
 	}
+
+    function create_table_fonts() {
+    }
 
 
 	/*
@@ -163,8 +212,10 @@ class Fontsampler {
 	 * read from attachements
 	 */
 	function get_fonts() {
-		$sql = "SELECT * FROM " . $this->db->prefix . "posts
-				WHERE post_type = 'attachment' AND post_mime_type = 'application/font-woff'";
+		$sql = "SELECT *,
+                    (SELECT guid FROM " . $this->db->prefix . "posts WHERE ID = " . $this->table_fonts . ".woff) AS woff_file,
+                    (SELECT guid FROM " . $this->db->prefix . "posts WHERE ID = " . $this->table_fonts . ".woff2) AS woff2_file
+                FROM " . $this->table_fonts;
 		return $this->db->get_results($sql, ARRAY_A);
 	}
 
@@ -185,17 +236,39 @@ class Fontsampler {
 	 */
 
 	/*
-	 * Dealing with new fonts being uploaded explicitly via the plugin (instead of the media gallery)
+	 * Dealing with new fonts being defined and uploaded explicitly via the plugin (instead of the media gallery)
 	 */
-	function handle_font_upload() {
-		if (isset($_FILES['fontfile'])) {
-			$uploaded = media_handle_upload('fontfile', 0);
-			if (is_wp_error($uploaded)) {
-				echo 'Error uploading file: ' . $uploaded->get_error_message();
-			} else {
-				echo 'uploaded';
-			}
-		}
+	function handle_font_edit() {
+        if (isset($_POST['action']) && $_POST['action'] == 'font-edit' && !empty($_POST['fontname'])) {
+
+            echo '<div class="notice">';
+
+            $data = array('name' => $_POST['fontname']);
+
+            $formatName = array('woff' => 'fontfile_woff', 'woff2' => 'fontfile_woff2');
+
+            foreach ($formatName as $label => $name) {
+                if (isset($_FILES[$name]) && $_FILES[$name]['size'] > 0) {
+                    $uploaded = media_handle_upload($name, 0);
+                    if (is_wp_error($uploaded)) {
+                        $this->error('Error uploading ' . $label . ' file: ' . $uploaded->get_error_message());
+                    } else {
+                        $this->info('Uploaded ' . $label . ' file: '. $_FILES[$name]['name']);
+                        $data[$label] = $uploaded;
+                    }
+                } else {
+                    $this->notice('No ' . $label . ' file provided. You can still add it later.');
+                }
+            }
+
+            if ($_POST['id'] == 0) {
+                $res = $this->db->insert($this->table_fonts, $data);
+            } else {
+                $this->db->update($this->table_fonts, $data, array('ID' => $_POST['id']));
+            }
+
+            echo '</div>';
+        }
 	}
 
 	/*
@@ -220,6 +293,24 @@ class Fontsampler {
 			}
 		}
 	}
+
+
+    /*
+     * HELPERS
+     */
+
+    /*
+     * Render different confirmation messages
+     */
+    function info($message) {
+        echo '<strong class="info">' . $message . '</strong>';
+    }
+    function notice($message) {
+        echo '<strong class="note">' . $message . '</strong>';
+    }
+    function error($message) {
+        echo '<strong class="error">' . $message . '</strong>';
+    }
 
 }
 ?>
