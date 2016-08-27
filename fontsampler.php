@@ -18,6 +18,7 @@ $f = new Fontsampler($wpdb);
 // frontend
 wp_register_script( 'fontsampler-js', plugin_dir_url(__FILE__) . 'js/jquery.fontsampler.js', array( 'jquery' ));
 wp_register_script( 'fontsampler-init-js', plugin_dir_url(__FILE__) . 'js/fontsampler-init.js', array( 'fontsampler-js'));
+wp_enqueue_style( 'fontsampler-css', plugin_dir_url(__FILE__) . 'fontsampler-interface.css');
 add_shortcode( 'fontsampler', array($f, 'fontsampler_shortcode'));
 
 // backend
@@ -58,7 +59,47 @@ class Fontsampler {
 		// do nothing for missing id
 		if ($attributes['id'] != 0) {
 			$font = $this->get_font($attributes['id']);
-			return '<div id="fontsampler" class="fontsampler" data-fontfile="' . $font['guid'] . '">FONTSAMPLER</div>';
+			$interface = file_get_contents(plugin_dir_url(__FILE__) . 'interface.html');
+
+			$search = array(
+				'[font-size-label]',
+				'[font-size-min]',
+				'[font-size-max]',
+				'[font-size-value]',
+				'[font-size-unit]',
+				'[letter-spacing-label]',
+				'[letter-spacing-min]',
+				'[letter-spacing-max]',
+				'[letter-spacing-value]',
+				'[letter-spacing-unit]',
+				'[line-height-label]',
+				'[line-height-min]',
+				'[line-height-max]',
+				'[line-height-value]',
+				'[line-height-unit]'
+			);
+
+			$replace = array(
+				'Size',
+				'8',
+				'96',
+				'14',
+				'px',
+				'Letter spacing',
+				'-5',
+				'5',
+				'0',
+				'px',
+				'Line height',
+				'8',
+				'96',
+				'14',
+				'px'
+			);
+
+			$interface = str_replace($search, $replace, $interface);
+
+			return '<div class="fontsampler-wrapper">' . $interface . '<div class="fontsampler" data-fontfile="' . $font['guid'] . '">FONTSAMPLER</div></div>';
 		}
 	}
 
@@ -108,7 +149,7 @@ class Fontsampler {
 
         echo '<section id="fontsampler-admin">';
 
-        include('header.php');
+        include('includes/header.php');
 
         // check the fontsampler table exists, and if not, create it now
         $this->db->query("SHOW TABLES LIKE '" . $this->db->prefix . "fontsampler'");
@@ -133,36 +174,36 @@ class Fontsampler {
 		switch ($_GET['subpage']) {
             case 'create':
                 $set = NULL;
-                include('edit.php');
+                include('includes/edit.php');
                 break;
 
             case 'edit':
                 $set = $this->get_set($_GET['id']);
-                include('edit.php');
+                include('includes/edit.php');
                 break;
 
             case 'delete':
-                include('delete.php');
+                include('includes/delete.php');
                 break;
 
             case 'fonts':
                 $fonts = $this->get_fonts();
-                include('fonts.php');
+                include('includes/fonts.php');
                 break;
 
             case 'font_create':
                 $font = NULL;
-                include('font-edit.php');
+                include('includes/font-edit.php');
                 break;
 
             case 'font_edit':
                 $font = $this->get_font(1);
-                include('font-edit.php');
+                include('includes/font-edit.php');
                 break;
 
 			default:
 				$sets = $this->get_sets();
-				include('list-sets.php');
+				include('includes/list-sets.php');
 			    break;
 		}
         echo '</section>';
