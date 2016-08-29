@@ -34,11 +34,14 @@ class Fontsampler {
 	private $db;
     private $table_sets;
     private $table_fonts;
+    private $booleanOptions;
 
 	function Fontsampler ($wpdb) {
 		$this->db = $wpdb;
         $this->table_sets = $this->db->prefix . "fontsampler_sets";
         $this->table_fonts = $this->db->prefix . "fontsampler_fonts";
+
+        $this->booleanOptions = array('size', 'letterspacing', 'lineheight', 'fontpicker', 'sampletexts', 'alignment', 'invert');
 	}
 
 
@@ -56,51 +59,42 @@ class Fontsampler {
 
 		// merge in possibly passed in attributes
 		$attributes = shortcode_atts( array('id' => '0'), $atts);
-		// do nothing for missing id
+		// do nothing if missing id
+		// TODO change or fallback to name= instead of id=
 		if ($attributes['id'] != 0) {
+			$set = $this->get_set(intval($attributes['id']));
 			$fonts = $this->get_webfonts(intval($attributes['id']));
-			$interface = file_get_contents(plugin_dir_url(__FILE__) . 'interface.html');
 
-			$search = array(
-				'[font-size-label]',
-				'[font-size-min]',
-				'[font-size-max]',
-				'[font-size-value]',
-				'[font-size-unit]',
-				'[letter-spacing-label]',
-				'[letter-spacing-min]',
-				'[letter-spacing-max]',
-				'[letter-spacing-value]',
-				'[letter-spacing-unit]',
-				'[line-height-label]',
-				'[line-height-min]',
-				'[line-height-max]',
-				'[line-height-value]',
-				'[line-height-unit]'
-			);
-
+			// TODO read these from general or fontsampler specific options
 			$replace = array(
-				'Size',
-				'8',
-				'96',
-				'14',
-				'px',
-				'Letter spacing',
-				'-5',
-				'5',
-				'0',
-				'px',
-				'Line height',
-				'70',
-				'300',
-				'110',
-				'%'
+				'font-size-label'		=> 'Size',
+				'font-size-min'			=> '8',
+				'font-size-max'			=> '96',
+				'font-size-value'		=> '14',
+				'font-size-unit'		=> 'px',
+				'letter-spacing-label'	=> 'Letter spacing',
+				'letter-spacing-min'	=> '-5',
+				'letter-spacing-max'	=> '5',
+				'letter-spacing-value'	=> '0',
+				'letter-spacing-unit'	=> 'px',
+				'line-height-label'		=> 'Line height',
+				'line-height-min'		=> '70',
+				'line-height-max'		=> '300',
+				'line-height-value'		=> '110',
+				'line-height-uni'		=> '%'
 			);
 
-			$interface = str_replace($search, $replace, $interface);
+			// buffer output until return
+			ob_start();
 
-			// TODO option to pass in @fontface file stack
-			return '<div class="fontsampler-wrapper">' . $interface . '<div class="fontsampler" data-fontfile="' . $fonts['woff'] . '">FONTSAMPLER</div></div>';
+			// TODO option to pass in @fontface file stack for css generation javascript side
+			echo '<div class="fontsampler-wrapper">';
+			// include, aka echo, template with replaced values from $replace above
+			include('interface.php');
+			echo '<div class="fontsampler" data-fontfile="' . $fonts['woff'] . '">FONTSAMPLER</div></div>';
+
+			// return all that's been buffered
+			return ob_get_clean();
 		}
 	}
 
@@ -173,9 +167,11 @@ class Fontsampler {
         }
 
 
-		$this->handle_font_edit();
-		$this->handle_set_edit();
-		$this->handle_set_delete();
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
+			$this->handle_font_edit();
+			$this->handle_set_edit();
+			$this->handle_set_delete();
+		}
 
 		switch ($_GET['subpage']) {
             case 'create':
@@ -227,10 +223,18 @@ class Fontsampler {
 	 */
 	function create_table_sets() {
 		$sql = "CREATE TABLE " . $this->table_sets . " (
-				  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-				  `upload_id` int(11) NOT NULL,
-				  PRIMARY KEY (`id`)
-				)";
+			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+			  `font_id` int(11) unsigned NOT NULL,
+			  `name` varchar(255) NOT NULL DEFAULT '',
+			  `size` tinyint(1) NOT NULL DEFAULT '0',
+			  `letterspacing` tinyint(1) NOT NULL DEFAULT '0',
+			  `lineheight` tinyint(1) NOT NULL DEFAULT '0',
+			  `fontpicker` tinyint(1) NOT NULL DEFAULT '0',
+			  `sampletexts` tinyint(1) NOT NULL DEFAULT '0',
+			  `alignment` tinyint(1) NOT NULL DEFAULT '0',
+			  `invert` tinyint(1) NOT NULL DEFAULT '0',
+			  PRIMARY KEY (`id`)
+			)";
 		$this->db->query($sql);
 	}
 
@@ -352,13 +356,19 @@ class Fontsampler {
 	 * Creating a fontsampler 
 	 */
 	function handle_set_edit() {
-		if ($_POST['action'] == "editSet") {
+		if (isset($_POST['action']) && $_POST['action'] == "editSet") {
+			$data = array();
+            foreach ($this->booleanOptions as $index) {
+            	$data[$index] = isset($_POST[$index]);
+            }
+
 			if (!isset($_POST['id'])) {
 				// insert new
-				$this->db->insert($this->table_sets, array('font_id' => intval($_POST['font_id'])));
+				$this->db->insert($this->table_sets, $data);
 				echo "Created set with it " . $this->db->insert_id;
 			} else {
 				// update existing
+				$this->db->update($this->table_sets, $data, array('id' => intval($_POST['id'])));
 			}
 		}
 	}

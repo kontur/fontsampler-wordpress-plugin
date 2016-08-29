@@ -22,3 +22,6 @@
 #fontsampler-admin .error {
   color: red;
 }
+#fontsampler-admin .fontsampler-options-checkbox label > span {
+  display: inline-block;
+}

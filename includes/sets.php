@@ -26,10 +26,9 @@
             <th><?php echo $set['name']; ?></th>
             <th></th>
             <th></th>
-            <th></th>
+            <th>[fontsampler id=<?php echo $set['id']; ?>]</th>
             <th>
                 <form method="post" action="?page=fontsampler&amp;subpage=edit&amp;id=<?php echo $set['id']; ?>" style="display: inline-block;">
-                    <input type="hidden" name="action" value="editSet">
                     <?php submit_button('Edit set'); ?>
                 </form>
                 </th>
