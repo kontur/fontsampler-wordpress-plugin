@@ -10,6 +10,13 @@ License:
 License URI:
 Text Domain: fontsampler
 */
+
+/*
+general level TODO's:
+
+	- Implement nounce checks for all forms
+
+*/
 defined('ABSPATH') or die('Nope.');
 
 global $wpdb;
@@ -35,6 +42,7 @@ class Fontsampler {
     private $table_sets;
     private $table_fonts;
     private $booleanOptions;
+    private $fontFormats;
 
 	function Fontsampler ($wpdb) {
 		$this->db = $wpdb;
@@ -42,6 +50,7 @@ class Fontsampler {
         $this->table_fonts = $this->db->prefix . "fontsampler_fonts";
 
         $this->booleanOptions = array('size', 'letterspacing', 'lineheight', 'fontpicker', 'sampletexts', 'alignment', 'invert');
+        $this->fontFormats = array('woff2', 'woff', 'eot', 'svg', 'ttf');
 	}
 
 
@@ -63,7 +72,7 @@ class Fontsampler {
 		// TODO change or fallback to name= instead of id=
 		if ($attributes['id'] != 0) {
 			$set = $this->get_set(intval($attributes['id']));
-			$fonts = $this->get_webfonts(intval($attributes['id']));
+			$fonts = $this->get_fontset(intval($attributes['id']));
 
 			if ($set === false || $font === false) {
 				if (current_user_can('edit_posts') || current_user_can('edit_pages')) {
@@ -99,7 +108,7 @@ class Fontsampler {
 			// TODO option to pass in @fontface file stack for css generation javascript side
 			echo '<div class="fontsampler-wrapper">';
 			// include, aka echo, template with replaced values from $replace above
-			include('interface.php');
+			include('includes/interface.php');
 			echo '<div class="fontsampler" data-fontfile="' . $fonts['woff'] . '" data-multiline="' . $set['multiline'] . '">FONTSAMPLER</div></div>';
 
 			// return all that's been buffered
@@ -131,6 +140,9 @@ class Fontsampler {
 	function allow_font_upload_types($existing_mimes=array()){
 		$existing_mimes['woff'] = 'application/font-woff';
 		$existing_mimes['woff2'] = 'application/font-woff2';
+		$existing_mimes['eot'] = 'application/eot';
+		$existing_mimes['svg'] = 'application/svg';
+		$existing_mimes['ttf'] = 'application/ttf';
 		return $existing_mimes;
 	}
 
@@ -185,14 +197,14 @@ class Fontsampler {
 		switch ($_GET['subpage']) {
             case 'create':
                 $set = NULL;
-                $fonts = $this->get_fonts();
-                include('includes/edit.php');
+                $fonts = $this->get_fontfile_posts();
+                include('includes/sample-edit.php');
                 break;
 
             case 'edit':
                 $set = $this->get_set(intval($_GET['id']));
-                $fonts = $this->get_fonts();
-                include('includes/edit.php');
+                $fonts = $this->get_fontfile_posts();
+                include('includes/fontset-edit.php');
                 break;
 /*
             case 'delete':
@@ -200,23 +212,26 @@ class Fontsampler {
                 break;
 */
             case 'fonts':
-                $fonts = $this->get_fonts();
-                include('includes/fonts.php');
+                $fonts = $this->get_fontsets();
+                $formats = $this->fontFormats;
+                include('includes/fontsets.php');
                 break;
 
             case 'font_create':
                 $font = NULL;
-                include('includes/font-edit.php');
+                $formats = $this->fontFormats;
+                include('includes/fontset-edit.php');
                 break;
 
             case 'font_edit':
-                $font = $this->get_font(1);
-                include('includes/font-edit.php');
+                $font = $this->get_fontset(intval($_GET['id']));
+                $formats = $this->fontFormats;
+                include('includes/fontset-edit.php');
                 break;
 
 			default:
 				$sets = $this->get_sets();
-				include('includes/sets.php');
+				include('includes/samples.php');
 			    break;
 		}
         echo '</section>';
@@ -248,12 +263,16 @@ class Fontsampler {
 		$this->db->query($sql);
 	}
 
+
     function create_table_fonts() {
     	$sql = "CREATE TABLE " . $this->table_fonts . " (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `name` varchar(255) NOT NULL DEFAULT '',
 			  `woff` int(11) unsigned DEFAULT NULL,
 			  `woff2` int(11) unsigned DEFAULT NULL,
+			  `eot` int(11) unsigned DEFAULT NULL,
+			  `svg` int(11) unsigned DEFAULT NULL,
+			  `ttf` int(11) unsigned DEFAULT NULL,
 			  PRIMARY KEY (`id`)
 			)";
 		$this->db->query($sql);
@@ -292,40 +311,52 @@ class Fontsampler {
 
 
 	/*
-	 * read from attachements
+	 * read font files from Wordpress attachements
 	 */
-	function get_fonts() {
-		$sql = "SELECT *,
-                    (SELECT guid FROM " . $this->db->prefix . "posts WHERE ID = " . $this->table_fonts . ".woff) AS woff_file,
-                    (SELECT guid FROM " . $this->db->prefix . "posts WHERE ID = " . $this->table_fonts . ".woff2) AS woff2_file
-                FROM " . $this->table_fonts;
+	function get_fontfile_posts() {
+		$sql = "SELECT *, ";
+		foreach ($this->fontFormats as $format) {
+			$sql .= " (SELECT guid FROM " . $this->db->prefix . "posts p WHERE p.ID = f.". $format . ") AS " . $format . ",";
+		}
+		$sql = substr($sql, 0, -1);
+		$sql .= " FROM " . $this->table_fonts . " f ";
         $result = $this->db->get_results($sql, ARRAY_A);
-        return $this->db->num_rows === 0 ? false : true;
+        return $this->db->num_rows === 0 ? false : $result;
 	}
 
 
 	/*
 	 * read per id from custom table
 	 */
-	function get_font($id) {
-		$sql = "SELECT p.post_name, p.guid FROM " . $this->table_sets . " f
-				LEFT JOIN " . $this->db->prefix . "posts p
-				ON f.upload_id = p.ID";
+	function get_fontset($setId) {
+		$sql = "SELECT f.id, f.name, ";
+		foreach ($this->fontFormats as $format) {
+			$sql .= " (SELECT guid FROM " . $this->db->prefix . "posts p WHERE p.ID = f.". $format . ") AS " . $format . ",";
+		}
+		$sql = substr($sql, 0, -1);
+		$sql .= " FROM " . $this->table_fonts . " f 
+				WHERE f.id = " . intval($setId);
 		$result = $this->db->get_row($sql, ARRAY_A);
 		return $this->db->num_rows === 0 ? false : $result;
 	}
 
 
-	function get_webfonts($setId) {
-		$sql = "SELECT s.id, f.name,
-				( SELECT guid FROM " . $this->db->prefix . "posts WHERE ID = f.woff ) AS woff,
-				( SELECT guid FROM " . $this->db->prefix . "posts WHERE ID = f.woff2 ) AS woff2
-				FROM " . $this->table_sets . " s 
-				LEFT JOIN " . $this->table_fonts . " f ON s.font_id = f.id 
-				WHERE s.id = " . intval($setId);
-		$result = $this->db->get_row($sql, ARRAY_A);
+	/*
+	 * read all fontsets with font files
+	 */
+	function get_fontsets() {
+		$sql = "SELECT f.id, f.name, ";
+		foreach ($this->fontFormats as $format) {
+			$sql .= " (SELECT guid FROM " . $this->db->prefix . "posts p WHERE p.ID = f.". $format . ") AS " . $format . ",";
+		}
+		$sql = substr($sql, 0, -1);
+		$sql .= " FROM " . $this->table_fonts . " f";
+		$result = $this->db->get_results($sql, ARRAY_A);
 		return $this->db->num_rows === 0 ? false : $result;
 	}
+
+
+	// TODO check-routine that makes sure all sets and fonts are in order as defined in the database
 
 
 	/*
@@ -342,17 +373,18 @@ class Fontsampler {
 
             $data = array('name' => $_POST['fontname']);
 
-            $formatName = array('woff' => 'fontfile_woff', 'woff2' => 'fontfile_woff2');
-
-            foreach ($formatName as $label => $name) {
-                if (isset($_FILES[$name]) && $_FILES[$name]['size'] > 0) {
-                    $uploaded = media_handle_upload($name, 0);
+            foreach ($this->fontFormats as $label) {
+                if (isset($_FILES[$label]) && $_FILES[$label]['size'] > 0) {
+                    $uploaded = media_handle_upload($label, 0);
                     if (is_wp_error($uploaded)) {
                         $this->error('Error uploading ' . $label . ' file: ' . $uploaded->get_error_message());
                     } else {
-                        $this->info('Uploaded ' . $label . ' file: '. $_FILES[$name]['name']);
+                        $this->info('Uploaded ' . $label . ' file: '. $_FILES[$label]['name']);
                         $data[$label] = $uploaded;
                     }
+                } elseif (!empty($_POST["existing_file_" . $label])) {
+                	// don't overwrite current file reference
+                	$this->info('Existing ' . $label . ' file remains unchanged.');
                 } else {
                     $this->notice('No ' . $label . ' file provided. You can still add it later.');
                 }
@@ -367,6 +399,11 @@ class Fontsampler {
             echo '</div>';
         }
 	}
+
+
+	// TODO handle_font_delete()
+	// TODO handle_font_file_remove()
+
 
 	/*
 	 * Creating a fontsampler 

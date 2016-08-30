@@ -9,7 +9,7 @@
   padding: 1em;
 }
 #fontsampler-admin .info,
-#fontsampler-admin .notice,
+#fontsampler-admin .note,
 #fontsampler-admin .error {
   display: block;
 }
