@@ -65,7 +65,16 @@ class Fontsampler {
 			$set = $this->get_set(intval($attributes['id']));
 			$fonts = $this->get_webfonts(intval($attributes['id']));
 
+			if ($set === false || $font === false) {
+				if (current_user_can('edit_posts') || current_user_can('edit_pages')) {
+					return '<div><strong>The typesampler with ID ' . $attributes['id'] . ' can not be displayed because some files or the type sampler set are missing!</strong> <em>You are seeing this notice because you have rights to edit posts - regular users will see an empty spot here.</em></div>';
+				} else {
+					return '<!-- typesampler #' . $attributes['id'] . ' failed to render -->';
+				}
+			}
+
 			// TODO read these from general or fontsampler specific options
+			// TODO labels from options
 			$replace = array(
 				'font-size-label'		=> 'Size',
 				'font-size-min'			=> '8',
@@ -81,7 +90,7 @@ class Fontsampler {
 				'line-height-min'		=> '70',
 				'line-height-max'		=> '300',
 				'line-height-value'		=> '110',
-				'line-height-uni'		=> '%'
+				'line-height-unit'		=> '%'
 			);
 
 			// buffer output until return
@@ -91,7 +100,7 @@ class Fontsampler {
 			echo '<div class="fontsampler-wrapper">';
 			// include, aka echo, template with replaced values from $replace above
 			include('interface.php');
-			echo '<div class="fontsampler" data-fontfile="' . $fonts['woff'] . '">FONTSAMPLER</div></div>';
+			echo '<div class="fontsampler" data-fontfile="' . $fonts['woff'] . '" data-multiline="' . $set['multiline'] . '">FONTSAMPLER</div></div>';
 
 			// return all that's been buffered
 			return ob_get_clean();
@@ -250,6 +259,8 @@ class Fontsampler {
 		$this->db->query($sql);
     }
 
+    // TODO deactivate -> remove tables
+
 
 	/*
 	 * Read from fontsampler sets table
@@ -267,7 +278,8 @@ class Fontsampler {
 				LEFT JOIN " . $this->table_fonts . " f
 				ON s.font_id = f.id
 				WHERE s.id = " . $id;
-		return $this->db->get_row($sql, ARRAY_A);
+		$result = $this->db->get_row($sql, ARRAY_A);
+		return $this->db->num_rows === 0 ? false : $result;
 	}
 
 
@@ -287,7 +299,8 @@ class Fontsampler {
                     (SELECT guid FROM " . $this->db->prefix . "posts WHERE ID = " . $this->table_fonts . ".woff) AS woff_file,
                     (SELECT guid FROM " . $this->db->prefix . "posts WHERE ID = " . $this->table_fonts . ".woff2) AS woff2_file
                 FROM " . $this->table_fonts;
-        return $this->db->get_results($sql, ARRAY_A);
+        $result = $this->db->get_results($sql, ARRAY_A);
+        return $this->db->num_rows === 0 ? false : true;
 	}
 
 
@@ -298,7 +311,8 @@ class Fontsampler {
 		$sql = "SELECT p.post_name, p.guid FROM " . $this->table_sets . " f
 				LEFT JOIN " . $this->db->prefix . "posts p
 				ON f.upload_id = p.ID";
-		return $this->db->get_row($sql, ARRAY_A);
+		$result = $this->db->get_row($sql, ARRAY_A);
+		return $this->db->num_rows === 0 ? false : $result;
 	}
 
 
@@ -309,7 +323,8 @@ class Fontsampler {
 				FROM " . $this->table_sets . " s 
 				LEFT JOIN " . $this->table_fonts . " f ON s.font_id = f.id 
 				WHERE s.id = " . intval($setId);
-		return $this->db->get_row($sql, ARRAY_A);
+		$result = $this->db->get_row($sql, ARRAY_A);
+		return $this->db->num_rows === 0 ? false : $result;
 	}
 
 
