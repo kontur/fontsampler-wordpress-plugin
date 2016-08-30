@@ -233,6 +233,7 @@ class Fontsampler {
 			  `sampletexts` tinyint(1) NOT NULL DEFAULT '0',
 			  `alignment` tinyint(1) NOT NULL DEFAULT '0',
 			  `invert` tinyint(1) NOT NULL DEFAULT '0',
+			  `multiline` tinyint(1) NOT NULL DEFAULT '0',
 			  PRIMARY KEY (`id`)
 			)";
 		$this->db->query($sql);

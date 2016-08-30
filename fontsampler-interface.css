@@ -31,7 +31,8 @@
 }
 .fontsampler-wrapper .fontsampler-interface select[name="font-selector"],
 .fontsampler-wrapper .fontsampler-interface select[name="sample-text"] {
-  width: 40%;
+  margin-right: 2%;
+  width: 38%;
 }
 .fontsampler-wrapper .fontsampler-interface select[name="alignment"] {
   width: 10%;

@@ -49,6 +49,10 @@
                 <input type="checkbox" name="invert" <?php if (!empty($set['invert'])) echo ' checked="checked" '; ?>>
                 <span>Allow inverting the text field to display negative text</span>
             </label>
+            <label>
+                <input type="checkbox" name="multiline" <?php if (!empty($set['multiline'])) echo ' checked="checked" '; ?>>
+                <span>Allow line breaks on pressing enter</span>
+            </label>
         </div>
         <h3>Css options</h3>
         <h3>Published</h3>
