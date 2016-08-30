@@ -4,9 +4,40 @@
 #fontsampler-admin label {
   display: block;
 }
+#fontsampler-admin table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+}
+#fontsampler-admin table,
+#fontsampler-admin thead,
+#fontsampler-admin tbody,
+#fontsampler-admin tr,
+#fontsampler-admin th,
+#fontsampler-admin td {
+  text-align: left;
+  vertical-align: top;
+}
+#fontsampler-admin th,
+#fontsampler-admin td {
+  padding: 0.25em 0.5em;
+}
+#fontsampler-admin th {
+  border-bottom: 2px solid #aaa;
+  font-weight: normal;
+  font-size: larger;
+}
 #fontsampler-admin .notice {
   border: 1px solid;
   padding: 1em;
+}
+#fontsampler-admin code,
+#fontsampler-admin .filename {
+  font-family: monospace;
+  background: white;
+  border: 1px solid #ddd;
+  padding: 0.2em 0.5em;
+  font-size: smaller;
 }
 #fontsampler-admin .info,
 #fontsampler-admin .note,

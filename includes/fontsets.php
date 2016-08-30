@@ -18,7 +18,7 @@
             <td><?php echo $font['name']; ?></td>
             <td>
             <?php foreach ($formats as $format): ?>
-                <?php echo $format . ": " . $font[$format]; ?><br>
+                <?php echo $format . ': <span class="filename">' . $font[$format]; ?></span><br>
             <?php endforeach; ?>
             </td>
             <td>
@@ -29,7 +29,7 @@
             <td>
                 <form method="post" action="?page=fontsampler&subpage=font_delete">
                     <input type="hidden" name="id" value="<?php echo $font['id']; ?>">
-                    <?php submit_button('delete'); ?>
+                    <?php submit_button('delete', 'secondary'); ?>
                 </form>
             </td>
         </tr>
@@ -37,4 +37,4 @@
     </tbody>
 </table>
 
-<a href="?page=fontsampler&subpage=font_create">Create a new font record</a>
+<a class="button button-primary" href="?page=fontsampler&subpage=font_create">Create a new font record</a>

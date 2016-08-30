@@ -22,23 +22,23 @@
         <tbody>
     <?php foreach ($sets as $set): ?>
         <tr>
-            <th><?php echo $set['id']; ?></th>
-            <th><?php echo $set['name']; ?></th>
-            <th></th>
-            <th></th>
-            <th>[fontsampler id=<?php echo $set['id']; ?>]</th>
-            <th>
+            <td><?php echo $set['id']; ?></td>
+            <td><a href="?page=fontsampler&subpage=font_edit&id=<?php echo $set['id']; ?>"><?php echo $set['name']; ?></a></td>
+            <td></td>
+            <td></td>
+            <td><code>[fontsampler id=<?php echo $set['id']; ?>]</code></td>
+            <td>
                 <form method="post" action="?page=fontsampler&amp;subpage=edit&amp;id=<?php echo $set['id']; ?>" style="display: inline-block;">
                     <?php submit_button('Edit set'); ?>
                 </form>
-                </th>
-            <th>
+                </td>
+            <td>
                 <form method="post" action="?page=fontsampler" style="display: inline-block;">
                     <input type="hidden" name="action" value="deleteSet">
                     <input type="hidden" name="id" value="<?php echo $set['id']; ?>">
-                    <?php submit_button('Delete set'); ?>
+                    <?php submit_button('Delete set', 'secondary'); ?>
                 </form>
-            </th>
+            </td>
         </tr>
 
     <?php endforeach; ?>
@@ -47,4 +47,4 @@
 <?php endif; ?>
 
 
-<a href="?page=fontsampler&subpage=create">Create a new font sampler</a>
+<a class="button button-primary" href="?page=fontsampler&subpage=create">Create a new font sampler</a>

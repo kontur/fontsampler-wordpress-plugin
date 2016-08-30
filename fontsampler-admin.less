@@ -7,12 +7,43 @@
         display: block;
     }
 
+    table {
+        border-collapse: collapse;
+        border-spacing: 0;
+        width: 100%;
+    }
+
+    table, thead, tbody, tr, th, td {
+        text-align: left;
+        vertical-align: top;
+    }
+
+    th, td {
+        padding: 0.25em 0.5em;
+    }
+
+    th {
+        border-bottom: 2px solid #aaa;
+        font-weight: normal;
+        font-size: larger;
+    }
+
+    // block at the top for displaying messages
     .notice {
         border: 1px solid;
         padding: 1em;
     }
 
+    code, .filename {
+        font-family: monospace;
+        background: white;
+        border: 1px solid #ddd;
+        padding: 0.2em 0.5em;
+        font-size: smaller;
+    }
+
  
+    // different default type of messages in a <strong>
     .info, .note, .error {
         display: block;
     }
