@@ -1,5 +1,7 @@
 <?php if (empty($fonts)): ?>
-    <em>No font files found in the media gallery.</em>
+    <div class="notice">
+        <strong class="note">No font files found in the media gallery.</strong>
+    </div>
 <?php else: ?>
     <h1><?php echo empty($set['id']) ? "New fontsampler" : "Edit fontsampler " .$set['id'] ?></h1>
     <p>Once you create the fontsampler, it will be saved with an ID you use to embed it on your wordpress pages</p>
@@ -11,17 +13,36 @@
 
         <h2>Fonts</h2>
         <p>Pick which font set or sets to use:</p>
-        <div>
-            <select name="font_id[]">
-                <?php foreach ($fonts as $font): ?>
-                    <option value="<?php echo $font['id']; ?>">
-                    <?php echo $font['name']; ?>
-                    </option>
-                <?php endforeach;?>
-            </select>
-            <button class="btn btn-small fontsampler-remove-fontset">&minus;</button> <span>Remove this fontset from sampler</span>
-        </div>
-        <button class="btn btn-small">+</button> <span>Add another fontset to this sampler</span>
+        <ul id="fontsampler-fontset-list">
+            <?php if (!empty($set['id']) && !empty($set['fonts'])): foreach ($set['fonts'] as $existingFont): ?>
+            <li>
+                <select name="font_id[]">
+                    <option value="0">--</option>
+                    <?php foreach ($fonts as $font):?>
+                        <option <?php if (in_array($existingFont['name'], $font)): echo ' selected="selected"'; endif; ?>
+                            value="<?php echo $font['id']; ?>">
+                            <?php echo $font['name']; ?>
+                        </option>
+                    <?php endforeach;?>
+                </select>
+                <button class="btn btn-small fontsampler-fontset-remove">&minus;</button> <span>Remove this fontset from sampler</span>
+            </li>
+            <?php endforeach; ?>
+
+            <?php else: ?>
+            <li>
+                <!-- for a new fontset, display one, non-selected, select choice -->
+                <select name="font_id[]">
+                    <option value="0">--</option>
+                        <?php foreach ($fonts as $font):?>
+                            <option value="<?php echo $font['id']; ?>"><?php echo $font['name']; ?></option>
+                        <?php endforeach;?>
+                </select>
+                <button class="btn btn-small fontsampler-fontset-remove">&minus;</button> <span>Remove this fontset from sampler</span>
+            </li>
+            <?php endif; ?>
+        </ul>
+        <button class="btn btn-small fontsampler-fontset-add">+</button> <span>Add another fontset to this sampler</span>
 
         <h2>Options</h2>
         <h3>Interface options</h3>

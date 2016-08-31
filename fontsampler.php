@@ -41,6 +41,7 @@ class Fontsampler {
 	private $db;
     private $table_sets;
     private $table_fonts;
+    private $table_join;
     private $booleanOptions;
     private $fontFormats;
 
@@ -48,6 +49,7 @@ class Fontsampler {
 		$this->db = $wpdb;
         $this->table_sets = $this->db->prefix . "fontsampler_sets";
         $this->table_fonts = $this->db->prefix . "fontsampler_fonts";
+        $this->table_join = $this->db->prefix . "fontsampler_sets_x_fonts";
 
         $this->booleanOptions = array('size', 'letterspacing', 'lineheight', 'fontpicker', 'sampletexts', 'alignment', 'invert');
         $this->fontFormats = array('woff2', 'woff', 'eot', 'svg', 'ttf');
@@ -71,7 +73,7 @@ class Fontsampler {
 		// do nothing if missing id
 		// TODO change or fallback to name= instead of id=
 		if ($attributes['id'] != 0) {
-			$set = $this->get_set(intval($attributes['id']));
+			$set = $this->get_set(intval($attributes['id']), false);
 			$fonts = $this->get_fontset(intval($attributes['id']));
 
 			if ($set === false || $font === false) {
@@ -121,6 +123,7 @@ class Fontsampler {
      * Register scripts and styles needed in the admin panel
      */
     function fontsampler_admin_enqueues() {
+		wp_enqueue_script( 'fontsampler-admin-js', plugin_dir_url(__FILE__) . 'js/fontsampler-admin.js', array( 'jquery' ));
         wp_register_style( 'fontsampler_admin_css', plugin_dir_url(__FILE__) . '/fontsampler-admin.css', false, '1.0.0' );
         wp_enqueue_style( 'fontsampler_admin_css' );
     }
@@ -151,7 +154,9 @@ class Fontsampler {
 	 * React to the plugin being activated
 	 */
 	function fontsampler_activate() {
-		$this->create_table();
+		$this->create_table_sets();
+		$this->create_table_fonts();
+		$this->create_table_join();
 	}
 
 	// TODO deactivate()
@@ -167,28 +172,21 @@ class Fontsampler {
 
         include('includes/header.php');
 
-        // check the fontsampler tables exist, and if not, create it now
-        $this->db->query("SHOW TABLES LIKE '" . $this->table_sets . "'");
-        if ($this->db->num_rows === 0) {
-            $this->create_table_sets();
-        }
-        $this->db->query("SHOW TABLES LIKE '" . $this->table_fonts . "'");
-        if ($this->db->num_rows === 0) {
-            $this->create_table_fonts();
-        }
-
+        // check the fontsampler tables exist, and if not, create them now
+        if (!$this->check_table_exists($this->table_sets)) $this->create_table_sets();
+        if (!$this->check_table_exists($this->table_fonts)) $this->create_table_fonts();
+        if (!$this->check_table_exists($this->table_join)) $this->create_table_join();
 
         // check upload folder is writable
         $dir = wp_upload_dir();
         $upload = $dir['basedir'];
-
         if (!is_dir($upload)) {
             echo '<p>Uploads folder does not exist! Make sure Wordpress has writing permissions to create the
                     uploads folder at: <em>' . $upload . '</em></p>';
         }
 
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) {
 			$this->handle_font_edit();
 			$this->handle_set_edit();
 			$this->handle_set_delete();
@@ -248,7 +246,6 @@ class Fontsampler {
 	function create_table_sets() {
 		$sql = "CREATE TABLE " . $this->table_sets . " (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-			  `font_id` int(11) unsigned NOT NULL,
 			  `name` varchar(255) NOT NULL DEFAULT '',
 			  `size` tinyint(1) NOT NULL DEFAULT '0',
 			  `letterspacing` tinyint(1) NOT NULL DEFAULT '0',
@@ -278,6 +275,26 @@ class Fontsampler {
 		$this->db->query($sql);
     }
 
+
+    function create_table_join() {
+    	$sql = "CREATE TABLE `wp_fontsampler_sets_x_fonts` (
+			   `set_id` int(11) unsigned NOT NULL,
+			   `font_id` int(11) unsigned NOT NULL
+				)";
+    	$this->db->query($sql);
+    }
+
+
+    /*
+     * Helper to check if tables exist
+     * TODO: check if tables are in the correct structure
+     */
+	function check_table_exists($table) {
+		$this->db->query("SHOW TABLES LIKE '" . $table . "'");
+		return $this->db->num_rows == 0 ? false : true;
+	}
+
+
     // TODO deactivate -> remove tables
 
 
@@ -285,20 +302,56 @@ class Fontsampler {
 	 * Read from fontsampler sets table
 	 */
 	function get_sets() {
-		$sql = "SELECT s.id, f.name FROM " . $this->table_sets . " s
-				LEFT JOIN " . $this->table_fonts . " f
-				ON s.font_id = f.id";
-		return $this->db->get_results($sql, ARRAY_A);
+		$sql = "SELECT * FROM " . $this->table_sets . " s";
+		$sets = $this->db->get_results($sql, ARRAY_A);
+		$setsWithFonts = array();
+		foreach ($sets as $set) {
+			$sql = "SELECT f.name, ";
+			foreach ($this->fontFormats as $format) {
+				$sql .= " (SELECT guid FROM " . $this->db->prefix . "posts p WHERE p.ID = f.". $format . ") AS " . $format . ",";
+			}
+			$sql = substr($sql, 0, -1);
+			$sql .= " FROM wp_fontsampler_sets s
+					LEFT JOIN wp_fontsampler_sets_x_fonts j
+					ON s.id = j.set_id
+					LEFT JOIN wp_fontsampler_fonts f
+					ON f.id = j.font_id
+					WHERE j.set_id = " . intval($set['id']);
+
+			$set['fonts'] = $this->db->get_results($sql, ARRAY_A);
+			array_push($setsWithFonts, $set);
+		}
+		return $setsWithFonts;
 	}
 
 
-	function get_set($id) {
+	function get_set($id, $includingFonts = true) {
 		$sql = "SELECT * FROM " . $this->table_sets . " s
-				LEFT JOIN " . $this->table_fonts . " f
-				ON s.font_id = f.id
 				WHERE s.id = " . $id;
-		$result = $this->db->get_row($sql, ARRAY_A);
-		return $this->db->num_rows === 0 ? false : $result;
+		$set = $this->db->get_row($sql, ARRAY_A);
+		if ($this->db->num_rows == 0) {
+			return false;
+		}
+
+		if (!$includingFonts) {
+			return $set;
+		}
+
+		$sql = "SELECT f.name, ";
+		foreach ($this->fontFormats as $format) {
+			$sql .= " (SELECT guid FROM " . $this->db->prefix . "posts p WHERE p.ID = f.". $format . ") AS " . $format . ",";
+		}
+		$sql = substr($sql, 0, -1);
+		$sql .= " FROM wp_fontsampler_sets s
+				LEFT JOIN wp_fontsampler_sets_x_fonts j
+				ON s.id = j.set_id
+				LEFT JOIN wp_fontsampler_fonts f
+				ON f.id = j.font_id
+				WHERE j.set_id = " . intval($id);
+
+		$set['fonts'] = $this->db->get_results($sql, ARRAY_A);
+
+		return $set;
 	}
 
 
@@ -321,7 +374,7 @@ class Fontsampler {
 		$sql = substr($sql, 0, -1);
 		$sql .= " FROM " . $this->table_fonts . " f ";
         $result = $this->db->get_results($sql, ARRAY_A);
-        return $this->db->num_rows === 0 ? false : $result;
+        return $this->db->num_rows == 0 ? false : $result;
 	}
 
 
@@ -337,7 +390,7 @@ class Fontsampler {
 		$sql .= " FROM " . $this->table_fonts . " f 
 				WHERE f.id = " . intval($setId);
 		$result = $this->db->get_row($sql, ARRAY_A);
-		return $this->db->num_rows === 0 ? false : $result;
+		return $this->db->num_rows == 0 ? false : $result;
 	}
 
 
@@ -352,7 +405,7 @@ class Fontsampler {
 		$sql = substr($sql, 0, -1);
 		$sql .= " FROM " . $this->table_fonts . " f";
 		$result = $this->db->get_results($sql, ARRAY_A);
-		return $this->db->num_rows === 0 ? false : $result;
+		return $this->db->num_rows == 0 ? false : $result;
 	}
 
 
@@ -406,31 +459,46 @@ class Fontsampler {
 
 
 	/*
-	 * Creating a fontsampler 
+	 * Creating or editing a fontsampler set
 	 */
 	function handle_set_edit() {
 		if (isset($_POST['action']) && $_POST['action'] == "editSet") {
+
 			$data = array();
             foreach ($this->booleanOptions as $index) {
             	$data[$index] = isset($_POST[$index]);
             }
 
+            $id = NULL;
+
 			if (!isset($_POST['id'])) {
 				// insert new
-				$this->db->insert($this->table_sets, $data);
-				echo "Created set with it " . $this->db->insert_id;
+				$id = $this->db->insert($this->table_sets, $data);
+				$this->info("Created set with it " . $id);
 			} else {
 				// update existing
-				$this->db->update($this->table_sets, $data, array('id' => intval($_POST['id'])));
+				$id = intval($_POST['id']);
+				$this->db->update($this->table_sets, $data, array('id' => $id));
 			}
+
+			// wipe join table for this fontsampler, then add whatever now was instructed to be saved
+			$this->db->delete($this->table_join, array('set_id' => $id));
+            
+            // filter possibly duplicate font selections, then add them into the join table
+            foreach (array_unique($_POST['font_id']) as $fontId) {
+            	if ($fontId != 0) {
+            		$this->db->insert($this->table_join, array('set_id' => $id, 'font_id' => $fontId));
+            	}
+            }
 		}
 	}
+
 
 	function handle_set_delete() {
 		$id = (int)($_POST['id']);
 		if ($_POST['action'] == 'deleteSet' && isset($id) && is_int($id) && $id > 0) {
 			if ($this->delete_set(intval($_POST['id']))) {
-				echo 'Deleted ' . $id;
+				$this->info('Deleted ' . $id);
 			}
 		}
 	}

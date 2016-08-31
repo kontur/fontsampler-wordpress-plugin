@@ -26,8 +26,14 @@
     <?php foreach ($sets as $set): ?>
         <tr>
             <td><?php echo $set['id']; ?></td>
-            <td><a href="?page=fontsampler&subpage=font_edit&id=<?php echo $set['id']; ?>"><?php echo $set['name']; ?></a></td>
-            <td></td>
+            <td><?php echo $set['name']; ?></td>
+            <td>
+                <ul>
+                <?php foreach ($set['fonts'] as $font): ?>
+                    <li><a href="?page=fontsampler&amp;subpage=font_edit&amp;id=<?php echo $font['id']; ?>"><?php echo $font['name']; ?></a></li>
+                <?php endforeach; ?>
+                </ul>
+            </td>
             <td></td>
             <td><code>[fontsampler id=<?php echo $set['id']; ?>]</code></td>
             <td>

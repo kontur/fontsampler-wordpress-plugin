@@ -36,13 +36,23 @@
   border: 1px solid;
   padding: 1em;
 }
+#fontsampler-admin code {
+  border: 1px solid #ddd;
+}
 #fontsampler-admin code,
 #fontsampler-admin .filename {
   font-family: monospace;
   background: white;
-  border: 1px solid #ddd;
   padding: 0.2em 0.5em;
   font-size: smaller;
+}
+#fontsampler-admin td .fileformat {
+  display: inline-block;
+  width: 4em;
+}
+#fontsampler-admin p.submit {
+  margin: 0;
+  padding: 0;
 }
 #fontsampler-admin .info,
 #fontsampler-admin .note,

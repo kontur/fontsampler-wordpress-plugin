@@ -17,9 +17,14 @@
         <tr>
             <td><?php echo $font['name']; ?></td>
             <td>
+            <ul>
             <?php foreach ($formats as $format): ?>
-                <?php echo $format . ': <span class="filename">' . $font[$format]; ?></span><br>
+                <li>
+                    <span class="fileformat"><?php echo $format; ?></span>
+                    <span class="filename"><?php echo substr($font[$format], strrpos($font[$format], "/") + 1); ?></span>
+                </li>
             <?php endforeach; ?>
+            </ul>
             </td>
             <td>
                 <form method="post" action="?page=fontsampler&subpage=font_edit&id=<?php echo $font['id']; ?>">
