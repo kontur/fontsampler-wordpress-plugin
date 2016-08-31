@@ -2,6 +2,9 @@
  * Scope all css to be contained only within the fontsampler wrapper
  */
 #fontsampler-admin {
+    margin: 20px 20px 20px 0;
+    padding: 2em;
+    background: white;
 
     label {
         display: block;
@@ -55,6 +58,34 @@
     }
     .error {
         color: red;
+    }
+
+    #fontsampler-menu {
+        border-bottom: 1px solid;
+        margin: 0;
+        padding: 0 1em;
+
+        li {
+            padding: 0;
+            margin: 0;
+            font-size: larger;
+            display: inline-block;
+            border: 1px solid;
+            border-bottom: 0;
+
+            a {
+                display: inline-block;
+                padding: 0.5em 1em;
+                text-decoration: none;
+            }
+
+            &.current {
+                background: grey;
+                a {
+                    color: white;
+                }
+            }
+        }
     }
 
     // wrapper with label > span + input[type=checkbox]

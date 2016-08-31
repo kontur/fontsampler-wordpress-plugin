@@ -1,6 +1,11 @@
 /*
  * Scope all css to be contained only within the fontsampler wrapper
  */
+#fontsampler-admin {
+  margin: 20px 20px 20px 0;
+  padding: 2em;
+  background: white;
+}
 #fontsampler-admin label {
   display: block;
 }
@@ -52,6 +57,30 @@
 }
 #fontsampler-admin .error {
   color: red;
+}
+#fontsampler-admin #fontsampler-menu {
+  border-bottom: 1px solid;
+  margin: 0;
+  padding: 0 1em;
+}
+#fontsampler-admin #fontsampler-menu li {
+  padding: 0;
+  margin: 0;
+  font-size: larger;
+  display: inline-block;
+  border: 1px solid;
+  border-bottom: 0;
+}
+#fontsampler-admin #fontsampler-menu li a {
+  display: inline-block;
+  padding: 0.5em 1em;
+  text-decoration: none;
+}
+#fontsampler-admin #fontsampler-menu li.current {
+  background: grey;
+}
+#fontsampler-admin #fontsampler-menu li.current a {
+  color: white;
 }
 #fontsampler-admin .fontsampler-options-checkbox label > span {
   display: inline-block;

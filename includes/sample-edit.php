@@ -10,14 +10,19 @@
         <?php endif; ?>
 
         <h2>Fonts</h2>
-        <p>Pick which web font set to use</p>
-        <select name="font_id">
-            <?php foreach ($fonts as $font): ?>
-                <option value="<?php echo $font['id']; ?>">
-                <?php echo $font['name']; ?>
-                </option>
-            <?php endforeach;?>
-        </select>
+        <p>Pick which font set or sets to use:</p>
+        <div>
+            <select name="font_id[]">
+                <?php foreach ($fonts as $font): ?>
+                    <option value="<?php echo $font['id']; ?>">
+                    <?php echo $font['name']; ?>
+                    </option>
+                <?php endforeach;?>
+            </select>
+            <button class="btn btn-small fontsampler-remove-fontset">&minus;</button> <span>Remove this fontset from sampler</span>
+        </div>
+        <button class="btn btn-small">+</button> <span>Add another fontset to this sampler</span>
+
         <h2>Options</h2>
         <h3>Interface options</h3>
         <div class="fontsampler-options-checkbox">

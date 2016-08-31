@@ -1,6 +1,6 @@
-<h1>Font &amp; files</h1>
+<h1>Font sets &amp; files</h1>
 <p>Listed here are the fonts and the file formats that are provided for displaying them.</p>
-<p>In order to make font samplers you need to first create a font set and upload at least one format for the font.</p>
+<p>In order to make font samplers you need to first create a font set (the different webfont format versions of the font you want to demo) and upload at least one format for the font. If you want to use a font sampler that has a font switcher, for example to preview different weights or styles of the same typeface, you need to create a font set for each of them.</p>
 
 
 <table>

@@ -1,4 +1,4 @@
-<h1>Upload new font file</h1>
+<h1><?php echo empty($font['id']) ? 'Edit this font set' : 'Upload new font files'; ?></h1>
 <form method="post" enctype="multipart/form-data">
     <input type="hidden" name="action" value="font-edit">
     <input type="hidden" name="id" value="<?php echo empty($font['id']) ? 0 : $font['id']; ?>">

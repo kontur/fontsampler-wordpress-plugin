@@ -1,4 +1,7 @@
-<h1>Fontsamplers</h1>
+<h1>Font samplers</h1>
+<p>Listed here are all the font samplers you have created so far.</p>
+<p>A font sampler is a number (or just one) font set and settings that are used to display a interface for testing a font (or several in one).</p>
+<p>You can include your font samplers on any page or post by adding the respective shortcode listed in the table below.</p>
 
 <?php if (empty($sets)) : ?>
     <em>No sets created yet.</em>
@@ -12,9 +15,9 @@
         <tr>
             <th>Id</th>
             <th>Name</th>
-            <th>Files</th>
+            <th>Fonts<br><small>List one or more font sets used in this sampler</small></th>
             <th>Settings</th>
-            <th>Shortcode</th>
+            <th>Shortcode<br><small>Copy this code including brackets and insert them where you want to render the font sampler</small></th>
             <th>Edit</th>
             <th>Delete</th>
         </tr>

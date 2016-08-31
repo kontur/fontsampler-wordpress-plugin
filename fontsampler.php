@@ -130,7 +130,7 @@ class Fontsampler {
 	 * Add the fontsampler admin menu to the sidebar
 	 */
 	function fontsampler_plugin_setup_menu() {
-        add_menu_page( 'Fontsampler plugin page', 'Fontsampler Plugin', 'manage_options', 'fontsampler', array($this, 'fontsampler_admin_init') );
+        add_menu_page( 'Fontsampler plugin page', 'Fontsampler Plugin', 'manage_options', 'fontsampler', array($this, 'fontsampler_admin_init'), 'dashicons-editor-paragraph' );
 	}
 
 
@@ -204,7 +204,7 @@ class Fontsampler {
             case 'edit':
                 $set = $this->get_set(intval($_GET['id']));
                 $fonts = $this->get_fontfile_posts();
-                include('includes/fontset-edit.php');
+                include('includes/sample-edit.php');
                 break;
 /*
             case 'delete':
