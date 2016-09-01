@@ -33,6 +33,7 @@ add_action('admin_menu', array($f, 'fontsampler_plugin_setup_menu'));
 add_action('admin_enqueue_scripts', array($f, 'fontsampler_admin_enqueues'));
 add_filter('upload_mimes', array($f, 'allow_font_upload_types'));
 register_activation_hook( __FILE__, array($f, 'fontsampler_activate'));
+register_uninstall_hook(__FILE__, array($f, 'fontsampler_uninstall'));
 
 
 
@@ -76,7 +77,7 @@ class Fontsampler {
 			$set = $this->get_set(intval($attributes['id']), false);
 			$fonts = $this->get_fontset(intval($attributes['id']));
 
-			if ($set === false || $font === false) {
+			if ($set === false || $fonts === false) {
 				if (current_user_can('edit_posts') || current_user_can('edit_pages')) {
 					return '<div><strong>The typesampler with ID ' . $attributes['id'] . ' can not be displayed because some files or the type sampler set are missing!</strong> <em>You are seeing this notice because you have rights to edit posts - regular users will see an empty spot here.</em></div>';
 				} else {
@@ -112,19 +113,7 @@ class Fontsampler {
 			// include, aka echo, template with replaced values from $replace above
 			include('includes/interface.php');
 
-			unset($fonts['id']);
-			unset($fonts['name']);
-
-			$fontsObject = '{';
-			foreach ($fonts as $format => $font) {
-				if (!empty($font)) {
-					$fontsObject .= '"' . $format . '": "' . $font . '",';
-				}
-			}
-			$fontsObject = substr($fontsObject, 0, -1);
-			$fontsObject .= '}';
-
-			echo "<div class='fontsampler' data-font-files='" . $fontsObject . "' data-multiline='" . $set['multiline'] . "'>FONTSAMPLER</div></div>";
+			echo "<div class='fontsampler' data-font-files='" . $this->fontfiles_JSON($fonts) . "' data-multiline='" . $set['multiline'] . "'>FONTSAMPLER</div></div>";
 
 			// return all that's been buffered
 			return ob_get_clean();
@@ -136,6 +125,7 @@ class Fontsampler {
      * Register scripts and styles needed in the admin panel
      */
     function fontsampler_admin_enqueues() {
+		wp_enqueue_script( 'fontsampler-preview-js', plugin_dir_url(__FILE__) . 'js/jquery.fontsampler.js', array( 'jquery' ));
 		wp_enqueue_script( 'fontsampler-admin-js', plugin_dir_url(__FILE__) . 'js/fontsampler-admin.js', array( 'jquery' ));
         wp_register_style( 'fontsampler_admin_css', plugin_dir_url(__FILE__) . '/fontsampler-admin.css', false, '1.0.0' );
         wp_enqueue_style( 'fontsampler_admin_css' );
@@ -146,7 +136,7 @@ class Fontsampler {
 	 * Add the fontsampler admin menu to the sidebar
 	 */
 	function fontsampler_plugin_setup_menu() {
-        add_menu_page( 'Fontsampler plugin page', 'Fontsampler Plugin', 'manage_options', 'fontsampler', array($this, 'fontsampler_admin_init'), 'dashicons-editor-paragraph' );
+        add_menu_page( 'Fontsampler plugin page', 'Fontsampler', 'manage_options', 'fontsampler', array($this, 'fontsampler_admin_init'), 'dashicons-editor-paragraph' );
 	}
 
 
@@ -167,28 +157,32 @@ class Fontsampler {
 	 * React to the plugin being activated
 	 */
 	function fontsampler_activate() {
-		$this->create_table_sets();
-		$this->create_table_fonts();
-		$this->create_table_join();
+		$this->check_and_create_tables();
 	}
 
-	// TODO deactivate()
+	/*
+	 *
+	 */
+	// TODO test this ;)
+	function fontsampler_uninstall() {
+		$this->delete_tables();
+	}
 
 
 	/*
 	 * FLOW CONTROL
 	 */
 
+	/*
+	 * Rendering the admin interface
+	 */
 	function fontsampler_admin_init() {
 
         echo '<section id="fontsampler-admin">';
 
         include('includes/header.php');
 
-        // check the fontsampler tables exist, and if not, create them now
-        if (!$this->check_table_exists($this->table_sets)) $this->create_table_sets();
-        if (!$this->check_table_exists($this->table_fonts)) $this->create_table_fonts();
-        if (!$this->check_table_exists($this->table_join)) $this->create_table_join();
+        $this->check_and_create_tables();
 
         // check upload folder is writable
         $dir = wp_upload_dir();
@@ -246,7 +240,8 @@ class Fontsampler {
 				include('includes/samples.php');
 			    break;
 		}
-        echo '</section>';
+
+		echo '</section>';
 	}
 
 
@@ -291,10 +286,22 @@ class Fontsampler {
 
 
     function create_table_join() {
-    	$sql = "CREATE TABLE `wp_fontsampler_sets_x_fonts` (
+    	$sql = "CREATE TABLE " . $this->table_join . " (
 			   `set_id` int(11) unsigned NOT NULL,
 			   `font_id` int(11) unsigned NOT NULL
 				)";
+    	$this->db->query($sql);
+    }
+
+
+    function delete_tables() {
+    	$sql = "DROP TABLE IF EXISTS " . $this->table_join;
+    	$this->db->query($sql);
+
+    	$sql = "DROP TABLE IF EXISTS " . $this->table_fonts;
+    	$this->db->query($sql);
+
+    	$sql = "DROP TABLE IF EXISTS " . $this->table_sets;
     	$this->db->query($sql);
     }
 
@@ -309,6 +316,14 @@ class Fontsampler {
 	}
 
 
+	function check_and_create_tables() {
+        // check the fontsampler tables exist, and if not, create them now
+        if (!$this->check_table_exists($this->table_sets)) $this->create_table_sets();
+        if (!$this->check_table_exists($this->table_fonts)) $this->create_table_fonts();
+        if (!$this->check_table_exists($this->table_join)) $this->create_table_join();
+	}
+
+
     // TODO deactivate -> remove tables
 
 
@@ -320,15 +335,15 @@ class Fontsampler {
 		$sets = $this->db->get_results($sql, ARRAY_A);
 		$setsWithFonts = array();
 		foreach ($sets as $set) {
-			$sql = "SELECT f.name, ";
+			$sql = "SELECT f.name, f.id, ";
 			foreach ($this->fontFormats as $format) {
 				$sql .= " (SELECT guid FROM " . $this->db->prefix . "posts p WHERE p.ID = f.". $format . ") AS " . $format . ",";
 			}
 			$sql = substr($sql, 0, -1);
-			$sql .= " FROM wp_fontsampler_sets s
-					LEFT JOIN wp_fontsampler_sets_x_fonts j
+			$sql .= " FROM " . $this->table_sets . " s
+					LEFT JOIN " . $this->table_join . " j
 					ON s.id = j.set_id
-					LEFT JOIN wp_fontsampler_fonts f
+					LEFT JOIN " . $this->table_fonts . " f
 					ON f.id = j.font_id
 					WHERE j.set_id = " . intval($set['id']);
 
@@ -356,10 +371,10 @@ class Fontsampler {
 			$sql .= " (SELECT guid FROM " . $this->db->prefix . "posts p WHERE p.ID = f.". $format . ") AS " . $format . ",";
 		}
 		$sql = substr($sql, 0, -1);
-		$sql .= " FROM wp_fontsampler_sets s
-				LEFT JOIN wp_fontsampler_sets_x_fonts j
+		$sql .= " FROM " . $this->table_sets . " s
+				LEFT JOIN " . $this->table_join . " j
 				ON s.id = j.set_id
-				LEFT JOIN wp_fontsampler_fonts f
+				LEFT JOIN " . $this->table_fonts . " f
 				ON f.id = j.font_id
 				WHERE j.set_id = " . intval($id);
 
@@ -540,6 +555,27 @@ class Fontsampler {
     /*
      * HELPERS
      */
+
+
+	/*
+	 * Helper that generates a json formatted strong with { formats: files, ... }
+	 * for passed in $fonts (array)
+	 */
+	function fontfiles_JSON($fonts) {
+		if (empty($fonts)) {
+			return false;
+		}
+		$fontsObject = '{';
+		foreach ($fonts as $format => $font) {
+			if (in_array($format, $this->fontFormats) && !empty($font)) {
+				$fontsObject .= '"' . $format . '": "' . $font . '",';
+			}
+		}
+		$fontsObject = substr($fontsObject, 0, -1);
+		$fontsObject .= '}';
+		return $fontsObject;
+	}
+
 
     /*
      * Render different confirmation messages

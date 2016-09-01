@@ -13,6 +13,7 @@
 
         <h2>Fonts</h2>
         <p>Pick which font set or sets to use:</p>
+        <small>Picking multiple font set will enable the select field for switching between fonts used in the Fontsampler</small>
         <ul id="fontsampler-fontset-list">
             <?php if (!empty($set['id']) && !empty($set['fonts'])): foreach ($set['fonts'] as $existingFont): ?>
             <li>
@@ -75,13 +76,22 @@
                 <input type="checkbox" name="invert" <?php if (!empty($set['invert'])) echo ' checked="checked" '; ?>>
                 <span>Allow inverting the text field to display negative text</span>
             </label>
-            <label>
+            <label>(not implemented yet:
                 <input type="checkbox" name="multiline" <?php if (!empty($set['multiline'])) echo ' checked="checked" '; ?>>
                 <span>Allow line breaks on pressing enter</span>
+                )
+            </label>
+            <label>
+                (not implemented yet: rendering intent / anti-aliasing options)
+            </label>
+            <label>
+                <(not implemented yet: opentype options)
             </label>
         </div>
         <h3>Css options</h3>
+        (not implemented yet: custom styling for font samplers)
         <h3>Published</h3>
+        (not implemented yet: switching publishing status)
         <?php submit_button(); ?>
     </form>
 <?php endif; ?>

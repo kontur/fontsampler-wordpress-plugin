@@ -17,5 +17,6 @@ jQuery(function () {
 		$("#fontsampler-fontset-list li:last option[selected='selected']").removeAttr('selected');
 	});
 
+	$(".fontsampler-preview").fontSampler();
 
 });

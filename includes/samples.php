@@ -1,3 +1,4 @@
+<?php global $f; ?>
 <h1>Font samplers</h1>
 <p>Listed here are all the font samplers you have created so far.</p>
 <p>A font sampler is a number (or just one) font set and settings that are used to display a interface for testing a font (or several in one).</p>
@@ -16,6 +17,7 @@
             <th>Id</th>
             <th>Name</th>
             <th>Fonts<br><small>List one or more font sets used in this sampler</small></th>
+            <th>Preview<br><small>Font without interface options; Note that this display uses the supplied formats.</small></th>
             <th>Settings</th>
             <th>Shortcode<br><small>Copy this code including brackets and insert them where you want to render the font sampler</small></th>
             <th>Edit</th>
@@ -31,6 +33,14 @@
                 <ul>
                 <?php foreach ($set['fonts'] as $font): ?>
                     <li><a href="?page=fontsampler&amp;subpage=font_edit&amp;id=<?php echo $font['id']; ?>"><?php echo $font['name']; ?></a></li>
+                <?php endforeach; ?>
+                </ul>
+            </td>
+            <td>
+                <ul>
+                <?php foreach ($set['fonts'] as $font): ?>
+                    <li>
+                    <div class="fontsampler-preview" data-font-files='<?php echo $f->fontfiles_JSON($font); ?>'><?php echo $font['name']; ?></div></li>
                 <?php endforeach; ?>
                 </ul>
             </td>
