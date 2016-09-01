@@ -417,7 +417,9 @@ class Fontsampler {
 		}
 		$sql = substr($sql, 0, -1);
 		$sql .= " FROM " . $this->table_fonts . " f 
-				WHERE f.id = " . intval($setId);
+				LEFT JOIN " . $this->table_join . " j
+				ON j.font_id = f.id
+				WHERE j.set_id = " . intval($setId);
 		$result = $this->db->get_row($sql, ARRAY_A);
 		return $this->db->num_rows == 0 ? false : $result;
 	}
@@ -512,6 +514,10 @@ class Fontsampler {
 	function handle_set_edit() {
 		if (isset($_POST['action']) && $_POST['action'] == "editSet") {
 
+			if (sizeof($_POST['font_id']) > 1) {
+				$_POST['fontpicker'] = 1;
+			}
+
 			$data = array();
             foreach ($this->booleanOptions as $index) {
             	$data[$index] = isset($_POST[$index]);
@@ -521,8 +527,14 @@ class Fontsampler {
 
 			if (!isset($_POST['id'])) {
 				// insert new
-				$id = $this->db->insert($this->table_sets, $data);
-				$this->info("Created set with it " . $id);
+				$res = $this->db->insert($this->table_sets, $data);
+				if ($res) {
+					$id = $this->db->insert_id;
+					$this->info("Created set with id " . $id);
+				} else {
+					$this->error("Error: Failed to create new font set");
+				}
+
 			} else {
 				// update existing
 				$id = intval($_POST['id']);
@@ -531,7 +543,7 @@ class Fontsampler {
 
 			// wipe join table for this fontsampler, then add whatever now was instructed to be saved
 			$this->db->delete($this->table_join, array('set_id' => $id));
-            
+
             // filter possibly duplicate font selections, then add them into the join table
             foreach (array_unique($_POST['font_id']) as $fontId) {
             	if ($fontId != 0) {

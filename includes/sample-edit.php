@@ -85,7 +85,7 @@
                 (not implemented yet: rendering intent / anti-aliasing options)
             </label>
             <label>
-                <(not implemented yet: opentype options)
+                (not implemented yet: opentype options)
             </label>
         </div>
         <h3>Css options</h3>
