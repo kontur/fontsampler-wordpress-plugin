@@ -1,4 +1,3 @@
-
 jQuery(function () {
 	var $ = jQuery;
 	$(".fontsampler").each(function () {
@@ -53,5 +52,7 @@ jQuery(function () {
 				break;
 		}
 	});
+
+	// TODO react to font switching
 
 });

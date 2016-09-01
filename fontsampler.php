@@ -527,8 +527,14 @@ class Fontsampler {
 
 			if (!isset($_POST['id'])) {
 				// insert new
-				$id = $this->db->insert($this->table_sets, $data);
-				$this->info("Created set with it " . $id);
+				$res = $this->db->insert($this->table_sets, $data);
+				if ($res) {
+					$id = $this->db->insert_id;
+					$this->info("Created set with id " . $id);
+				} else {
+					$this->error("Error: Failed to create new font set");
+				}
+
 			} else {
 				// update existing
 				$id = intval($_POST['id']);
@@ -537,7 +543,7 @@ class Fontsampler {
 
 			// wipe join table for this fontsampler, then add whatever now was instructed to be saved
 			$this->db->delete($this->table_join, array('set_id' => $id));
-            
+
             // filter possibly duplicate font selections, then add them into the join table
             foreach (array_unique($_POST['font_id']) as $fontId) {
             	if ($fontId != 0) {
