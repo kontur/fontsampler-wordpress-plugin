@@ -188,6 +188,7 @@ class Fontsampler {
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action'])) {
 			$this->handle_font_edit();
+			$this->handle_font_delete();
 			$this->handle_set_edit();
 			$this->handle_set_delete();
 		}
@@ -445,6 +446,7 @@ class Fontsampler {
 
             if ($_POST['id'] == 0) {
                 $res = $this->db->insert($this->table_fonts, $data);
+                $this->info('Created fontset ' . $_POST['fontname']);
             } else {
                 $this->db->update($this->table_fonts, $data, array('ID' => $_POST['id']));
             }
@@ -454,7 +456,25 @@ class Fontsampler {
 	}
 
 
-	// TODO handle_font_delete()
+	// TODO confirm delete, also confirm delete from fontsampler sets
+	/*
+	 * Delete a set of fonts from the database
+	 */
+	function handle_font_delete() {
+		if ($_POST['action'] == 'deleteFont' && !empty($_POST['id'])) {
+			$id = intval($_POST['id']);
+			$res = $this->db->delete($this->table_fonts, array('id' => $id));
+			if (!$res) {
+				$this->db->error('Error: No font sets deleted');
+			} else {
+				$this->db->delete($this->table_join, array('font_id' => $id));
+				$this->info('Font set succesfully removed. Font set also removed from any fontsamplers using it.');
+				$this->notice('Note that the font files themselves have not been removed from the Wordpress uploads folder (Media Gallery).');
+			}
+		}
+	}
+
+
 	// TODO handle_font_file_remove()
 
 

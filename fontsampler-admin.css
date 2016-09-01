@@ -13,6 +13,7 @@
   border-collapse: collapse;
   border-spacing: 0;
   width: 100%;
+  margin: 1em auto 2em;
 }
 #fontsampler-admin table,
 #fontsampler-admin thead,
@@ -26,6 +27,9 @@
 #fontsampler-admin th,
 #fontsampler-admin td {
   padding: 0.25em 0.5em;
+}
+#fontsampler-admin td {
+  border-bottom: 1px solid #eee;
 }
 #fontsampler-admin th {
   border-bottom: 2px solid #aaa;

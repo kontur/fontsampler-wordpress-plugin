@@ -1,12 +1,12 @@
 <h1><?php echo empty($font['id']) ? 'Edit this font set' : 'Upload new font files'; ?></h1>
-<form method="post" enctype="multipart/form-data">
+<form method="post" enctype="multipart/form-data" action="?page=fontsampler&amp;subpage=fonts">
     <input type="hidden" name="action" value="font-edit">
     <input type="hidden" name="id" value="<?php echo empty($font['id']) ? 0 : $font['id']; ?>">
 
     <h2>Font name</h2>
     <p>Supply this mostly to make it able for you to tell different fonts apart for when you pick them
     into a font sampler. (e.g. "MyFont Regular Italic")</p>
-    <label>Font name
+    <label>Font name (mandatory)
         <input name="fontname" 
             <?php 
             if (empty($font['name'])) echo ' placeholder="e.g. MyFont Regular Italic" ';

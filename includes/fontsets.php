@@ -6,8 +6,8 @@
 <table>
     <thead>
     <tr>
-        <th>Font name</th>
-        <th>Formats</th>
+        <th>Font name<br><small>For internal reference only</small></th>
+        <th>Formats<br><small>A list of all formats provided (and used) for rendering type samplers using this font</small></th>
         <th>Edit</th>
         <th>Delete</th>
     </tr>
@@ -32,7 +32,8 @@
                 </form>
             </td>
             <td>
-                <form method="post" action="?page=fontsampler&subpage=font_delete">
+                <form method="post" action="?page=fontsampler&subpage=fonts">
+                    <input type="hidden" name="action" value="deleteFont">
                     <input type="hidden" name="id" value="<?php echo $font['id']; ?>">
                     <?php submit_button('delete', 'secondary'); ?>
                 </form>
