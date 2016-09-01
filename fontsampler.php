@@ -230,7 +230,7 @@ class Fontsampler {
                 break;
 
             case 'font_edit':
-                $font = $this->get_fontset(intval($_GET['id']));
+                $font = $this->get_fontset(intval($_GET['id']))[0];
                 $formats = $this->fontFormats;
                 include('includes/fontset-edit.php');
                 break;
