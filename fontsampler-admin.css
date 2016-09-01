@@ -8,6 +8,16 @@
 }
 #fontsampler-admin label {
   display: block;
+  font-family: monospace;
+  color: #999;
+  margin: 1em 0;
+}
+#fontsampler-admin label:hover input,
+#fontsampler-admin label:focus input,
+#fontsampler-admin label:hover select,
+#fontsampler-admin label:focus select {
+  background: #eee;
+  border: 1px solid #333;
 }
 #fontsampler-admin table {
   border-collapse: collapse;
@@ -35,6 +45,15 @@
   border-bottom: 2px solid #aaa;
   font-weight: normal;
   font-size: larger;
+  vertical-align: top;
+}
+#fontsampler-admin p {
+  font-size: inherit;
+  max-width: 40em;
+}
+#fontsampler-admin small {
+  font-size: x-small;
+  line-height: 1em;
 }
 #fontsampler-admin .notice {
   border: 1px solid;
@@ -72,29 +91,33 @@
 #fontsampler-admin .error {
   color: red;
 }
-#fontsampler-admin #fontsampler-menu {
-  border-bottom: 1px solid;
+#fontsampler-admin #fontsampler-menu ul {
+  border-bottom: 1px solid #eee;
   margin: 0;
   padding: 0 1em;
 }
-#fontsampler-admin #fontsampler-menu li {
+#fontsampler-admin #fontsampler-menu ul li {
   padding: 0;
   margin: 0;
   font-size: larger;
   display: inline-block;
-  border: 1px solid;
   border-bottom: 0;
 }
-#fontsampler-admin #fontsampler-menu li a {
+#fontsampler-admin #fontsampler-menu ul li a {
   display: inline-block;
   padding: 0.5em 1em;
   text-decoration: none;
+  outline: none;
 }
-#fontsampler-admin #fontsampler-menu li.current {
-  background: grey;
+#fontsampler-admin #fontsampler-menu ul li a:hover,
+#fontsampler-admin #fontsampler-menu ul li a:focus {
+  background: #dde9ff;
 }
-#fontsampler-admin #fontsampler-menu li.current a {
-  color: white;
+#fontsampler-admin #fontsampler-menu ul li.current {
+  background: #eee;
+}
+#fontsampler-admin #fontsampler-menu ul li.current a {
+  color: #333;
 }
 #fontsampler-admin .fontsampler-options-checkbox label > span {
   display: inline-block;

@@ -113,7 +113,7 @@ class Fontsampler {
 			// include, aka echo, template with replaced values from $replace above
 			include('includes/interface.php');
 
-			echo "<div class='fontsampler' data-font-files='" . $this->fontfiles_JSON($fonts) . "' data-multiline='" . $set['multiline'] . "'>FONTSAMPLER</div></div>";
+			echo "<div class='fontsampler' data-font-files='" . $this->fontfiles_JSON($fonts[0]) . "' data-multiline='" . $set['multiline'] . "'>FONTSAMPLER</div></div>";
 
 			// return all that's been buffered
 			return ob_get_clean();
@@ -416,9 +416,11 @@ class Fontsampler {
 			$sql .= " (SELECT guid FROM " . $this->db->prefix . "posts p WHERE p.ID = f.". $format . ") AS " . $format . ",";
 		}
 		$sql = substr($sql, 0, -1);
-		$sql .= " FROM " . $this->table_fonts . " f 
-				WHERE f.id = " . intval($setId);
-		$result = $this->db->get_row($sql, ARRAY_A);
+		$sql .= " FROM " . $this->table_fonts . " f
+		        LEFT JOIN " . $this->table_join . " j
+		        ON j.font_id = f.id
+				WHERE j.set_id = " . intval($setId);
+		$result = $this->db->get_results($sql, ARRAY_A);
 		return $this->db->num_rows == 0 ? false : $result;
 	}
 
@@ -515,6 +517,10 @@ class Fontsampler {
 			$data = array();
             foreach ($this->booleanOptions as $index) {
             	$data[$index] = isset($_POST[$index]);
+            }
+
+            if (sizeof($_POST['font_id']) > 1) {
+                $data['fontpicker'] = true;
             }
 
             $id = NULL;

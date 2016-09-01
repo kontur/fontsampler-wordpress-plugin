@@ -1,3 +1,5 @@
+<?php global $f; ?>
+
 <div class="fontsampler-interface">
 	<div class="fontsampler-interface-row fontsampler-interface-primary">
 		<?php if ($set['size']): ?>
@@ -28,7 +30,9 @@
 	<div class="fontsampler-interface-row fontsampler-interface-secondary">
 		<?php if ($set['fontpicker']): ?>
 		<select name="font-selector">
-			<option>Test Regular</option>
+			<?php foreach ($fonts as $font): ?>
+                <option data-font-files='<?php echo $f->fontfiles_JSON($font); ?>'><?php echo $font['name']; ?></option>
+            <?php endforeach; ?>
 		</select>
 		<?php endif; ?>
 

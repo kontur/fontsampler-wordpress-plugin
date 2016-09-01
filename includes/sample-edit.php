@@ -1,6 +1,7 @@
 <?php if (empty($fonts)): ?>
     <div class="notice">
-        <strong class="note">No font files found in the media gallery.</strong>
+        <strong class="note">No font files found in the media gallery. Start by
+            <a href="?page=fontsampler&amp;subpage=font_create">creating a fontset</a> and uploading its webfont formats.</strong>
     </div>
 <?php else: ?>
     <h1><?php echo empty($set['id']) ? "New fontsampler" : "Edit fontsampler " .$set['id'] ?></h1>

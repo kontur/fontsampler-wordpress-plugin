@@ -10,8 +10,6 @@ jQuery(function () {
 
 	// interface
 	$(".fontsampler-interface input[type=range]").on('change, input', function () {
-		console.log($(this).val());
-		
 		var $fs = $(this).closest('.fontsampler-interface').siblings('.fontsampler'),
 			val = $(this).val(),
 			unit = $(this).data('unit');
@@ -33,12 +31,13 @@ jQuery(function () {
 
 	});
 	$(".fontsampler-interface select").on('change', function () {
-		console.log($(this).val());
 		var $fs = $(this).closest('.fontsampler-interface').siblings('.fontsampler'),
 			val = $(this).val();
 
 		switch ($(this).attr('name')) {
 			case "font-selector":
+                var json = $(this).find("option:selected").data("font-files");
+                $fs.fontSampler('changeFont', json);
 				break;
 
 			case "sample-text":

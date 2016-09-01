@@ -20,183 +20,188 @@
 
     "use strict";
 
-        // undefined is used here as the undefined global variable in ECMAScript 3 is
-        // mutable ( ie. it can be changed by someone else ). undefined isn't really being
-        // passed in so we can ensure the value of it is truly undefined. In ES5, undefined
-        // can no longer be modified.
+    // undefined is used here as the undefined global variable in ECMAScript 3 is
+    // mutable ( ie. it can be changed by someone else ). undefined isn't really being
+    // passed in so we can ensure the value of it is truly undefined. In ES5, undefined
+    // can no longer be modified.
 
-        // window and document are passed through as local variables rather than global
-        // as this ( slightly ) quickens the resolution process and can be more efficiently
-        // minified ( especially when both are regularly referenced in your plugin ).
+    // window and document are passed through as local variables rather than global
+    // as this ( slightly ) quickens the resolution process and can be more efficiently
+    // minified ( especially when both are regularly referenced in your plugin ).
 
-        // Create the defaults once
-        var pluginName = "fontSampler",
-            defaults = {
-                fontFiles: null,
-                multiLine: true
-            },
-            fontFamily = "";
+    // Create the defaults once
+    var pluginName = "fontSampler",
+        defaults = {
+            fontFiles: null,
+            multiLine: true
+        },
+        fontFamily = "";
 
-        // The actual plugin constructor
-        function Plugin ( element, options ) {
-            this.element = element;
+    // The actual plugin constructor
+    function Plugin ( element, options ) {
+        this.element = element;
 
-            // jQuery has an extend method which merges the contents of two or
-            // more objects, storing the result in the first object. The first object
-            // is generally empty as we don't want to alter the default options for
-            // future instances of the plugin
-            this.settings = $.extend( {}, defaults, options );
-            this._defaults = defaults;
-            this._name = pluginName;
-            this.init();
+        // jQuery has an extend method which merges the contents of two or
+        // more objects, storing the result in the first object. The first object
+        // is generally empty as we don't want to alter the default options for
+        // future instances of the plugin
+        this.settings = $.extend( {}, defaults, options );
+        this._defaults = defaults;
+        this._name = pluginName;
+        this.init();
 
-            // public methods
-            this.changeSize = function( args ) {
-                this.setSize( args[ 1 ] );
-            };
-
-            this.changeFont = function( args ) {
-                fontFamily = declareFontFace( args[ 1 ] );
-                this.setFont( fontFamily );
-            };
-
-            this.changeLetterSpacing = function( args ) {
-                this.setLetterSpacing( args[ 1 ] );
-            };
-
-            this.changeLeading = function( args ) {
-                this.setLeading( args[ 1 ] );
-            };
-        }
-
-        // Avoid Plugin.prototype conflicts
-        $.extend( Plugin.prototype, {
-            init: function() {
-                var dataFontFiles = $(this.element).data("font-files");
-                if (typeof dataFontFiles === "object") {
-                    // merge in data-font-files options; these overwrite javascript passed in options
-                    this.settings.fontFiles = $.extend( {}, this.settings.fontFiles, dataFontFiles);
-                }
-                fontFamily = declareFontFace( this.settings.fontFiles );
-                this.setupUI();
-                this.setFont( fontFamily );
-            },
-            setupUI: function() {
-                var that = this;
-                $( this.element ).attr( "contenteditable", "true" );
-                $( this.element ).on( "keypress", function( event ) {
-                    return that.onKeyPress( event, that );
-                } );
-            },
-
-            // internal event listeners
-            onKeyPress: function( event, that ) {
-                if ( that.settings.multiLine === false && event.keyCode === 13 ) {
-                    return false;
-                }
-            },
-
-            // manipulation methods mirrored from public mthods
-            setFont: function() {
-                $( this.element ).css( "fontFamily", fontFamily );
-            },
-            setSize: function( size ) {
-                $( this.element ).css( "font-size", size );
-            },
-            setLetterSpacing: function( spacing ) {
-                $( this.element ).css( "letter-spacing", spacing );
-            },
-            setLeading: function( leading ) {
-                $( this.element ).css( "line-height", leading );
-            }
-        });
-
-
-        // append a new style @font-face declaration
-        // TODO format check
-        // TODO track and check existing declarations
-        function declareFontFace ( files ) {
-            // generate a random string font-family name that is specific to this file
-            var newName = Math.random().toString( 36 ).replace( /[^a-z]+/g, "" ).substr( 0, 20 );
-            var newStyle = document.createElement( "style" );
-            newStyle.setAttribute("data-generated-by", "fontsampler");
-            newStyle.appendChild( document.createTextNode( generateFontFace(newName, files)));
-            document.head.appendChild( newStyle );
-            return newName;
-        }
-
-
-        /*
-         * Helper that generates a CSS font face declaration based on font name and passed in files
-         */
-        function generateFontFace ( name, files, weight, style ) {
-            if (typeof name === "undefined" || typeof files === "undefined" || !files) {
-                return "";
-            }
-
-            var declaration = "";
-
-            if (typeof weight === "undefined") {
-                weight = "normal";
-            }
-            if (typeof style === "undefined") {
-                style = "normal";
-            }
-
-            declaration = declaration.concat("\n");
-            declaration = declaration.concat("@font-face {\n");
-            declaration = declaration.concat("font-family: '" + name + "';\n");
-
-            var formats = ["eot", "woff2", "woff", "ttf", "svg"];
-
-            for (var f = 0; f < formats.length; f++) {
-                var format = formats[f];
-                if (format in files) {
-                    if (format === "eot") {
-                        declaration = declaration.concat("src: url('" + files.eot + "');\n");
-                        declaration = declaration.concat("src: url('" + files.eot + "?#iefix') format('embedded-opentype')");
-                    } else {
-                        if (f === 0) {
-                            declaration = declaration.concat("src: ");
-                        }
-                        if (format === "ttf") {
-                            declaration = declaration.concat("url('" + files.ttf + "') format('truetype')");
-                        } else if (format === "svg") {
-                            declaration = declaration.concat("url('" + files.svg + "#" + name + "') format('svg')");
-                        } else {
-                            declaration = declaration.concat("url('" + files[format] + "') format('" + format + "')");
-                        }
-                    }
-                    if (f < formats.length - 1) {
-                        declaration = declaration.concat(",\n");
-                    } else {
-                        declaration = declaration.concat(";\n");
-                    }
-                }
-            }
-
-            declaration = declaration.concat("font-weight: " + weight + ";\n");
-            declaration = declaration.concat("font-style: " + style + ";\n");
-            declaration = declaration.concat("}\n");
-
-            return declaration;
-        }
-
-
-        // A really lightweight plugin wrapper around the constructor,
-        // preventing against multiple instantiations
-        $.fn[ pluginName ] = function( options ) {
-            var args = arguments;
-            return this.each( function() {
-                if ( !$.data( this, "plugin_" + pluginName ) ) {
-                    $.data( this, "plugin_" + pluginName, new Plugin( this, options ) );
-                } else if ( $.data( this, "plugin_" + pluginName ) &&
-                    $( this ).data( "plugin_" + pluginName )[ options ] !== undefined ) {
-                    return $( this ).data( "plugin_" + pluginName )[ options ]( args );
-                } else {
-                    console.log( "fontSampler non existing method called" );
-                }
-            } );
+        // public methods
+        this.changeSize = function( args ) {
+            this.setSize( args[ 1 ] );
         };
+
+        this.changeFont = function( args ) {
+            this.settings.fontFiles = args[ 1 ];
+            fontFamily = declareFontFace( this.settings.fontFiles );
+            this.setFont( fontFamily );
+        };
+
+        this.changeLetterSpacing = function( args ) {
+            this.setLetterSpacing( args[ 1 ] );
+        };
+
+        this.changeLeading = function( args ) {
+            this.setLeading( args[ 1 ] );
+        };
+    }
+
+    // Avoid Plugin.prototype conflicts
+    $.extend( Plugin.prototype, {
+        init: function() {
+            var dataFontFiles = $(this.element).data("font-files");
+            if (typeof dataFontFiles === "object") {
+                // merge in data-font-files options; these overwrite javascript passed in options
+                this.settings.fontFiles = $.extend( {}, this.settings.fontFiles, dataFontFiles);
+            }
+            fontFamily = declareFontFace( this.settings.fontFiles );
+            this.setupUI();
+            this.setFont( fontFamily );
+        },
+        setupUI: function() {
+            var that = this;
+            $( this.element ).attr( "contenteditable", "true" );
+            $( this.element ).on( "keypress", function( event ) {
+                return that.onKeyPress( event, that );
+            } );
+        },
+
+        // internal event listeners
+        onKeyPress: function( event, that ) {
+            if ( that.settings.multiLine === false && event.keyCode === 13 ) {
+                return false;
+            }
+        },
+
+        // manipulation methods mirrored from public mthods
+        setFont: function() {
+            $( this.element ).css( "fontFamily", fontFamily );
+        },
+        setSize: function( size ) {
+            $( this.element ).css( "font-size", size );
+        },
+        setLetterSpacing: function( spacing ) {
+            $( this.element ).css( "letter-spacing", spacing );
+        },
+        setLeading: function( leading ) {
+            $( this.element ).css( "line-height", leading );
+        }
+    });
+
+
+    // append a new style @font-face declaration
+    // TODO format check
+    // TODO track and check existing declarations
+    function declareFontFace ( files ) {
+        // generate a random string font-family name that is specific to this file
+        var newName = Math.random().toString( 36 ).replace( /[^a-z]+/g, "" ).substr( 0, 20 );
+        var newStyle = document.createElement( "style" );
+        newStyle.setAttribute("data-generated-by", "fontsampler");
+        newStyle.appendChild( document.createTextNode( generateFontFace(newName, files)));
+        document.head.appendChild( newStyle );
+        return newName;
+    }
+
+
+    /*
+     * Helper that generates a CSS font face declaration based on font name and passed in files
+     */
+    function generateFontFace ( name, files, weight, style ) {
+        if (typeof name === "undefined" || typeof files === "undefined" || !files) {
+            return "";
+        }
+
+        var declaration = "";
+
+        if (typeof weight === "undefined") {
+            weight = "normal";
+        }
+        if (typeof style === "undefined") {
+            style = "normal";
+        }
+
+        declaration = declaration.concat("\n");
+        declaration = declaration.concat("@font-face {\n");
+        declaration = declaration.concat("font-family: '" + name + "';\n");
+
+        var formats = ["eot", "woff2", "woff", "ttf", "svg"];
+        var outputIndex = 0;
+        var suppliedFormats = Object.keys(files).length;
+
+        for (var f = 0; f < formats.length; f++) {
+            var format = formats[f];
+            if (format in files) {
+                if (format === "eot") {
+                    declaration = declaration.concat("src: url('" + files.eot + "');\n");
+                    declaration = declaration.concat("src: url('" + files.eot + "?#iefix') format('embedded-opentype')");
+                    outputIndex++;
+                } else {
+                    if (outputIndex === 0) {
+                        declaration = declaration.concat("src: ");
+                    }
+                    if (format === "ttf") {
+                        declaration = declaration.concat("url('" + files.ttf + "') format('truetype')");
+                    } else if (format === "svg") {
+                        declaration = declaration.concat("url('" + files.svg + "#" + name + "') format('svg')");
+                    } else {
+                        declaration = declaration.concat("url('" + files[format] + "') format('" + format + "')");
+                    }
+                    outputIndex++;
+                }
+                if (outputIndex < suppliedFormats) {
+                    declaration = declaration.concat(",\n");
+                } else {
+                    declaration = declaration.concat(";\n");
+                }
+            }
+        }
+
+        declaration = declaration.concat("font-weight: " + weight + ";\n");
+        declaration = declaration.concat("font-style: " + style + ";\n");
+        declaration = declaration.concat("}\n");
+
+        return declaration;
+    }
+
+
+    // A really lightweight plugin wrapper around the constructor,
+    // preventing against multiple instantiations
+    $.fn[ pluginName ] = function( options ) {
+        var args = arguments;
+        return this.each( function() {
+            if ( !$.data( this, "plugin_" + pluginName ) ) {
+                $.data( this, "plugin_" + pluginName, new Plugin( this, options ) );
+            } else if ( $.data( this, "plugin_" + pluginName ) &&
+                $( this ).data( "plugin_" + pluginName )[ options ] !== undefined ) {
+                return $( this ).data( "plugin_" + pluginName )[ options ]( args );
+            } else {
+                console.log( "fontSampler non existing method called" );
+            }
+        } );
+    };
 
 } )( jQuery, window, document );
