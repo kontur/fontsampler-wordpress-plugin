@@ -32,10 +32,9 @@
         // Create the defaults once
         var pluginName = "fontSampler",
             defaults = {
-                fontFile: null,
+                fontFiles: null,
                 multiLine: true
             },
-            fontFaceDeclarations = {},
             fontFamily = "";
 
         // The actual plugin constructor
@@ -73,7 +72,12 @@
         // Avoid Plugin.prototype conflicts
         $.extend( Plugin.prototype, {
             init: function() {
-                fontFamily = declareFontFace( this.settings.fontFile );
+                var dataFontFiles = $(this.element).data("font-files");
+                if (typeof dataFontFiles === "object") {
+                    // merge in data-font-files options; these overwrite javascript passed in options
+                    this.settings.fontFiles = $.extend( {}, this.settings.fontFiles, dataFontFiles);
+                }
+                fontFamily = declareFontFace( this.settings.fontFiles );
                 this.setupUI();
                 this.setFont( fontFamily );
             },
@@ -105,30 +109,79 @@
             setLeading: function( leading ) {
                 $( this.element ).css( "line-height", leading );
             }
-        } );
+        });
+
 
         // append a new style @font-face declaration
-        // TODO supported formats?
+        // TODO format check
         // TODO track and check existing declarations
-        function declareFontFace ( file ) {
-            if ( fontFaceDeclarations[ file ] !== undefined ) {
-                return fontFaceDeclarations[ file ];
-            }
-            var newStyle = document.createElement( "style" );
-
+        function declareFontFace ( files ) {
             // generate a random string font-family name that is specific to this file
             var newName = Math.random().toString( 36 ).replace( /[^a-z]+/g, "" ).substr( 0, 20 );
-            newStyle.appendChild( document.createTextNode( "\n" +
-                "@font-face {\n" +
-                    "font-family: '" + newName + "';\n" +
-                    "src: url('" + file + "') format('woff');\n" +
-                "}\n"
-            ) );
+            var newStyle = document.createElement( "style" );
+            newStyle.setAttribute("data-generated-by", "fontsampler");
+            newStyle.appendChild( document.createTextNode( generateFontFace(newName, files)));
             document.head.appendChild( newStyle );
-
-            fontFaceDeclarations[ file ] = newName;
             return newName;
         }
+
+
+        /*
+         * Helper that generates a CSS font face declaration based on font name and passed in files
+         */
+        function generateFontFace ( name, files, weight, style ) {
+            if (typeof name === "undefined" || typeof files === "undefined" || !files) {
+                return "";
+            }
+
+            var declaration = "";
+
+            if (typeof weight === "undefined") {
+                weight = "normal";
+            }
+            if (typeof style === "undefined") {
+                style = "normal";
+            }
+
+            declaration = declaration.concat("\n");
+            declaration = declaration.concat("@font-face {\n");
+            declaration = declaration.concat("font-family: '" + name + "';\n");
+
+            var formats = ["eot", "woff2", "woff", "ttf", "svg"];
+
+            for (var f = 0; f < formats.length; f++) {
+                var format = formats[f];
+                if (format in files) {
+                    if (format === "eot") {
+                        declaration = declaration.concat("src: url('" + files.eot + "');\n");
+                        declaration = declaration.concat("src: url('" + files.eot + "?#iefix') format('embedded-opentype')");
+                    } else {
+                        if (f === 0) {
+                            declaration = declaration.concat("src: ");
+                        }
+                        if (format === "ttf") {
+                            declaration = declaration.concat("url('" + files.ttf + "') format('truetype')");
+                        } else if (format === "svg") {
+                            declaration = declaration.concat("url('" + files.svg + "#" + name + "') format('svg')");
+                        } else {
+                            declaration = declaration.concat("url('" + files[format] + "') format('" + format + "')");
+                        }
+                    }
+                    if (f < formats.length - 1) {
+                        declaration = declaration.concat(",\n");
+                    } else {
+                        declaration = declaration.concat(";\n");
+                    }
+                }
+            }
+
+            declaration = declaration.concat("font-weight: " + weight + ";\n");
+            declaration = declaration.concat("font-style: " + style + ";\n");
+            declaration = declaration.concat("}\n");
+
+            return declaration;
+        }
+
 
         // A really lightweight plugin wrapper around the constructor,
         // preventing against multiple instantiations
@@ -136,11 +189,7 @@
             var args = arguments;
             return this.each( function() {
                 if ( !$.data( this, "plugin_" + pluginName ) ) {
-                    if ( typeof options !== "object" || options === undefined ) {
-                        console.log( "fontSampler initialized without or invalid options" );
-                    } else {
-                        $.data( this, "plugin_" + pluginName, new Plugin( this, options ) );
-                    }
+                    $.data( this, "plugin_" + pluginName, new Plugin( this, options ) );
                 } else if ( $.data( this, "plugin_" + pluginName ) &&
                     $( this ).data( "plugin_" + pluginName )[ options ] !== undefined ) {
                     return $( this ).data( "plugin_" + pluginName )[ options ]( args );

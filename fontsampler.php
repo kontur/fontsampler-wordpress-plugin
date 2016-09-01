@@ -111,7 +111,20 @@ class Fontsampler {
 			echo '<div class="fontsampler-wrapper">';
 			// include, aka echo, template with replaced values from $replace above
 			include('includes/interface.php');
-			echo '<div class="fontsampler" data-fontfile="' . $fonts['woff'] . '" data-multiline="' . $set['multiline'] . '">FONTSAMPLER</div></div>';
+
+			unset($fonts['id']);
+			unset($fonts['name']);
+
+			$fontsObject = '{';
+			foreach ($fonts as $format => $font) {
+				if (!empty($font)) {
+					$fontsObject .= '"' . $format . '": "' . $font . '",';
+				}
+			}
+			$fontsObject = substr($fontsObject, 0, -1);
+			$fontsObject .= '}';
+
+			echo "<div class='fontsampler' data-font-files='" . $fontsObject . "' data-multiline='" . $set['multiline'] . "'>FONTSAMPLER</div></div>";
 
 			// return all that's been buffered
 			return ob_get_clean();
