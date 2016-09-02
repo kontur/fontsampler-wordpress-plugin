@@ -27,7 +27,7 @@ jQuery(function () {
 				$fs.fontSampler('changeLeading', val + unit);
 				break;
 		}
-		$(this).siblings('.slider-value').html(val + unit);
+		$(this).siblings('.slider-value').html(val + '&nbsp;' + unit);
 	});
 
 

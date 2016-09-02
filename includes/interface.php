@@ -5,7 +5,7 @@
 		<?php if ($set['size']): ?>
 		<label class="fontsampler-slider">
 			<span class="slider-label"><?php echo $replace['font-size-label']; ?></span>
-			<span class="slider-value"><?php echo $replace['font-size-value']; echo $replace['font-size-unit']; ?></span>
+			<span class="slider-value"><?php echo $replace['font-size-value']; ?>&nbsp;<?php echo $replace['font-size-unit']; ?></span>
 			<input type="range" min="<?php echo $replace['font-size-min']; ?>" max="<?php echo $replace['font-size-max']; ?>" value="<?php echo $replace['font-size-value']; ?>" data-unit="<?php echo $replace['font-size-unit']; ?>" name="font-size">
 		</label>
 		<?php endif; ?>
@@ -13,7 +13,7 @@
 		<?php if ($set['letterspacing']): ?>
 		<label class="fontsampler-slider">
 			<span class="slider-label"><?php echo $replace['letter-spacing-label']; ?></span>
-			<span class="slider-value"><?php echo $replace['letter-spacing-value']; echo $replace['letter-spacing-unit']; ?></span>
+			<span class="slider-value"><?php echo $replace['letter-spacing-value']; ?>&nbsp;<?php echo $replace['letter-spacing-unit']; ?></span>
 			<input type="range" min="<?php echo $replace['letter-spacing-min']; ?>" max="<?php echo $replace['letter-spacing-max']; ?>" value="<?php echo $replace['letter-spacing-value']; ?>" data-unit="<?php echo $replace['letter-spacing-unit']; ?>" name="letter-spacing">
 		</label>
 		<?php endif; ?>
@@ -21,7 +21,7 @@
 		<?php if ($set['lineheight']): ?>
 		<label class="fontsampler-slider">
 			<span class="slider-label"><?php echo $replace['line-height-label']; ?></span>
-			<span class="slider-value"><?php echo $replace['line-height-value']; echo $replace['line-height-unit']; ?></span>
+			<span class="slider-value"><?php echo $replace['line-height-value']; ?>&nbsp;<?php echo $replace['line-height-unit']; ?></span>
 			<input type="range" min="<?php echo $replace['line-height-min']; ?>" max="<?php echo $replace['line-height-max']; ?>" value="<?php echo $replace['line-height-value']; ?>" data-unit="<?php echo $replace['line-height-unit']; ?>" name="line-height">
 		</label>
 		<?php endif; ?>
