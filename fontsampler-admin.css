@@ -39,10 +39,10 @@
   padding: 0.25em 0.5em;
 }
 #fontsampler-admin td {
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #fafafa;
 }
 #fontsampler-admin th {
-  border-bottom: 2px solid #aaa;
+  border-bottom: 1px solid #999;
   font-weight: normal;
   font-size: larger;
   vertical-align: top;
@@ -92,7 +92,7 @@
   color: red;
 }
 #fontsampler-admin #fontsampler-menu ul {
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #999;
   margin: 0;
   padding: 0 1em;
 }
@@ -104,6 +104,10 @@
   border-bottom: 0;
 }
 #fontsampler-admin #fontsampler-menu ul li a {
+  border: 1px solid #fff;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  border-bottom: 0;
   display: inline-block;
   padding: 0.5em 1em;
   text-decoration: none;
@@ -111,12 +115,19 @@
 }
 #fontsampler-admin #fontsampler-menu ul li a:hover,
 #fontsampler-admin #fontsampler-menu ul li a:focus {
-  background: #dde9ff;
+  background: #008ec2;
+  border: 1px solid #006799;
+  border-bottom: 0;
+  color: #fff;
 }
 #fontsampler-admin #fontsampler-menu ul li.current {
-  background: #eee;
+  background: #fafafa;
 }
 #fontsampler-admin #fontsampler-menu ul li.current a {
+  border: 1px solid #999;
+  border-bottom: 0;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
   color: #333;
 }
 #fontsampler-admin .fontsampler-options-checkbox label > span {

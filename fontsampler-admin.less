@@ -37,11 +37,11 @@
     }
 
     td {
-        border-bottom: 1px solid #eee;
+        border-bottom: 1px solid #fafafa;
     }
 
     th {
-        border-bottom: 2px solid #aaa;
+        border-bottom: 1px solid #999;
         font-weight: normal;
         font-size: larger;
         vertical-align: top;
@@ -101,7 +101,7 @@
 
     #fontsampler-menu {
         ul {
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid #999;
             margin: 0;
             padding: 0 1em;
 
@@ -113,19 +113,30 @@
                 border-bottom: 0;
 
                 a {
+                    border: 1px solid #fff;
+                    border-top-left-radius: 3px;
+                    border-top-right-radius: 3px;
+                    border-bottom: 0;
                     display: inline-block;
                     padding: 0.5em 1em;
                     text-decoration: none;
                     outline: none;
 
                     &:hover, &:focus {
-                        background: #dde9ff;
+                        background: #008ec2;
+                        border: 1px solid #006799;
+                        border-bottom: 0;
+                        color: #fff;
                     }
                 }
 
                 &.current {
-                    background: #eee;
+                    background: #fafafa;
                     a {
+                        border: 1px solid #999;
+                        border-bottom: 0;
+                        border-top-left-radius: 3px;
+                        border-top-right-radius: 3px;
                         color: #333;
                     }
                 }

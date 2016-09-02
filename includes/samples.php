@@ -18,7 +18,6 @@
             <th>Name</th>
             <th>Fonts<br><small>List one or more font sets used in this sampler</small></th>
             <th>Preview<br><small>Font without interface options; Note that this display uses the supplied formats.</small></th>
-            <th>Settings</th>
             <th>Shortcode<br><small>Copy this code including brackets and insert them where you want to render the font sampler</small></th>
             <th>Edit</th>
             <th>Delete</th>
@@ -44,7 +43,6 @@
                 <?php endforeach; ?>
                 </ul>
             </td>
-            <td></td>
             <td><code>[fontsampler id=<?php echo $set['id']; ?>]</code></td>
             <td>
                 <form method="post" action="?page=fontsampler&amp;subpage=edit&amp;id=<?php echo $set['id']; ?>" style="display: inline-block;">

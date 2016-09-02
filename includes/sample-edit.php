@@ -63,7 +63,8 @@
             </label>
             <label>
                 <input type="checkbox" name="fontpicker" <?php if (!empty($set['fontpicker'])) echo ' checked="checked" '; ?>>
-                <span>Display picker for multiple fonts</span>
+                <span>Display picker for multiple fonts </span>
+                <small>(this will automatically be hidden if no more than one font are found)</small>
             </label>
             <label>
                 <input type="checkbox" name="sampletexts" <?php if (!empty($set['sampletexts'])) echo ' checked="checked" '; ?>>
@@ -90,9 +91,7 @@
             </label>
         </div>
         <h3>Css options</h3>
-        (not implemented yet: custom styling for font samplers)
-        <h3>Published</h3>
-        (not implemented yet: switching publishing status)
+        <p>(not implemented yet: custom styling for font samplers)</p>
         <?php submit_button(); ?>
     </form>
 <?php endif; ?>

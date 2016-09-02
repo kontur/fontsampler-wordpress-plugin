@@ -191,6 +191,7 @@
   position: relative;
   overflow: visible;
   margin: 0 0 0.5em;
+  font-size: smaller;
 }
 .fontsampler-wrapper .fontsampler-interface .fontsampler-interface-row:after {
   clear: both;
@@ -202,11 +203,15 @@
   box-sizing: border-box;
   display: block;
   float: left;
-  padding-right: 3%;
+  position: relative;
+  padding: 0 5px;
   width: 33%;
 }
-.fontsampler-wrapper .fontsampler-interface label.fontsampler-slider span {
-  font-size: smaller;
+.fontsampler-wrapper .fontsampler-interface label.fontsampler-slider:first-of-type {
+  left: -5px;
+}
+.fontsampler-wrapper .fontsampler-interface label.fontsampler-slider:last-of-type {
+  right: -5px;
 }
 .fontsampler-wrapper .fontsampler-interface label.fontsampler-slider .slider-label {
   float: left;

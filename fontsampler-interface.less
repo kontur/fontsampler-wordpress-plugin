@@ -9,6 +9,7 @@
 			position: relative;
 			overflow: visible;
 			margin: 0 0 0.5em;
+			font-size: smaller;
 
 			&:after {
 				clear: both;
@@ -22,11 +23,19 @@
 			box-sizing: border-box;
 			display: block;
 			float: left;
-			padding-right: 3%;
-			width: 33%; 
+			position: relative;
+			padding: 0 5px;
+			width: 33%;
+
+			&:first-of-type {
+				left: -5px;
+			}
+
+			&:last-of-type {
+				right: -5px;
+			}
 
 			span {
-				font-size: smaller;
 			}
 			.slider-label {
 				float: left;
