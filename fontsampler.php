@@ -25,6 +25,7 @@ $f = new Fontsampler($wpdb);
 // frontend
 wp_register_script( 'fontsampler-js', plugin_dir_url(__FILE__) . 'js/jquery.fontsampler.js', array( 'jquery' ));
 wp_register_script( 'fontsampler-init-js', plugin_dir_url(__FILE__) . 'js/fontsampler-init.js', array( 'fontsampler-js'));
+wp_register_script( 'fontsampler-selectric-js', plugin_dir_url(__FILE__) . 'bower_components/jquery-selectric/public/jquery.selectric.min.js', array('jquery'));
 wp_enqueue_style( 'fontsampler-css', plugin_dir_url(__FILE__) . 'fontsampler-interface.css');
 add_shortcode( 'fontsampler', array($f, 'fontsampler_shortcode'));
 
@@ -68,6 +69,7 @@ class Fontsampler {
 	function fontsampler_shortcode( $atts ) {
 		wp_enqueue_script( 'fontsampler-js' );
 		wp_enqueue_script( 'fontsampler-init-js' );
+		wp_enqueue_script( 'fontsampler-selectric-js' );
 
 		// merge in possibly passed in attributes
 		$attributes = shortcode_atts( array('id' => '0'), $atts);

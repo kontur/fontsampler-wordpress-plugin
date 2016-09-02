@@ -1,10 +1,11 @@
+@import "fontsampler-custom-selectric.less"; 
+
 .fontsampler-wrapper {
 
 	.fontsampler-interface {
 
 		.fontsampler-interface-row {
 			clear: both;
-			overflow: auto;
 			position: relative;
 			margin: 0 0 0.5em;
 		}
@@ -14,7 +15,7 @@
 			display: block;
 			float: left;
 			padding-right: 3%;
-			width: 33%;
+			width: 33%; 
 
 			span {
 				font-size: smaller;
@@ -30,23 +31,25 @@
 				clear: left;
 				display: block;
 				width: 100%;
-			}
+			} 
 		}
 
-		select {
+		select,
+		.selectric-wide,
+		.selectric-small {
 			display: block;
 			float: left;
 		}
 
 		select[name="font-selector"],
-		select[name="sample-text"] {
+		select[name="sample-text"], 
+		.selectric-wide {
 			margin-right: 2%;
 			width: 38%;
 		}
-		select[name="alignment"] {
-			width: 10%;
-		}
-		select[name="invert"] {
+		select[name="alignment"],
+		select[name="invert"], 
+		.selectric-small {
 			width: 10%;
 		}
 	}

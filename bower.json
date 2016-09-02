@@ -1,0 +1,21 @@
+{
+  "name": "fontsampler",
+  "homepage": "https://github.com/kontur/fontsampler-wordpress-plugin",
+  "description": "fontsampler wordpress plugin frontend code",
+  "main": "",
+  "authors": [
+    "Johannes Neumeier <hello@johannesneumeier.com>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery-selectric": "^1.10.1"
+  }
+}

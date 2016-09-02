@@ -54,4 +54,11 @@ jQuery(function () {
 				break;
 		}
 	});
+
+
+	// transform select dropdowns
+	$(".fontsampler-interface select").not("[size]").each(function () {
+		var $s = $(this).selectric().closest('.selectric-wrapper').addClass('selectric-wide');
+
+	});
 });
