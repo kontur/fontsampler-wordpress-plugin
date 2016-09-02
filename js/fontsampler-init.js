@@ -44,21 +44,34 @@ jQuery(function () {
 			case "sample-text":
 				$fs.html(val);
 				break;
-
-			case "alignment":
-				$fs.css("text-align", val);
-				break;
-
-			case "invert":
-				$fs.toggleClass("invert");
-				break;
 		}
 	});
 
 
 	// transform select dropdowns
 	$(".fontsampler-interface select").not("[size]").each(function () {
-		var $s = $(this).selectric().closest('.selectric-wrapper').addClass('selectric-wide');
+		$(this).selectric().closest('.selectric-wrapper').addClass('selectric-wide');
+	});
 
+	$(".fontsampler-multiselect").on("click", "button", function () {
+		var $fs = $(this).closest('.fontsampler-interface').siblings('.fontsampler'),
+			val = $(this).data("value");
+
+		switch ($(this).closest('.fontsampler-multiselect').data("name")) {
+			case "alignment":
+				$fs.css("text-align", val);
+				break;
+
+			case "invert":
+				if (val == "positive") {
+					$fs.removeClass("invert");
+				} else {
+					$fs.addClass("invert");
+				}
+				break;
+		}
+
+		$(this).siblings("button").removeClass("fontsampler-multiselect-selected");
+		$(this).addClass("fontsampler-multiselect-selected");
 	});
 });

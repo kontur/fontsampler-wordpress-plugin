@@ -45,18 +45,18 @@
 		<?php endif; ?>
 
 		<?php if ($set['alignment']): ?>
-		<select name="alignment" size="3">
-			<option value="left" selected>left</option>
-			<option value="center">centered</option>
-			<option value="right">right</option>
-		</select>
+		<div class="fontsampler-multiselect three-items" data-name="alignment">
+			<button class="fontsampler-multiselect-selected" data-value="left"><img src="<?php echo plugin_dir_url(__FILE__); ?>../icons/align-left.svg"></button>
+			<button data-value="center"><img src="<?php echo plugin_dir_url(__FILE__); ?>../icons/align-center.svg"></button>
+			<button data-value="right"><img src="<?php echo plugin_dir_url(__FILE__); ?>../icons/align-right.svg"></button>
+		</div>
 		<?php endif; ?>
 
 		<?php if ($set['invert']): ?>
-		<select name="invert" size="2">
-			<option value="positive" selected>positive</option>
-			<option value="negative">negative</option>
-		</select>
+		<div class="fontsampler-multiselect two-items" data-name="invert">
+			<button class="fontsampler-multiselect-selected" data-value="positive"><img src="<?php echo plugin_dir_url(__FILE__); ?>../icons/invert-white.svg"></button>
+			<button data-value="negative"><img src="<?php echo plugin_dir_url(__FILE__); ?>../icons/invert-black.svg"></button>
+		</div>
 		<?php endif; ?>
 	</div>
 </div>

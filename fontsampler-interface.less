@@ -7,7 +7,15 @@
 		.fontsampler-interface-row {
 			clear: both;
 			position: relative;
+			overflow: visible;
 			margin: 0 0 0.5em;
+
+			&:after {
+				clear: both;
+				content: '';
+				display: block;
+				width: 100%;
+			}
 		}
 
 		label.fontsampler-slider {
@@ -52,11 +60,61 @@
 		.selectric-small {
 			width: 10%;
 		}
+
+
+		.fontsampler-multiselect {
+			box-sizing: border-box;
+			float: left;
+			padding-right: 5px;
+			width: 10%;
+
+			&.two-items {
+				button {
+					width: 50%;
+				}
+			}
+			&.three-items {
+				button {
+					width: 33%;
+				}
+			}
+
+			button {
+				background: #fff;
+				border: 0;
+			    border-bottom: 1px solid #333;
+			    font-size: inherit;
+			    font-family: inherit;
+			    color: #333;
+			    font-weight: inherit;
+			    height: 30px;
+			    line-height: 4px;
+			    text-transform: none;
+			    border-radius: 0;
+			    display: block;
+			    float: left;
+			    padding: 0 2px;
+			    margin: 0;
+			    text-align: center;
+			    opacity: 0.5;
+			    outline: none;
+
+			    img {
+			    	display: block;
+			    	max-width: 15px;
+			    	max-height: 15px;
+			    	margin: 0 auto;
+			    }
+			}
+
+			.fontsampler-multiselect-selected {
+				opacity: 1;
+			}
+		}
 	}
 
 	// the actual container of the type sample
 	.fontsampler {
-	    border: 1px solid;
 	    clear: both;
 	    margin-top: 1em;
 	    padding: 0.5em 0.75em;
@@ -70,7 +128,6 @@
 		&:hover,
 		&:focus {
 			background: #eeeeee;
-			border: 1px solid #eeeeee;
 			outline: none;
 		}
 	}

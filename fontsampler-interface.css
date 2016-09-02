@@ -189,7 +189,14 @@
 .fontsampler-wrapper .fontsampler-interface .fontsampler-interface-row {
   clear: both;
   position: relative;
+  overflow: visible;
   margin: 0 0 0.5em;
+}
+.fontsampler-wrapper .fontsampler-interface .fontsampler-interface-row:after {
+  clear: both;
+  content: '';
+  display: block;
+  width: 100%;
 }
 .fontsampler-wrapper .fontsampler-interface label.fontsampler-slider {
   box-sizing: border-box;
@@ -229,8 +236,48 @@
 .fontsampler-wrapper .fontsampler-interface .selectric-small {
   width: 10%;
 }
+.fontsampler-wrapper .fontsampler-interface .fontsampler-multiselect {
+  box-sizing: border-box;
+  float: left;
+  padding-right: 5px;
+  width: 10%;
+}
+.fontsampler-wrapper .fontsampler-interface .fontsampler-multiselect.two-items button {
+  width: 50%;
+}
+.fontsampler-wrapper .fontsampler-interface .fontsampler-multiselect.three-items button {
+  width: 33%;
+}
+.fontsampler-wrapper .fontsampler-interface .fontsampler-multiselect button {
+  background: #fff;
+  border: 0;
+  border-bottom: 1px solid #333;
+  font-size: inherit;
+  font-family: inherit;
+  color: #333;
+  font-weight: inherit;
+  height: 30px;
+  line-height: 4px;
+  text-transform: none;
+  border-radius: 0;
+  display: block;
+  float: left;
+  padding: 0 2px;
+  margin: 0;
+  text-align: center;
+  opacity: 0.5;
+  outline: none;
+}
+.fontsampler-wrapper .fontsampler-interface .fontsampler-multiselect button img {
+  display: block;
+  max-width: 15px;
+  max-height: 15px;
+  margin: 0 auto;
+}
+.fontsampler-wrapper .fontsampler-interface .fontsampler-multiselect .fontsampler-multiselect-selected {
+  opacity: 1;
+}
 .fontsampler-wrapper .fontsampler {
-  border: 1px solid;
   clear: both;
   margin-top: 1em;
   padding: 0.5em 0.75em;
@@ -243,6 +290,5 @@
 .fontsampler-wrapper .fontsampler:hover,
 .fontsampler-wrapper .fontsampler:focus {
   background: #eeeeee;
-  border: 1px solid #eeeeee;
   outline: none;
 }
