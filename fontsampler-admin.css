@@ -2,9 +2,13 @@
  * Scope all css to be contained only within the fontsampler wrapper
  */
 #fontsampler-admin {
-  margin: 20px 20px 20px 0;
-  padding: 2em;
+  padding-top: 1em;
+}
+#fontsampler-admin header,
+#fontsampler-admin main {
   background: white;
+  margin: 0 1.5em 0 0;
+  padding: 1em 1.5em;
 }
 #fontsampler-admin label {
   display: block;
@@ -76,6 +80,19 @@
 #fontsampler-admin p.submit {
   margin: 0;
   padding: 0;
+}
+#fontsampler-admin footer {
+  margin: 1.5em 1.5em 0 0;
+  padding: 1em 1.5em 0.5em;
+  background: white;
+}
+#fontsampler-admin footer ul {
+  overflow: auto;
+}
+#fontsampler-admin footer li {
+  display: inline-block;
+  float: left;
+  margin-right: 1em;
 }
 #fontsampler-admin .info,
 #fontsampler-admin .note,

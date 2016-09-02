@@ -184,6 +184,8 @@ class Fontsampler {
 
         include('includes/header.php');
 
+        echo '<main>';
+
         $this->check_and_create_tables();
 
         // check upload folder is writable
@@ -246,7 +248,9 @@ class Fontsampler {
 				include('includes/samples.php');
 			    break;
 		}
+		echo '</main>';
 
+		include('includes/footer.php');
 		echo '</section>';
 	}
 
