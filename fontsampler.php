@@ -237,6 +237,10 @@ class Fontsampler {
                 include('includes/fontset-edit.php');
                 break;
 
+            case 'about':
+            	include('includes/about.php');
+            	break;
+
 			default:
 				$sets = $this->get_sets();
 				include('includes/samples.php');
