@@ -105,7 +105,11 @@
             $( this.element ).css( "font-size", size );
         },
         setLetterSpacing: function( spacing ) {
-            $( this.element ).css( "letter-spacing", spacing );
+            var leading = $( this.element ).css("line-height")
+            $( this.element ).css( {
+                "letter-spacing": spacing,
+                "line-height": leading
+            } );
         },
         setLeading: function( leading ) {
             $( this.element ).css( "line-height", leading );

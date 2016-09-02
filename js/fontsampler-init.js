@@ -7,6 +7,7 @@ jQuery(function () {
 		});
 	});
 
+
 	// interface
 	$(".fontsampler-interface input[type=range]").on('change, input', function () {
 		var $fs = $(this).closest('.fontsampler-interface').siblings('.fontsampler'),
@@ -20,15 +21,16 @@ jQuery(function () {
 
 			case 'letter-spacing':
 				$fs.fontSampler('changeLetterSpacing', val + unit);
+				break;
 
 			case 'line-height':
 				$fs.fontSampler('changeLeading', val + unit);
 				break;
 		}
-
 		$(this).siblings('.slider-value').html(val + unit);
-
 	});
+
+
 	$(".fontsampler-interface select").on('change', function () {
 		var $fs = $(this).closest('.fontsampler-interface').siblings('.fontsampler'),
 			val = $(this).val();
@@ -52,7 +54,4 @@ jQuery(function () {
 				break;
 		}
 	});
-
-	// TODO react to font switching
-
 });
