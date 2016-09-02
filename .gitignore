@@ -15,3 +15,16 @@ wp-content/uploads/
 wp-content/wp-cache-config.php
 
 fontsampler-custom-selectric.css
+
+bower_components/*
+
+!bower_components/rangeslider.js/
+bower_components/rangeslider.js/*
+!bower_components/rangeslider.js/dist/
+
+!bower_components/jquery-selectric/
+bower_components/jquery-selectric/*
+!bower_components/jquery-selectric/public/
+bower_components/jquery-selectric/public/*
+!bower_components/jquery-selectric/public/jquery.selectric.js
+!bower_components/jquery-selectric/public/jquery.selectric.min.js
