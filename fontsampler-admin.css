@@ -8,7 +8,7 @@
 #fontsampler-admin main {
   background: white;
   margin: 0 1.5em 0 0;
-  padding: 1em 1.5em;
+  padding: 1em 2em;
 }
 #fontsampler-admin label {
   display: block;
@@ -83,7 +83,7 @@
 }
 #fontsampler-admin footer {
   margin: 1.5em 1.5em 0 0;
-  padding: 1em 1.5em 0.5em;
+  padding: 1em 2em 0.5em;
   background: white;
 }
 #fontsampler-admin footer ul {
@@ -107,6 +107,10 @@
 }
 #fontsampler-admin .error {
   color: red;
+}
+#fontsampler-admin ul.real-list {
+  list-style: disc;
+  margin: 0 0 0 2em;
 }
 #fontsampler-admin #fontsampler-menu ul {
   border-bottom: 1px solid #999;

@@ -186,11 +186,79 @@
 .selectric-items .selectric-group li {
   padding-left: 25px;
 }
+.rangeslider,
+.rangeslider__fill {
+  display: block;
+}
+.rangeslider {
+  background: #efefef;
+  position: relative;
+}
+.rangeslider--horizontal {
+  height: 1px;
+  width: 100%;
+  clear: both;
+}
+.rangeslider--vertical {
+  width: 20px;
+  min-height: 150px;
+  max-height: 100%;
+}
+.rangeslider--disabled {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=40);
+  opacity: 0.4;
+}
+.rangeslider__fill {
+  background: #333;
+  position: absolute;
+}
+.rangeslider--horizontal .rangeslider__fill {
+  top: 0;
+  height: 100%;
+}
+.rangeslider--vertical .rangeslider__fill {
+  bottom: 0;
+  width: 100%;
+}
+.rangeslider__handle {
+  background: #333;
+  cursor: pointer;
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  position: absolute;
+  border-radius: 50%;
+}
+.rangeslider__handle:after {
+  content: "";
+  display: block;
+  margin: auto;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-size: 100%;
+  border-radius: 50%;
+}
+.rangeslider__handle:active {
+  background-size: 100%;
+}
+.rangeslider--horizontal .rangeslider__handle {
+  top: -4px;
+  touch-action: pan-y;
+  -ms-touch-action: pan-y;
+}
+.rangeslider--vertical .rangeslider__handle {
+  left: -4px;
+  touch-action: pan-x;
+  -ms-touch-action: pan-x;
+}
 .fontsampler-wrapper .fontsampler-interface .fontsampler-interface-row {
   clear: both;
   position: relative;
   overflow: visible;
-  margin: 0 0 0.5em;
+  margin: 0 0 1em;
   font-size: smaller;
 }
 .fontsampler-wrapper .fontsampler-interface .fontsampler-interface-row:after {
@@ -215,9 +283,11 @@
 }
 .fontsampler-wrapper .fontsampler-interface label.fontsampler-slider .slider-label {
   float: left;
+  margin-bottom: 0.5em;
 }
 .fontsampler-wrapper .fontsampler-interface label.fontsampler-slider .slider-value {
   float: right;
+  margin-bottom: 0.5em;
 }
 .fontsampler-wrapper .fontsampler-interface label.fontsampler-slider input {
   clear: left;
@@ -284,8 +354,8 @@
 }
 .fontsampler-wrapper .fontsampler {
   clear: both;
-  margin-top: 1em;
-  padding: 0.5em 0.75em;
+  margin-bottom: 20px;
+  padding: 10px 20px;
   transition: all 0.2s ease-out;
 }
 .fontsampler-wrapper .fontsampler.invert {

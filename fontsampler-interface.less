@@ -1,4 +1,5 @@
 @import "fontsampler-custom-selectric.less"; 
+@import "fontsampler-custom-rangeslider.less";
 
 .fontsampler-wrapper {
 
@@ -8,7 +9,7 @@
 			clear: both;
 			position: relative;
 			overflow: visible;
-			margin: 0 0 0.5em;
+			margin: 0 0 1em; 
 			font-size: smaller;
 
 			&:after {
@@ -39,9 +40,11 @@
 			}
 			.slider-label {
 				float: left;
+				margin-bottom: 0.5em;
 			}
 			.slider-value {
 				float: right;
+				margin-bottom: 0.5em;
 			}
 
 			input {
@@ -125,9 +128,9 @@
 	// the actual container of the type sample
 	.fontsampler {
 	    clear: both;
-	    margin-top: 1em;
-	    padding: 0.5em 0.75em;
-		transition: all 0.2s ease-out;
+	    margin-bottom: 20px;
+	    padding: 10px 20px;
+	    transition: all 0.2s ease-out;
 
 		&.invert {
 			background: #333333;

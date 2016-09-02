@@ -7,6 +7,14 @@
 
 <h2>Supported by</h2>
 <p>The following people have supported the development of this plugin through their generous donations:</p>
-<ul>
+<ul class="real-list">
 	<li><strong>Support the development and get listed here</strong></li>
+</ul>
+
+<h2>License information</h2>
+<p>&copy; 2016 Johannes Neumeier</p>
+<p>This plugin uses the following libraries for rendering interface components:</p>
+<ul class="real-list">
+	<li><a href="http://selectric.js.org/">selectric.js for custom dropdowns</a> (<a href="https://github.com/lcdsantos/jQuery-Selectric/blob/master/LICENSE">Licence</a>)</li>
+	<li><a href="http://rangeslider.js.org/">rangeslider.js for custom range sliders</a> (<a href="https://github.com/andreruffert/rangeslider.js/blob/develop/LICENSE.md">License</a>)</li>
 </ul>

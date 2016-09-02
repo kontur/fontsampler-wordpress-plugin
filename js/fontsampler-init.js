@@ -47,11 +47,39 @@ jQuery(function () {
 		}
 	});
 
+	$('.fontsampler-interface input[type="range"]').css("outline", "1px solid red").rangeslider({			
+	    // Feature detection the default is `true`.
+	    // Set this to `false` if you want to use
+	    // the polyfill also in Browsers which support
+	    // the native <input type="range"> element.
+	    polyfill: false,
+
+	    // Default CSS classes
+	    rangeClass: 'rangeslider',
+	    disabledClass: 'rangeslider--disabled',
+	    horizontalClass: 'rangeslider--horizontal',
+	    verticalClass: 'rangeslider--vertical',
+	    fillClass: 'rangeslider__fill',
+	    handleClass: 'rangeslider__handle',
+
+	    // Callback function
+	    onInit: function() {
+	    	console.log("ok, init");
+	    },
+
+	    // Callback function
+	    onSlide: function(position, value) {},
+
+	    // Callback function
+	    onSlideEnd: function(position, value) {}
+	});
+
 
 	// transform select dropdowns
 	$(".fontsampler-interface select").not("[size]").each(function () {
 		$(this).selectric().closest('.selectric-wrapper').addClass('selectric-wide');
 	});
+
 
 	$(".fontsampler-multiselect").on("click", "button", function () {
 		var $fs = $(this).closest('.fontsampler-interface').siblings('.fontsampler'),
@@ -70,6 +98,7 @@ jQuery(function () {
 				}
 				break;
 		}
+
 
 		$(this).siblings("button").removeClass("fontsampler-multiselect-selected");
 		$(this).addClass("fontsampler-multiselect-selected");

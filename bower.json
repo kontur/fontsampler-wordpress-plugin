@@ -16,6 +16,7 @@
     "tests"
   ],
   "dependencies": {
-    "jquery-selectric": "^1.10.1"
+    "jquery-selectric": "^1.10.1",
+    "rangeslider.js": "^2.2.1"
   }
 }
