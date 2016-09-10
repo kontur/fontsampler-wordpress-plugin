@@ -103,4 +103,19 @@ jQuery(function () {
 		$(this).siblings("button").removeClass("fontsampler-multiselect-selected");
 		$(this).addClass("fontsampler-multiselect-selected");
 	});
+
+
+    $(".fontsampler-toggle").on("click", function () {
+        var $this = $(this),
+            isOn = $this.hasClass("fontsampler-toggle-on"),
+            feature = $this.data("feature"),
+            $fs = $(this).closest('.fontsampler-interface').siblings('.fontsampler');
+
+        $this.toggleClass("fontsampler-toggle-on");
+        if (isOn) {
+            $fs.fontSampler("disableOTFeature", feature);
+        } else {
+            $fs.fontSampler("enableOTFeature", feature);
+        }
+    });
 });

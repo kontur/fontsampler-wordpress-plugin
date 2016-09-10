@@ -20,6 +20,33 @@
 			}
 		}
 
+        button.fontsampler-toggle {
+            height: 30px;
+            width: 30px;
+            padding: 0;
+            border-radius: 3px;
+            overflow: hidden;
+            outline: none;
+            opacity: 0.75;
+            transition: opacity 0.2s ease-in-out;
+
+            &.fontsampler-toggle-on {
+                opacity: 1;
+            }
+
+            img {
+                font-size: 12px;
+                line-height: 10px;
+                float: left;
+                display: block;
+                width: 100%;
+            }
+
+            &:hover, &:focus {
+            }
+
+        }
+
 		label.fontsampler-slider {
 			box-sizing: border-box;
 			display: block;

@@ -35,9 +35,13 @@
             fontFiles: null,
             multiLine: true
         },
-        fontFamily = "";
+        fontFamily = "",
+
+        // list of available OpenType features
+        OTFeatures = [ 'liga', 'dlig', 'hlig', 'calt', 'frac', 'sups', 'subs'];
 
     // The actual plugin constructor
+    // These are the PUBLIC methods of the plugin
     function Plugin ( element, options ) {
         this.element = element;
 
@@ -46,6 +50,7 @@
         // is generally empty as we don't want to alter the default options for
         // future instances of the plugin
         this.settings = $.extend( {}, defaults, options );
+        this.otfeatures = [];
         this._defaults = defaults;
         this._name = pluginName;
         this.init();
@@ -67,6 +72,21 @@
 
         this.changeLeading = function( args ) {
             this.setLeading( args[ 1 ] );
+        };
+
+        this.enableOTFeature = function( args ) {
+            if (this.otfeatures.indexOf( args[1] === -1)) {
+                this.otfeatures.push(args[1]);
+                this.updateOTFeatures();
+            }
+        };
+
+        this.disableOTFeature = function( args ) {
+            var index = this.otfeatures.indexOf( args[1] );
+            if (index > -1) {
+                this.otfeatures.splice(index, 1);
+                this.updateOTFeatures();
+            }
         };
     }
 
@@ -113,6 +133,23 @@
         },
         setLeading: function( leading ) {
             $( this.element ).css( "line-height", leading );
+        },
+        updateOTFeatures: function () {
+            var features;
+            if (this.otfeatures.length === 0) {
+                features = 'inherit';
+            } else {
+                features = "'";
+                features = features.concat(this.otfeatures.join("','"));
+                features = features.concat("'");
+            }
+            // TODO leverage more high level syntax options for features that have it available
+            $( this.element ).css({
+                "-webkit-font-feature-settings": features,
+                "-moz-font-feature-settings": features,
+                "-ms-font-feature-settings": features,
+                "font-feature-settings": features
+            });
         }
     });
 
