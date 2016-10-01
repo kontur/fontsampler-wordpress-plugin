@@ -48,47 +48,83 @@
 
         <h2>Options</h2>
         <h3>Interface options</h3>
-        <div class="fontsampler-options-checkbox">
-            <label>
-                <input type="checkbox" name="size" <?php if (!empty($set['size'])) echo ' checked="checked" '; ?>>
-                <span>Size control</span>
-            </label>
-            <label>
-                <input type="checkbox" name="letterspacing" <?php if (!empty($set['letterspacing'])) echo ' checked="checked" '; ?>>
-                <span>Letter spacing control</span>
-            </label>
-            <label>
-                <input type="checkbox" name="lineheight" <?php if (!empty($set['lineheight'])) echo ' checked="checked" '; ?>>
-                <span>Line height control</span>
-            </label>
-            <label>
-                <input type="checkbox" name="fontpicker" <?php if (!empty($set['fontpicker'])) echo ' checked="checked" '; ?>>
-                <span>Display picker for multiple fonts </span>
-                <small>(this will automatically be hidden if no more than one font are found)</small>
-            </label>
-            <label>
-                <input type="checkbox" name="sampletexts" <?php if (!empty($set['sampletexts'])) echo ' checked="checked" '; ?>>
-                <span>Display picker for sample texts</span>
-            </label>
-            <label>
-                <input type="checkbox" name="alignment" <?php if (!empty($set['alignment'])) echo ' checked="checked" '; ?>>
-                <span>Alignment controls</span>
-            </label>
-            <label>
-                <input type="checkbox" name="invert" <?php if (!empty($set['invert'])) echo ' checked="checked" '; ?>>
-                <span>Allow inverting the text field to display negative text</span>
-            </label>
-            <label>(not implemented yet:
-                <input type="checkbox" name="multiline" <?php if (!empty($set['multiline'])) echo ' checked="checked" '; ?>>
-                <span>Allow line breaks on pressing enter</span>
-                )
-            </label>
-            <label>
-                (not implemented yet: rendering intent / anti-aliasing options)
-            </label>
-            <label>
-                (not implemented yet: opentype options)
-            </label>
+        <div>
+            <div class="fontsampler-options-checkbox fontsampler-admin-column-half">
+                <h4>Common features</h4>
+                <label>
+                    <input type="checkbox" name="size" <?php if (!empty($set['size'])) echo ' checked="checked" '; ?>>
+                    <span>Size control</span>
+                </label>
+                <label>
+                    <input type="checkbox" name="letterspacing" <?php if (!empty($set['letterspacing'])) echo ' checked="checked" '; ?>>
+                    <span>Letter spacing control</span>
+                </label>
+                <label>
+                    <input type="checkbox" name="lineheight" <?php if (!empty($set['lineheight'])) echo ' checked="checked" '; ?>>
+                    <span>Line height control</span>
+                </label>
+                <label>
+                    <input type="checkbox" name="fontpicker" <?php if (!empty($set['fontpicker'])) echo ' checked="checked" '; ?>>
+                    <span>Display dropdown selection for multiple fonts </span>
+                    <small>(this will automatically be hidden if no more than one font are found)</small>
+                </label>
+                <label>
+                    <input type="checkbox" name="sampletexts" <?php if (!empty($set['sampletexts'])) echo ' checked="checked" '; ?>>
+                    <span>Display dropdown selection for sample texts</span>
+                </label>
+                <label>
+                    <input type="checkbox" name="alignment" <?php if (!empty($set['alignment'])) echo ' checked="checked" '; ?>>
+                    <span>Alignment controls</span>
+                </label>
+                <label>
+                    <input type="checkbox" name="invert" <?php if (!empty($set['invert'])) echo ' checked="checked" '; ?>>
+                    <span>Allow inverting the text field to display negative text</span>
+                </label>
+                <label>
+
+                </label>
+                <label>
+                    (Coming soon: Allow line breaks on pressing enter)
+                </label>
+                <label>
+                    (Coming soon: rendering intent / anti-aliasing options)
+                </label>
+            </div>
+
+            <div class="fontsampler-admin-column-half">
+                <h4>Opentype options</h4>
+                <p>Enable those features only if your fonts support them - the plugin simply offers the interface without
+                checking availability.</p>
+                <label>
+                    <input type="checkbox" name="ot_liga" <?php if (!empty($set['ot_liga'])) echo ' checked="checked" '; ?>>
+                    <span>Common ligatures</span>
+                </label>
+                <label>
+                    <input type="checkbox" name="ot_dlig" <?php if (!empty($set['ot_dlig'])) echo ' checked="checked" '; ?>>
+                    <span>Discretionary ligatures</span>
+                </label>
+                <label>
+                    <input type="checkbox" name="ot_hlig" <?php if (!empty($set['ot_hlig'])) echo ' checked="checked" '; ?>>
+                    <span>Historical ligatures</span>
+                </label>
+                <label>
+                    <input type="checkbox" name="ot_calt" <?php if (!empty($set['ot_calt'])) echo ' checked="checked" '; ?>>
+                    <span>Contextual alternates</span>
+                </label>
+                <hr>
+                <label>
+                    <input type="checkbox" name="ot_frac" <?php if (!empty($set['ot_frac'])) echo ' checked="checked" '; ?>>
+                    <span>Fractions</span>
+                </label>
+                <label>
+                    <input type="checkbox" name="ot_sups" <?php if (!empty($set['ot_sups'])) echo ' checked="checked" '; ?>>
+                    <span>Superscript</span>
+                </label>
+                <label>
+                    <input type="checkbox" name="ot_subs" <?php if (!empty($set['ot_subs'])) echo ' checked="checked" '; ?>>
+                    <span>Subscript</span>
+                </label>
+            </div>
         </div>
         <h3>Css options</h3>
         <p>(not implemented yet: custom styling for font samplers)</p>

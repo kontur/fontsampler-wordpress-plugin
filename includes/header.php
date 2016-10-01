@@ -7,7 +7,7 @@
             <a href="?page=fontsampler&amp;subpage=fonts">Fonts &amp; files</a>
         </li>
         <li>
-            <a href="">(Not implemented: General settings)</a>
+            <a href="">(Coming soon: General settings)</a>
         </li>
         <li <?php if ($_GET['subpage'] == 'about'): echo ' class="current"'; endif; ?>>
             <a href="?page=fontsampler&amp;subpage=about">About</a>

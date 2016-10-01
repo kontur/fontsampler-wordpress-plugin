@@ -35,10 +35,7 @@
             fontFiles: null,
             multiLine: true
         },
-        fontFamily = "",
-
-        // list of available OpenType features
-        OTFeatures = [ 'liga', 'dlig', 'hlig', 'calt', 'frac', 'sups', 'subs'];
+        fontFamily = "";
 
     // The actual plugin constructor
     // These are the PUBLIC methods of the plugin
@@ -136,18 +133,18 @@
             $( this.element ).css( "line-height", leading );
         },
         updateOTFeatures: function () {
-            var features, ligatures = [], ligatureVariant, liga, dlig, hlig, calt,
+            var features, ligatures = [], ligatureVariant,
             // css variant-ligature keyword - value tuples
-            ligaValues = {
-                liga : ['no-common-ligatures', 'common-ligatures'],
-                dlig : ['no-discretionary-ligatures', 'discrectionary-ligatures'],
-                hlig : ['no-historical-ligatures', 'historical-ligatures'],
-                calt : ['no-contextual', 'contextual']
-            };
+                ligaValues = {
+                    liga : ["no-common-ligatures", "common-ligatures"],
+                    dlig : ["no-discretionary-ligatures", "discrectionary-ligatures"],
+                    hlig : ["no-historical-ligatures", "historical-ligatures"],
+                    calt : ["no-contextual", "contextual"]
+                };
 
             // font-feature-settings
             if (this.otfeatures.length === 0) {
-                features = 'inherit';
+                features = "inherit";
             } else {
                 features = "'";
                 features = features.concat(this.otfeatures.join("','"));
@@ -163,7 +160,7 @@
 
             // font-variant-ligatures
             // note: iteration order crucial for css shorthand to work
-            var ligaKeyWords = ['liga', 'dlig', 'hlig', 'calt'];
+            var ligaKeyWords = ["liga", "dlig", "hlig", "calt"];
             for (var l = 0; l < ligaKeyWords.length; l++) {
                 var keyword = ligaKeyWords[l];
                 if ( this.otfeatures.indexOf(keyword) > -1 ) {

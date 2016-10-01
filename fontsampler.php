@@ -54,7 +54,8 @@ class Fontsampler {
         $this->table_fonts = $this->db->prefix . "fontsampler_fonts";
         $this->table_join = $this->db->prefix . "fontsampler_sets_x_fonts";
 
-        $this->booleanOptions = array('size', 'letterspacing', 'lineheight', 'fontpicker', 'sampletexts', 'alignment', 'invert');
+        $this->booleanOptions = array('size', 'letterspacing', 'lineheight', 'fontpicker', 'sampletexts', 'alignment',
+            'invert', 'ot_liga', 'ot_hlig', 'ot_dlig', 'ot_calt', 'ot_frac', 'ot_sups', 'ot_subs');
         $this->fontFormats = array('woff2', 'woff', 'eot', 'svg', 'ttf');
 	}
 
@@ -267,16 +268,23 @@ class Fontsampler {
 	 */
 	function create_table_sets() {
 		$sql = "CREATE TABLE " . $this->table_sets . " (
-			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-			  `name` varchar(255) NOT NULL DEFAULT '',
-			  `size` tinyint(1) NOT NULL DEFAULT '0',
-			  `letterspacing` tinyint(1) NOT NULL DEFAULT '0',
-			  `lineheight` tinyint(1) NOT NULL DEFAULT '0',
-			  `fontpicker` tinyint(1) NOT NULL DEFAULT '0',
-			  `sampletexts` tinyint(1) NOT NULL DEFAULT '0',
-			  `alignment` tinyint(1) NOT NULL DEFAULT '0',
-			  `invert` tinyint(1) NOT NULL DEFAULT '0',
-			  `multiline` tinyint(1) NOT NULL DEFAULT '0',
+                `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+                `name` varchar(255) NOT NULL DEFAULT '',
+                `size` tinyint(1) NOT NULL DEFAULT '0',
+                `letterspacing` tinyint(1) NOT NULL DEFAULT '0',
+                `lineheight` tinyint(1) NOT NULL DEFAULT '0',
+                `fontpicker` tinyint(1) NOT NULL DEFAULT '0',
+                `sampletexts` tinyint(1) NOT NULL DEFAULT '0',
+                `alignment` tinyint(1) NOT NULL DEFAULT '0',
+                `invert` tinyint(1) NOT NULL DEFAULT '0',
+                `multiline` tinyint(1) NOT NULL DEFAULT '0',
+                `ot_liga` tinyint(1) NOT NULL DEFAULT '0',
+                `ot_dlig` tinyint(1) NOT NULL DEFAULT '0',
+                `ot_hlig` tinyint(1) NOT NULL DEFAULT '0',
+                `ot_calt` tinyint(1) NOT NULL DEFAULT '0',
+                `ot_frac` tinyint(1) NOT NULL DEFAULT '0',
+                `ot_sups` tinyint(1) NOT NULL DEFAULT '0',
+                `ot_subs` tinyint(1) NOT NULL DEFAULT '0',
 			  PRIMARY KEY (`id`)
 			)";
 		$this->db->query($sql);
@@ -553,7 +561,7 @@ class Fontsampler {
 				$id = intval($_POST['id']);
 				$this->db->update($this->table_sets, $data, array('id' => $id));
 			}
-
+            
 			// wipe join table for this fontsampler, then add whatever now was instructed to be saved
 			$this->db->delete($this->table_join, array('set_id' => $id));
 
@@ -563,6 +571,7 @@ class Fontsampler {
             		$this->db->insert($this->table_join, array('set_id' => $id, 'font_id' => $fontId));
             	}
             }
+
 		}
 	}
 

@@ -61,15 +61,29 @@
 	</div>
 
     <div class="fontsampler-interface-row fontsampler-interface-tertiary">
-        <button class="fontsampler-toggle" data-feature="liga"><img src="<?php echo plugin_dir_url(__FILE__); ?>../icons/ligatures.svg" alt="Ligatures"></button>
-        <button class="fontsampler-toggle" data-feature="dlig"><img src="<?php echo plugin_dir_url(__FILE__); ?>../icons/dligatures.svg" alt="Discretionary ligatures"></button>
-        <button class="fontsampler-toggle" data-feature="calt"><img src="<?php echo plugin_dir_url(__FILE__); ?>../icons/alternates.svg" alt="Contextual alternates"></button>
-        <!--<button class="fontsampler-toggle" data-feature="ss"><img src="<?php echo plugin_dir_url(__FILE__); ?>../icons/.svg" alt="Stylistic sets"></button>-->
-        <button class="fontsampler-toggle" data-feature="hlig"><img src="<?php echo plugin_dir_url(__FILE__); ?>../icons/hligatures.svg" alt="Historical ligatures"></button>
+        <?php if ($set['ot_liga']): ?>
+            <button class="fontsampler-toggle" data-feature="liga"><img src="<?php echo plugin_dir_url(__FILE__); ?>../icons/ligatures.svg" alt="Ligatures"></button>
+        <?php endif; ?>
+        <?php if ($set['ot_dlig']): ?>
+            <button class="fontsampler-toggle" data-feature="dlig"><img src="<?php echo plugin_dir_url(__FILE__); ?>../icons/dligatures.svg" alt="Discretionary ligatures"></button>
+        <?php endif; ?>
+        <?php if ($set['ot_hlig']): ?>
+            <button class="fontsampler-toggle" data-feature="hlig"><img src="<?php echo plugin_dir_url(__FILE__); ?>../icons/hligatures.svg" alt="Historical ligatures"></button>
+        <?php endif; ?>
+        <?php if ($set['ot_calt']): ?>
+            <button class="fontsampler-toggle" data-feature="calt"><img src="<?php echo plugin_dir_url(__FILE__); ?>../icons/alternates.svg" alt="Contextual alternates"></button>
+        <?php endif; ?>
+        <?php if ($set['ot_frac']): ?>
+            <button class="fontsampler-toggle" data-feature="frac"><img src="<?php echo plugin_dir_url(__FILE__); ?>../icons/fractions.svg" alt="Fractions"></button>
+        <?php endif; ?>
+        <?php if ($set['ot_sups']): ?>
+            <button class="fontsampler-toggle" data-feature="sups"><img src="<?php echo plugin_dir_url(__FILE__); ?>../icons/sup.svg" alt="Superscript"></button>
+        <?php endif; ?>
+        <?php if ($set['ot_subs']): ?>
+            <button class="fontsampler-toggle" data-feature="subs"><img src="<?php echo plugin_dir_url(__FILE__); ?>../icons/sub.svg" alt="Subscript"></button>
+        <?php endif; ?>
         <!--<button class="fontsampler-toggle" data-feature="swsh"><img src="<?php echo plugin_dir_url(__FILE__); ?>../icons/.svg" alt="Swashes"></button>-->
-        <button class="fontsampler-toggle" data-feature="frac"><img src="<?php echo plugin_dir_url(__FILE__); ?>../icons/fractions.svg" alt="Fractions"></button>
-        <button class="fontsampler-toggle" data-feature="sups"><img src="<?php echo plugin_dir_url(__FILE__); ?>../icons/sup.svg" alt="Superscript"></button>
-        <button class="fontsampler-toggle" data-feature="subs"><img src="<?php echo plugin_dir_url(__FILE__); ?>../icons/sub.svg" alt="Subscript"></button>
+        <!--<button class="fontsampler-toggle" data-feature="ss"><img src="<?php echo plugin_dir_url(__FILE__); ?>../icons/.svg" alt="Stylistic sets"></button>-->
         <!--<button class="fontsampler-toggle" data-feature=""><img src="<?php echo plugin_dir_url(__FILE__); ?>../icons/.svg" alt="Oldstyle figures"></button>-->
         <!--<button class="fontsampler-toggle" data-feature="lnum"><img src="<?php echo plugin_dir_url(__FILE__); ?>../icons/.svg" alt="Lining figures"></button>-->
         <!--<button class="fontsampler-toggle" data-feature=""><img src="<?php echo plugin_dir_url(__FILE__); ?>../icons/.svg" alt="Localized forms"></button>-->

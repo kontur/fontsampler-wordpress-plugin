@@ -55,6 +55,15 @@
   font-size: inherit;
   max-width: 40em;
 }
+#fontsampler-admin h1,
+#fontsampler-admin h2,
+#fontsampler-admin h3,
+#fontsampler-admin h4,
+#fontsampler-admin h5,
+#fontsampler-admin h6 {
+  clear: both;
+  display: block;
+}
 #fontsampler-admin small {
   font-size: x-small;
   line-height: 1em;
@@ -152,5 +161,18 @@
   color: #333;
 }
 #fontsampler-admin .fontsampler-options-checkbox label > span {
-  display: inline-block;
+  display: inline;
+  margin-left: -35px;
+  padding-left: 0px;
+  left: 40px;
+  position: relative;
+}
+#fontsampler-admin .fontsampler-options-checkbox small {
+  display: block;
+  margin-left: 40px;
+}
+#fontsampler-admin .fontsampler-admin-column-half {
+  float: left;
+  margin-right: 5%;
+  width: 45%;
 }

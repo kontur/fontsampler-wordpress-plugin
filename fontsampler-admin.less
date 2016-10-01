@@ -58,6 +58,11 @@
         max-width: 40em;
     }
 
+    h1, h2, h3, h4, h5, h6 {
+        clear: both;
+        display: block;
+    }
+
     small {
         font-size: x-small;
         line-height: 1em;
@@ -171,7 +176,21 @@
     // wrapper with label > span + input[type=checkbox]
     .fontsampler-options-checkbox {
         label > span {
-            display: inline-block;
+            display: inline;
+            margin-left: -35px;
+            padding-left: 0px;
+            left: 40px;
+            position: relative;
         }
+        small {
+            display: block;
+            margin-left: 40px;
+        }
+    }
+
+    .fontsampler-admin-column-half {
+        float: left;
+        margin-right: 5%;
+        width: 45%;
     }
 }
