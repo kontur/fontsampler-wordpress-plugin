@@ -101,6 +101,7 @@
             fontFamily = declareFontFace( this.settings.fontFiles );
             this.setupUI();
             this.setFont( fontFamily );
+            this.updateOTFeatures();
         },
         setupUI: function() {
             var that = this;
@@ -125,7 +126,7 @@
             $( this.element ).css( "font-size", size );
         },
         setLetterSpacing: function( spacing ) {
-            var leading = $( this.element ).css("line-height")
+            var leading = $( this.element ).css("line-height");
             $( this.element ).css( {
                 "letter-spacing": spacing,
                 "line-height": leading
@@ -135,7 +136,16 @@
             $( this.element ).css( "line-height", leading );
         },
         updateOTFeatures: function () {
-            var features;
+            var features, ligatures = [], ligatureVariant, liga, dlig, hlig, calt,
+            // css variant-ligature keyword - value tuples
+            ligaValues = {
+                liga : ['no-common-ligatures', 'common-ligatures'],
+                dlig : ['no-discretionary-ligatures', 'discrectionary-ligatures'],
+                hlig : ['no-historical-ligatures', 'historical-ligatures'],
+                calt : ['no-contextual', 'contextual']
+            };
+
+            // font-feature-settings
             if (this.otfeatures.length === 0) {
                 features = 'inherit';
             } else {
@@ -143,12 +153,31 @@
                 features = features.concat(this.otfeatures.join("','"));
                 features = features.concat("'");
             }
-            // TODO leverage more high level syntax options for features that have it available
+            // partial TODO leverage more high level syntax options ala font-variant-xxx for features that have it available
             $( this.element ).css({
                 "-webkit-font-feature-settings": features,
                 "-moz-font-feature-settings": features,
                 "-ms-font-feature-settings": features,
                 "font-feature-settings": features
+            });
+
+            // font-variant-ligatures
+            // note: iteration order crucial for css shorthand to work
+            var ligaKeyWords = ['liga', 'dlig', 'hlig', 'calt'];
+            for (var l = 0; l < ligaKeyWords.length; l++) {
+                var keyword = ligaKeyWords[l];
+                if ( this.otfeatures.indexOf(keyword) > -1 ) {
+                    ligatures.push(ligaValues[keyword][1]);
+                } else {
+                    ligatures.push(ligaValues[keyword][0]);
+                }
+            }
+            ligatureVariant = ligatures.join(" ");
+            $( this.element ).css({
+                "-webkit-font-variant-ligatures": ligatureVariant,
+                "-moz-font-variant-ligatures": ligatureVariant,
+                "-ms-font-variant-ligatures": ligatureVariant,
+                "font-variant-ligatures": ligatureVariant
             });
         }
     });

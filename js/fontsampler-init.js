@@ -64,7 +64,6 @@ jQuery(function () {
 
 	    // Callback function
 	    onInit: function() {
-	    	console.log("ok, init");
 	    },
 
 	    // Callback function
@@ -98,7 +97,6 @@ jQuery(function () {
 				}
 				break;
 		}
-
 
 		$(this).siblings("button").removeClass("fontsampler-multiselect-selected");
 		$(this).addClass("fontsampler-multiselect-selected");

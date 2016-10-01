@@ -63,44 +63,15 @@
     <div class="fontsampler-interface-row fontsampler-interface-tertiary">
         <button class="fontsampler-toggle" data-feature="liga"><img src="<?php echo plugin_dir_url(__FILE__); ?>../icons/ligatures.svg" alt="Ligatures"></button>
         <button class="fontsampler-toggle" data-feature="dlig"><img src="<?php echo plugin_dir_url(__FILE__); ?>../icons/dligatures.svg" alt="Discretionary ligatures"></button>
-        <button class="fontsampler-toggle" data-feature="calt"><img src="<?php echo plugin_dir_url(__FILE__); ?>../icons/.svg" alt="Contextual alternates"></button>
-        <button class="fontsampler-toggle" data-feature="ss"><img src="<?php echo plugin_dir_url(__FILE__); ?>../icons/.svg" alt="Stylistic sets"></button>
+        <button class="fontsampler-toggle" data-feature="calt"><img src="<?php echo plugin_dir_url(__FILE__); ?>../icons/alternates.svg" alt="Contextual alternates"></button>
+        <!--<button class="fontsampler-toggle" data-feature="ss"><img src="<?php echo plugin_dir_url(__FILE__); ?>../icons/.svg" alt="Stylistic sets"></button>-->
         <button class="fontsampler-toggle" data-feature="hlig"><img src="<?php echo plugin_dir_url(__FILE__); ?>../icons/hligatures.svg" alt="Historical ligatures"></button>
-        <button class="fontsampler-toggle" data-feature="swsh"><img src="<?php echo plugin_dir_url(__FILE__); ?>../icons/.svg" alt="Swashes"></button>
+        <!--<button class="fontsampler-toggle" data-feature="swsh"><img src="<?php echo plugin_dir_url(__FILE__); ?>../icons/.svg" alt="Swashes"></button>-->
         <button class="fontsampler-toggle" data-feature="frac"><img src="<?php echo plugin_dir_url(__FILE__); ?>../icons/fractions.svg" alt="Fractions"></button>
         <button class="fontsampler-toggle" data-feature="sups"><img src="<?php echo plugin_dir_url(__FILE__); ?>../icons/sup.svg" alt="Superscript"></button>
         <button class="fontsampler-toggle" data-feature="subs"><img src="<?php echo plugin_dir_url(__FILE__); ?>../icons/sub.svg" alt="Subscript"></button>
-        <button class="fontsampler-toggle" data-feature=""><img src="<?php echo plugin_dir_url(__FILE__); ?>../icons/.svg" alt="Oldstyle figures"></button>
-        <button class="fontsampler-toggle" data-feature="lnum"><img src="<?php echo plugin_dir_url(__FILE__); ?>../icons/.svg" alt="Lining figures"></button>
-        <button class="fontsampler-toggle" data-feature=""><img src="<?php echo plugin_dir_url(__FILE__); ?>../icons/.svg" alt="Localized forms"></button>
+        <!--<button class="fontsampler-toggle" data-feature=""><img src="<?php echo plugin_dir_url(__FILE__); ?>../icons/.svg" alt="Oldstyle figures"></button>-->
+        <!--<button class="fontsampler-toggle" data-feature="lnum"><img src="<?php echo plugin_dir_url(__FILE__); ?>../icons/.svg" alt="Lining figures"></button>-->
+        <!--<button class="fontsampler-toggle" data-feature=""><img src="<?php echo plugin_dir_url(__FILE__); ?>../icons/.svg" alt="Localized forms"></button>-->
     </div>
-    <!-- 
-    onum Oldstyle Figures
-lnum Lining Figures
-tnum Tabular Figures
-zero Slashed Zero
-frac Fractions
-sups Superscript
-subs Subscript
-ordn Ordinal
-smcp Small Caps
-c2sc Small Capitals From Capitals
-case Case-sensitive Forms
-liga Standard Ligatures
-dlig Discretionary Ligatures
-hlig Historical Ligatures
-calt Contextual Alternates
-swsh Swash
-hist Historical Forms
-ss** Stylistic Sets
-kern Kerning
-locl Localized Forms
-rlig Required ligatures
-medi Medial Forms
-init Initial Forms
-isol Isolated Forms
-fina Final Forms
-mark Mark
-mkmk Mark-to-mark Positioning
--->
 </div>
