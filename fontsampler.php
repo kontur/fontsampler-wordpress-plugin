@@ -1,13 +1,12 @@
 <?php
 /*
 Plugin Name: Fontsampler
-Plugin URI:  http://URI_Of_Page_Describing_Plugin_and_Updates
+Plugin URI:  -WIP-
 Description: Create editable webfont previews via shortcodes
 Version:     0.0.1
 Author:      Johannes Neumeier
 Author URI:  http://johannesneumeier.com
-License:
-License URI:
+Copyright:   Copyright 2016 Johannes Neumeier
 Text Domain: fontsampler
 */
 
