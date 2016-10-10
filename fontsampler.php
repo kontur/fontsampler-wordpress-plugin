@@ -242,6 +242,7 @@ class Fontsampler {
 
             case 'font_edit':
                 $font = $this->get_fontset( intval( $_GET['id'] ));
+                var_dump($font);
                 $font = $font[0];
                 $formats = $this->fontFormats;
                 include( 'includes/fontset-edit.php' );
@@ -495,8 +496,9 @@ class Fontsampler {
 		$sql .= " FROM " . $this->table_fonts . " f
 		        LEFT JOIN " . $this->table_join . " j
 		        ON j.font_id = f.id
-				WHERE j.set_id = " . intval( $setId );
+				WHERE f.id = " . intval( $setId );
 		$result = $this->db->get_results( $sql, ARRAY_A );
+        echo $this->db->last_query;
 		return $this->db->num_rows == 0 ? false : $result;
 	}
 
