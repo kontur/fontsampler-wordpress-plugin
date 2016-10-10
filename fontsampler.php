@@ -23,7 +23,7 @@ global $wpdb;
 $f = new Fontsampler($wpdb);
 
 // frontend
-wp_register_script( 'fontsampler-js', plugin_dir_url(__FILE__) . 'js/jquery.fontsampler.js', array( 'jquery' ));
+wp_register_script( 'fontsampler-js', plugin_dir_url(__FILE__) . 'bower_components/jquery-fontsampler/dist/jquery.fontsampler.js', array( 'jquery' ));
 wp_register_script( 'fontsampler-init-js', plugin_dir_url(__FILE__) . 'js/fontsampler-init.js', array( 'fontsampler-js'));
 wp_register_script( 'fontsampler-rangeslider-js', plugin_dir_url(__FILE__) . 'bower_components/rangeslider.js/dist/rangeslider.min.js', array( 'jquery'));
 wp_register_script( 'fontsampler-selectric-js', plugin_dir_url(__FILE__) . 'bower_components/jquery-selectric/public/jquery.selectric.min.js', array('jquery'));
@@ -134,7 +134,7 @@ class Fontsampler {
      */
     function fontsampler_admin_enqueues() {
         wp_enqueue_script( 'fontsampler-rangeslider-js' );
-		wp_enqueue_script( 'fontsampler-preview-js', plugin_dir_url(__FILE__) . 'js/jquery.fontsampler.js', array( 'jquery' ));
+		wp_enqueue_script( 'fontsampler-preview-js', plugin_dir_url(__FILE__) . 'bower_components/jquery-fontsampler/dist/jquery.fontsampler.js', array( 'jquery' ));
 		wp_enqueue_script( 'fontsampler-admin-js', plugin_dir_url(__FILE__) . 'js/fontsampler-admin.js', array( 'jquery' ));
         wp_register_style( 'fontsampler_admin_css', plugin_dir_url(__FILE__) . '/fontsampler-admin.css', false, '1.0.0' );
         wp_enqueue_style( 'fontsampler_admin_css' );
