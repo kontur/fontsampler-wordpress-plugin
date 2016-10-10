@@ -48,6 +48,12 @@
 
         <h2>Options</h2>
         <h3>Interface options</h3>
+        <h4>Initial text</h4>
+        <label>
+            <span>The initial text displayed in the font sampler, for example the font name or pangram.
+                You can use multi-line text here as well.</span><br>
+            <textarea name="initial" cols="60" rows="5"><?php if (!empty($set['initial'])) echo $set['initial']; ?></textarea>
+        </label>
         <div>
             <div class="fontsampler-options-checkbox fontsampler-admin-column-half">
                 <h4>Common features</h4>

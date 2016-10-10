@@ -121,7 +121,8 @@ class Fontsampler {
 			// include, aka echo, template with replaced values from $replace above
 			include( 'includes/interface.php' );
 
-			echo "<div class='fontsampler' data-font-files='" . $this->fontfiles_JSON( $fonts[0] ) . "' data-multiline='" . $set['multiline'] . "'>FONTSAMPLER</div></div>";
+			echo "<div class='fontsampler' data-font-files='" . $this->fontfiles_JSON( $fonts[0] ) . "' data-multiline='" .
+                $set['multiline'] . "'>" . str_replace("\n", "<br>", $set['initial']) . "</div></div>";
 
 			// return all that's been buffered
 			return ob_get_clean();
@@ -280,6 +281,7 @@ class Fontsampler {
 		$sql = "CREATE TABLE " . $this->table_sets . " (
                 `id` int( 11 ) unsigned NOT NULL AUTO_INCREMENT,
                 `name` varchar( 255 ) NOT NULL DEFAULT '',
+                `initial` text NOT NULL,
                 `size` tinyint( 1 ) NOT NULL DEFAULT '0',
                 `letterspacing` tinyint( 1 ) NOT NULL DEFAULT '0',
                 `lineheight` tinyint( 1 ) NOT NULL DEFAULT '0',
@@ -597,6 +599,10 @@ class Fontsampler {
 
             if ( sizeof( $_POST['font_id'] ) > 1 ) {
                 $data['fontpicker'] = true;
+            }
+
+            if ( !empty( $_POST['initial'] ) ) {
+                $data['initial'] = $_POST['initial'];
             }
 
             $id = NULL;
