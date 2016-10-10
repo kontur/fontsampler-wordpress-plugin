@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Fontsampler
-Plugin URI:  -WIP-
+Plugin URI:  https://github.com/kontur/fontsampler-wordpress-plugin
 Description: Create editable webfont previews via shortcodes
 Version:     0.0.1
 Author:      Johannes Neumeier

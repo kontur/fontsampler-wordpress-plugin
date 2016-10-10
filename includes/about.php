@@ -17,4 +17,5 @@
 <ul class="real-list">
 	<li><a href="http://selectric.js.org/">selectric.js for custom dropdowns</a> (<a href="https://github.com/lcdsantos/jQuery-Selectric/blob/master/LICENSE">Licence</a>)</li>
 	<li><a href="http://rangeslider.js.org/">rangeslider.js for custom range sliders</a> (<a href="https://github.com/andreruffert/rangeslider.js/blob/develop/LICENSE.md">License</a>)</li>
+    <li><a href="https://github.com/kontur/jquery-fontsampler">jquery-fontsampler (also developed by the plugin author)</a> (<a href="https://github.com/kontur/jquery-fontsampler/blob/master/LICENSE.txt">License</a>)</li>
 </ul>

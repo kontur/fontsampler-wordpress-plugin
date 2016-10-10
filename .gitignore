@@ -28,3 +28,7 @@ bower_components/jquery-selectric/*
 bower_components/jquery-selectric/public/*
 !bower_components/jquery-selectric/public/jquery.selectric.js
 !bower_components/jquery-selectric/public/jquery.selectric.min.js
+
+!bower_components/jquery-fontsampler/
+bower_components/jquery-fontsampler/*
+!bower_components/jquery-fontsampler/dist/
