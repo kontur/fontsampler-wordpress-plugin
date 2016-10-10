@@ -176,3 +176,24 @@
   margin-right: 5%;
   width: 45%;
 }
+#fontsampler-admin .form-settings label {
+  clear: both;
+}
+#fontsampler-admin .form-settings label span {
+  float: left;
+  display: inline-block;
+  width: 20em;
+}
+#fontsampler-admin .form-settings label div.slider {
+  display: inline-block;
+  width: 20em;
+}
+#fontsampler-admin .form-settings label code {
+  margin: 0 1em;
+}
+#fontsampler-admin .form-settings label input[type="range"] {
+  width: 20em;
+}
+#fontsampler-admin .form-settings label small {
+  display: block;
+}

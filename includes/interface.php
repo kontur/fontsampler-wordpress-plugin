@@ -4,25 +4,25 @@
 	<div class="fontsampler-interface-row fontsampler-interface-primary">
 		<?php if ($set['size']): ?>
 		<label class="fontsampler-slider">
-			<span class="slider-label"><?php echo $replace['font-size-label']; ?></span>
-			<span class="slider-value"><?php echo $replace['font-size-value']; ?>&nbsp;<?php echo $replace['font-size-unit']; ?></span>
-			<input type="range" min="<?php echo $replace['font-size-min']; ?>" max="<?php echo $replace['font-size-max']; ?>" value="<?php echo $replace['font-size-value']; ?>" data-unit="<?php echo $replace['font-size-unit']; ?>" name="font-size">
+			<span class="slider-label"><?php echo $replace['font_size_label']; ?></span>
+			<span class="slider-value"><?php echo $replace['font_size_initial']; ?>&nbsp;<?php echo $replace['font_size_unit']; ?></span>
+			<input type="range" min="<?php echo $replace['font_size_min']; ?>" max="<?php echo $replace['font_size_max']; ?>" value="<?php echo $replace['font_size_value']; ?>" data-unit="<?php echo $replace['font_size_unit']; ?>" name="font-size">
 		</label>
 		<?php endif; ?>
 		
 		<?php if ($set['letterspacing']): ?>
 		<label class="fontsampler-slider">
-			<span class="slider-label"><?php echo $replace['letter-spacing-label']; ?></span>
-			<span class="slider-value"><?php echo $replace['letter-spacing-value']; ?>&nbsp;<?php echo $replace['letter-spacing-unit']; ?></span>
-			<input type="range" min="<?php echo $replace['letter-spacing-min']; ?>" max="<?php echo $replace['letter-spacing-max']; ?>" value="<?php echo $replace['letter-spacing-value']; ?>" data-unit="<?php echo $replace['letter-spacing-unit']; ?>" name="letter-spacing">
+			<span class="slider-label"><?php echo $replace['letter_spacing_label']; ?></span>
+			<span class="slider-value"><?php echo $replace['letter_spacing_initial']; ?>&nbsp;<?php echo $replace['letter_spacing_unit']; ?></span>
+			<input type="range" min="<?php echo $replace['letter_spacing_min']; ?>" max="<?php echo $replace['letter_spacing_max']; ?>" value="<?php echo $replace['letter_spacing_value']; ?>" data-unit="<?php echo $replace['letter_spacing_unit']; ?>" name="letter-spacing">
 		</label>
 		<?php endif; ?>
 
 		<?php if ($set['lineheight']): ?>
 		<label class="fontsampler-slider">
-			<span class="slider-label"><?php echo $replace['line-height-label']; ?></span>
-			<span class="slider-value"><?php echo $replace['line-height-value']; ?>&nbsp;<?php echo $replace['line-height-unit']; ?></span>
-			<input type="range" min="<?php echo $replace['line-height-min']; ?>" max="<?php echo $replace['line-height-max']; ?>" value="<?php echo $replace['line-height-value']; ?>" data-unit="<?php echo $replace['line-height-unit']; ?>" name="line-height">
+			<span class="slider-label"><?php echo $replace['line_height_label']; ?></span>
+			<span class="slider-value"><?php echo $replace['line_height_initial']; ?>&nbsp;<?php echo $replace['line_height_unit']; ?></span>
+			<input type="range" min="<?php echo $replace['line_height_min']; ?>" max="<?php echo $replace['line_height_max']; ?>" value="<?php echo $replace['line_height_initial']; ?>" data-unit="<?php echo $replace['line_height_unit']; ?>" name="line-height">
 		</label>
 		<?php endif; ?>
 	</div>
@@ -36,11 +36,13 @@
 		</select>
 		<?php endif; ?>
 
+        <?php $samples = explode("\n", $replace['sample_texts']); ?>
 		<?php if ($set['sampletexts']): ?>
 		<select name="sample-text">
-			<option value="Sample text">Sample text</option>
-			<option value="ABCDEFGHIJKLMNOPQRSTUVWXYZ">ABCDEF...</option>
-			<option value="abcdefghijklmnopqrstuvwxyz">abcdef...</option>
+            <option value="Select a sample text">Select a sample text</option>
+            <?php foreach ($samples as $sample): ?>
+                <option value="<?php echo $sample; ?>"><?php echo $sample; ?></option>
+            <?php endforeach; ?>
 		</select>
 		<?php endif; ?>
 

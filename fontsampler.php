@@ -45,6 +45,7 @@ class Fontsampler {
     private $table_sets;
     private $table_fonts;
     private $table_join;
+    private $table_settings;
     private $booleanOptions;
     private $fontFormats;
 
@@ -53,6 +54,7 @@ class Fontsampler {
         $this->table_sets = $this->db->prefix . "fontsampler_sets";
         $this->table_fonts = $this->db->prefix . "fontsampler_fonts";
         $this->table_join = $this->db->prefix . "fontsampler_sets_x_fonts";
+        $this->table_settings = $this->db->prefix . "fontsampler_settings";
 
         $this->booleanOptions = array('size', 'letterspacing', 'lineheight', 'fontpicker', 'sampletexts', 'alignment',
             'invert', 'ot_liga', 'ot_hlig', 'ot_dlig', 'ot_calt', 'ot_frac', 'ot_sups', 'ot_subs');
@@ -90,25 +92,26 @@ class Fontsampler {
 				}
 			}
 
-			// TODO read these from general or fontsampler specific options
 			// TODO labels from options
-			$replace = array(
-				'font-size-label'		=> 'Size',
-				'font-size-min'			=> '8',
-				'font-size-max'			=> '96',
-				'font-size-value'		=> '14',
-				'font-size-unit'		=> 'px',
-				'letter-spacing-label'	=> 'Letter spacing',
-				'letter-spacing-min'	=> '-5',
-				'letter-spacing-max'	=> '5',
-				'letter-spacing-value'	=> '0',
-				'letter-spacing-unit'	=> 'px',
-				'line-height-label'		=> 'Line height',
-				'line-height-min'		=> '70',
-				'line-height-max'		=> '300',
-				'line-height-value'		=> '110',
-				'line-height-unit'		=> '%'
-			);
+            $defaults = $this->get_settings();
+            // some of these get overwritten from defaults, but list them all here explicitly
+			$replace = array_merge(array(
+				'font_size_label'		    => 'Size',
+				'font_size_min'			    => '8',
+				'font_size_max'			    => '96',
+				'font_size_initial'		    => '14',
+				'font_size_unit'		    => 'px',
+				'letter_spacing_label'  	=> 'Letter spacing',
+				'letter_spacing_min'    	=> '-5',
+				'letter_spacing_max'	    => '5',
+				'letter_spacing_initial'	=> '0',
+				'letter_spacing_unit'	    => 'px',
+				'line_height_label'		    => 'Line height',
+				'line_height_min'		    => '70',
+				'line_height_max'		    => '300',
+				'line_height_initial'	    => '110',
+				'line_height_unit'		    => '%'
+			), $defaults);
 
 			// buffer output until return
 			ob_start();
@@ -130,6 +133,7 @@ class Fontsampler {
      * Register scripts and styles needed in the admin panel
      */
     function fontsampler_admin_enqueues() {
+        wp_enqueue_script( 'fontsampler-rangeslider-js' );
 		wp_enqueue_script( 'fontsampler-preview-js', plugin_dir_url(__FILE__) . 'js/jquery.fontsampler.js', array( 'jquery' ));
 		wp_enqueue_script( 'fontsampler-admin-js', plugin_dir_url(__FILE__) . 'js/fontsampler-admin.js', array( 'jquery' ));
         wp_register_style( 'fontsampler_admin_css', plugin_dir_url(__FILE__) . '/fontsampler-admin.css', false, '1.0.0' );
@@ -205,6 +209,7 @@ class Fontsampler {
 			$this->handle_font_delete();
 			$this->handle_set_edit();
 			$this->handle_set_delete();
+            $this->handle_settings_edit();
 		}
 
 		switch ($_GET['subpage']) {
@@ -241,6 +246,11 @@ class Fontsampler {
                 $font = $font[0];
                 $formats = $this->fontFormats;
                 include('includes/fontset-edit.php');
+                break;
+
+            case 'settings':
+                $defaults = $this->get_settings();
+                include('includes/settings.php');
                 break;
 
             case 'about':
@@ -315,6 +325,39 @@ class Fontsampler {
     }
 
 
+    function create_table_settings() {
+        $sql = "CREATE TABLE " . $this->table_settings . " (
+                `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+                `font_size_initial` smallint(5) unsigned NOT NULL DEFAULT '18',
+                `font_size_min` smallint(5) unsigned NOT NULL DEFAULT '8',
+                `font_size_max` smallint(5) unsigned NOT NULL DEFAULT '96',
+                `letter_spacing_initial` tinyint(5) NOT NULL DEFAULT '0',
+                `letter_spacing_min` tinyint(3) NOT NULL DEFAULT '-5',
+                `letter_spacing_max` tinyint(3) NOT NULL DEFAULT '5',
+                `line_height_initial` smallint(5) NOT NULL DEFAULT '110',
+                `line_height_min` smallint(5) NOT NULL DEFAULT '0',
+                `line_height_max` smallint(5) NOT NULL DEFAULT '300',
+                `sample_texts` text NOT NULL,
+                PRIMARY KEY (`id`)
+                );";
+        $this->db->query($sql);
+
+        $data = array (
+            'font_size_initial' => 18,
+            'font_size_min' => 8,
+            'font_size_max' => 96,
+            'letter_spacing_initial' => 0,
+            'letter_spacing_min' => -5,
+            'letter_spacing_max' => 5,
+            'line_height_initial' => 110,
+            'line_height_min' => 0,
+            'line_height_max' => 300,
+            'sample_texts' => "hamburgerfontstiv\nabcdefghijklmnopqrstuvwxyz\nABCDEFGHIJKLMNOPQRSTUVWXYZ\nThe quick brown fox jumps over the lazy cat"
+        );
+        $this->db->insert($this->table_settings, $data);
+    }
+
+
     function delete_tables() {
     	$sql = "DROP TABLE IF EXISTS " . $this->table_join;
     	$this->db->query($sql);
@@ -322,8 +365,11 @@ class Fontsampler {
     	$sql = "DROP TABLE IF EXISTS " . $this->table_fonts;
     	$this->db->query($sql);
 
-    	$sql = "DROP TABLE IF EXISTS " . $this->table_sets;
-    	$this->db->query($sql);
+        $sql = "DROP TABLE IF EXISTS " . $this->table_sets;
+        $this->db->query($sql);
+
+        $sql = "DROP TABLE IF EXISTS " . $this->table_settings;
+        $this->db->query($sql);
     }
 
 
@@ -342,10 +388,19 @@ class Fontsampler {
         if (!$this->check_table_exists($this->table_sets)) $this->create_table_sets();
         if (!$this->check_table_exists($this->table_fonts)) $this->create_table_fonts();
         if (!$this->check_table_exists($this->table_join)) $this->create_table_join();
+        if (!$this->check_table_exists($this->table_settings)) $this->create_table_settings();
 	}
 
 
     // TODO deactivate -> remove tables
+
+    /*
+     * Read from settings table (currently only one row with defaults)
+     */
+    function get_settings($id = 1) {
+        $sql = "SELECT * FROM " . $this->table_settings . " WHERE `id` = " . $id;
+        return $this->db->get_row($sql, ARRAY_A);
+    }
 
 
 	/*
@@ -584,6 +639,36 @@ class Fontsampler {
 			}
 		}
 	}
+
+
+    function handle_settings_edit() {
+        // no settings ID's for now, just one default row
+        $id = (int)($_POST['id']);
+        if ($_POST['action'] == 'editSettings' && isset($id) && is_int($id) && $id > 0) {
+            $settingsFields = array(
+                'font_size_initial',
+                'font_size_min',
+                'font_size_max',
+                'letter_spacing_initial',
+                'letter_spacing_min',
+                'letter_spacing_max',
+                'line_height_initial',
+                'line_height_min',
+                'line_height_max',
+                'sample_texts'
+            );
+
+            $data = array();
+            foreach ($settingsFields as $field) {
+                if (isset($_POST[$field])) {
+                    $data[$field] = trim($_POST[$field]);
+                }
+            }
+
+            // atm no inserts, only updating the defaults
+            $this->db->update($this->table_settings, $data, array('id' => $id));
+        }
+    }
 
 
     /*
