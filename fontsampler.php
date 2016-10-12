@@ -123,14 +123,19 @@ class Fontsampler {
 			// include, aka echo, template with replaced values from $replace above
 			include( 'includes/interface.php' );
 
-			echo "<div class='fontsampler' data-font-files='" . $this->fontfiles_JSON( $fonts[0] ) . "' data-multiline='" .
-                $set['multiline'] . "'>" . str_replace("\n", "<br>", $set['initial']) . "</div></div>";
+			$color_fore = $this->db->get_results("SELECT color_fore FROM $this->table_settings");
+			foreach ($color_fore as $colf) {$colf_var = $colf->color_fore;}
+
+			$color_back = $this->db->get_results("SELECT color_back FROM $this->table_settings");
+			foreach ($color_back as $colb) {$colb_var = $colb->color_back;}
+
+								echo "<div class='fontsampler' style='background-color:{$colb_var}' data-font-files='" . $this->fontfiles_JSON( $fonts[0] ) . "' data-multiline='" .
+													$set['multiline'] . "'><span class='color-fore' style='color:{$colf_var};'>" . str_replace("\n", "<br>", $set['initial']) . "</span></div></div>";
 
 			// return all that's been buffered
 			return ob_get_clean();
 		}
 	}
-
 
     /*
      * Register scripts and styles needed in the admin panel
