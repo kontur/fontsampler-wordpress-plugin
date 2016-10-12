@@ -57,7 +57,7 @@ class Fontsampler {
         $this->table_settings = $this->db->prefix . "fontsampler_settings";
 
         $this->booleanOptions = array( 'size', 'letterspacing', 'lineheight', 'fontpicker', 'sampletexts', 'alignment',
-            'invert', 'ot_liga', 'ot_hlig', 'ot_dlig', 'ot_calt', 'ot_frac', 'ot_sups', 'ot_subs', 'color_fore', 'color_back' );
+            'invert', 'ot_liga', 'ot_hlig', 'ot_dlig', 'ot_calt', 'ot_frac', 'ot_sups', 'ot_subs' );
         $this->fontFormats = array( 'woff2', 'woff', 'eot', 'svg', 'ttf' );
 	}
 
@@ -342,7 +342,7 @@ class Fontsampler {
                 `line_height_min` smallint( 5 ) NOT NULL DEFAULT '0',
                 `line_height_max` smallint( 5 ) NOT NULL DEFAULT '300',
                 `sample_texts` text NOT NULL,
-								`color_fore` tinytext NOT NULL,
+								`` tinytext NOT NULL,
  								`color_back` tinytext NOT NULL,
                 PRIMARY KEY ( `id` )
                 );";
