@@ -171,7 +171,6 @@ class Fontsampler {
 	/*
 	 *
 	 */
-	// TODO test this ; )
 	function fontsampler_uninstall() {
 		$this->delete_tables();
 	}
@@ -527,7 +526,8 @@ class Fontsampler {
 	 * Dealing with new fonts being defined and uploaded explicitly via the plugin ( instead of the media gallery )
 	 */
 	function handle_font_edit() {
-        if ( $_POST['action'] == 'font-edit' && !empty( $_POST['fontname'] )) {
+        if ( $_POST['action'] == 'font_edit' && !empty( $_POST['fontname'] )) {
+	        check_admin_referer( 'fontsampler-action-font_edit' );
 
             echo '<div class="notice">';
 
@@ -567,7 +567,8 @@ class Fontsampler {
 	 * Delete a set of fonts from the database
 	 */
 	function handle_font_delete() {
-		if ( $_POST['action'] == 'deleteFont' && !empty( $_POST['id'] )) {
+		if ( $_POST['action'] == 'delete_font' && !empty( $_POST['id'] )) {
+			check_admin_referer( 'fontsampler-action-delete_font' );
 			$id = intval( $_POST['id'] );
 			$res = $this->db->delete( $this->table_fonts, array( 'id' => $id ));
 			if ( !$res ) {
@@ -584,12 +585,12 @@ class Fontsampler {
 	// TODO handle_font_file_remove()
 
 
-	/*
+	/**
 	 * Creating or editing a fontsampler set
 	 */
-	function handle_set_edit() {
-		if ( isset( $_POST['action'] ) && $_POST['action'] == "editSet" ) {
-
+    function handle_set_edit() {
+		if ( isset( $_POST['action'] ) && $_POST['action'] == 'edit_set' ) {
+			check_admin_referer( 'fontsampler-action-edit_set' );
 			$data = array();
             foreach ( $this->booleanOptions as $index ) {
             	$data[$index] = isset( $_POST[$index] );
@@ -610,9 +611,9 @@ class Fontsampler {
 				$res = $this->db->insert( $this->table_sets, $data );
 				if ( $res ) {
 					$id = $this->db->insert_id;
-					$this->info( "Created set with id " . $id );
+					$this->info( 'Created set with id ' . $id );
 				} else {
-					$this->error( "Error: Failed to create new font set" );
+					$this->error( 'Error: Failed to create new font set' );
 				}
 
 			} else {
@@ -637,7 +638,8 @@ class Fontsampler {
 
 	function handle_set_delete() {
 		$id = ( int )( $_POST['id'] );
-		if ( $_POST['action'] == 'deleteSet' && isset( $id ) && is_int( $id ) && $id > 0 ) {
+		if ( $_POST['action'] == 'delete_set' && isset( $id ) && is_int( $id ) && $id > 0 ) {
+			check_admin_referer( 'fontsampler-action-delete_set' );
 			if ( $this->delete_set( intval( $_POST['id'] )) ) {
 				$this->info( 'Deleted ' . $id );
 			}
@@ -648,7 +650,8 @@ class Fontsampler {
     function handle_settings_edit() {
         // no settings ID's for now, just one default row
         $id = ( int )( $_POST['id'] );
-        if ( $_POST['action'] == 'editSettings' && isset( $id ) && is_int( $id ) && $id > 0 ) {
+        if ( $_POST['action'] == 'edit_settings' && isset( $id ) && is_int( $id ) && $id > 0 ) {
+	        check_admin_referer( 'fontsampler-action-edit_settings' );
             $settingsFields = array(
                 'font_size_initial',
                 'font_size_min',
