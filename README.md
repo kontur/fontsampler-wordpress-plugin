@@ -41,3 +41,11 @@ of the latest release
 * Login to your Wordpress admin
 * Go to Plugins and activate the plugin
 * You can now access the plugin options in the sidebar under `¶ Fontsampler`
+
+# License
+This code is distributed under the GNU General Public License v3.0. 
+[See license](LICENSE.txt)
+
+[Read a simplified version of what this license means](http://choosealicense.com/licenses/gpl-3.0/#)
+
+(c) 2016 Johannes Neumeier
