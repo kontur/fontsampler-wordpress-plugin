@@ -35,7 +35,7 @@ add_action( 'admin_enqueue_scripts', array( $f, 'fontsampler_admin_enqueues' ));
 add_filter( 'upload_mimes', array( $f, 'allow_font_upload_types' ));
 register_activation_hook( __FILE__, array( $f, 'fontsampler_activate' ));
 wp_enqueue_style( 'wp-color-picker' );
-wp_enqueue_script('iris', admin_url( 'js/iris.min.js' ), array( 'jquery-ui-draggable', 'jquery-ui-slider', 'jquery-touch-punch' ), false, 1);
+wp_enqueue_script( 'colour-pick', plugins_url('js/fontsampler-admin.js', __FILE__ ), array( 'wp-color-picker' ), false, true );
 
 
 

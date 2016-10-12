@@ -42,14 +42,15 @@
         <span class="setting_description">Line-height maximum %: <code class="current-value"><?php echo $defaults['line_height_max']; ?></code></span>
         <div class="slider"><input type="range" name="line_height_max" value="<?php echo $defaults['line_height_max']; ?>" min="0" max="500"></div>
     </label>
-    <label>
+
+    <h2>Colour options</h2>
+
         <span class="setting_description">Foreground (text) colour:</span>
-        <div class="picker"><input type="text" name="color_fore" id="color_fore" class="color-picker" value="<?php echo $defaults['color_fore']; ?>" /></div>
-    </label>
-    <label>
+        <div class="picker"><input type="text" name="color_fore" id="color_fore" class="color-picker" value="<?php echo $defaults['color_fore']; ?>" data-default-color="#000000" /></div>
+
         <span class="setting_description">Background (page) colour:</span>
-        <div class="picker"><input type="text" name="color_back" id="color_back" class="color-picker" value="<?php echo $defaults['color_back']; ?>" /></div>
-    </label>
+        <div class="picker"><input type="text" name="color_back" id="color_back" class="color-picker" value="<?php echo $defaults['color_back']; ?>" data-default-color="#ffffff" /></div>
+
     <label>
         Sample texts <small>(use simple line breaks for each option to be displayed in the dropdown)</small>
         <textarea name="sample_texts" cols="60" rows="10"><?php echo $defaults['sample_texts']; ?></textarea>
