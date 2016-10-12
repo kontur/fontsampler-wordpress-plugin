@@ -179,7 +179,7 @@
 #fontsampler-admin .form-settings label {
   clear: both;
 }
-#fontsampler-admin .form-settings label span {
+#fontsampler-admin .form-settings label span.setting_description {
   float: left;
   display: inline-block;
   width: 20em;

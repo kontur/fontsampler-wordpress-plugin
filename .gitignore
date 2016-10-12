@@ -32,3 +32,5 @@ bower_components/jquery-selectric/public/*
 !bower_components/jquery-fontsampler/
 bower_components/jquery-fontsampler/*
 !bower_components/jquery-fontsampler/dist/
+
+config.codekit
