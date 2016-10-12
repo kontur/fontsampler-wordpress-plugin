@@ -43,6 +43,14 @@
         <div class="slider"><input type="range" name="line_height_max" value="<?php echo $defaults['line_height_max']; ?>" min="0" max="500"></div>
     </label>
     <label>
+        <span>Foreground (text) colour:</span>
+        <div class="picker"><input type="text" name="color_fore" id="color_fore" class="color-picker" value="<?php echo $defaults['color_fore']; ?>" /></div>
+    </label>
+    <label>
+        <span>Background (page) colour:</span>
+        <div class="picker"><input type="text" name="color_back" id="color_back" class="color-picker" value="<?php echo $defaults['color_back']; ?>" /></div>
+    </label>
+    <label>
         Sample texts <small>(use simple line breaks for each option to be displayed in the dropdown)</small>
         <textarea name="sample_texts" cols="60" rows="10"><?php echo $defaults['sample_texts']; ?></textarea>
     </label>

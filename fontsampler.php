@@ -34,6 +34,8 @@ add_action( 'admin_menu', array( $f, 'fontsampler_plugin_setup_menu' ));
 add_action( 'admin_enqueue_scripts', array( $f, 'fontsampler_admin_enqueues' ));
 add_filter( 'upload_mimes', array( $f, 'allow_font_upload_types' ));
 register_activation_hook( __FILE__, array( $f, 'fontsampler_activate' ));
+wp_enqueue_style( 'wp-color-picker' );
+wp_enqueue_script('iris', admin_url( 'js/iris.min.js' ), array( 'jquery-ui-draggable', 'jquery-ui-slider', 'jquery-touch-punch' ), false, 1);
 
 
 
@@ -55,7 +57,7 @@ class Fontsampler {
         $this->table_settings = $this->db->prefix . "fontsampler_settings";
 
         $this->booleanOptions = array( 'size', 'letterspacing', 'lineheight', 'fontpicker', 'sampletexts', 'alignment',
-            'invert', 'ot_liga', 'ot_hlig', 'ot_dlig', 'ot_calt', 'ot_frac', 'ot_sups', 'ot_subs' );
+            'invert', 'ot_liga', 'ot_hlig', 'ot_dlig', 'ot_calt', 'ot_frac', 'ot_sups', 'ot_subs', 'color_fore', 'color_back' );
         $this->fontFormats = array( 'woff2', 'woff', 'eot', 'svg', 'ttf' );
 	}
 
@@ -108,7 +110,9 @@ class Fontsampler {
 				'line_height_min'		    => '70',
 				'line_height_max'		    => '300',
 				'line_height_initial'	    => '110',
-				'line_height_unit'		    => '%'
+				'line_height_unit'		    => '%',
+				'color_fore'						=> '000000',
+				'color_back'						=> 'ffffff'
 			), $defaults );
 
 			// buffer output until return
@@ -339,6 +343,8 @@ class Fontsampler {
                 `line_height_min` smallint( 5 ) NOT NULL DEFAULT '0',
                 `line_height_max` smallint( 5 ) NOT NULL DEFAULT '300',
                 `sample_texts` text NOT NULL,
+								`color_fore` tinytext NOT NULL,
+ 								`color_back` tinytext NOT NULL,
                 PRIMARY KEY ( `id` )
                 );";
         $this->db->query( $sql );
@@ -353,7 +359,9 @@ class Fontsampler {
             'line_height_initial' => 110,
             'line_height_min' => 0,
             'line_height_max' => 300,
-            'sample_texts' => "hamburgerfontstiv\nabcdefghijklmnopqrstuvwxyz\nABCDEFGHIJKLMNOPQRSTUVWXYZ\nThe quick brown fox jumps over the lazy cat"
+            'sample_texts' => "hamburgerfontstiv\nabcdefghijklmnopqrstuvwxyz\nABCDEFGHIJKLMNOPQRSTUVWXYZ\nThe quick brown fox jumps over the lazy cat",
+						'color_fore' => "#000000",
+						'color_back' => "#FFFFFF"
         );
         $this->db->insert( $this->table_settings, $data );
     }
@@ -622,7 +630,7 @@ class Fontsampler {
 				$id = intval( $_POST['id'] );
 				$this->db->update( $this->table_sets, $data, array( 'id' => $id ));
 			}
-            
+
 			// wipe join table for this fontsampler, then add whatever now was instructed to be saved
 			$this->db->delete( $this->table_join, array( 'set_id' => $id ));
 
@@ -661,7 +669,9 @@ class Fontsampler {
                 'line_height_initial',
                 'line_height_min',
                 'line_height_max',
-                'sample_texts'
+                'sample_texts',
+								'color_fore',
+								'color_back'
             );
 
             $data = array();

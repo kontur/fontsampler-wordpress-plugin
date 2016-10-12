@@ -42,4 +42,7 @@ jQuery(function () {
 
     $(".fontsampler-preview").fontSampler();
 
+		//Colour picker
+		$('.color-picker').iris();
+
 });
