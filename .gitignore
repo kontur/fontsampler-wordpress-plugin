@@ -1,6 +1,7 @@
 # Created by .ignore support plugin (hsz.mobi)
 ### WordPress template
 *.log
+*.orig
 .htaccess
 sitemap.xml
 sitemap.xml.gz
@@ -32,3 +33,5 @@ bower_components/jquery-selectric/public/*
 !bower_components/jquery-fontsampler/
 bower_components/jquery-fontsampler/*
 !bower_components/jquery-fontsampler/dist/
+
+config.codekit

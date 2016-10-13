@@ -8,7 +8,7 @@
 				<span class="slider-value"><?php echo $replace['font_size_initial']; ?>
 					&nbsp;<?php echo $replace['font_size_unit']; ?></span>
 				<input type="range" min="<?php echo $replace['font_size_min']; ?>"
-				       max="<?php echo $replace['font_size_max']; ?>" value="<?php echo $replace['font_size_value']; ?>"
+				       max="<?php echo $replace['font_size_max']; ?>" value="<?php echo $replace['font_size_initial']; ?>"
 				       data-unit="<?php echo $replace['font_size_unit']; ?>" name="font-size">
 			</label>
 		<?php endif; ?>
@@ -20,7 +20,7 @@
 					&nbsp;<?php echo $replace['letter_spacing_unit']; ?></span>
 				<input type="range" min="<?php echo $replace['letter_spacing_min']; ?>"
 				       max="<?php echo $replace['letter_spacing_max']; ?>"
-				       value="<?php echo $replace['letter_spacing_value']; ?>"
+				       value="<?php echo $replace['letter_spacing_initial']; ?>"
 				       data-unit="<?php echo $replace['letter_spacing_unit']; ?>" name="letter-spacing">
 			</label>
 		<?php endif; ?>

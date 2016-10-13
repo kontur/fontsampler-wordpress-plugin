@@ -42,4 +42,20 @@ jQuery(function () {
 
     $(".fontsampler-preview").fontSampler();
 
+		//Colour picker
+		$('.color-picker').wpColorPicker({
+			color: false,
+    mode: 'hsl',
+    controls: {
+        horiz: 's', // horizontal defaults to saturation
+        vert: 'l', // vertical defaults to lightness
+        strip: 'h' // right strip defaults to hue
+    },
+    hide: true, // hide the color picker by default
+    border: false, // draw a border around the collection of UI elements
+    target: false, // a DOM element / jQuery selector that the element will be appended within. Only used when called on an input.
+    width: 200, // the width of the collection of UI elements
+    palettes: true // show a palette of basic colors beneath the square.
+		});
+
 });

@@ -26,10 +26,10 @@ $f = new Fontsampler( $wpdb );
 add_shortcode( 'fontsampler', array( $f, 'fontsampler_shortcode' ) );
 
 // backend
-add_action( 'admin_menu', array( $f, 'fontsampler_plugin_setup_menu' ) );
-add_action( 'admin_enqueue_scripts', array( $f, 'fontsampler_admin_enqueues' ) );
-add_filter( 'upload_mimes', array( $f, 'allow_font_upload_types' ) );
-register_activation_hook( __FILE__, array( $f, 'fontsampler_activate' ) );
+add_action( 'admin_menu', array( $f, 'fontsampler_plugin_setup_menu' ));
+add_action( 'admin_enqueue_scripts', array( $f, 'fontsampler_admin_enqueues' ));
+add_filter( 'upload_mimes', array( $f, 'allow_font_upload_types' ));
+register_activation_hook( __FILE__, array( $f, 'fontsampler_activate' ));
 
 
 class Fontsampler {
@@ -54,7 +54,7 @@ class Fontsampler {
 		// keep track of db versions and migrations via this
 		// simply set this to the current PLUGIN VERSION number when bumping it
 		// i.e. a database update always bumps the version number of the plugin as well
-		$this->fontsampler_db_version = '0.0.1';
+		$this->fontsampler_db_version = '0.0.2';
 
 		$current_db_version = get_option( 'fontsampler_db_version' );
 
@@ -120,21 +120,23 @@ class Fontsampler {
 			$defaults = $this->get_settings();
 			// some of these get overwritten from defaults, but list them all here explicitly
 			$replace = array_merge( array(
-				'font_size_label'        => 'Size',
-				'font_size_min'          => '8',
-				'font_size_max'          => '96',
-				'font_size_initial'      => '14',
-				'font_size_unit'         => 'px',
-				'letter_spacing_label'   => 'Letter spacing',
-				'letter_spacing_min'     => '-5',
-				'letter_spacing_max'     => '5',
-				'letter_spacing_initial' => '0',
-				'letter_spacing_unit'    => 'px',
-				'line_height_label'      => 'Line height',
-				'line_height_min'        => '70',
-				'line_height_max'        => '300',
-				'line_height_initial'    => '110',
-				'line_height_unit'       => '%',
+				'font_size_label'		    => 'Size',
+				'font_size_min'			    => '8',
+				'font_size_max'			    => '96',
+				'font_size_initial'		    => '14',
+				'font_size_unit'		    => 'px',
+				'letter_spacing_label'  	=> 'Letter spacing',
+				'letter_spacing_min'    	=> '-5',
+				'letter_spacing_max'	    => '5',
+				'letter_spacing_initial'	=> '0',
+				'letter_spacing_unit'	    => 'px',
+				'line_height_label'		    => 'Line height',
+				'line_height_min'		    => '70',
+				'line_height_max'		    => '300',
+				'line_height_initial'	    => '110',
+				'line_height_unit'		    => '%',
+				'color_fore'				=> '000000',
+				'color_back'				=> 'ffffff',
 			), $defaults );
 
 			// buffer output until return
@@ -144,9 +146,13 @@ class Fontsampler {
 			// include, aka echo, template with replaced values from $replace above
 			include( 'includes/interface.php' );
 
+			$settings = $this->get_settings();
+
 			// NOTE echo with " and class with ' to output json as ""-enclosed strings
-			echo "<div class='fontsampler' data-font-files='" . $this->fontfiles_json( $fonts[0] ) . "' data-multiline='" .
-			     $set['multiline'] . "'>" . str_replace( '\n', '<br>', $set['initial'] ) . '</div></div>';
+			echo "<div class='fontsampler fontsampler-id-" . $set['id'] . "' style='background-color:" . $settings['color_back']
+			     . "' data-font-files='" . $this->fontfiles_json( $fonts[0] ) . "' data-multiline='" .
+			     $set['multiline'] . "'><span class='color-fore' style='color:" . $settings['color_fore'] . ";'>" .
+			     str_replace( '\n', '<br>', $set['initial'] ) . '</span></div></div>';
 
 			// return all that's been buffered
 			return ob_get_clean();
@@ -169,9 +175,11 @@ class Fontsampler {
 	 * Register scripts and styles needed in the admin panel
 	 */
 	function fontsampler_admin_enqueues() {
-		wp_enqueue_script( 'fontsampler-rangeslider-js' );
+		wp_enqueue_script( 'fontsampler-rangeslider-js', plugin_dir_url( __FILE__ ) . 'bower_components/rangeslider.js/dist/rangeslider.min.js', array( 'jquery' ) );
 		wp_enqueue_script( 'fontsampler-preview-js', plugin_dir_url( __FILE__ ) . 'bower_components/jquery-fontsampler/dist/jquery.fontsampler.js', array( 'jquery' ) );
 		wp_enqueue_script( 'fontsampler-admin-js', plugin_dir_url( __FILE__ ) . 'js/fontsampler-admin.js', array( 'jquery' ) );
+		wp_enqueue_script( 'colour-pick', plugins_url('js/fontsampler-admin.js', __FILE__ ), array( 'wp-color-picker' ), false, true );
+		wp_enqueue_style( 'wp-color-picker' );
 		wp_enqueue_style( 'fontsampler_admin_css', plugin_dir_url( __FILE__ ) . '/fontsampler-admin.css', false, '1.0.0' );
 	}
 
@@ -366,32 +374,36 @@ class Fontsampler {
 
 	function create_table_settings() {
 		$sql = "CREATE TABLE " . $this->table_settings . " (
-                `id` int( 11 ) unsigned NOT NULL AUTO_INCREMENT,
-                `font_size_initial` smallint( 5 ) unsigned NOT NULL DEFAULT '18',
-                `font_size_min` smallint( 5 ) unsigned NOT NULL DEFAULT '8',
-                `font_size_max` smallint( 5 ) unsigned NOT NULL DEFAULT '96',
-                `letter_spacing_initial` tinyint( 5 ) NOT NULL DEFAULT '0',
-                `letter_spacing_min` tinyint( 3 ) NOT NULL DEFAULT '-5',
-                `letter_spacing_max` tinyint( 3 ) NOT NULL DEFAULT '5',
-                `line_height_initial` smallint( 5 ) NOT NULL DEFAULT '110',
-                `line_height_min` smallint( 5 ) NOT NULL DEFAULT '0',
-                `line_height_max` smallint( 5 ) NOT NULL DEFAULT '300',
-                `sample_texts` text NOT NULL,
-                PRIMARY KEY ( `id` )
-                );";
+			`id` int( 11 ) unsigned NOT NULL AUTO_INCREMENT,
+			`font_size_initial` smallint( 5 ) unsigned NOT NULL DEFAULT '18',
+			`font_size_min` smallint( 5 ) unsigned NOT NULL DEFAULT '8',
+			`font_size_max` smallint( 5 ) unsigned NOT NULL DEFAULT '96',
+			`letter_spacing_initial` tinyint( 5 ) NOT NULL DEFAULT '0',
+			`letter_spacing_min` tinyint( 3 ) NOT NULL DEFAULT '-5',
+			`letter_spacing_max` tinyint( 3 ) NOT NULL DEFAULT '5',
+			`line_height_initial` smallint( 5 ) NOT NULL DEFAULT '110',
+			`line_height_min` smallint( 5 ) NOT NULL DEFAULT '0',
+			`line_height_max` smallint( 5 ) NOT NULL DEFAULT '300',
+			`sample_texts` text NOT NULL,
+			`color_fore` tinytext NOT NULL,
+			`color_back` tinytext NOT NULL,
+			PRIMARY KEY ( `id` )
+			);";
 		$this->db->query( $sql );
 
 		$data = array(
-			'font_size_initial'      => 18,
-			'font_size_min'          => 8,
-			'font_size_max'          => 96,
+			'font_size_initial' => 18,
+			'font_size_min' => 8,
+			'font_size_max' => 96,
 			'letter_spacing_initial' => 0,
-			'letter_spacing_min'     => - 5,
-			'letter_spacing_max'     => 5,
-			'line_height_initial'    => 110,
-			'line_height_min'        => 0,
-			'line_height_max'        => 300,
-			'sample_texts'           => "hamburgerfontstiv\nabcdefghijklmnopqrstuvwxyz\nABCDEFGHIJKLMNOPQRSTUVWXYZ\nThe quick brown fox jumps over the lazy cat",
+			'letter_spacing_min' => -5,
+			'letter_spacing_max' => 5,
+			'line_height_initial' => 110,
+			'line_height_min' => 0,
+			'line_height_max' => 300,
+			'sample_texts' => "hamburgerfontstiv\nabcdefghijklmnopqrstuvwxyz\nABCDEFGHIJKLMNOPQRSTUVWXYZ\nThe quick brown fox jumps over the lazy cat",
+			'color_fore' => '#000000',
+			'color_back' => '#FFFFFF',
 		);
 		$this->db->insert( $this->table_settings, $data );
 	}
@@ -417,18 +429,14 @@ class Fontsampler {
 	function migrate_db() {
 		// list here any queries to update the tables to the specific version
 		// NOTE: ASCENDING ORDER MATTERS!!!
-
-		// TODO remove dummy queries on first use
 		$changes = array(
+			// 0.0.2 added some settings and defaults for them
+			// TODO replace id 1 with "WHERE default = 1" once implemented
 			'0.0.2' => array(
-				"SHOW TABLES LIKE 'foo'",
-				"SHOW TABLES LIKE 'bla'",
-			),
-			'0.0.4' => array(
-				"SHOW TABLES LIKE 'blabla'",
-			),
-			'0.0.9' => array(
-				"SHOW TABLES LIKE 'foobar'",
+				'ALTER TABLE ' . $this->table_settings . ' ADD `color_fore` tinytext NOT NULL',
+				'UPDATE ' . $this->table_settings . " SET `color_fore` = '#000000' WHERE id = '1'",
+				'ALTER TABLE ' . $this->table_settings . ' ADD `color_back` tinytext NOT NULL',
+				'UPDATE ' . $this->table_settings . " SET `color_back` = '#FFFFFF' WHERE id = '1'",
 			),
 		);
 
@@ -438,7 +446,7 @@ class Fontsampler {
 			// check that:
 			// 1) not updating beyond what is the coded fontsampler_db_version even if there is update entries in the array
 			// 2) the current version stored in the db is smaller than what we're updating to
-			if ( version_compare( $version, $this->fontsampler_db_version ) < 0 &&
+			if ( version_compare( $version, $this->fontsampler_db_version ) <= 0 &&
 				version_compare( get_option( 'fontsampler_db_version' ), $version ) < 0 ) {
 				foreach ( $queries as $sql ) {
 					$res = $this->db->query( $sql );
@@ -509,8 +517,8 @@ class Fontsampler {
 	 * Read from fontsampler sets table
 	 */
 	function get_sets() {
-		$sql           = 'SELECT * FROM ' . $this->table_sets . ' s';
-		$sets          = $this->db->get_results( $sql, ARRAY_A );
+		$sql = 'SELECT * FROM ' . $this->table_sets . ' s';
+		$sets  = $this->db->get_results( $sql, ARRAY_A );
 		$set_with_fonts = array();
 		foreach ( $sets as $set ) {
 			$sql = 'SELECT f.name, f.id, ';
@@ -756,7 +764,6 @@ class Fontsampler {
 		// no settings ID's for now, just one default row
 		$id = (int) ( $_POST['id'] );
 		if ( 'edit_settings' == $_POST['action'] && isset( $id ) && is_int( $id ) && $id > 0 ) {
-			check_admin_referer( 'fontsampler-action-edit_settings' );
 			$settings_fields = array(
 				'font_size_initial',
 				'font_size_min',
@@ -768,6 +775,8 @@ class Fontsampler {
 				'line_height_min',
 				'line_height_max',
 				'sample_texts',
+				'color_fore',
+				'color_back',
 			);
 
 			$data = array();
