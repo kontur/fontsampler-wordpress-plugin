@@ -21,12 +21,8 @@ defined( 'ABSPATH' ) or die( 'Nope.' );
 global $wpdb;
 $f = new Fontsampler( $wpdb );
 
-// frontend
-wp_register_script( 'fontsampler-js', plugin_dir_url( __FILE__ ) . 'bower_components/jquery-fontsampler/dist/jquery.fontsampler.js', array( 'jquery' ) );
-wp_register_script( 'fontsampler-init-js', plugin_dir_url( __FILE__ ) . 'js/fontsampler-init.js', array( 'fontsampler-js' ) );
-wp_register_script( 'fontsampler-rangeslider-js', plugin_dir_url( __FILE__ ) . 'bower_components/rangeslider.js/dist/rangeslider.min.js', array( 'jquery' ) );
-wp_register_script( 'fontsampler-selectric-js', plugin_dir_url( __FILE__ ) . 'bower_components/jquery-selectric/public/jquery.selectric.min.js', array( 'jquery' ) );
-wp_enqueue_style( 'fontsampler-css', plugin_dir_url( __FILE__ ) . 'fontsampler-interface.css' );
+
+// register the shortcode hook
 add_shortcode( 'fontsampler', array( $f, 'fontsampler_shortcode' ) );
 
 // backend
@@ -45,13 +41,33 @@ class Fontsampler {
 	private $table_settings;
 	private $boolean_options;
 	private $font_formats;
+	private $fontsampler_db_version;
 
 	function Fontsampler( $wpdb ) {
+		// convenience variables for the wpdb object and the fontsampler db tables
 		$this->db             = $wpdb;
 		$this->table_sets     = $this->db->prefix . 'fontsampler_sets';
 		$this->table_fonts    = $this->db->prefix . 'fontsampler_fonts';
 		$this->table_join     = $this->db->prefix . 'fontsampler_sets_x_fonts';
 		$this->table_settings = $this->db->prefix . 'fontsampler_settings';
+
+		// keep track of db versions and migrations via this
+		// simply set this to the current PLUGIN VERSION number when bumping it
+		// i.e. a database update always bumps the version number of the plugin as well
+		$this->fontsampler_db_version = '0.0.1';
+
+		$current_db_version = get_option( 'fontsampler_db_version' );
+
+		// if no previous db version has been registered assume new install and set to v 0.0.1 which was the "last"
+		// version install without the db option
+		if ( ! $current_db_version ) {
+			add_option( 'fontsampler_db_version', '0.0.1' );
+			$current_db_version = '0.0.1';
+		}
+
+		if ( version_compare( $current_db_version, $this->fontsampler_db_version ) < 0 ) {
+			$this->migrate_db();
+		}
 
 		$this->boolean_options = array(
 			'size',
@@ -69,7 +85,7 @@ class Fontsampler {
 			'ot_sups',
 			'ot_subs',
 		);
-		$this->font_formats    = array( 'woff2', 'woff', 'eot', 'svg', 'ttf' );
+		$this->font_formats = array( 'woff2', 'woff', 'eot', 'svg', 'ttf' );
 	}
 
 
@@ -82,10 +98,7 @@ class Fontsampler {
 	 * Register the [fontsampler id=XX] hook for use in pages and posts
 	 */
 	function fontsampler_shortcode( $atts ) {
-		wp_enqueue_script( 'fontsampler-js' );
-		wp_enqueue_script( 'fontsampler-init-js' );
-		wp_enqueue_script( 'fontsampler-selectric-js' );
-		wp_enqueue_script( 'fontsampler-rangeslider-js' );
+		$this->fontsampler_interface_enqueues();
 
 		// merge in possibly passed in attributes
 		$attributes = shortcode_atts( array( 'id' => '0' ), $atts );
@@ -103,7 +116,7 @@ class Fontsampler {
 				}
 			}
 
-			// TODO labels from options
+			// TODO labels from options or translation file
 			$defaults = $this->get_settings();
 			// some of these get overwritten from defaults, but list them all here explicitly
 			$replace = array_merge( array(
@@ -127,7 +140,6 @@ class Fontsampler {
 			// buffer output until return
 			ob_start();
 
-			// TODO option to pass in @fontface file stack for css generation javascript side
 			echo '<div class="fontsampler-wrapper">';
 			// include, aka echo, template with replaced values from $replace above
 			include( 'includes/interface.php' );
@@ -142,6 +154,17 @@ class Fontsampler {
 	}
 
 
+	/**
+	 * Register all script and styles needed in the front end
+	 */
+	function fontsampler_interface_enqueues() {
+		wp_enqueue_script( 'fontsampler-js', plugin_dir_url( __FILE__ ) . 'bower_components/jquery-fontsampler/dist/jquery.fontsampler.js', array( 'jquery' ) );
+		wp_enqueue_script( 'fontsampler-init-js', plugin_dir_url( __FILE__ ) . 'js/fontsampler-init.js', array( 'fontsampler-js' ) );
+		wp_enqueue_script( 'fontsampler-rangeslider-js', plugin_dir_url( __FILE__ ) . 'bower_components/rangeslider.js/dist/rangeslider.min.js', array( 'jquery' ) );
+		wp_enqueue_script( 'fontsampler-selectric-js', plugin_dir_url( __FILE__ ) . 'bower_components/jquery-selectric/public/jquery.selectric.min.js', array( 'jquery' ) );
+		wp_enqueue_style( 'fontsampler-css', plugin_dir_url( __FILE__ ) . 'fontsampler-interface.css' );
+	}
+
 	/*
 	 * Register scripts and styles needed in the admin panel
 	 */
@@ -149,8 +172,7 @@ class Fontsampler {
 		wp_enqueue_script( 'fontsampler-rangeslider-js' );
 		wp_enqueue_script( 'fontsampler-preview-js', plugin_dir_url( __FILE__ ) . 'bower_components/jquery-fontsampler/dist/jquery.fontsampler.js', array( 'jquery' ) );
 		wp_enqueue_script( 'fontsampler-admin-js', plugin_dir_url( __FILE__ ) . 'js/fontsampler-admin.js', array( 'jquery' ) );
-		wp_register_style( 'fontsampler_admin_css', plugin_dir_url( __FILE__ ) . '/fontsampler-admin.css', false, '1.0.0' );
-		wp_enqueue_style( 'fontsampler_admin_css' );
+		wp_enqueue_style( 'fontsampler_admin_css', plugin_dir_url( __FILE__ ) . '/fontsampler-admin.css', false, '1.0.0' );
 	}
 
 
@@ -219,7 +241,6 @@ class Fontsampler {
                     uploads folder at: <em>' . $upload . '</em></p>';
 		}
 
-
 		if ( 'POST' == $_SERVER['REQUEST_METHOD'] && isset( $_POST['action'] ) ) {
 			$this->handle_font_edit();
 			$this->handle_font_delete();
@@ -228,7 +249,8 @@ class Fontsampler {
 			$this->handle_settings_edit();
 		}
 
-		switch ( $_GET['subpage'] ) {
+		$subpage = isset( $_GET['subpage'] ) ? $_GET['subpage'] : '';
+		switch ( $subpage ) {
 			case 'create':
 				$set   = null;
 				$fonts = $this->get_fontfile_posts();
@@ -389,8 +411,58 @@ class Fontsampler {
 		$this->db->query( $sql );
 	}
 
+	/**
+	 * Updates the database schemas based on current db version and target db version
+	 */
+	function migrate_db() {
+		// list here any queries to update the tables to the specific version
+		// NOTE: ASCENDING ORDER MATTERS!!!
 
-	/*
+		// TODO remove dummy queries on first use
+		$changes = array(
+			'0.0.2' => array(
+				"SHOW TABLES LIKE 'foo'",
+				"SHOW TABLES LIKE 'bla'",
+			),
+			'0.0.4' => array(
+				"SHOW TABLES LIKE 'blabla'",
+			),
+			'0.0.9' => array(
+				"SHOW TABLES LIKE 'foobar'",
+			),
+		);
+
+		// loop through the available update queries and execute those that are higher versions than the currently
+		// database stored db version option
+		foreach ( $changes as $version => $queries ) {
+			// check that:
+			// 1) not updating beyond what is the coded fontsampler_db_version even if there is update entries in the array
+			// 2) the current version stored in the db is smaller than what we're updating to
+			if ( version_compare( $version, $this->fontsampler_db_version ) < 0 &&
+				version_compare( get_option( 'fontsampler_db_version' ), $version ) < 0 ) {
+				foreach ( $queries as $sql ) {
+					$res = $this->db->query( $sql );
+					if ( false === $res ) {
+						$this->error( "Database schema update to $version failed" );
+						// if encountering an update error, break out of the entire routine
+						$this->error( 'Aborting database migration' );
+						return false;
+					}
+				}
+				// bump the version number option in the options database
+				$this->info( "Updated database schema to $version" );
+				update_option( 'fontsampler_db_version', $version );
+			}
+		}
+		// if all executed bump the version number option in the options database to the manually entered db version
+		// even if the last query was not of that high of a version (which it shouldn't)
+		update_option( 'fontsampler_db_version', $this->fontsampler_db_version );
+		$this->info( 'Database schemas now up to date' );
+		return true;
+	}
+
+
+	/**
 	 * Helper to check if tables exist
 	 * TODO: check if tables are in the correct structure
 	 */
@@ -401,6 +473,9 @@ class Fontsampler {
 	}
 
 
+	/**
+	 * Helper that checks for the existance of all required fontsampler tables and where missing creates them
+	 */
 	function check_and_create_tables() {
 		// check the fontsampler tables exist, and if not, create them now
 		if ( ! $this->check_table_exists( $this->table_sets ) ) {
