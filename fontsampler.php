@@ -268,6 +268,10 @@ class Fontsampler {
 
 			case 'edit':
 				$set   = $this->get_set( intval( $_GET['id'] ) );
+				$order = [];
+				foreach ( explode( '|', $set['ui_order'] ) as $commavalues ) {
+					array_push( $order, explode( ',', $commavalues ) );
+				}
 				$fonts = $this->get_fontfile_posts();
 				include( 'includes/sample-edit.php' );
 				break;
@@ -343,6 +347,7 @@ class Fontsampler {
                 `ot_frac` tinyint( 1 ) NOT NULL DEFAULT '0',
                 `ot_sups` tinyint( 1 ) NOT NULL DEFAULT '0',
                 `ot_subs` tinyint( 1 ) NOT NULL DEFAULT '0',
+                `ui_order` VARCHAR( 255 ) NOT NULL DEFAULT 'size,letterspacing,options|fontpicker,sampletexts,lineheight|fontsampler'
 			  PRIMARY KEY ( `id` )
 			)";
 		$this->db->query( $sql );
@@ -438,6 +443,7 @@ class Fontsampler {
 				'UPDATE ' . $this->table_settings . " SET `color_fore` = '#000000' WHERE id = '1'",
 				'ALTER TABLE ' . $this->table_settings . ' ADD `color_back` tinytext NOT NULL',
 				'UPDATE ' . $this->table_settings . " SET `color_back` = '#FFFFFF' WHERE id = '1'",
+				'ALTER TABLE ' . $this->table_sets . " ADD `ui_order` VARCHAR( 255 ) NOT NULL DEFAULT 'size,letterspacing,options|fontpicker,sampletexts,lineheight|fontsampler'",
 			),
 		);
 
@@ -722,6 +728,8 @@ class Fontsampler {
 			}
 
 			$id = null;
+
+			$data['ui_order'] = $_POST['ui_order'];
 
 			if ( ! isset( $_POST['id'] ) ) {
 				// insert new

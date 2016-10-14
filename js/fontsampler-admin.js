@@ -58,12 +58,28 @@ jQuery(function () {
 
 
     // UI preview sortable
+    function calculateUIOrder() {
+        var order = "";
+        $(".fontsampler-ui-preview-list").each(function (index, element) {
+            console.log(index, order);
+            $(element).children("li").each(function (i, elem) {
+                order = order.concat($(elem).data("name")).concat(",");
+            });
+            order = order.slice(0, -1);
+            order = order.concat("|");
+        });
+        order = order.slice(0, -1);
+        $(".fontsampler-ui-preview input[name=ui_order]").val(order);
+        return order;
+    }
+
     $(".fontsampler-ui-preview-list").sortable({
         connectWith: ".fontsampler-ui-preview-list",
         placeholder: "ui-state-highlight",
         forcePlaceholderSize: true,
         stop: function () {
             $(".fontsampler-ui-preview-list .original-sibling").removeClass("original-sibling");
+            calculateUIOrder();
         },
         over: function( event, ui ) {
             // TODO there is one case that is not covered ideally:

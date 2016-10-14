@@ -145,7 +145,18 @@
 		<p>You can customize the order of interface elements to differ from the defaults.</p>
 		<p>Only items you have selected above will be available for sorting in this preview.</p>
 		<div class="fontsampler-ui-preview">
+			<input name="ui_order" type="hidden" value="<?php if ( ! empty( $set['ui_order'] ) ) : echo $set['ui_order']; endif; ?>">
 			<p>Below the elements in order of how they are displayed. You can sort them by dragging and dropping.</p>
+			<?php if ( ! empty( $order ) ) : ?>
+				<?php foreach ( $order as $row ) : ?>
+					<ul class="fontsampler-ui-preview-list">
+					<?php foreach ( $row as $item ) : ?>
+						<li class="fontsampler-ui-block <?php if ( 'fontsampler' == $item ) : echo 'fontsampler-ui-placeholder-full'; endif; ?>"
+						    data-name="<?php echo $item; ?>"><?php echo $item; ?></li>
+					<?php endforeach; ?>
+					</ul>
+				<?php endforeach; ?>
+			<?php else : ?>
 			<ul class="fontsampler-ui-preview-list fontsampler-ui-preview-row-1">
 				<li class="fontsampler-ui-block" data-name="size">Font size</li>
 				<li class="fontsampler-ui-block" data-name="letterspacing">Letter spacing</li>
@@ -159,6 +170,7 @@
 			<ul class="fontsampler-ui-preview-list fontsampler-ui-preview-row-3">
 				<li class="fontsampler-ui-block fontsampler-ui-placeholder-full" data-name="fontsampler">Textarea</li>
 			</ul>
+			<?php endif; ?>
 		</div>
 
 		<h3>Css options</h3>
