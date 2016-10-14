@@ -143,16 +143,12 @@ class Fontsampler {
 			ob_start();
 
 			echo '<div class="fontsampler-wrapper">';
+			$settings = $this->get_settings();
+
 			// include, aka echo, template with replaced values from $replace above
 			include( 'includes/interface.php' );
 
-			$settings = $this->get_settings();
-
-			// NOTE echo with " and class with ' to output json as ""-enclosed strings
-			echo "<div class='fontsampler fontsampler-id-" . $set['id'] . "' style='background-color:" . $settings['color_back']
-			     . "' data-font-files='" . $this->fontfiles_json( $fonts[0] ) . "' data-multiline='" .
-			     $set['multiline'] . "'><span class='color-fore' style='color:" . $settings['color_fore'] . ";'>" .
-			     str_replace( '\n', '<br>', $set['initial'] ) . '</span></div></div>';
+			echo '</div>';
 
 			// return all that's been buffered
 			return ob_get_clean();
@@ -268,10 +264,7 @@ class Fontsampler {
 
 			case 'edit':
 				$set   = $this->get_set( intval( $_GET['id'] ) );
-				$order = [];
-				foreach ( explode( '|', $set['ui_order'] ) as $commavalues ) {
-					array_push( $order, explode( ',', $commavalues ) );
-				}
+
 				$fonts = $this->get_fontfile_posts();
 				include( 'includes/sample-edit.php' );
 				break;
@@ -556,6 +549,13 @@ class Fontsampler {
 		if ( 0 == $this->db->num_rows ) {
 			return false;
 		}
+
+		// generate order array with rows of arrays of ui fields
+		$order = [];
+		foreach ( explode( '|', $set['ui_order'] ) as $commavalues ) {
+			array_push( $order, explode( ',', $commavalues ) );
+		}
+		$set['ui_order_parsed'] = $order;
 
 		if ( ! $including_fonts ) {
 			return $set;

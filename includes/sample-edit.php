@@ -147,8 +147,8 @@
 		<div class="fontsampler-ui-preview">
 			<input name="ui_order" type="hidden" value="<?php if ( ! empty( $set['ui_order'] ) ) : echo $set['ui_order']; endif; ?>">
 			<p>Below the elements in order of how they are displayed. You can sort them by dragging and dropping.</p>
-			<?php if ( ! empty( $order ) ) : ?>
-				<?php foreach ( $order as $row ) : ?>
+			<?php if ( ! empty( $set['ui_order_parsed'] ) ) : ?>
+				<?php foreach ( $set['ui_order_parsed'] as $row ) : ?>
 					<ul class="fontsampler-ui-preview-list">
 					<?php foreach ( $row as $item ) : ?>
 						<li class="fontsampler-ui-block <?php if ( 'fontsampler' == $item ) : echo 'fontsampler-ui-placeholder-full'; endif; ?>"

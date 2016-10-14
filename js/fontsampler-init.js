@@ -10,7 +10,7 @@ jQuery(function () {
 
 	// interface
 	$(".fontsampler-interface input[type=range]").on('change, input', function () {
-		var $fs = $(this).closest('.fontsampler-interface').siblings('.fontsampler'),
+		var $fs = $(this).closest('.fontsampler-interface').find('.fontsampler'),
 			val = $(this).val(),
 			unit = $(this).data('unit');
 
@@ -32,7 +32,7 @@ jQuery(function () {
 
 
 	$(".fontsampler-interface select").on('change', function () {
-		var $fs = $(this).closest('.fontsampler-interface').siblings('.fontsampler'),
+		var $fs = $(this).closest('.fontsampler-interface').find('.fontsampler'),
 			val = $(this).val();
 
 		switch ($(this).attr('name')) {
@@ -47,7 +47,7 @@ jQuery(function () {
 		}
 	});
 
-	$('.fontsampler-interface input[type="range"]').css("outline", "1px solid red").rangeslider({			
+	$('.fontsampler-interface input[type="range"]').rangeslider({
 	    // Feature detection the default is `true`.
 	    // Set this to `false` if you want to use
 	    // the polyfill also in Browsers which support
