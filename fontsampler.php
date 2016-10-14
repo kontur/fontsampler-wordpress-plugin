@@ -178,7 +178,7 @@ class Fontsampler {
 		wp_enqueue_script( 'fontsampler-rangeslider-js', plugin_dir_url( __FILE__ ) . 'bower_components/rangeslider.js/dist/rangeslider.min.js', array( 'jquery' ) );
 		wp_enqueue_script( 'fontsampler-preview-js', plugin_dir_url( __FILE__ ) . 'bower_components/jquery-fontsampler/dist/jquery.fontsampler.js', array( 'jquery' ) );
 		wp_enqueue_script( 'fontsampler-admin-js', plugin_dir_url( __FILE__ ) . 'js/fontsampler-admin.js', array( 'jquery' ) );
-		wp_enqueue_script( 'colour-pick', plugins_url('js/fontsampler-admin.js', __FILE__ ), array( 'wp-color-picker' ), false, true );
+		wp_enqueue_script( 'colour-pick', plugins_url( 'js/fontsampler-admin.js', __FILE__ ), array( 'wp-color-picker' ), false, true );
 		wp_enqueue_style( 'wp-color-picker' );
 		wp_enqueue_style( 'fontsampler_admin_css', plugin_dir_url( __FILE__ ) . '/fontsampler-admin.css', false, '1.0.0' );
 	}
@@ -545,6 +545,7 @@ class Fontsampler {
 		$sql = 'SELECT * FROM ' . $this->table_sets . ' s
 				WHERE s.id = ' . $id;
 		$set = $this->db->get_row( $sql, ARRAY_A );
+
 		if ( 0 == $this->db->num_rows ) {
 			return false;
 		}
@@ -607,7 +608,7 @@ class Fontsampler {
 		$sql .= ' FROM ' . $this->table_fonts . ' f
 		        LEFT JOIN ' . $this->table_join . ' j
 		        ON j.font_id = f.id
-				WHERE f.id = ' . intval( $set_id );
+				WHERE j.set_id = ' . intval( $set_id );
 		$result = $this->db->get_results( $sql, ARRAY_A );
 
 		return 0 == $this->db->num_rows ? false : $result;
