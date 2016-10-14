@@ -91,8 +91,10 @@
 		select[name="font-selector"],
 		select[name="sample-text"], 
 		.selectric-wide {
-			margin-right: 2%;
-			width: 38%;
+            left: -5px;
+            padding: 0 5px;
+            margin-right: 5px;
+			width: 33%;
 		}
 		select[name="alignment"],
 		select[name="invert"], 
@@ -105,20 +107,28 @@
 			box-sizing: border-box;
 			float: left;
 			padding-right: 5px;
-			width: 10%;
+
+            &.one-item {
+                width: 17/3%;
+                > button {
+                    width: 100%;
+                }
+            }
 
 			&.two-items {
-				button {
+                width: 32/3%;
+				> button {
 					width: 50%;
 				}
 			}
 			&.three-items {
-				button {
+                width: 46/3%;
+				> button {
 					width: 33%;
 				}
 			}
 
-			button {
+			> button {
 				background: #fff;
 				border: 0;
 			    border-bottom: 1px solid #333;
@@ -150,6 +160,31 @@
 				opacity: 1;
 			}
 		}
+
+        .fontsampler-opentype-toggle {
+
+        }
+
+        .fontsampler-opentype-features {
+            display: none;
+            position: absolute;
+            width: auto;
+            right: 0;
+            top: 30px;
+            text-align: right;
+            background: #ffffff;
+            height: 30px;
+            padding: 5px;
+
+            &.shown {
+                display: block;
+            }
+
+            button.fontsampler-toggle {
+                height: 20px;
+                width: 20px;
+            }
+        }
 	}
 
 	// the actual container of the type sample

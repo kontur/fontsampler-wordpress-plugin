@@ -141,6 +141,26 @@
 				</label>
 			</div>
 		</div>
+		<h3>Interface order</h3>
+		<p>You can customize the order of interface elements to differ from the defaults.</p>
+		<p>Only items you have selected above will be available for sorting in this preview.</p>
+		<div class="fontsampler-ui-preview">
+			<p>Below the elements in order of how they are displayed. You can sort them by dragging and dropping.</p>
+			<ul class="fontsampler-ui-preview-list fontsampler-ui-preview-row-1">
+				<li class="fontsampler-ui-block" data-name="size">Font size</li>
+				<li class="fontsampler-ui-block" data-name="letterspacing">Letter spacing</li>
+				<li class="fontsampler-ui-block" data-name="lineheight">Line height</li>
+			</ul>
+			<ul class="fontsampler-ui-preview-list fontsampler-ui-preview-row-2">
+				<li class="fontsampler-ui-block" data-name="fontpicker">Font picker</li>
+				<li class="fontsampler-ui-block" data-name="sampletexts">Sample texts</li>
+				<li class="fontsampler-ui-block" data-name="options">Alignment, Invert &amp; OT</li>
+			</ul>
+			<ul class="fontsampler-ui-preview-list fontsampler-ui-preview-row-3">
+				<li class="fontsampler-ui-block fontsampler-ui-placeholder-full" data-name="fontsampler">Textarea</li>
+			</ul>
+		</div>
+
 		<h3>Css options</h3>
 
 		<p>(not implemented yet: custom styling for font samplers)</p>

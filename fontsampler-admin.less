@@ -219,4 +219,32 @@
             display: block;
         }
     }
+
+    // fontsampler UI sortable
+    ul.fontsampler-ui-preview-list {
+        border: 1px solid #ccc;
+        background: #ddd;
+        min-height: 4em;
+        margin: 5px 0;
+        width: 40em;
+        li {
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            background: #eee;
+            cursor: pointer;
+            float: left;
+            padding: 5px 10px;
+            text-align: center;
+            margin-right: 3%;
+            width: 30%;
+
+            &.fontsampler-ui-placeholder-full {
+                width: 100%;
+            }
+        }
+        .ui-state-highlight {
+            background: transparent;
+            border: 1px dotted orange;
+        }
+    }
 }

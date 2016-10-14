@@ -98,4 +98,13 @@ jQuery(function () {
             $fs.fontSampler("enableOTFeature", feature);
         }
     });
+
+
+    $(".fontsampler-opentype-toggle").on("click", function () {
+        $(this).siblings(".fontsampler-opentype-features").toggleClass("shown");
+    });
+    $(".fontsampler-opentype-features").on("click", "button", function () {
+        $(this).closest(".fontsampler-opentype-features").removeClass("shown");
+    });
+
 });

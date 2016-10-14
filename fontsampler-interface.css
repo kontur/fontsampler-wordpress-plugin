@@ -323,8 +323,10 @@
 .fontsampler-wrapper .fontsampler-interface select[name="font-selector"],
 .fontsampler-wrapper .fontsampler-interface select[name="sample-text"],
 .fontsampler-wrapper .fontsampler-interface .selectric-wide {
-  margin-right: 2%;
-  width: 38%;
+  left: -5px;
+  padding: 0 5px;
+  margin-right: 5px;
+  width: 33%;
 }
 .fontsampler-wrapper .fontsampler-interface select[name="alignment"],
 .fontsampler-wrapper .fontsampler-interface select[name="invert"],
@@ -335,15 +337,26 @@
   box-sizing: border-box;
   float: left;
   padding-right: 5px;
-  width: 10%;
 }
-.fontsampler-wrapper .fontsampler-interface .fontsampler-multiselect.two-items button {
+.fontsampler-wrapper .fontsampler-interface .fontsampler-multiselect.one-item {
+  width: 5.66666667%;
+}
+.fontsampler-wrapper .fontsampler-interface .fontsampler-multiselect.one-item > button {
+  width: 100%;
+}
+.fontsampler-wrapper .fontsampler-interface .fontsampler-multiselect.two-items {
+  width: 10.66666667%;
+}
+.fontsampler-wrapper .fontsampler-interface .fontsampler-multiselect.two-items > button {
   width: 50%;
 }
-.fontsampler-wrapper .fontsampler-interface .fontsampler-multiselect.three-items button {
+.fontsampler-wrapper .fontsampler-interface .fontsampler-multiselect.three-items {
+  width: 15.33333333%;
+}
+.fontsampler-wrapper .fontsampler-interface .fontsampler-multiselect.three-items > button {
   width: 33%;
 }
-.fontsampler-wrapper .fontsampler-interface .fontsampler-multiselect button {
+.fontsampler-wrapper .fontsampler-interface .fontsampler-multiselect > button {
   background: #fff;
   border: 0;
   border-bottom: 1px solid #333;
@@ -363,7 +376,7 @@
   opacity: 0.5;
   outline: none;
 }
-.fontsampler-wrapper .fontsampler-interface .fontsampler-multiselect button img {
+.fontsampler-wrapper .fontsampler-interface .fontsampler-multiselect > button img {
   display: block;
   max-width: 15px;
   max-height: 15px;
@@ -371,6 +384,24 @@
 }
 .fontsampler-wrapper .fontsampler-interface .fontsampler-multiselect .fontsampler-multiselect-selected {
   opacity: 1;
+}
+.fontsampler-wrapper .fontsampler-interface .fontsampler-opentype-features {
+  display: none;
+  position: absolute;
+  width: auto;
+  right: 0;
+  top: 30px;
+  text-align: right;
+  background: #ffffff;
+  height: 30px;
+  padding: 5px;
+}
+.fontsampler-wrapper .fontsampler-interface .fontsampler-opentype-features.shown {
+  display: block;
+}
+.fontsampler-wrapper .fontsampler-interface .fontsampler-opentype-features button.fontsampler-toggle {
+  height: 20px;
+  width: 20px;
 }
 .fontsampler-wrapper .fontsampler {
   clear: both;
