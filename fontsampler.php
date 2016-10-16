@@ -256,13 +256,13 @@ class Fontsampler {
 
 		$subpage = isset( $_GET['subpage'] ) ? $_GET['subpage'] : '';
 		switch ( $subpage ) {
-			case 'create':
+			case 'set_create':
 				$set   = null;
 				$fonts = $this->get_fontfile_posts();
 				include( 'includes/sample-edit.php' );
 				break;
 
-			case 'edit':
+			case 'set_edit':
 				$set   = $this->get_set( intval( $_GET['id'] ) );
 				$fonts = $this->get_fontfile_posts();
 				include( 'includes/sample-edit.php' );

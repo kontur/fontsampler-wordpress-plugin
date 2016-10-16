@@ -58,7 +58,7 @@
 				</td>
 				<td><code>[fontsampler id=<?php echo $set['id']; ?>]</code></td>
 				<td>
-					<form method="post" action="?page=fontsampler&amp;subpage=edit&amp;id=<?php echo $set['id']; ?>"
+					<form method="post" action="?page=fontsampler&amp;subpage=set_edit&amp;id=<?php echo $set['id']; ?>"
 					      style="display: inline-block;">
 						<?php submit_button( 'Edit set' ); ?>
 					</form>
@@ -76,4 +76,4 @@
 	</table>
 <?php endif; ?>
 
-<a class="button button-primary" href="?page=fontsampler&subpage=create">Create a new font sampler</a>
+<a class="button button-primary" href="?page=fontsampler&subpage=set_create">Create a new font sampler</a>
