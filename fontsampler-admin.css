@@ -101,6 +101,14 @@
 #fontsampler-admin input[type=file]:focus {
   border: 0;
 }
+#fontsampler-admin fieldset {
+  border: 1px solid #ccc;
+  padding: 1em 2em;
+}
+#fontsampler-admin fieldset legend {
+  font-weight: bold;
+  padding: 0 0.5em;
+}
 #fontsampler-admin table {
   border-collapse: collapse;
   border-spacing: 0;
@@ -276,11 +284,12 @@
   display: block;
 }
 #fontsampler-admin ul.fontsampler-ui-preview-list {
-  border: 1px solid #ccc;
-  background: #ddd;
-  min-height: 4em;
+  border: 1px dotted #ccc;
+  background: #fff;
+  min-height: 3em;
   margin: 5px 0;
-  width: 40em;
+  padding: 5px 0;
+  width: 50em;
 }
 #fontsampler-admin ul.fontsampler-ui-preview-list li {
   box-sizing: border-box;
@@ -290,11 +299,14 @@
   float: left;
   padding: 5px 10px;
   text-align: center;
-  margin-right: 3%;
+  margin-right: 1.5%;
+  margin-left: 1.5%;
   width: 30%;
+  position: relative;
+  min-height: 3em;
 }
 #fontsampler-admin ul.fontsampler-ui-preview-list li.fontsampler-ui-placeholder-full {
-  width: 100%;
+  width: 97%;
 }
 #fontsampler-admin ul.fontsampler-ui-preview-list .ui-state-highlight {
   background: transparent;

@@ -37,6 +37,16 @@
         }
     }
 
+    fieldset {
+        border: 1px solid #ccc;
+        padding: 1em 2em;
+
+        legend {
+            font-weight: bold;
+            padding: 0 0.5em;
+        }
+    }
+
     table {
         border-collapse: collapse;
         border-spacing: 0;
@@ -232,11 +242,12 @@
 
     // fontsampler UI sortable
     ul.fontsampler-ui-preview-list {
-        border: 1px solid #ccc;
-        background: #ddd;
-        min-height: 4em;
+        border: 1px dotted #ccc;
+        background: #fff;
+        min-height: 3em;
         margin: 5px 0;
-        width: 40em;
+        padding: 5px 0;
+        width: 50em;
         li {
             box-sizing: border-box;
             border: 1px solid #ccc;
@@ -245,11 +256,14 @@
             float: left;
             padding: 5px 10px;
             text-align: center;
-            margin-right: 3%;
+            margin-right: 1.5%;
+            margin-left: 1.5%;
             width: 30%;
+            position:relative;
+            min-height: 3em;
 
             &.fontsampler-ui-placeholder-full {
-                width: 100%;
+                width: 97%;
             }
         }
         .ui-state-highlight {

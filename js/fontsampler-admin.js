@@ -143,4 +143,59 @@ jQuery(function () {
         }
     });
 
+
+    // sampler checkboxes & UI preview interaction
+    $("#fontsampler-edit-sample input[type=checkbox]").on("change", function () {
+        iterateCheckboxes($(this));
+    });
+
+    if ($("#fontsampler-edit-sample input[name=id]").length === 0) {
+        $("input[type=checkbox]").each(function () {
+            iterateCheckboxes($(this));
+        });
+    }
+    calculateUIOrder();
+
+    function iterateCheckboxes($this) {
+        var attr = $this.attr("name"),
+            checked = $this.is(":checked"),
+
+            // the fields controlling the "option" preview block
+            $combined = $("input[name*=ot], input[name=alignment], input[invert]"),
+            $optionsElem = $(".fontsampler-ui-preview li[data-name=options]"),
+            $elem = $(".fontsampler-ui-preview li[data-name='" + attr + "']");
+
+        if (checked) {
+            // proceed showing
+            // copy element from placeholder to the first preview list with less than 3 items in it (and not the text input)
+
+            // if it's one of the special "options" checkboxes show it
+            if (attr.indexOf("ot_") > -1 || ['alignment', 'invert'].indexOf(attr) > -1 ) {
+                $elem = $optionsElem;
+            }
+
+            $(".fontsampler-ui-preview-list:not(:has(.fontsampler-ui-placeholder-full))").filter(function () {
+                return $(this).children("li").length < 3;
+            }).filter(":first").append($elem);
+            $elem.fadeIn();
+        } else {
+            // see if the unchecked field was one of the combo fields from OP alignment or inverting
+            if (attr.indexOf("ot_") > -1 || ['alignment', 'invert'].indexOf(attr) > -1 ) {
+                console.log("special combo checkbox");
+                if ($combined.filter(":checked").length > 0) {
+                    // if indeed it is one of those checkboxes that got changed and if indeed not all of those fields
+                    // are unchecked, the UI field remains visible, so do nothing / don't fade out the preview field
+                    return false;
+                } else {
+                    $elem = $optionsElem;
+                }
+            }
+
+            // proceed hiding
+            $elem.fadeOut(function () {
+                $(this).appendTo(".fontsampler-ui-preview-placeholder");
+            });
+        }
+    }
+
 });

@@ -7,7 +7,7 @@
 <?php else : ?>
 	<h1><?php echo empty( $set['id'] ) ? 'New fontsampler' : 'Edit fontsampler ' . $set['id'] ?></h1>
 	<p>Once you create the fontsampler, it will be saved with an ID you use to embed it on your wordpress pages</p>
-	<form method="post" action="?page=fontsampler">
+	<form method="post" action="?page=fontsampler" id="fontsampler-edit-sample">
 		<input type="hidden" name="action" value="edit_set">
 		<?php if ( function_exists( 'wp_nonce_field' ) ) : wp_nonce_field( 'fontsampler-action-edit_set' ); endif; ?>
 		<?php if ( ! empty( $set['id'] ) ) : ?><input type="hidden" name="id" value="<?php echo $set['id']; ?>"><?php endif; ?>
@@ -56,10 +56,8 @@
 		<button class="btn btn-small fontsampler-fontset-add">+</button>
 		<span>Add another fontset to this sampler</span>
 
-		<h2>Options</h2>
-
-		<h3>Interface options</h3>
-		<h4>Initial text</h4>
+		<h2>Interface options</h2>
+		<h3>Initial text</h3>
 		<label>
 			<span>The initial text displayed in the font sampler, for example the font name or pangram. You can use multi-line text here as well.</span><br>
 			<textarea name="initial" cols="60" rows="5"><?php if ( ! empty( $set['initial'] ) ) : echo $set['initial']; endif; ?></textarea>
@@ -67,49 +65,43 @@
 
 		<div>
 			<div class="fontsampler-options-checkbox fontsampler-admin-column-half">
-				<h4>Common features</h4>
-				<label>
-					<input type="checkbox" name="size" <?php if ( ! empty( $set['size'] ) ) : echo ' checked="checked" '; endif; ?> >
-					<span>Size control</span>
-				</label>
-				<label>
-					<input type="checkbox" name="letterspacing" <?php if ( ! empty( $set['letterspacing'] ) ) : echo ' checked="checked" '; endif; ?> >
-					<span>Letter spacing control</span>
-				</label>
-				<label>
-					<input type="checkbox" name="lineheight" <?php if ( ! empty( $set['lineheight'] ) ) : echo ' checked="checked" '; endif; ?> >
-					<span>Line height control</span>
-				</label>
-				<label>
-					<input type="checkbox" name="fontpicker" <?php if ( ! empty( $set['fontpicker'] ) ) : echo ' checked="checked" '; endif; ?> >
-					<span>Display dropdown selection for multiple fonts </span>
-					<small>(this will automatically be hidden if no more than one font are found)</small>
-				</label>
-				<label>
-					<input type="checkbox" name="sampletexts" <?php if ( ! empty( $set['sampletexts'] ) ) : echo ' checked="checked" '; endif; ?> >
-					<span>Display dropdown selection for sample texts</span>
-				</label>
-				<label>
-					<input type="checkbox" name="alignment" <?php if ( ! empty( $set['alignment'] ) ) : echo ' checked="checked" '; endif; ?> >
-					<span>Alignment controls</span>
-				</label>
-				<label>
-					<input type="checkbox" name="invert" <?php if ( ! empty( $set['invert'] ) ) : echo ' checked="checked" '; endif; ?> >
-					<span>Allow inverting the text field to display negative text</span>
-				</label>
-				<label>
-
-				</label>
-				<label>
-					(Coming soon: Allow line breaks on pressing enter)
-				</label>
-				<label>
-					(Coming soon: rendering intent / anti-aliasing options)
-				</label>
+				<fieldset>
+					<legend>Common features</legend>
+					<label>
+						<input type="checkbox" name="size" <?php if ( ! empty( $set['size'] ) ) : echo ' checked="checked" '; endif; ?> >
+						<span>Size control</span>
+					</label>
+					<label>
+						<input type="checkbox" name="letterspacing" <?php if ( ! empty( $set['letterspacing'] ) ) : echo ' checked="checked" '; endif; ?> >
+						<span>Letter spacing control</span>
+					</label>
+					<label>
+						<input type="checkbox" name="lineheight" <?php if ( ! empty( $set['lineheight'] ) ) : echo ' checked="checked" '; endif; ?> >
+						<span>Line height control</span>
+					</label>
+					<label>
+						<input type="checkbox" name="fontpicker" <?php if ( ! empty( $set['fontpicker'] ) ) : echo ' checked="checked" '; endif; ?> >
+						<span>Display dropdown selection for multiple fonts </span>
+						<small>(this will automatically be hidden if no more than one font are found)</small>
+					</label>
+					<label>
+						<input type="checkbox" name="sampletexts" <?php if ( ! empty( $set['sampletexts'] ) ) : echo ' checked="checked" '; endif; ?> >
+						<span>Display dropdown selection for sample texts</span>
+					</label>
+					<label>
+						<input type="checkbox" name="alignment" <?php if ( ! empty( $set['alignment'] ) ) : echo ' checked="checked" '; endif; ?> >
+						<span>Alignment controls</span>
+					</label>
+					<label>
+						<input type="checkbox" name="invert" <?php if ( ! empty( $set['invert'] ) ) : echo ' checked="checked" '; endif; ?> >
+						<span>Allow inverting the text field to display negative text</span>
+					</label>
+				</fieldset>
 			</div>
 
 			<div class="fontsampler-admin-column-half">
-				<h4>Opentype options</h4>
+				<fieldset>
+					<legend>Opentype options</legend>
 
 				<p>Enable those features only if your fonts support them - the plugin simply offers the interface
 					without
@@ -143,43 +135,44 @@
 					<input type="checkbox" name="ot_subs" <?php if ( ! empty( $set['ot_subs'] ) ) : echo ' checked="checked" '; endif; ?> >
 					<span>Subscript</span>
 				</label>
+				</fieldset>
 			</div>
 		</div>
-		<h3>Interface order</h3>
-		<p>You can customize the order of interface elements to differ from the defaults.</p>
-		<p>Only items you have selected above will be available for sorting in this preview.</p>
+		<h2>Interface layout</h2>
+		<p>You can customize the layout of interface elements to differ from the defaults.</p>
+		<small>Only items you have selected above will be available for sorting in this preview.</small>
 		<div class="fontsampler-ui-preview">
 			<input name="ui_order" type="hidden" value="<?php if ( ! empty( $set['ui_order'] ) ) : echo $set['ui_order']; endif; ?>">
-			<p>Below the elements in order of how they are displayed. You can sort them by dragging and dropping.</p>
-			<?php if ( ! empty( $set['ui_order_parsed'] ) ) : ?>
-				<?php foreach ( $set['ui_order_parsed'] as $row ) : ?>
-					<ul class="fontsampler-ui-preview-list">
-					<?php foreach ( $row as $item ) : ?>
-						<li class="fontsampler-ui-block <?php if ( 'fontsampler' == $item ) : echo 'fontsampler-ui-placeholder-full'; endif; ?>"
-						    data-name="<?php echo $item; ?>"><?php echo $item; ?></li>
-					<?php endforeach; ?>
-					</ul>
-				<?php endforeach; ?>
-			<?php else : ?>
-			<ul class="fontsampler-ui-preview-list fontsampler-ui-preview-row-1">
-				<li class="fontsampler-ui-block" data-name="size">Font size</li>
-				<li class="fontsampler-ui-block" data-name="letterspacing">Letter spacing</li>
-				<li class="fontsampler-ui-block" data-name="lineheight">Line height</li>
+			<small>Below the elements in order of how they are displayed to the users of your site. <br>
+				You can sort them by dragging and dropping.</small>
+			<?php if ( empty( $set['ui_order_parsed'] ) ) :
+				$set['ui_order_parsed'] = $this->parse_ui_order( 'size,letterspacing,options|fontpicker,sampletexts,lineheight|fontsampler' );
+			endif; ?>
+			<?php
+			$labels = array(
+				'fontsampler' => 'Text input',
+				'size' => 'Font size slider',
+				'letterspacing' => 'Letterspacing slider',
+				'lineheight' => 'Lineheight slider',
+				'fontpicker' => 'Font selection',
+				'sampletexts' => 'Sample text selection',
+				'options' => 'Alignment, Invert &amp; OT',
+			);
+			$unchecked = array();
+			?>
+			<?php for ( $r = 0; $r < 3; $r++ ) : $row = isset( $set['ui_order_parsed'][ $r ] ) ? $set['ui_order_parsed'][ $r ] : null; ?>
+				<ul class="fontsampler-ui-preview-list">
+				<?php if ( $row ) : foreach ( $row as $item ) : ?>
+					<li class="fontsampler-ui-block <?php if ( 'fontsampler' == $item ) : echo 'fontsampler-ui-placeholder-full'; endif; ?>"
+					    data-name="<?php echo $item; ?>"><?php echo $labels[ $item ]; ?></li>
+				<?php endforeach; endif; ?>
+				</ul>
+			<?php endfor; ?>
+			<ul class="fontsampler-ui-preview-placeholder">
+
 			</ul>
-			<ul class="fontsampler-ui-preview-list fontsampler-ui-preview-row-2">
-				<li class="fontsampler-ui-block" data-name="fontpicker">Font picker</li>
-				<li class="fontsampler-ui-block" data-name="sampletexts">Sample texts</li>
-				<li class="fontsampler-ui-block" data-name="options">Alignment, Invert &amp; OT</li>
-			</ul>
-			<ul class="fontsampler-ui-preview-list fontsampler-ui-preview-row-3">
-				<li class="fontsampler-ui-block fontsampler-ui-placeholder-full" data-name="fontsampler">Textarea</li>
-			</ul>
-			<?php endif; ?>
 		</div>
-
-		<h3>Css options</h3>
-
-		<p>(not implemented yet: custom styling for font samplers)</p>
+		<br>
 		<?php submit_button(); ?>
 	</form>
 <?php endif; ?>

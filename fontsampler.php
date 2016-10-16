@@ -9,13 +9,6 @@ Author URI:  http://johannesneumeier.com
 Copyright:   Copyright 2016 Johannes Neumeier
 Text Domain: fontsampler
 */
-
-/*
-general level TODO's:
-
-	- Implement nounce checks for all forms
-
-*/
 defined( 'ABSPATH' ) or die( 'Nope.' );
 
 global $wpdb;
@@ -265,9 +258,10 @@ class Fontsampler {
 			case 'set_edit':
 				$set   = $this->get_set( intval( $_GET['id'] ) );
 				$fonts = $this->get_fontfile_posts();
-				$fonts_order = implode(",", array_map(function ($font) {
+				$fonts_order = implode( ',', array_map( function ( $font ) {
 					return $font['id'];
 				}, $set['fonts']));
+
 				include( 'includes/sample-edit.php' );
 				break;
 
@@ -561,11 +555,7 @@ class Fontsampler {
 		}
 
 		// generate order array with rows of arrays of ui fields
-		$order = [];
-		foreach ( explode( '|', $set['ui_order'] ) as $commavalues ) {
-			array_push( $order, explode( ',', $commavalues ) );
-		}
-		$set['ui_order_parsed'] = $order;
+		$set['ui_order_parsed'] = $this->parse_ui_order( $set['ui_order'] );
 
 		if ( ! $including_fonts ) {
 			return $set;
@@ -627,7 +617,7 @@ class Fontsampler {
 		        LEFT JOIN ' . $this->table_join . ' j
 		        ON j.font_id = f.id
 				WHERE j.set_id = ' . intval( $set_id ) . '
-				ORDER BY `order` ASC';
+				ORDER BY j.`order` ASC';
 		$result = $this->db->get_results( $sql, ARRAY_A );
 
 		return 0 == $this->db->num_rows ? false : $result;
@@ -640,13 +630,15 @@ class Fontsampler {
 			$sql .= ' ( SELECT guid FROM ' . $this->db->prefix . 'posts p WHERE p.ID = f.' . $format . ' ) AS ' . $format . ',';
 		}
 		$sql = substr( $sql, 0, - 1 );
-		$sql .= ' FROM ' . $this->table_fonts . ' f
-				WHERE f.id= ' . intval( $font_id );
+		$sql .= ' FROM ' . $this->table_fonts . ' f ';
 
 		if ( true === $sorted ) {
 			$sql .= ' LEFT JOIN ' . $this->table_join . ' j
 					ON j.font_id = f.id
-					ORDER BY `order` ASC';
+					WHERE f.id = ' . intval( $font_id ) . '
+					ORDER BY j.`order` ASC';
+		} else {
+			$sql .= ' WHERE f.id= ' . intval( $font_id );
 		}
 		$result = $this->db->get_results( $sql, ARRAY_A );
 
@@ -873,6 +865,25 @@ class Fontsampler {
 		$fonts_object .= '}';
 
 		return $fonts_object;
+	}
+
+
+	/**
+	 * Helper to parse the comma,separated|value|string,in,the database into an multidimensional array
+	 * @param $string
+	 *
+	 * @return array
+	 */
+	function parse_ui_order( $string ) {
+		$order = [];
+		if ( empty( $string ) ) {
+			return false;
+		}
+		foreach ( explode( '|', $string ) as $commavalues ) {
+			array_push( $order, explode( ',', $commavalues ) );
+		}
+
+		return $order;
 	}
 
 
