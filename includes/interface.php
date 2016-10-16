@@ -58,8 +58,8 @@
 						if ( $set['fontpicker'] && sizeof( $fonts ) > 1 ) : ?>
 							<select name="font-selector">
 								<?php foreach ( $fonts as $font ) : ?>
-									<option
-										data-font-files='<?php echo $f->fontfiles_JSON( $font ); ?>'><?php echo $font['name']; ?></option>
+									<option data-font-files='<?php echo $f->fontfiles_json( $font ); ?>'>
+										<?php echo $font['name']; ?></option>
 								<?php endforeach; ?>
 							</select>
 						<?php endif;

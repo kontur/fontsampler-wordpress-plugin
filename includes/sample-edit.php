@@ -16,28 +16,32 @@
 
 		<p>Pick which font set or sets to use:</p>
 		<small>Picking multiple font set will enable the select field for switching between fonts used in the
-			Fontsampler
-		</small>
+			Fontsampler.
+		</small><br>
+		<small>Use the arrow on the left to drag the order of the fonts. Use the minus on the right to remove fonts.</small>
+		<input type="hidden" name="fonts_order" value="<?php if ( ! empty( $fonts_order ) ) : echo $fonts_order; endif; ?>">
 		<ul id="fontsampler-fontset-list">
 			<?php if ( ! empty( $set['id'] ) && ! empty( $set['fonts'] ) ) : foreach ( $set['fonts'] as $existing_font ) : ?>
 				<li>
+					<span class="fontsampler-fontset-sort-handle">&varr;</span>
 					<select name="font_id[]">
 						<option value="0">--</option>
 						<?php foreach ( $fonts as $font ) : ?>
 							<option <?php if ( in_array( $existing_font['name'], $font ) ) : echo ' selected="selected"'; endif; ?>
 								value="<?php echo $font['id']; ?>">
 								<?php echo $font['name']; ?>
+								<?php echo $font['id']; ?>
 							</option>
 						<?php endforeach; ?>
 					</select>
 					<button class="btn btn-small fontsampler-fontset-remove">&minus;</button>
-					<span>Remove this fontset from sampler</span>
 				</li>
 			<?php endforeach; ?>
 
 			<?php else : ?>
 				<li>
 					<!-- for a new fontset, display one, non-selected, select choice -->
+					<span class="fontsampler-fontset-sort-handle">&varr;</span>
 					<select name="font_id[]">
 						<option value="0">--</option>
 						<?php foreach ( $fonts as $font ) : ?>

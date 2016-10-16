@@ -3,7 +3,7 @@
 Plugin Name: Fontsampler
 Plugin URI:  https://github.com/kontur/fontsampler-wordpress-plugin
 Description: Create editable webfont previews via shortcodes
-Version:     0.0.1
+Version:     0.0.2
 Author:      Johannes Neumeier
 Author URI:  http://johannesneumeier.com
 Copyright:   Copyright 2016 Johannes Neumeier
@@ -173,7 +173,7 @@ class Fontsampler {
 	function fontsampler_admin_enqueues() {
 		wp_enqueue_script( 'fontsampler-rangeslider-js', plugin_dir_url( __FILE__ ) . 'bower_components/rangeslider.js/dist/rangeslider.min.js', array( 'jquery' ) );
 		wp_enqueue_script( 'fontsampler-preview-js', plugin_dir_url( __FILE__ ) . 'bower_components/jquery-fontsampler/dist/jquery.fontsampler.js', array( 'jquery' ) );
-		wp_enqueue_script( 'fontsampler-admin-js', plugin_dir_url( __FILE__ ) . 'js/fontsampler-admin.js', array( 'jquery' ) );
+		wp_enqueue_script( 'fontsampler-admin-js', plugin_dir_url( __FILE__ ) . 'js/fontsampler-admin.js', array( 'jquery', false, true ) );
 		wp_enqueue_script( 'colour-pick', plugins_url( 'js/fontsampler-admin.js', __FILE__ ), array( 'wp-color-picker' ), false, true );
 		wp_enqueue_script( 'jquery-ui-sortable', array( 'jquery' ) );
 		wp_enqueue_style( 'wp-color-picker' );
@@ -265,6 +265,9 @@ class Fontsampler {
 			case 'set_edit':
 				$set   = $this->get_set( intval( $_GET['id'] ) );
 				$fonts = $this->get_fontfile_posts();
+				$fonts_order = implode(",", array_map(function ($font) {
+					return $font['id'];
+				}, $set['fonts']));
 				include( 'includes/sample-edit.php' );
 				break;
 
@@ -369,7 +372,8 @@ class Fontsampler {
 	function create_table_join() {
 		$sql = "CREATE TABLE " . $this->table_join . " (
 			   `set_id` int( 11 ) unsigned NOT NULL,
-			   `font_id` int( 11 ) unsigned NOT NULL
+			   `font_id` int( 11 ) unsigned NOT NULL,
+			   `order` smalltin( 5 ) unsigned NOT NULL DEFAULT '0'
 				)";
 		$this->db->query( $sql );
 	}
@@ -441,6 +445,7 @@ class Fontsampler {
 				'ALTER TABLE ' . $this->table_settings . ' ADD `color_back` tinytext NOT NULL',
 				'UPDATE ' . $this->table_settings . " SET `color_back` = '#FFFFFF' WHERE id = '1'",
 				'ALTER TABLE ' . $this->table_sets . " ADD `ui_order` VARCHAR( 255 ) NOT NULL DEFAULT 'size,letterspacing,options|fontpicker,sampletexts,lineheight|fontsampler'",
+				'ALTER TABLE ' . $this->table_join . "`order` smalltin( 5 ) unsigned NOT NULL DEFAULT '0'",
 			),
 		);
 
@@ -535,7 +540,8 @@ class Fontsampler {
 					ON s.id = j.set_id
 					LEFT JOIN ' . $this->table_fonts . ' f
 					ON f.id = j.font_id
-					WHERE j.set_id = ' . intval( $set['id'] );
+					WHERE j.set_id = ' . intval( $set['id'] ) . '
+					ORDER BY j.`order` ASC';
 
 			$set['fonts'] = $this->db->get_results( $sql, ARRAY_A );
 			array_push( $set_with_fonts, $set );
@@ -565,7 +571,7 @@ class Fontsampler {
 			return $set;
 		}
 
-		$sql = 'SELECT f.name, ';
+		$sql = 'SELECT f.id, f.name, ';
 		foreach ( $this->font_formats as $format ) {
 			$sql .= ' ( SELECT guid FROM ' . $this->db->prefix . 'posts p WHERE p.ID = f.' . $format . ' ) AS ' . $format . ',';
 		}
@@ -575,7 +581,8 @@ class Fontsampler {
 				ON s.id = j.set_id
 				LEFT JOIN ' . $this->table_fonts . ' f
 				ON f.id = j.font_id
-				WHERE j.set_id = ' . intval( $id );
+				WHERE j.set_id = ' . intval( $id ) . '
+				ORDER BY j.`order` ASC';
 
 		$set['fonts'] = $this->db->get_results( $sql, ARRAY_A );
 
@@ -619,14 +626,15 @@ class Fontsampler {
 		$sql .= ' FROM ' . $this->table_fonts . ' f
 		        LEFT JOIN ' . $this->table_join . ' j
 		        ON j.font_id = f.id
-				WHERE j.set_id = ' . intval( $set_id );
+				WHERE j.set_id = ' . intval( $set_id ) . '
+				ORDER BY `order` ASC';
 		$result = $this->db->get_results( $sql, ARRAY_A );
 
-		return 0 == $this->db->num_rows ? false : $result[0];
+		return 0 == $this->db->num_rows ? false : $result;
 	}
 
 
-	function get_fontset( $font_id ) {
+	function get_fontset( $font_id, $sorted = true ) {
 		$sql = 'SELECT f.id, f.name, ';
 		foreach ( $this->font_formats as $format ) {
 			$sql .= ' ( SELECT guid FROM ' . $this->db->prefix . 'posts p WHERE p.ID = f.' . $format . ' ) AS ' . $format . ',';
@@ -634,6 +642,12 @@ class Fontsampler {
 		$sql = substr( $sql, 0, - 1 );
 		$sql .= ' FROM ' . $this->table_fonts . ' f
 				WHERE f.id= ' . intval( $font_id );
+
+		if ( true === $sorted ) {
+			$sql .= ' LEFT JOIN ' . $this->table_join . ' j
+					ON j.font_id = f.id
+					ORDER BY `order` ASC';
+		}
 		$result = $this->db->get_results( $sql, ARRAY_A );
 
 		return 0 == $this->db->num_rows ? false : $result[0];
@@ -643,7 +657,7 @@ class Fontsampler {
 	/*
 	 * Read all sets of fonts with font files
 	 */
-	function get_fontsets() {
+	function get_fontsets( $sorted = true ) {
 		$sql = 'SELECT f.id, f.name, ';
 		foreach ( $this->font_formats as $format ) {
 			$sql .= ' ( SELECT guid FROM ' . $this->db->prefix . 'posts p WHERE p.ID = f.' . $format . ' ) AS ' . $format . ',';
@@ -767,10 +781,22 @@ class Fontsampler {
 			// wipe join table for this fontsampler, then add whatever now was instructed to be saved
 			$this->db->delete( $this->table_join, array( 'set_id' => $id ) );
 
+			$font_ids = [];
+			$font_index = 0;
+			if ( ! empty( $_POST['fonts_order'] ) ) {
+				$fonts_order = explode( ',', $_POST['fonts_order'] );
+				foreach ( $fonts_order as $ordered_id ) {
+					array_push( $font_ids, $ordered_id );
+				}
+			} else {
+				$font_ids = $_POST['font_id'];
+			}
+
 			// filter possibly duplicate font selections, then add them into the join table
-			foreach ( array_unique( $_POST['font_id'] ) as $font_id ) {
+			foreach ( array_unique( $font_ids ) as $font_id ) {
 				if ( 0 != $font_id ) {
-					$this->db->insert( $this->table_join, array( 'set_id' => $id, 'font_id' => $font_id ) );
+					$this->db->insert( $this->table_join, array( 'set_id' => $id, 'font_id' => $font_id, 'order' => $font_index ) );
+					$font_index++;
 				}
 			}
 		}
@@ -833,14 +859,14 @@ class Fontsampler {
 	 * Helper that generates a json formatted strong with { formats: files, ... }
 	 * for passed in $fonts ( array )
 	 */
-	function fontfiles_json( $fonts ) {
-		if ( empty( $fonts ) ) {
+	function fontfiles_json( $font ) {
+		if ( empty( $font ) ) {
 			return false;
 		}
 		$fonts_object = '{';
-		foreach ( $fonts as $format => $font ) {
-			if ( in_array( $format, $this->font_formats ) && ! empty( $font ) ) {
-				$fonts_object .= '"' . $format . '": "' . $font . '",';
+		foreach ( $this->font_formats as $format ) {
+			if ( ! empty( $font[ $format ] ) ) {
+				$fonts_object .= '"' . $format . '": "' . $font[ $format ] . '",';
 			}
 		}
 		$fonts_object = substr( $fonts_object, 0, - 1 );

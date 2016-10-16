@@ -1,7 +1,8 @@
 jQuery(function () {
 	var $ = jQuery;
 
-	// todo limit amount of select options to the number of font sets
+	// todo limit amount of select options to the number of font sets / don't allow duplicates on frontend side
+    // duplicate inputs are going to be filtered out on db entry
 	$("#fontsampler-admin").on("click", ".fontsampler-fontset-remove", function (e) {
 		e.preventDefault();
 		if ($("#fontsampler-fontset-list li").length > 1) {
@@ -9,18 +10,38 @@ jQuery(function () {
 		} else {
 			console.log("Nope. Can't delete last picker");
 		}
+        $("#fontsampler-fontset-list").sortable("refresh");
+        updateFontsOrder();
 	});
 
 	$("#fontsampler-admin").on("click", ".fontsampler-fontset-add", function (e) {
 		e.preventDefault();
 		$("#fontsampler-fontset-list li:last").clone().appendTo("#fontsampler-fontset-list");
 		$("#fontsampler-fontset-list li:last option[selected='selected']").removeAttr('selected');
+        $("#fontsampler-fontset-list").sortable("refresh");
+        updateFontsOrder();
 	});
+
+    $("#fontsampler-admin").on("change", "#fontsampler-fontset-list select", function () {
+        updateFontsOrder();
+    });
+
+    // allow sorting multiple fonts in a fontsampler
+    $("#fontsampler-fontset-list").sortable({
+        handle: ".fontsampler-fontset-sort-handle",
+        stop: updateFontsOrder
+    });
+
+    function updateFontsOrder() {
+        var order = $("#fontsampler-fontset-list li select[name='font_id[]']").map(function () {
+            return $(this).val();
+        }).get().join();
+        $("input[name=fonts_order]").val(order);
+    }
 
 
     // setting sliders
-
-    $('#fontsampler-admin .form-settings input[type="range"]').css("outline", "1px solid red").rangeslider({
+    $('#fontsampler-admin .form-settings input[type="range"]').rangeslider({
         // Feature detection the default is `true`.
         // Set this to `false` if you want to use
         // the polyfill also in Browsers which support
@@ -61,7 +82,6 @@ jQuery(function () {
     function calculateUIOrder() {
         var order = "";
         $(".fontsampler-ui-preview-list").each(function (index, element) {
-            console.log(index, order);
             $(element).children("li").each(function (i, elem) {
                 order = order.concat($(elem).data("name")).concat(",");
             });
