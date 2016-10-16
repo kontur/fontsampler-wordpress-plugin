@@ -41,15 +41,13 @@
 					</ul>
 				</td>
 				<td>
-					<form method="post" action="?page=fontsampler&subpage=font_edit&id=<?php echo $font['id']; ?>">
+					<form method="post" action="?page=fontsampler&amp;subpage=font_edit&amp;id=<?php echo $font['id']; ?>">
 						<?php submit_button( 'edit' ); ?>
 					</form>
 				</td>
 				<td>
-					<form method="post" action="?page=fontsampler&subpage=fonts">
+					<form method="post" action="?page=fontsampler&amp;subpage=font_delete&amp;id=<?php echo $font['id']; ?>">
 						<input type="hidden" name="action" value="delete_font">
-						<?php if ( function_exists( 'wp_nonce_field' ) ) : wp_nonce_field( 'fontsampler-action-delete_font' ); endif; ?>
-						<input type="hidden" name="id" value="<?php echo $font['id']; ?>">
 						<?php submit_button( 'delete', 'secondary' ); ?>
 					</form>
 				</td>

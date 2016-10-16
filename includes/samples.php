@@ -64,9 +64,7 @@
 					</form>
 				</td>
 				<td>
-					<form method="post" action="?page=fontsampler" style="display: inline-block;">
-						<input type="hidden" name="action" value="delete_set">
-						<?php if ( function_exists( 'wp_nonce_field' ) ) : wp_nonce_field( 'fontsampler-action-delete_set' ); endif; ?>
+					<form method="post" action="?page=fontsampler&amp;subpage=set_delete&amp;id=<?php echo $set['id']; ?>" style="display: inline-block;">
 						<input type="hidden" name="id" value="<?php echo $set['id']; ?>">
 						<?php submit_button( 'Delete set', 'secondary' ); ?>
 					</form>

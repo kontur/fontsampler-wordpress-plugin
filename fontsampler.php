@@ -106,7 +106,7 @@ class Fontsampler {
 		// TODO change or fallback to name= instead of id=
 		if ( 0 != $attributes['id'] ) {
 			$set   = $this->get_set( intval( $attributes['id'] ), false );
-			$fonts = $this->get_fontset( intval( $attributes['id'] ) );
+			$fonts = $this->get_fontset_for_set( intval( $attributes['id'] ) );
 
 			if ( false == $set || false == $fonts ) {
 				if ( current_user_can( 'edit_posts' ) || current_user_can( 'edit_pages' ) ) {
@@ -264,15 +264,15 @@ class Fontsampler {
 
 			case 'edit':
 				$set   = $this->get_set( intval( $_GET['id'] ) );
-
 				$fonts = $this->get_fontfile_posts();
 				include( 'includes/sample-edit.php' );
 				break;
-			/*
-						case 'delete':
-							include( 'includes/delete.php' );
-							break;
-			*/
+
+			case 'set_delete':
+				$set = $this->get_set( intval( $_GET['id'] ) );
+				include( 'includes/sample-delete.php' );
+				break;
+
 			case 'fonts':
 				$fonts   = $this->get_fontsets();
 				$formats = $this->font_formats;
@@ -287,9 +287,13 @@ class Fontsampler {
 
 			case 'font_edit':
 				$font    = $this->get_fontset( intval( $_GET['id'] ) );
-				$font    = $font[0];
 				$formats = $this->font_formats;
 				include( 'includes/fontset-edit.php' );
+				break;
+
+			case 'font_delete':
+				$font = $this->get_fontset( intval( $_GET['id'] ) );
+				include( 'includes/fontset-delete.php' );
 				break;
 
 			case 'settings':
@@ -603,10 +607,10 @@ class Fontsampler {
 	}
 
 
-	/*
-	 * read per id from custom table
+	/**
+	 * Read all fonts and formats for fontsampler with $set_id
 	 */
-	function get_fontset( $set_id ) {
+	function get_fontset_for_set( $set_id ) {
 		$sql = 'SELECT f.id, f.name, ';
 		foreach ( $this->font_formats as $format ) {
 			$sql .= ' ( SELECT guid FROM ' . $this->db->prefix . 'posts p WHERE p.ID = f.' . $format . ' ) AS ' . $format . ',';
@@ -618,12 +622,26 @@ class Fontsampler {
 				WHERE j.set_id = ' . intval( $set_id );
 		$result = $this->db->get_results( $sql, ARRAY_A );
 
-		return 0 == $this->db->num_rows ? false : $result;
+		return 0 == $this->db->num_rows ? false : $result[0];
+	}
+
+
+	function get_fontset( $font_id ) {
+		$sql = 'SELECT f.id, f.name, ';
+		foreach ( $this->font_formats as $format ) {
+			$sql .= ' ( SELECT guid FROM ' . $this->db->prefix . 'posts p WHERE p.ID = f.' . $format . ' ) AS ' . $format . ',';
+		}
+		$sql = substr( $sql, 0, - 1 );
+		$sql .= ' FROM ' . $this->table_fonts . ' f
+				WHERE f.id= ' . intval( $font_id );
+		$result = $this->db->get_results( $sql, ARRAY_A );
+
+		return 0 == $this->db->num_rows ? false : $result[0];
 	}
 
 
 	/*
-	 * read all fontsets with font files
+	 * Read all sets of fonts with font files
 	 */
 	function get_fontsets() {
 		$sql = 'SELECT f.id, f.name, ';
@@ -690,6 +708,7 @@ class Fontsampler {
 	 * Delete a set of fonts from the database
 	 */
 	function handle_font_delete() {
+		var_dump($_POST);
 		if ( 'delete_font' == $_POST['action'] && ! empty( $_POST['id'] ) ) {
 			check_admin_referer( 'fontsampler-action-delete_font' );
 			$id  = intval( $_POST['id'] );
@@ -760,11 +779,13 @@ class Fontsampler {
 
 
 	function handle_set_delete() {
-		$id = (int) ( $_POST['id'] );
-		if ( 'delete_set' == $_POST['action'] && isset( $id ) && is_int( $id ) && $id > 0 ) {
-			check_admin_referer( 'fontsampler-action-delete_set' );
-			if ( $this->delete_set( intval( $_POST['id'] ) ) ) {
-				$this->info( 'Deleted ' . $id );
+		if ( isset( $_POST['id'] ) ) {
+			$id = (int) ( $_POST['id'] );
+			if ( 'delete_set' == $_POST['action'] && isset( $id ) && is_int( $id ) && $id > 0 ) {
+				check_admin_referer( 'fontsampler-action-delete_set' );
+				if ( $this->delete_set( intval( $_POST['id'] ) ) ) {
+					$this->info( 'Deleted ' . $id );
+				}
 			}
 		}
 	}
@@ -772,32 +793,34 @@ class Fontsampler {
 
 	function handle_settings_edit() {
 		// no settings ID's for now, just one default row
-		$id = (int) ( $_POST['id'] );
-		if ( 'edit_settings' == $_POST['action'] && isset( $id ) && is_int( $id ) && $id > 0 ) {
-			$settings_fields = array(
-				'font_size_initial',
-				'font_size_min',
-				'font_size_max',
-				'letter_spacing_initial',
-				'letter_spacing_min',
-				'letter_spacing_max',
-				'line_height_initial',
-				'line_height_min',
-				'line_height_max',
-				'sample_texts',
-				'color_fore',
-				'color_back',
-			);
+		if ( isset( $_POST['id'] ) ) {
+			$id = (int) ( $_POST['id'] );
+			if ( 'edit_settings' == $_POST['action'] && isset( $id ) && is_int( $id ) && $id > 0 ) {
+				$settings_fields = array(
+					'font_size_initial',
+					'font_size_min',
+					'font_size_max',
+					'letter_spacing_initial',
+					'letter_spacing_min',
+					'letter_spacing_max',
+					'line_height_initial',
+					'line_height_min',
+					'line_height_max',
+					'sample_texts',
+					'color_fore',
+					'color_back',
+				);
 
-			$data = array();
-			foreach ( $settings_fields as $field ) {
-				if ( isset( $_POST[ $field ] ) ) {
-					$data[ $field ] = trim( $_POST[ $field ] );
+				$data = array();
+				foreach ( $settings_fields as $field ) {
+					if ( isset( $_POST[ $field ] ) ) {
+						$data[ $field ] = trim( $_POST[ $field ] );
+					}
 				}
-			}
 
-			// atm no inserts, only updating the defaults
-			$this->db->update( $this->table_settings, $data, array( 'id' => $id ) );
+				// atm no inserts, only updating the defaults
+				$this->db->update( $this->table_settings, $data, array( 'id' => $id ) );
+			}
 		}
 	}
 
