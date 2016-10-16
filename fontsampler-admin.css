@@ -91,6 +91,16 @@
   background: #eee;
   border: 1px solid #333;
 }
+#fontsampler-admin input {
+  border: 1px solid #aaa;
+}
+#fontsampler-admin input[type=file] {
+  border: 0;
+}
+#fontsampler-admin input[type=file]:hover,
+#fontsampler-admin input[type=file]:focus {
+  border: 0;
+}
 #fontsampler-admin table {
   border-collapse: collapse;
   border-spacing: 0;

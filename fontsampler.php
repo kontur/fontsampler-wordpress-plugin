@@ -708,7 +708,6 @@ class Fontsampler {
 	 * Delete a set of fonts from the database
 	 */
 	function handle_font_delete() {
-		var_dump($_POST);
 		if ( 'delete_font' == $_POST['action'] && ! empty( $_POST['id'] ) ) {
 			check_admin_referer( 'fontsampler-action-delete_font' );
 			$id  = intval( $_POST['id'] );
