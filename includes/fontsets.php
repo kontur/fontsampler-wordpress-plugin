@@ -11,11 +11,11 @@
 		<thead>
 		<tr>
 			<th>Font name<br>
-				<small>As shown to the user in a multi-font font sampler's font selector</small>
+				<small>Equals the displayed name in the fontsampler dropdown <br>(when it has several fonts)</small>
 			</th>
 			<th>Preview</th>
 			<th>Formats<br>
-				<small>A list of all formats provided (and used) for rendering type samplers using this font</small>
+				<small>A list of all formats provided (and used) for rendering type samplers using this font. <br>You should at the very least provide a woff file.</small>
 			</th>
 			<th>Edit</th>
 			<th>Delete</th>
@@ -31,13 +31,13 @@
 				</td>
 				<td>
 					<ul>
-						<?php foreach ( $formats as $format ) : ?>
+						<?php foreach ( $formats as $format ) : if ( ! empty( $font[ $format ] ) ) : ?>
 							<li>
-								<span class="fileformat"><?php echo $format; ?></span>
+								<span class="fileformat filename"><?php echo $format; ?></span>
 								<span
 									class="filename"><?php echo substr( $font[ $format ], strrpos( $font[ $format ], '/' ) + 1 ); ?></span>
 							</li>
-						<?php endforeach; ?>
+						<?php endif; endforeach; ?>
 					</ul>
 				</td>
 				<td>

@@ -84,12 +84,15 @@
   color: #999;
   margin: 1em 0;
 }
-#fontsampler-admin label:hover input,
-#fontsampler-admin label:focus input,
-#fontsampler-admin label:hover select,
-#fontsampler-admin label:focus select {
-  background: #eee;
-  border: 1px solid #333;
+#fontsampler-admin .submit {
+  padding: 0;
+  margin: 3em 0;
+}
+#fontsampler-admin .submit input {
+  border: none;
+}
+#fontsampler-admin table .submit {
+  margin: 1em 0;
 }
 #fontsampler-admin input {
   border: 1px solid #aaa;
@@ -150,6 +153,13 @@
   clear: both;
   display: block;
 }
+#fontsampler-admin h2,
+#fontsampler-admin h3,
+#fontsampler-admin h4,
+#fontsampler-admin h5,
+#fontsampler-admin h6 {
+  margin-top: 2em;
+}
 #fontsampler-admin small {
   font-size: x-small;
   line-height: 1em;
@@ -160,21 +170,20 @@
 }
 #fontsampler-admin code {
   border: 1px solid #ddd;
+  font-family: monospace;
+  background: #eee;
+  padding: 0.4em 1em 0.3em;
+  font-size: smaller;
+  border-radius: 3px;
+  text-align: center;
 }
-#fontsampler-admin code,
 #fontsampler-admin .filename {
   font-family: monospace;
-  background: white;
-  padding: 0.2em 0.5em;
   font-size: smaller;
 }
 #fontsampler-admin td .fileformat {
   display: inline-block;
   width: 4em;
-}
-#fontsampler-admin p.submit {
-  margin: 0;
-  padding: 0;
 }
 #fontsampler-admin footer {
   margin: 1.5em 1.5em 0 0;
@@ -311,4 +320,7 @@
 #fontsampler-admin ul.fontsampler-ui-preview-list .ui-state-highlight {
   background: transparent;
   border: 1px dotted orange;
+}
+#fontsampler-admin #fontsampler-fontset-from {
+  max-width: 50em;
 }

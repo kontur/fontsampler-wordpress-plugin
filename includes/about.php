@@ -28,6 +28,7 @@
 	<li><a href="http://rangeslider.js.org/">rangeslider.js for custom range sliders</a> (<a
 			href="https://github.com/andreruffert/rangeslider.js/blob/develop/LICENSE.md">License</a>)
 	</li>
+	<li><a href="http://www.formvalidator.net/">jQuery Form Validator</a> (<a href="http://www.formvalidator.net/#license">License</a>)</li>
 	<li><a href="https://github.com/kontur/jquery-fontsampler">jquery-fontsampler (also developed by the plugin
 			author)</a> (<a href="https://github.com/kontur/jquery-fontsampler/blob/master/LICENSE.txt">License</a>)
 	</li>

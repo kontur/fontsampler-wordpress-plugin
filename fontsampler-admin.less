@@ -21,10 +21,19 @@
 
         &:hover, &:focus {
             input, select {
-                background: #eee;
-                border: 1px solid #333;
             }
         }
+    }
+
+    .submit {
+        padding: 0;
+        margin: 3em 0;
+        input {
+            border: none;
+        }
+    }
+    table .submit {
+        margin: 1em 0;
     }
 
     input {
@@ -83,6 +92,9 @@
         clear: both;
         display: block;
     }
+    h2, h3, h4, h5, h6 {
+        margin-top: 2em;
+    }
 
     small {
         font-size: x-small;
@@ -97,23 +109,21 @@
 
     code {
         border: 1px solid #ddd;
-    }
-
-    code, .filename {
         font-family: monospace;
-        background: white;
-        padding: 0.2em 0.5em;
+        background: #eee;
+        padding: 0.4em 1em 0.3em;
+        font-size: smaller;
+        border-radius: 3px;
+        text-align: center;
+    }
+    .filename {
+        font-family: monospace;
         font-size: smaller;
     }
 
     td .fileformat {
         display: inline-block;
         width: 4em;
-    }
-
-    p.submit {
-        margin: 0;
-        padding: 0;
     }
 
     footer {
@@ -270,5 +280,9 @@
             background: transparent;
             border: 1px dotted orange;
         }
+    }
+
+    #fontsampler-fontset-from {
+        max-width: 50em;
     }
 }

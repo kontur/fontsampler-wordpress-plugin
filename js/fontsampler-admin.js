@@ -1,6 +1,12 @@
 jQuery(function () {
 	var $ = jQuery;
 
+    // enable frontend side form validation
+    $.validate({
+        form: ".fontsampler-validate",
+        modules : 'file',
+    });
+
 	// todo limit amount of select options to the number of font sets / don't allow duplicates on frontend side
     // duplicate inputs are going to be filtered out on db entry
 	$("#fontsampler-admin").on("click", ".fontsampler-fontset-remove", function (e) {

@@ -15,10 +15,6 @@
 		<h2>Fonts</h2>
 
 		<p>Pick which font set or sets to use:</p>
-		<small>Picking multiple font set will enable the select field for switching between fonts used in the
-			Fontsampler.
-		</small><br>
-		<small>Use the arrow on the left to drag the order of the fonts. Use the minus on the right to remove fonts.</small>
 		<input type="hidden" name="fonts_order" value="<?php if ( ! empty( $fonts_order ) ) : echo $fonts_order; endif; ?>">
 		<ul id="fontsampler-fontset-list">
 			<?php if ( ! empty( $set['id'] ) && ! empty( $set['fonts'] ) ) : foreach ( $set['fonts'] as $existing_font ) : ?>
@@ -54,7 +50,14 @@
 			<?php endif; ?>
 		</ul>
 		<button class="btn btn-small fontsampler-fontset-add">+</button>
-		<span>Add another fontset to this sampler</span>
+
+		<span>Add another fontset to this sampler</span><br><br>
+
+		<small>Picking multiple font set will enable the select field for switching between fonts used in the
+			Fontsampler.
+		</small><br>
+		<small>Use the arrow on the left to drag the order of the fonts. Use the minus on the right to remove fonts.</small>
+
 
 		<h2>Interface options</h2>
 		<h3>Initial text</h3>
@@ -63,7 +66,7 @@
 			<textarea name="initial" cols="60" rows="5"><?php if ( ! empty( $set['initial'] ) ) : echo $set['initial']; endif; ?></textarea>
 		</label>
 
-		<div>
+		<div style="overflow: hidden;">
 			<div class="fontsampler-options-checkbox fontsampler-admin-column-half">
 				<fieldset>
 					<legend>Common features</legend>
@@ -140,11 +143,8 @@
 		</div>
 		<h2>Interface layout</h2>
 		<p>You can customize the layout of interface elements to differ from the defaults.</p>
-		<small>Only items you have selected above will be available for sorting in this preview.</small>
 		<div class="fontsampler-ui-preview">
 			<input name="ui_order" type="hidden" value="<?php if ( ! empty( $set['ui_order'] ) ) : echo $set['ui_order']; endif; ?>">
-			<small>Below the elements in order of how they are displayed to the users of your site. <br>
-				You can sort them by dragging and dropping.</small>
 			<?php if ( empty( $set['ui_order_parsed'] ) ) :
 				$set['ui_order_parsed'] = $this->parse_ui_order( 'size,letterspacing,options|fontpicker,sampletexts,lineheight|fontsampler' );
 			endif; ?>
@@ -172,6 +172,9 @@
 
 			</ul>
 		</div>
+		<small>Only items you have selected above will be available for sorting in this preview.</small>
+		<small>Below the elements in order of how they are displayed to the users of your site. <br>
+			You can sort them by dragging and dropping.</small>
 		<br>
 		<?php submit_button(); ?>
 	</form>

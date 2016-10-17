@@ -169,6 +169,7 @@ class Fontsampler {
 		wp_enqueue_script( 'fontsampler-admin-js', plugin_dir_url( __FILE__ ) . 'js/fontsampler-admin.js', array( 'jquery', false, true ) );
 		wp_enqueue_script( 'colour-pick', plugins_url( 'js/fontsampler-admin.js', __FILE__ ), array( 'wp-color-picker' ), false, true );
 		wp_enqueue_script( 'jquery-ui-sortable', array( 'jquery' ) );
+		wp_enqueue_script( 'jquery-form-validator', plugin_dir_url( __FILE__ ) . 'bower_components/jquery-form-validator/form-validator/jquery.form-validator.js', array( 'jquery' ) );
 		wp_enqueue_style( 'wp-color-picker' );
 		wp_enqueue_style( 'fontsampler_admin_css', plugin_dir_url( __FILE__ ) . '/fontsampler-admin.css', false, '1.0.0' );
 	}

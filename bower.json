@@ -18,6 +18,7 @@
   "dependencies": {
     "jquery-selectric": "^1.10.1",
     "rangeslider.js": "^2.2.1",
-    "jquery-fontsampler": "~0.0.1"
+    "jquery-fontsampler": "~0.0.1",
+    "jquery-form-validator": "~2.3.44"
   }
 }
