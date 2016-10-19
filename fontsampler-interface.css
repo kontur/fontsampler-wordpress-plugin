@@ -413,8 +413,3 @@
   background: #333333;
   color: #ffffff;
 }
-.fontsampler-wrapper .fontsampler:hover,
-.fontsampler-wrapper .fontsampler:focus {
-  background: #eeeeee;
-  outline: none;
-}

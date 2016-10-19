@@ -413,11 +413,51 @@
   background: #333333;
   color: #ffffff;
 }
-.fontsampler-wrapper .fontsampler:hover,
-.fontsampler-wrapper .fontsampler:focus {
-  background: #eeeeee;
-  outline: none;
+/* css_color_text */
+.fontsampler-interface .fontsampler {
+    color: #df3e3e;
 }
-.fontsampler-interface-row {
-    border: 1px solid $$color_fore;
+
+/* css_color_background */
+.fontsampler-interface .fontsampler {
+    background: #402a2a;
 }
+
+/* css_color_label */
+/* css_size_label */
+/* css_fontfamily_label */
+.fontsampler-interface .fontsampler-slider .slider-label,
+.fontsampler-interface .fontsampler-slider .slider-value,
+.fontsampler-interface .selectric .label,
+.fontsampler-interface .selectric-items li {
+    color: #333333;
+    font-size: 10px;
+    font-family: Arial;
+}
+
+/* css_color_highlight */
+.fontsampler-interface .selectric-items {
+    background: #e55151;
+}
+
+/* css_color_highlight_hover */
+.fontsampler-interface .selectric-items li:hover {
+    background: #e55151_hover;
+}
+
+/* css_color_line */
+.fontsampler-interface .selectric-open .selectric,
+.fontsampler-interface .selectric .label,
+.fontsampler-interface .selectric .button,
+.fontsampler-wrapper .fontsampler-interface .fontsampler-multiselect > button,
+.fontsampler-interface .rangeslider__fill {
+    border-bottom: 1px solid #1e73be;
+}
+
+/* css_color_handle */
+.fontsampler-interface .rangeslider__handle {
+    background: #dd9933;
+}
+
+/* css_color_icon_active */
+/* css_color_icon_inactive */

@@ -8,91 +8,161 @@
 	<input type="hidden" name="id" value="1">
 
 	<label>
-		<span class="setting_description">font_size initial px: <code
+		<span class="setting-description">Font size initial px: <code
 				class="current-value"><?php echo $defaults['font_size_initial']; ?></code></span>
 
 		<div class="slider"><input type="range" name="font_size_initial"
 		                           value="<?php echo $defaults['font_size_initial']; ?>" min="1" max="256"></div>
 	</label>
 	<label>
-		<span class="setting_description">font_size minimum px: <code
+		<span class="setting-description">Font size minimum px: <code
 				class="current-value"><?php echo $defaults['font_size_min']; ?></code></span>
 
 		<div class="slider"><input type="range" name="font_size_min" value="<?php echo $defaults['font_size_min']; ?>"
 		                           min="1" max="255"></div>
 	</label>
 	<label>
-		<span class="setting_description">font_size maximum px: <code
+		<span class="setting-description">Font size maximum px: <code
 				class="current-value"><?php echo $defaults['font_size_max']; ?></code></span>
 
 		<div class="slider"><input type="range" name="font_size_max" value="<?php echo $defaults['font_size_max']; ?>"
 		                           min="1" max="255"></div>
 	</label>
 	<label>
-		<span class="setting_description">Letter-spacing initial px: <code
+		<span class="setting-description">Letter-spacing initial px: <code
 				class="current-value"><?php echo $defaults['letter_spacing_initial']; ?></code></span>
 
 		<div class="slider"><input type="range" name="letter_spacing_initial"
 		                           value="<?php echo $defaults['letter_spacing_initial']; ?>" min="-10" max="10"></div>
 	</label>
 	<label>
-		<span class="setting_description">Letter-spacing minimum px: <code
+		<span class="setting-description">Letter-spacing minimum px: <code
 				class="current-value"><?php echo $defaults['letter_spacing_min']; ?></code></span>
 
 		<div class="slider"><input type="range" name="letter_spacing_min"
 		                           value="<?php echo $defaults['letter_spacing_min']; ?>" min="-10" max="10"></div>
 	</label>
 	<label>
-		<span class="setting_description">Letter-spacing maximum px: <code
+		<span class="setting-description">Letter-spacing maximum px: <code
 				class="current-value"><?php echo $defaults['letter_spacing_max']; ?></code></span>
 
 		<div class="slider"><input type="range" name="letter_spacing_max"
 		                           value="<?php echo $defaults['letter_spacing_max']; ?>" min="-10" max="10"></div>
 	</label>
 	<label>
-		<span class="setting_description">Line-height initial %: <code
+		<span class="setting-description">Line-height initial %: <code
 				class="current-value"><?php echo $defaults['line_height_initial']; ?></code></span>
 
 		<div class="slider"><input type="range" name="line_height_initial"
 		                           value="<?php echo $defaults['line_height_initial']; ?>" min="0" max="500"></div>
 	</label>
 	<label>
-		<span class="setting_description">Line-height minimum %: <code
+		<span class="setting-description">Line-height minimum %: <code
 				class="current-value"><?php echo $defaults['line_height_min']; ?></code></span>
 
 		<div class="slider"><input type="range" name="line_height_min"
 		                           value="<?php echo $defaults['line_height_min']; ?>" min="0" max="500"></div>
 	</label>
 	<label>
-		<span class="setting_description">Line-height maximum %: <code
+		<span class="setting-description">Line-height maximum %: <code
 				class="current-value"><?php echo $defaults['line_height_max']; ?></code></span>
 
 		<div class="slider"><input type="range" name="line_height_max"
 		                           value="<?php echo $defaults['line_height_max']; ?>" min="0" max="500"></div>
 	</label>
 
-	<h2>Colour options</h2>
+	<h2>Styling options</h2>
 
-	<span class="setting_description">Foreground (text) colour:</span>
+	<label>
+		<span class="setting-description">Color of the fontsampler text:</span>
+		<div class="picker"><input type="text" name="css_color_text" id="css_color_text" class="color-picker"
+		                           value="<?php echo $defaults['css_color_text']; ?>"
+		                           data-default-color="<?php echo $this->settings_defaults['css_color_text']; ?>" />
+		</div>
+	</label>
 
-	<div class="picker"><input type="text" name="color_fore" id="color_fore" class="color-picker"
-	                           value="<?php echo $defaults['color_fore']; ?>" data-default-color="#000000"/></div>
+	<label>
+		<span class="setting-description">Color of the fontsampler background:</span>
+		<div class="picker"><input type="text" name="css_color_background" id="css_color_background"
+		                           class="color-picker"
+		                           value="<?php echo $defaults['css_color_background']; ?>"
+		                           data-default-color="<?php echo $this->settings_defaults['css_color_background']; ?>" />
+		</div>
+	</label>
 
-	<span class="setting_description">Background (page) colour:</span>
+	<label>
+		<span class="setting-description">Text color of the UI labels:</span>
+		<div class="picker"><input type="text" name="css_color_label" id="css_color_label" class="color-picker"
+		                           value="<?php echo $defaults['css_color_label']; ?>"
+		                           data-default-color="<?php echo $this->settings_defaults['css_color_label']; ?>" />
+		</div>
+	</label>
 
-	<div class="picker"><input type="text" name="color_back" id="color_back" class="color-picker"
-	                           value="<?php echo $defaults['color_back']; ?>" data-default-color="#ffffff"/></div>
+	<label>
+		<div class="setting-description">Font size of the UI labels:<br>
+		<small>You can use any valide <code>font-size</code> CSS declaration (Use 'inherit' for default look).</small></div>
+		<input type="text" name="css_size_label" value="<?php echo $defaults['css_size_label']; ?>"/>
+	</label>
 
+	<label>
+		<div class="setting-description">Font family of the UI labels:<br>
+		<small>You can use any valid <code>font-family</code> CSS declaration (Use 'inherit' for default look).</small></div>
+		<input type="text" name="css_fontfamily_label" value="<?php echo $defaults['css_fontfamily_label']; ?>"/>
+	</label>
 
-	size_label
-	color_label
-	color_dropdown
-	color_dropdown_hover
-	color_line
-	color_handle
-	color_icon
-	color_text
-	color_background
+	<label>
+		<span class="setting-description">Background color of the dropdown items:</span>
+		<div class="picker"><input type="text" name="css_color_highlight" id="css_color_highlight" class="color-picker"
+		                           value="<?php echo $defaults['css_color_highlight']; ?>"
+		                           data-default-color="""<?php echo $this->settings_defaults['css_color_highlight']; ?>" />
+		</div>
+	</label>
+
+	<label>
+		<span class="setting-description">Background color of the dropdown items when hovered:</span>
+		<div class="picker"><input type="text" name="css_color_highlight_hover" id="css_color_highlight_hover"
+		                           class="color-picker"
+		                           value="<?php echo $defaults['css_color_highlight_hover']; ?>"
+		                           data-default-color="<?php echo $this->settings_defaults['css_color_highlight_hover']; ?>" />
+		</div>
+	</label>
+
+	<label>
+		<span class="setting-description">Color of the slider and dropdown line:</span>
+		<div class="picker"><input type="text" name="css_color_line" id="css_color_line" class="color-picker"
+		                           value="<?php echo $defaults['css_color_line']; ?>"
+		                           data-default-color="<?php echo $this->settings_defaults['css_color_line']; ?>" />
+		</div>
+	</label>
+
+	<label>
+		<span class="setting-description">Color of the slider handle:</span>
+		<div class="picker"><input type="text" name="css_color_handle" id="css_color_handle" class="color-picker"
+		                           value="<?php echo $defaults['css_color_handle']; ?>"
+		                           data-default-color="<?php echo $this->settings_defaults['css_color_handle']; ?>" />
+		</div>
+	</label>
+
+	<!--
+	<label>
+		<span class="setting-description">Color of the UI icons when selected:</span>
+		<div class="picker"><input type="text" name="css_color_icon_active" id="css_color_icon_active"
+		                           class="color-picker"
+		                           value="<?php echo $defaults['css_color_icon_active']; ?>"
+		                           data-default-color="<?php echo $this->settings_defaults['css_color_icon_active']; ?>" />
+		</div>
+	</label>
+
+	<label>
+		<span class="setting-description">Color of the UI icons when unselected:</span>
+		<div class="picker"><input type="text" name="css_color_icon_inactive" id="css_color_icon_inactive"
+		                           class="color-picker"
+		                           value="<?php echo $defaults['css_color_icon_inactive']; ?>"
+		                           data-default-color="<?php echo $this->settings_defaults['css_color_icon_inactive']; ?>" />
+		</div>
+	</label>
+	-->
+
 
 	<label>
 		Sample texts

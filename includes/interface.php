@@ -156,10 +156,9 @@
 
 					case 'fontsampler':
 						// NOTE echo with " and class with ' to output json as ""-enclosed strings
-						echo "<div class='fontsampler fontsampler-id-" . $set['id'] . "' style='background-color:" . $settings['color_back']
-						     . "' data-font-files='" . $this->fontfiles_json( $fonts[0] ) . "' data-multiline='" .
-						     $set['multiline'] . "'><span class='color-fore' style='color:" . $settings['color_fore'] . ";'>" .
-						     str_replace( '\n', '<br>', $set['initial'] ) . '</span></div>';
+						echo "<div class='fontsampler fontsampler-id-" . $set['id'] . "' data-font-files='" .
+						     $this->fontfiles_json( $fonts[0] ) . "' data-multiline='" . $set['multiline'] . "'>" .
+						     str_replace( '\n', '<br>', $set['initial'] ) . '</div>';
 						break;
 
 					default:

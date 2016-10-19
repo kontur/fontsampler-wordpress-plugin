@@ -35,6 +35,7 @@ class Fontsampler {
 	private $boolean_options;
 	private $font_formats;
 	private $fontsampler_db_version;
+	private $settings_defaults;
 
 	function Fontsampler( $wpdb ) {
 		// convenience variables for the wpdb object and the fontsampler db tables
@@ -79,6 +80,36 @@ class Fontsampler {
 			'ot_subs',
 		);
 		$this->font_formats = array( 'woff2', 'woff', 'eot', 'svg', 'ttf' );
+
+		$this->settings_defaults = array(
+			'font_size_label'		    => 'Size',
+			'font_size_min'			    => '8',
+			'font_size_max'			    => '96',
+			'font_size_initial'		    => '14',
+			'font_size_unit'		    => 'px',
+			'letter_spacing_label'  	=> 'Letter spacing',
+			'letter_spacing_min'    	=> '-5',
+			'letter_spacing_max'	    => '5',
+			'letter_spacing_initial'	=> '0',
+			'letter_spacing_unit'	    => 'px',
+			'line_height_label'		    => 'Line height',
+			'line_height_min'		    => '70',
+			'line_height_max'		    => '300',
+			'line_height_initial'	    => '110',
+			'line_height_unit'		    => '%',
+			'sample_texts'              => "hamburgerfontstiv\nabcdefghijklmnopqrstuvwxyz\nABCDEFGHIJKLMNOPQRSTUVWXYZ\nThe quick brown fox jumps over the lazy cat",
+			'css_color_text'            => '#333333',
+			'css_color_background'      => '#ffffff',
+			'css_color_label'           => '#333333',
+			'css_size_label'            => 'inherit',
+			'css_fontfamily_label'      => 'inherit',
+			'css_color_highlight'       => '#efefef',
+			'css_color_highlight_hover' => '#dedede',
+			'css_color_line'            => '#333333',
+			'css_color_handle'          => '#333333',
+			'css_color_icon_active'     => '#333333',
+			'css_color_icon_inactive'   => '#dedede',
+		);
 	}
 
 
@@ -112,25 +143,7 @@ class Fontsampler {
 			// TODO labels from options or translation file
 			$defaults = $this->get_settings();
 			// some of these get overwritten from defaults, but list them all here explicitly
-			$replace = array_merge( array(
-				'font_size_label'		    => 'Size',
-				'font_size_min'			    => '8',
-				'font_size_max'			    => '96',
-				'font_size_initial'		    => '14',
-				'font_size_unit'		    => 'px',
-				'letter_spacing_label'  	=> 'Letter spacing',
-				'letter_spacing_min'    	=> '-5',
-				'letter_spacing_max'	    => '5',
-				'letter_spacing_initial'	=> '0',
-				'letter_spacing_unit'	    => 'px',
-				'line_height_label'		    => 'Line height',
-				'line_height_min'		    => '70',
-				'line_height_max'		    => '300',
-				'line_height_initial'	    => '110',
-				'line_height_unit'		    => '%',
-				'color_fore'				=> '#000000',
-				'color_back'				=> '#ffffff',
-			), $defaults );
+			$replace = array_merge( $this->settings_defaults, $defaults );
 
 			// buffer output until return
 			ob_start();
@@ -387,27 +400,22 @@ class Fontsampler {
 			`line_height_min` smallint( 5 ) NOT NULL DEFAULT '0',
 			`line_height_max` smallint( 5 ) NOT NULL DEFAULT '300',
 			`sample_texts` text NOT NULL,
-			`color_fore` tinytext NOT NULL,
-			`color_back` tinytext NOT NULL,
+			`css_color_text` tinytext NOT NULL,
+			`css_color_background` tinytext NOT NULL,
+			`css_color_label` tinytext NOT NULL,
+			`css_size_label` tinytext NOT NULL,
+			`css_fontfamily_label` tinytext NOT NULL',
+			`css_color_highlight` tinytext NOT NULL,
+			`css_color_highlight_hover` tinytext NOT NULL,
+			`css_color_line` tinytext NOT NULL,
+			`css_color_handle` tinytext NOT NULL,
+			`css_color_icon_active` tinytext NOT NULL,
+			`css_color_icon_inactive` tinytext NOT NULL
 			PRIMARY KEY ( `id` )
 			);";
 		$this->db->query( $sql );
 
-		$data = array(
-			'font_size_initial' => 18,
-			'font_size_min' => 8,
-			'font_size_max' => 96,
-			'letter_spacing_initial' => 0,
-			'letter_spacing_min' => -5,
-			'letter_spacing_max' => 5,
-			'line_height_initial' => 110,
-			'line_height_min' => 0,
-			'line_height_max' => 300,
-			'sample_texts' => "hamburgerfontstiv\nabcdefghijklmnopqrstuvwxyz\nABCDEFGHIJKLMNOPQRSTUVWXYZ\nThe quick brown fox jumps over the lazy cat",
-			'color_fore' => '#000000',
-			'color_back' => '#FFFFFF',
-		);
-		$this->db->insert( $this->table_settings, $data );
+		$this->db->insert( $this->table_settings, $this->settings_defaults );
 	}
 
 
@@ -436,12 +444,20 @@ class Fontsampler {
 			// 0.0.2 added some settings and defaults for them
 			// TODO replace id 1 with "WHERE default = 1" once implemented
 			'0.0.2' => array(
-				'ALTER TABLE ' . $this->table_settings . ' ADD `color_fore` tinytext NOT NULL',
-				'UPDATE ' . $this->table_settings . " SET `color_fore` = '#000000' WHERE id = '1'",
-				'ALTER TABLE ' . $this->table_settings . ' ADD `color_back` tinytext NOT NULL',
-				'UPDATE ' . $this->table_settings . " SET `color_back` = '#FFFFFF' WHERE id = '1'",
+				'ALTER TABLE ' . $this->table_settings . ' ADD `sample_texts` text NOT NULL',
+				'ALTER TABLE ' . $this->table_settings . ' ADD `css_color_text` tinytext NOT NULL',
+				'ALTER TABLE ' . $this->table_settings . ' ADD `css_color_background` tinytext NOT NULL',
+				'ALTER TABLE ' . $this->table_settings . ' ADD `css_color_label` tinytext NOT NULL',
+				'ALTER TABLE ' . $this->table_settings . ' ADD `css_size_label` tinytext NOT NULL',
+				'ALTER TABLE ' . $this->table_settings . ' ADD `css_fontfamily_label` tinytext NOT NULL',
+				'ALTER TABLE ' . $this->table_settings . ' ADD `css_color_highlight` tinytext NOT NULL',
+				'ALTER TABLE ' . $this->table_settings . ' ADD `css_color_highlight_hover` tinytext NOT NULL',
+				'ALTER TABLE ' . $this->table_settings . ' ADD `css_color_line` tinytext NOT NULL',
+				'ALTER TABLE ' . $this->table_settings . ' ADD `css_color_handle` tinytext NOT NULL',
+				'ALTER TABLE ' . $this->table_settings . ' ADD `css_color_icon_active` tinytext NOT NULL',
+				'ALTER TABLE ' . $this->table_settings . ' ADD `css_color_icon_inactive` tinytext NOT NULL',
 				'ALTER TABLE ' . $this->table_sets . " ADD `ui_order` VARCHAR( 255 ) NOT NULL DEFAULT 'size,letterspacing,options|fontpicker,sampletexts,lineheight|fontsampler'",
-				'ALTER TABLE ' . $this->table_join . "`order` smalltin( 5 ) unsigned NOT NULL DEFAULT '0'",
+				'ALTER TABLE ' . $this->table_join . "`order` smallint( 5 ) unsigned NOT NULL DEFAULT '0'",
 			),
 		);
 
@@ -454,12 +470,14 @@ class Fontsampler {
 			if ( version_compare( $version, $this->fontsampler_db_version ) <= 0 &&
 				version_compare( get_option( 'fontsampler_db_version' ), $version ) < 0 ) {
 				foreach ( $queries as $sql ) {
-					$res = $this->db->query( $sql );
-					if ( false === $res ) {
-						$this->error( "Database schema update to $version failed" );
-						// if encountering an update error, break out of the entire routine
-						$this->error( 'Aborting database migration' );
-						return false;
+					try {
+						// this try catch doesn't seem to do anything, since WP throwns and prints it's own errors
+						// TODO check how debug mode influences this
+						// NOTE: most important though that single error (i.e. existing column or something) doesn't break
+						// the entire update loop
+						$res = $this->db->query( $sql );
+					} catch (Exception $e) {
+						$this->error( "Problem updating database to version $version. The following sql query failed: " . $sql );
 					}
 				}
 				// bump the version number option in the options database
@@ -513,8 +531,14 @@ class Fontsampler {
 	 */
 	function get_settings( $id = 1 ) {
 		$sql = 'SELECT * FROM ' . $this->table_settings . ' WHERE `id` = ' . $id;
+		$res = $this->db->get_row( $sql, ARRAY_A );
 
-		return $this->db->get_row( $sql, ARRAY_A );
+		// remove any empty string settings
+		$res = array_filter( $res, function ( $item ) { return '' !== $item; } );
+
+		// return that row but make sure any missing or empty settings fields get substituted from the hardcoded defaults
+		$defaults = array_merge( $this->settings_defaults, $res );
+		return $defaults;
 	}
 
 
@@ -815,20 +839,7 @@ class Fontsampler {
 		if ( isset( $_POST['id'] ) ) {
 			$id = (int) ( $_POST['id'] );
 			if ( 'edit_settings' == $_POST['action'] && isset( $id ) && is_int( $id ) && $id > 0 ) {
-				$settings_fields = array(
-					'font_size_initial',
-					'font_size_min',
-					'font_size_max',
-					'letter_spacing_initial',
-					'letter_spacing_min',
-					'letter_spacing_max',
-					'line_height_initial',
-					'line_height_min',
-					'line_height_max',
-					'sample_texts',
-					'color_fore',
-					'color_back',
-				);
+				$settings_fields = array_keys($this->settings_defaults);
 
 				$data = array();
 				foreach ( $settings_fields as $field ) {
@@ -874,16 +885,21 @@ class Fontsampler {
 	 * @param $settings db row of setting params as array
 	 */
 	function write_css_from_settings( $settings ) {
-		// reduce passed in settings row to only values for keys starting with color_
-		$settings = array_filter( array_flip( $settings ), function ( $key ) {
-			return false !== strpos( $key, 'color_' );
-		});
+		// reduce passed in settings row to only values for keys starting with css_ and prefix those keys with an @ for
+		// matching and replacing
+
+		$settings_preped = array();
+		foreach ( $settings as $key => $value ) {
+			if ( false !== strpos( $key, 'css_' ) ) {
+				$settings_preped[ '@' . $key ] = $value;
+			}
+		}
 
 		$template_path = plugin_dir_path( __FILE__ ) . 'fontsampler-css-template.tpl';
 		$styles_path   = plugin_dir_path( __FILE__ ) . 'fontsampler-interface.css';
 		if ( file_exists( $template_path ) && file_exists( $styles_path ) ) {
 			$template = file_get_contents( $template_path );
-			$template = str_replace( array_keys( $settings ), $settings, $template );
+			$template = str_replace( array_keys( $settings_preped ), $settings_preped, $template );
 			$styles = file_get_contents( $styles_path );
 
 			// concat the base styles and the replaced template into the default css file
