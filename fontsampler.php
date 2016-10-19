@@ -355,7 +355,7 @@ class Fontsampler {
                 `ot_frac` tinyint( 1 ) NOT NULL DEFAULT '0',
                 `ot_sups` tinyint( 1 ) NOT NULL DEFAULT '0',
                 `ot_subs` tinyint( 1 ) NOT NULL DEFAULT '0',
-                `ui_order` VARCHAR( 255 ) NOT NULL DEFAULT 'size,letterspacing,options|fontpicker,sampletexts,lineheight|fontsampler'
+                `ui_order` VARCHAR( 255 ) NOT NULL DEFAULT 'size,letterspacing,options|fontpicker,sampletexts,lineheight|fontsampler',
 			  PRIMARY KEY ( `id` )
 			)";
 		$this->db->query( $sql );
@@ -381,7 +381,7 @@ class Fontsampler {
 		$sql = "CREATE TABLE " . $this->table_join . " (
 			   `set_id` int( 11 ) unsigned NOT NULL,
 			   `font_id` int( 11 ) unsigned NOT NULL,
-			   `order` smalltin( 5 ) unsigned NOT NULL DEFAULT '0'
+			   `order` smallint( 5 ) unsigned NOT NULL DEFAULT '0'
 				)";
 		$this->db->query( $sql );
 	}
@@ -390,27 +390,33 @@ class Fontsampler {
 	function create_table_settings() {
 		$sql = "CREATE TABLE " . $this->table_settings . " (
 			`id` int( 11 ) unsigned NOT NULL AUTO_INCREMENT,
+			`font_size_label` VARCHAR( 50 ) NOT NULL DEFAULT 'Size',
 			`font_size_initial` smallint( 5 ) unsigned NOT NULL DEFAULT '18',
 			`font_size_min` smallint( 5 ) unsigned NOT NULL DEFAULT '8',
-			`font_size_max` smallint( 5 ) unsigned NOT NULL DEFAULT '96',
+			`font_size_max` smallint( 5 ) unsigned NOT NULL DEFAULT '96',			
+		    `font_size_unit` VARCHAR( 50 ) NOT NULL DEFAULT 'px',
+			`letter_spacing_label` VARCHAR( 50 ) NOT NULL DEFAULT 'Letter spacing',
 			`letter_spacing_initial` tinyint( 5 ) NOT NULL DEFAULT '0',
 			`letter_spacing_min` tinyint( 3 ) NOT NULL DEFAULT '-5',
 			`letter_spacing_max` tinyint( 3 ) NOT NULL DEFAULT '5',
+			`letter_spacing_unit` VARCHAR( 50 ) NOT NULL DEFAULT 'px',
+			`line_height_label` VARCHAR( 50 ) NOT NULL DEFAULT 'Line height',
 			`line_height_initial` smallint( 5 ) NOT NULL DEFAULT '110',
 			`line_height_min` smallint( 5 ) NOT NULL DEFAULT '0',
 			`line_height_max` smallint( 5 ) NOT NULL DEFAULT '300',
+			`line_height_unit` VARCHAR( 50 ) NOT NULL DEFAULT '%',
 			`sample_texts` text NOT NULL,
 			`css_color_text` tinytext NOT NULL,
 			`css_color_background` tinytext NOT NULL,
 			`css_color_label` tinytext NOT NULL,
 			`css_size_label` tinytext NOT NULL,
-			`css_fontfamily_label` tinytext NOT NULL',
+			`css_fontfamily_label` tinytext NOT NULL,
 			`css_color_highlight` tinytext NOT NULL,
 			`css_color_highlight_hover` tinytext NOT NULL,
 			`css_color_line` tinytext NOT NULL,
 			`css_color_handle` tinytext NOT NULL,
 			`css_color_icon_active` tinytext NOT NULL,
-			`css_color_icon_inactive` tinytext NOT NULL
+			`css_color_icon_inactive` tinytext NOT NULL,
 			PRIMARY KEY ( `id` )
 			);";
 		$this->db->query( $sql );
@@ -444,6 +450,12 @@ class Fontsampler {
 			// 0.0.2 added some settings and defaults for them
 			// TODO replace id 1 with "WHERE default = 1" once implemented
 			'0.0.2' => array(
+				'ALTER TABLE ' . $this->table_settings . " ADD `font_size_label` VARCHAR( 50 ) NOT NULL DEFAULT 'Size'",
+				'ALTER TABLE ' . $this->table_settings . " ADD `letter_spacing_label` VARCHAR( 50 ) NOT NULL DEFAULT 'Letter spacing'",
+				'ALTER TABLE ' . $this->table_settings . " ADD `line_height_label` VARCHAR( 50 ) NOT NULL DEFAULT 'Line height'",
+				'ALTER TABLE ' . $this->table_settings . " ADD `font_size_unit` VARCHAR( 50 ) NOT NULL DEFAULT 'px'",
+				'ALTER TABLE ' . $this->table_settings . " ADD `letter_spacing_unit` VARCHAR( 50 ) NOT NULL DEFAULT 'px'",
+				'ALTER TABLE ' . $this->table_settings . " ADD `line_height_unit` VARCHAR( 50 ) NOT NULL DEFAULT '%'",
 				'ALTER TABLE ' . $this->table_settings . ' ADD `sample_texts` text NOT NULL',
 				'ALTER TABLE ' . $this->table_settings . ' ADD `css_color_text` tinytext NOT NULL',
 				'ALTER TABLE ' . $this->table_settings . ' ADD `css_color_background` tinytext NOT NULL',

@@ -30,6 +30,12 @@ bower_components/jquery-selectric/public/*
 !bower_components/jquery-selectric/public/jquery.selectric.js
 !bower_components/jquery-selectric/public/jquery.selectric.min.js
 
+!bower_components/jquery-form-validator/
+bower_components/jquery-form-validator/*
+!bower_components/jquery-form-validator/form-validator/
+bower_components/jquery-form-validator/form-validator/*
+!bower_components/jquery-form-validator/form-validator/jquery.form-validator.js
+
 !bower_components/jquery-fontsampler/
 bower_components/jquery-fontsampler/*
 !bower_components/jquery-fontsampler/dist/

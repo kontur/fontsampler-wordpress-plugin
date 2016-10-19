@@ -1,18 +1,17 @@
 <?php global $f; ?>
 <h1>Font samplers</h1>
-<p>Listed here are all the font samplers you have created so far.</p>
-<p>A font sampler is a number (or just one) font set and settings that are used to display a interface for testing a
-	font (or several in one).</p>
-<p>You can include your font samplers on any page or post by adding the respective shortcode listed in the table
-	below.</p>
 
 <?php if ( empty( $sets ) ) : ?>
 	<em>No sets created yet.</em>
 	<p>This is where your created font samplers will be listed once you've added some below.</p>
-	<p>To begin with you need to have some webfont files in your media gallery. You can use the below font upload
-		interface just as well.</p>
 
 <?php else : ?>
+	<p>Listed here are all the font samplers you have created so far.</p>
+	<p>A font sampler is a number (or just one) font set and settings that are used to display a interface for testing a
+		font (or several in one).</p>
+	<p>You can include your font samplers on any page or post by adding the respective shortcode listed in the table
+		below.</p>
+
 	<table>
 		<thead>
 		<tr>

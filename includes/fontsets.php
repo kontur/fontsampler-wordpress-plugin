@@ -1,12 +1,16 @@
 <?php global $f; ?>
 <h1>Font sets &amp; files</h1>
-<p>Listed here are the fonts and the file formats that are provided for displaying them.</p>
-<p>In order to make font samplers you need to first create a font set (the different webfont format versions of the font
-	you want to demo) and upload at least one format for the font. If you want to use a font sampler that has a font
-	switcher, for example to preview different weights or styles of the same typeface, you need to create a font set for
-	each of them.</p>
 
-<?php if ( $fonts ) : ?>
+<?php if ( ! $fonts ) : ?>
+	<p>In order to make font samplers you need to first create a font set (the different webfont format versions of the font
+		you want to demo) and upload at least one format for the font. If you want to use a font sampler that has a font
+		switcher, for example to preview different weights or styles of the same typeface, you need to create a font set for
+		each of them.</p>
+
+	<p>You haven't created and fontsets yet.</p>
+
+<?php else : ?>
+	<p>Listed here are the fonts and the file formats that are provided for displaying them.</p>
 	<table>
 		<thead>
 		<tr>
@@ -55,9 +59,6 @@
 		<?php endforeach; ?>
 		</tbody>
 	</table>
-
-<?php else : ?>
-	<p>You haven't created and fontsets yet.</p>
 <?php endif; ?>
 
 <a class="button button-primary" href="?page=fontsampler&subpage=font_create">Create a new font record</a>
