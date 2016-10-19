@@ -63,7 +63,7 @@ jQuery(function () {
 
 
 	$(".fontsampler-multiselect").on("click", "button", function () {
-		var $fs = $(this).closest('.fontsampler-interface').siblings('.fontsampler'),
+		var $fs = $(this).closest('.fontsampler-interface').find('.fontsampler'),
 			val = $(this).data("value");
 
 		switch ($(this).closest('.fontsampler-multiselect').data("name")) {

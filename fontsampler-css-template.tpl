@@ -2,10 +2,16 @@
 .fontsampler-interface .fontsampler {
     color: @css_color_text;
 }
+.fontsampler-interface .fontsampler.invert {
+    background: @css_color_text;
+}
 
 /* css_color_background */
 .fontsampler-interface .fontsampler {
     background: @css_color_background;
+}
+.fontsampler-interface .fontsampler.invert {
+    color: @css_color_background;
 }
 
 /* css_color_label */

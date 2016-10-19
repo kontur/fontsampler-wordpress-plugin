@@ -417,10 +417,16 @@
 .fontsampler-interface .fontsampler {
     color: #df3e3e;
 }
+.fontsampler-interface .fontsampler.invert {
+    background: #df3e3e;
+}
 
 /* css_color_background */
 .fontsampler-interface .fontsampler {
     background: #402a2a;
+}
+.fontsampler-interface .fontsampler.invert {
+    color: #402a2a;
 }
 
 /* css_color_label */
