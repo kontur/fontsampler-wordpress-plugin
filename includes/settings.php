@@ -83,6 +83,17 @@
 	<div class="picker"><input type="text" name="color_back" id="color_back" class="color-picker"
 	                           value="<?php echo $defaults['color_back']; ?>" data-default-color="#ffffff"/></div>
 
+
+	size_label
+	color_label
+	color_dropdown
+	color_dropdown_hover
+	color_line
+	color_handle
+	color_icon
+	color_text
+	color_background
+
 	<label>
 		Sample texts
 		<small>(use simple line breaks for each option to be displayed in the dropdown)</small>

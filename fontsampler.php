@@ -157,7 +157,7 @@ class Fontsampler {
 		wp_enqueue_script( 'fontsampler-init-js', plugin_dir_url( __FILE__ ) . 'js/fontsampler-init.js', array( 'fontsampler-js' ) );
 		wp_enqueue_script( 'fontsampler-rangeslider-js', plugin_dir_url( __FILE__ ) . 'bower_components/rangeslider.js/dist/rangeslider.min.js', array( 'jquery' ) );
 		wp_enqueue_script( 'fontsampler-selectric-js', plugin_dir_url( __FILE__ ) . 'bower_components/jquery-selectric/public/jquery.selectric.min.js', array( 'jquery' ) );
-		wp_enqueue_style( 'fontsampler-css', plugin_dir_url( __FILE__ ) . 'fontsampler-interface.css' );
+		wp_enqueue_style( 'fontsampler-css', $this->get_css_file() );
 	}
 
 	/*
@@ -424,6 +424,7 @@ class Fontsampler {
 		$sql = 'DROP TABLE IF EXISTS ' . $this->table_settings;
 		$this->db->query( $sql );
 	}
+
 
 	/**
 	 * Updates the database schemas based on current db version and target db version
@@ -838,6 +839,9 @@ class Fontsampler {
 
 				// atm no inserts, only updating the defaults
 				$this->db->update( $this->table_settings, $data, array( 'id' => $id ) );
+
+				// further generate a new settings css file
+				$this->write_css_from_settings( $data );
 			}
 		}
 	}
@@ -846,6 +850,53 @@ class Fontsampler {
 	/*
 	 * HELPERS
 	 */
+
+	/**
+	 * @return string path to include styles css file
+	 */
+	function get_css_file() {
+		// check path for existing file
+		// if not, create it by merging css template with settings
+		if ( ! file_exists( plugin_dir_path( __FILE__ ) . 'fontsampler-css.css' ) ) {
+			$default_settings = $this->get_settings();
+			if ( ! $this->write_css_from_settings( $default_settings ) ) {
+				// if creating the missing file failed return the base styles by themselves
+				return plugin_dir_url( __FILE__ ) . 'fontsampler-interface.css';
+			}
+		}
+
+		// return file path to the css that contains base css merged with settings css
+		return plugin_dir_url( __FILE__ ) . 'fontsampler-css.css';
+	}
+
+
+	/**
+	 * @param $settings db row of setting params as array
+	 */
+	function write_css_from_settings( $settings ) {
+		// reduce passed in settings row to only values for keys starting with color_
+		$settings = array_filter( array_flip( $settings ), function ( $key ) {
+			return false !== strpos( $key, 'color_' );
+		});
+
+		$template_path = plugin_dir_path( __FILE__ ) . 'fontsampler-css-template.tpl';
+		$styles_path   = plugin_dir_path( __FILE__ ) . 'fontsampler-interface.css';
+		if ( file_exists( $template_path ) && file_exists( $styles_path ) ) {
+			$template = file_get_contents( $template_path );
+			$template = str_replace( array_keys( $settings ), $settings, $template );
+			$styles = file_get_contents( $styles_path );
+
+			// concat the base styles and the replaced template into the default css file
+			if ( file_put_contents( plugin_dir_path( __FILE__ ) . 'fontsampler-css.css', array(
+				$styles,
+				$template,
+			) ) ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
 
 
 	/*
