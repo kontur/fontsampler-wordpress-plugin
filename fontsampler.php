@@ -128,8 +128,8 @@ class Fontsampler {
 				'line_height_max'		    => '300',
 				'line_height_initial'	    => '110',
 				'line_height_unit'		    => '%',
-				'color_fore'				=> '000000',
-				'color_back'				=> 'ffffff',
+				'color_fore'				=> '#000000',
+				'color_back'				=> '#ffffff',
 			), $defaults );
 
 			// buffer output until return
