@@ -1,5 +1,13 @@
 /*
- *  jquery-fontsampler - v0.0.1
+ *  jquery-fontsampler - v0.0.3
+ *  A jQuery plugin for displaying, manipulating and testing webfont type samples
+ *  https://github.com/kontur/jquery-fontsampler
+ *
+ *  Made by Johannes Neumeier
+ *  Under Apache 2.0 License
+ */
+/*
+ *  jquery-fontsampler - v0.0.3
  *  A jQuery plugin for displaying, manipulating and testing webfont type samples
  *  https://github.com/kontur/jquery-fontsampler
  *
@@ -41,7 +49,10 @@
     var pluginName = "fontSampler",
         defaults = {
             fontFiles: null,
-            multiLine: true
+            multiLine: true,
+            fontSize: "18px",
+            letterSpacing: "0px",
+            leading: "100%"
         },
         fontFamily = "";
 
@@ -110,6 +121,9 @@
             fontFamily = declareFontFace( this.settings.fontFiles );
             this.setupUI();
             this.setFont( fontFamily );
+            this.setSize( this.settings.fontSize );
+            this.setLetterSpacing( this.settings.letterSpacing );
+            this.setLeading( this.settings.leading );
             this.updateOTFeatures();
         },
         setupUI: function() {

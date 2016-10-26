@@ -415,18 +415,18 @@
 }
 /* css_color_text */
 .fontsampler-interface .fontsampler {
-    color: #df3e3e;
+    color: #333333;
 }
 .fontsampler-interface .fontsampler.invert {
-    background: #df3e3e;
+    background: #333333;
 }
 
 /* css_color_background */
 .fontsampler-interface .fontsampler {
-    background: #402a2a;
+    background: #ffffff;
 }
 .fontsampler-interface .fontsampler.invert {
-    color: #402a2a;
+    color: #ffffff;
 }
 
 /* css_color_label */
@@ -437,18 +437,18 @@
 .fontsampler-interface .selectric .label,
 .fontsampler-interface .selectric-items li {
     color: #333333;
-    font-size: 10px;
-    font-family: Arial;
+    font-size: inherit;
+    font-family: inherit;
 }
 
 /* css_color_highlight */
 .fontsampler-interface .selectric-items {
-    background: #e55151;
+    background: #efefef;
 }
 
 /* css_color_highlight_hover */
 .fontsampler-interface .selectric-items li:hover {
-    background: #e55151_hover;
+    background: #efefef_hover;
 }
 
 /* css_color_line */
@@ -457,12 +457,12 @@
 .fontsampler-interface .selectric .button,
 .fontsampler-wrapper .fontsampler-interface .fontsampler-multiselect > button,
 .fontsampler-interface .rangeslider__fill {
-    border-bottom: 1px solid #1e73be;
+    border-bottom: 1px solid #333333;
 }
 
 /* css_color_handle */
 .fontsampler-interface .rangeslider__handle {
-    background: #dd9933;
+    background: #333333;
 }
 
 /* css_color_icon_active */

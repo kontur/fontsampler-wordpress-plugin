@@ -1,9 +1,13 @@
 jQuery(function () {
 	var $ = jQuery;
 	$(".fontsampler").each(function () {
-		var file = $(this).data('fontfile');
+		var file = $(this).data('fontfile'),
+			options = $(this).data('options');
 		$(this).fontSampler({
-			fontFile: file
+			fontFile: file,
+			fontSize: options["font_size_initial"] + options["font_size_unit"],
+			letterSpacing: options["letter_spacing_initial"] + options["letter_spacing_unit"],
+			leading: options["line_height_initial"] + options["line_height_unit"]
 		});
 	});
 
