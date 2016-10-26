@@ -52,7 +52,28 @@ jQuery(function () {
         // Set this to `false` if you want to use
         // the polyfill also in Browsers which support
         // the native <input type="range"> element.
-        polyfill: false
+        polyfill: false,
+        onSlide: function () {
+            var $input = this.$element.closest("label").find(".current-value");
+            // prevent reacting to a slide event triggered my text field input update,
+            // thus preventing the user being unable to type, as the text input would get overwritten from this update
+            if (! $input.is(":focus")) {
+                $input.val(this.$element.val());
+            }
+        }
+    });
+    $("#fontsampler-admin .form-settings input.current-value").on("keyup", function () {
+        var $sliderInput = $(this).closest("label").find("input[name='" + $(this).data("name") + "']"),
+            min = $sliderInput.attr("min"),
+            max = $sliderInput.attr("max"),
+            intval = parseInt($(this).val()),
+            constrainedValue = Math.min(Math.max(intval, min), max);
+
+        // prevent blocking the type input while also updating it should the value have been beyond the limits
+        if (intval !== constrainedValue && ! isNaN(constrainedValue) ) {
+            $(this).val(constrainedValue);
+        }
+        $sliderInput.val(constrainedValue).change();
     });
 
 
