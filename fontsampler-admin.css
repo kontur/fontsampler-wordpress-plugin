@@ -277,14 +277,16 @@
 #fontsampler-admin .form-settings label span.setting-description {
   float: left;
   display: inline-block;
-  width: 20em;
+  width: 23em;
 }
 #fontsampler-admin .form-settings label div.slider {
   display: inline-block;
   width: 20em;
 }
-#fontsampler-admin .form-settings label code {
+#fontsampler-admin .form-settings label span input {
+  float: right;
   margin: 0 1em;
+  width: 3em;
 }
 #fontsampler-admin .form-settings label input[type="range"] {
   width: 20em;
