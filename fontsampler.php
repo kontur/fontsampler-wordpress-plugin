@@ -469,7 +469,7 @@ class Fontsampler {
 				'ALTER TABLE ' . $this->table_settings . ' ADD `css_color_icon_active` tinytext NOT NULL',
 				'ALTER TABLE ' . $this->table_settings . ' ADD `css_color_icon_inactive` tinytext NOT NULL',
 				'ALTER TABLE ' . $this->table_sets . " ADD `ui_order` VARCHAR( 255 ) NOT NULL DEFAULT 'size,letterspacing,options|fontpicker,sampletexts,lineheight|fontsampler'",
-				'ALTER TABLE ' . $this->table_join . "`order` smallint( 5 ) unsigned NOT NULL DEFAULT '0'",
+				'ALTER TABLE ' . $this->table_join . " ADD `order` smallint( 5 ) unsigned NOT NULL DEFAULT '0'",
 			),
 		);
 
