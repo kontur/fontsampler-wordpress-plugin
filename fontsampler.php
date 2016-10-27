@@ -280,14 +280,50 @@ class Fontsampler {
 		$subpage = isset( $_GET['subpage'] ) ? $_GET['subpage'] : '';
 		switch ( $subpage ) {
 			case 'set_create':
-				$set = array_intersect_key($this->get_settings(), array_flip($this->default_features));
-				$set['default_features'] = 1;
+				$default_settings = $this->get_settings();
+				$set = array_intersect_key( $default_settings, array_flip( $this->default_features ) );
+				$set['default_features'] = 1; // by default pick the default UI options
+
+				// note: no fontpicker per default, since we start creating with 0 fonts
+				// when fonts get added the update function will push the picker to the UI
+				// TODO generate this more ideal and based off defaults to avoid funny gaps 2 / 1 / 1 kind of things
+				$set['ui_order_parsed'] = $this->parse_ui_order( 'size,letterspacing,options|sampletexts,lineheight|fontsampler' );
+
+				// all blocks except 'fontpicker' (no need when creating a new set with 0 fonts - gets dynamically
+				// added on selecting fonts)
+
+				$ui_blocks = array_intersect( array_keys( array_filter($default_settings, function ($a) {
+					return $a == "1";
+				}) ), array( 'size', 'letterspacing', 'lineheight', 'sampletexts', 'options' ) );
+				array_push( $ui_blocks, 'fontsampler' );
+
+				$set['ui_order_parsed'] = array();
+
+				for ( $r = 0; $r < 2; $r++ ) {
+					$set['ui_order_parsed'][ $r ] = array();
+
+					while ( sizeof( $set['ui_order_parsed'][ $r ] ) < 3 && sizeof( $ui_blocks ) > 0 ) {
+
+						$block = array_shift( $ui_blocks );
+						if ( ( 'options' !== $block && isset( $set[ $block ] ) ) ||
+						     ('options' === $block && $this->set_has_options( $set ) ) ) {
+							array_push( $set[ 'ui_order_parsed' ][ $r ], $block );
+						}
+					}
+					if ( sizeof( $ui_blocks ) == 0 ) {
+						break;
+					}
+				}
+				array_push( $set['ui_order_parsed'], array( 'fontsampler' ));
 				$fonts = $this->get_fontfile_posts();
 				include( 'includes/sample-edit.php' );
 				break;
 
 			case 'set_edit':
 				$set   = $this->get_set( intval( $_GET['id'] ) );
+				if ( sizeof( $set['fonts'] ) > 1) {
+					$set['fontpicker'] = 1;
+				}
 				$fonts = $this->get_fontfile_posts();
 				$fonts_order = implode( ',', array_map( function ( $font ) {
 					return $font['id'];
@@ -360,7 +396,6 @@ class Fontsampler {
                 `size` tinyint( 1 ) NOT NULL DEFAULT '0',
                 `letterspacing` tinyint( 1 ) NOT NULL DEFAULT '0',
                 `lineheight` tinyint( 1 ) NOT NULL DEFAULT '0',
-                `fontpicker` tinyint( 1 ) NOT NULL DEFAULT '0',
                 `sampletexts` tinyint( 1 ) NOT NULL DEFAULT '0',
                 `alignment` tinyint( 1 ) NOT NULL DEFAULT '0',
                 `invert` tinyint( 1 ) NOT NULL DEFAULT '0',
@@ -491,6 +526,7 @@ class Fontsampler {
 			),
 			'0.0.3' => array(
 				'ALTER TABLE ' . $this->table_sets . " ADD `default_options` tinyint( 1 ) NOT NULL DEFAULT '0'",
+				'ALTER TABLE ' . $this->table_sets . ' DROP COLUMN `fontpicker`',
 				'ALTER TABLE ' . $this->table_settings . " ADD `size` tinyint( 1 ) unsigned NOT NULL DEFAULT '0'",
 				'ALTER TABLE ' . $this->table_settings . " ADD `letterspacing` tinyint( 1 ) unsigned NOT NULL DEFAULT '0'",
 				'ALTER TABLE ' . $this->table_settings . " ADD `lineheight` tinyint( 1 ) unsigned NOT NULL DEFAULT '0'",
@@ -822,11 +858,6 @@ class Fontsampler {
 				$data['default_features'] = 0;
 			}
 
-			// whether or not to show a font picker for multiple fonts should be shown
-			if ( sizeof( $_POST['font_id'] ) > 1 ) {
-				$data['fontpicker'] = true;
-			}
-
 			// also allow for empty initial text
 			if ( ! empty( $_POST['initial'] ) ) {
 				$data['initial'] = $_POST['initial'];
@@ -1021,16 +1052,30 @@ class Fontsampler {
 		return $order;
 	}
 
+	function set_has_options ( $set ) {
+		return ( isset( $set['invert'] ) || isset( $set['alignment'] ) ||
+		! empty( array_filter( $set, function ($var) { return substr( $var, 0, 3 ) === "ot_"; }) ) );
+	}
+
 	/**
 	 * Helper to remove not acutally present elements from the compressed string
 	 *
 	 * @param $string the compressed string of ui elements, commaseparated and | -separated, i.e. size,letterspacing|fontsampler
 	 * @param $set the fontsampler set to validate it against
+	 * @return $string of the ui fields, separated by fields with comma, and rows with |
 	 */
 	function prune_ui_order( $string, $set ) {
 		// force include the non-db value "fontsampler"
 		$set['fontsampler'] = 1;
 
+
+		// force include the value "options" if any OT feature, invert or alignment are enabled
+		if ( $this->set_has_options( $set ) ) {
+			$set['options'] = 1;
+		}
+
+		// loop over the parsed array and rebuild the array only with values that are defined to be there as evident
+		// from their presence in $set
 		$parsed = $this->parse_ui_order( $string );
 		$pruned = array();
 		foreach ( $parsed as $row ) {

@@ -315,7 +315,7 @@
 #fontsampler-admin ul.fontsampler-ui-preview-list {
   border: 1px dotted #ccc;
   background: #fff;
-  min-height: 3em;
+  min-height: 4em;
   margin: 5px 0;
   padding: 5px 0;
   width: 50em;
@@ -332,7 +332,7 @@
   margin-left: 1.5%;
   width: 30%;
   position: relative;
-  min-height: 3em;
+  min-height: 4em;
 }
 #fontsampler-admin ul.fontsampler-ui-preview-list li.fontsampler-ui-placeholder-full {
   width: 97%;
@@ -340,6 +340,9 @@
 #fontsampler-admin ul.fontsampler-ui-preview-list .ui-state-highlight {
   background: transparent;
   border: 1px dotted orange;
+}
+#fontsampler-admin ul.fontsampler-ui-preview-placeholder li {
+  display: none;
 }
 #fontsampler-admin #fontsampler-fontset-from {
   max-width: 50em;

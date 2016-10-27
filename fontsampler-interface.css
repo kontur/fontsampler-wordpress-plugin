@@ -395,6 +395,7 @@
   background: #ffffff;
   height: 30px;
   padding: 5px;
+  z-index: 10;
 }
 .fontsampler-wrapper .fontsampler-interface .fontsampler-opentype-features.shown {
   display: block;

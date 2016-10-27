@@ -132,37 +132,87 @@
 				</fieldset>
 			</div>
 		</div>
+
 		<h2>Interface layout</h2>
+
 		<p>You can customize the layout of interface elements to differ from the defaults.</p>
 		<div class="fontsampler-ui-preview">
 			<input name="ui_order" type="hidden" value="<?php if ( ! empty( $set['ui_order'] ) ) : echo $set['ui_order']; endif; ?>">
-			<?php if ( empty( $set['ui_order_parsed'] ) ) :
-				$set['ui_order_parsed'] = $this->parse_ui_order( 'size,letterspacing,options|fontpicker,sampletexts,lineheight|fontsampler' );
-			endif; ?>
+
 			<?php
+
+			// use these labels to substitute nicer description texts to stand in for the input names
 			$labels = array(
-				'fontsampler' => 'Text input',
-				'size' => 'Font size slider',
+				'fontsampler'   => 'Text input',
+				'size'          => 'Font size slider',
 				'letterspacing' => 'Letterspacing slider',
-				'lineheight' => 'Lineheight slider',
-				'fontpicker' => 'Font selection',
-				'sampletexts' => 'Sample text selection',
-				'options' => 'Alignment, Invert &amp; OT',
+				'lineheight'    => 'Lineheight slider',
+				'fontpicker'    => 'Font selection<br><small>(more than one font in set)</small>',
+				'sampletexts'   => 'Sample text selection',
+				'options'       => 'Alignment, Invert &amp; OT',
 			);
-			$unchecked = array();
-			?>
-			<?php for ( $r = 0; $r < 3; $r++ ) : $row = isset( $set['ui_order_parsed'][ $r ] ) ? $set['ui_order_parsed'][ $r ] : null; ?>
+
+			// fix a possibly missing 'fontpicker' UI element to be included in the ui_order_parsed
+			if ( isset( $set['fonts'] ) && sizeof( $set['fonts'] ) > 1 ) {
+
+				// since there is more than one font, a fontpicker should be present, check if this is the case
+				$fontpicker_present = false;
+				foreach ( $set['ui_order_parsed'] as $row ) {
+					if ( isset( $row['fontpicker'] ) ) {
+						$fontpicker_present = true;
+						break;
+					}
+				}
+
+				// loop through the ui_order_parsed array and insert fontpicker element first chance possible
+				if ( ! $fontpicker_present ) {
+					for ( $i = 0; $i < 3; $i++ ) {
+
+						// should the current ui_order_parsed be only with one or two subarrays, create a new "row"
+						if ( ! isset( $set['ui_order_parsed'][ $i ] ) ) {
+							$set['ui_order_parsed'][ $i ] = array();
+						}
+						$row = $set['ui_order_parsed'][ $i ];
+
+						// push the fontpicker into the first possible match for:
+						// - not a row with 3 elements
+						// - not a row with the 3 column spanning fontsampler elements
+						if ( sizeof( $row ) < 3 && ! isset( $row['fontsampler'] ) ) {
+							array_push( $set['ui_order_parsed'][ $i ], 'fontpicker');
+							break;
+						}
+					}
+				}
+			}
+
+			// keep track of what has already been rendered and what should get rendered invisibly (the rest) into the
+			// placeholder
+			$visible = array();
+			$invisible = array();
+
+			for ( $r = 0; $r < 3; $r++ ) : $row = isset( $set['ui_order_parsed'][ $r ] ) ? $set['ui_order_parsed'][ $r ] : null; ?>
 				<ul class="fontsampler-ui-preview-list">
-				<?php if ( $row ) : foreach ( $row as $item ) : ?>
-					<?php if ( ! empty( $item ) ) : ?>
+				<?php
+				if ( $row and is_array( $row ) ) :
+					foreach ( $row as $item ) :
+				?>
 					<li class="fontsampler-ui-block <?php if ( 'fontsampler' == $item ) : echo 'fontsampler-ui-placeholder-full'; endif; ?>"
 					    data-name="<?php echo $item; ?>"><?php echo $labels[ $item ]; ?></li>
-					<?php endif; ?>
-				<?php endforeach; endif; ?>
+					<?php array_push( $visible, $item ); ?>
+				<?php
+					endforeach;
+				endif;
+				?>
 				</ul>
 			<?php endfor; ?>
-			<ul class="fontsampler-ui-preview-placeholder">
 
+			<ul class="fontsampler-ui-preview-placeholder">
+				<?php
+				$invisible = array_diff_key( $labels, array_flip( $visible ) );
+				foreach ( $invisible as $key => $label ):
+				?>
+					<li class="fontsampler-ui-block" data-name="<?php echo $key; ?>"><?php echo $label; ?></li>
+				<?php endforeach; ?>
 			</ul>
 		</div>
 		<small>Only items you have selected above will be available for sorting in this preview.</small>

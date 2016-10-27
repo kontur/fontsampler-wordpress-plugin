@@ -25,6 +25,7 @@ jQuery(function () {
 		$("#fontsampler-fontset-list li:last").clone().appendTo("#fontsampler-fontset-list");
 		$("#fontsampler-fontset-list li:last option[selected='selected']").removeAttr('selected');
         $("#fontsampler-fontset-list").sortable("refresh");
+
         updateFontsOrder();
 	});
 
@@ -43,7 +44,9 @@ jQuery(function () {
             return $(this).val();
         }).get().join();
         $("input[name=fonts_order]").val(order);
+        console.log("updateFontsOrder");
     }
+    updateFontsOrder();
 
 
     // setting sliders
@@ -175,14 +178,16 @@ jQuery(function () {
     $("#fontsampler-edit-sample input[type=checkbox]").on("change", function () {
         iterateCheckboxes($(this));
     });
-
-    if ($("#fontsampler-edit-sample input[name=id]").length === 0) {
-        $("input[type=checkbox]").each(function () {
-            iterateCheckboxes($(this));
-        });
-    }
     calculateUIOrder();
 
+    /**
+     * Function that gets called when any of the checkboxes controlling the display of a UI element get toggled
+     * If the element is currently hidden, it gets appended to the sortable
+     * If the element is currently visible, it gets stashed in the placeholder list
+     *
+     * @param $this - the checkbox
+     * @returns {boolean}
+     */
     function iterateCheckboxes($this) {
         var attr = $this.attr("name"),
             checked = $this.is(":checked"),
@@ -204,11 +209,10 @@ jQuery(function () {
             $(".fontsampler-ui-preview-list:not(:has(.fontsampler-ui-placeholder-full))").filter(function () {
                 return $(this).children("li").length < 3;
             }).filter(":first").append($elem);
-            $elem.fadeIn();
+            $elem.fadeIn(calculateUIOrder);
         } else {
             // see if the unchecked field was one of the combo fields from OP alignment or inverting
             if (attr.indexOf("ot_") > -1 || ['alignment', 'invert'].indexOf(attr) > -1 ) {
-                console.log("special combo checkbox");
                 if ($combined.filter(":checked").length > 0) {
                     // if indeed it is one of those checkboxes that got changed and if indeed not all of those fields
                     // are unchecked, the UI field remains visible, so do nothing / don't fade out the preview field
@@ -221,6 +225,7 @@ jQuery(function () {
             // proceed hiding
             $elem.fadeOut(function () {
                 $(this).appendTo(".fontsampler-ui-preview-placeholder");
+                calculateUIOrder();
             });
         }
     }
