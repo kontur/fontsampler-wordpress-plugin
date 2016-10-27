@@ -225,4 +225,13 @@ jQuery(function () {
         }
     }
 
+    // toggling a class on given element from a radio set
+    $("[data-toggle-id]").on("change", function () {
+        if (parseInt( $(this).val() ) === 1) {
+            $("#" + $(this).data('toggle-id')).addClass($(this).data('toggle-class'));
+        } else {
+            $("#" + $(this).data('toggle-id')).removeClass($(this).data('toggle-class'));
+        }
+    });
+
 });

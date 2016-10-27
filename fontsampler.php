@@ -33,6 +33,7 @@ class Fontsampler {
 	private $table_join;
 	private $table_settings;
 	private $boolean_options;
+	private $default_features;
 	private $font_formats;
 	private $fontsampler_db_version;
 	private $settings_defaults;
@@ -48,7 +49,7 @@ class Fontsampler {
 		// keep track of db versions and migrations via this
 		// simply set this to the current PLUGIN VERSION number when bumping it
 		// i.e. a database update always bumps the version number of the plugin as well
-		$this->fontsampler_db_version = '0.0.2';
+		$this->fontsampler_db_version = '0.0.3';
 
 		$current_db_version = get_option( 'fontsampler_db_version' );
 
@@ -78,6 +79,16 @@ class Fontsampler {
 			'ot_frac',
 			'ot_sups',
 			'ot_subs',
+		);
+		$this->default_features = array(
+			'size',
+			'letterspacing',
+			'lineheight',
+			'fontpicker',
+			'sampletexts',
+			'alignment',
+			'invert',
+			'multiline',
 		);
 		$this->font_formats = array( 'woff2', 'woff', 'eot', 'svg', 'ttf' );
 
@@ -109,6 +120,14 @@ class Fontsampler {
 			'css_color_handle'          => '#333333',
 			'css_color_icon_active'     => '#333333',
 			'css_color_icon_inactive'   => '#dedede',
+			'size'                      => 1,
+			'letterspacing'             => 1,
+			'lineheight'                => 1,
+			'fontpicker'                => 0,
+			'sampletexts'               => 0,
+			'alignment'                 => 0,
+			'invert'                    => 0,
+			'multiline'                 => 1,
 		);
 	}
 
@@ -264,7 +283,8 @@ class Fontsampler {
 		$subpage = isset( $_GET['subpage'] ) ? $_GET['subpage'] : '';
 		switch ( $subpage ) {
 			case 'set_create':
-				$set   = null;
+				$set = array_intersect_key($this->get_settings(), array_flip($this->default_features));
+				$set['default_features'] = 1;
 				$fonts = $this->get_fontfile_posts();
 				include( 'includes/sample-edit.php' );
 				break;
@@ -356,6 +376,7 @@ class Fontsampler {
                 `ot_sups` tinyint( 1 ) NOT NULL DEFAULT '0',
                 `ot_subs` tinyint( 1 ) NOT NULL DEFAULT '0',
                 `ui_order` VARCHAR( 255 ) NOT NULL DEFAULT 'size,letterspacing,options|fontpicker,sampletexts,lineheight|fontsampler',
+                `default_options` tinyint( 1 ) NOT NULL DEFAULT '0',
 			  PRIMARY KEY ( `id` )
 			)";
 		$this->db->query( $sql );
@@ -470,6 +491,17 @@ class Fontsampler {
 				'ALTER TABLE ' . $this->table_settings . ' ADD `css_color_icon_inactive` tinytext NOT NULL',
 				'ALTER TABLE ' . $this->table_sets . " ADD `ui_order` VARCHAR( 255 ) NOT NULL DEFAULT 'size,letterspacing,options|fontpicker,sampletexts,lineheight|fontsampler'",
 				'ALTER TABLE ' . $this->table_join . " ADD `order` smallint( 5 ) unsigned NOT NULL DEFAULT '0'",
+			),
+			'0.0.3' => array(
+				'ALTER TABLE ' . $this->table_sets . " ADD `default_options` tinyint( 1 ) NOT NULL DEFAULT '0'",
+				'ALTER TABLE ' . $this->table_settings . " ADD `size` tinyint( 1 ) unsigned NOT NULL DEFAULT '0'",
+				'ALTER TABLE ' . $this->table_settings . " ADD `letterspacing` tinyint( 1 ) unsigned NOT NULL DEFAULT '0'",
+				'ALTER TABLE ' . $this->table_settings . " ADD `lineheight` tinyint( 1 ) unsigned NOT NULL DEFAULT '0'",
+				'ALTER TABLE ' . $this->table_settings . " ADD `fontpicker` tinyint( 1 ) unsigned NOT NULL DEFAULT '0'",
+				'ALTER TABLE ' . $this->table_settings . " ADD `sampletexts` tinyint( 1 ) unsigned NOT NULL DEFAULT '0'",
+				'ALTER TABLE ' . $this->table_settings . " ADD `alignment` tinyint( 1 ) unsigned NOT NULL DEFAULT '0'",
+				'ALTER TABLE ' . $this->table_settings . " ADD `invert` tinyint( 1 ) unsigned NOT NULL DEFAULT '0'",
+				'ALTER TABLE ' . $this->table_settings . " ADD `multiline` tinyint( 1 ) unsigned NOT NULL DEFAULT '0'",
 			),
 		);
 
@@ -777,14 +809,27 @@ class Fontsampler {
 		if ( 'edit_set' == $_POST['action'] && isset( $_POST['action'] ) ) {
 			check_admin_referer( 'fontsampler-action-edit_set' );
 			$data = array();
+
 			foreach ( $this->boolean_options as $index ) {
 				$data[ $index ] = isset( $_POST[ $index ] );
 			}
 
+			// substitute in defaults, if we are to use them
+			// when defaults get updates, any sets with the default_features = 1 will need to get updated
+			if ( $_POST['default_features'] == 1 ) {
+				$substitutes = array_intersect_key( $this->get_settings(), $this->boolean_options );
+				$data = array_replace( $data, $substitutes );
+				$data['default_features'] = 1;
+			} else {
+				$data['default_features'] = 0;
+			}
+
+			// whether or not to show a font picker for multiple fonts should be shown
 			if ( sizeof( $_POST['font_id'] ) > 1 ) {
 				$data['fontpicker'] = true;
 			}
 
+			// also allow for empty initial text
 			if ( ! empty( $_POST['initial'] ) ) {
 				$data['initial'] = $_POST['initial'];
 			}
@@ -851,17 +896,24 @@ class Fontsampler {
 		if ( isset( $_POST['id'] ) ) {
 			$id = (int) ( $_POST['id'] );
 			if ( 'edit_settings' == $_POST['action'] && isset( $id ) && is_int( $id ) && $id > 0 ) {
-				$settings_fields = array_keys($this->settings_defaults);
+				$settings_fields = array_keys( $this->settings_defaults );
 
 				$data = array();
 				foreach ( $settings_fields as $field ) {
-					if ( isset( $_POST[ $field ] ) ) {
-						$data[ $field ] = trim( $_POST[ $field ] );
+					if ( in_array( $field, $this->default_features ) ) {
+						$data[ $field ] = isset( $_POST[ $field ] ) ? 1 : 0;
+					} else {
+						if ( isset( $_POST[ $field ] ) ) {
+							$data[ $field ] = trim( $_POST[ $field ] );
+						}
 					}
 				}
 
 				// atm no inserts, only updating the defaults
 				$this->db->update( $this->table_settings, $data, array( 'id' => $id ) );
+
+				// rewrite any fontsampler sets that use the defaults
+				$this->update_defaults( $data );
 
 				// further generate a new settings css file
 				$this->write_css_from_settings( $data );
@@ -873,6 +925,11 @@ class Fontsampler {
 	/*
 	 * HELPERS
 	 */
+
+	function update_defaults($options) {
+		$data = array_intersect_key( $options, array_flip($this->default_features) );
+		$this->db->update( $this->table_sets, $data, array( 'default_features' => '1'));
+	}
 
 	/**
 	 * @return string path to include styles css file

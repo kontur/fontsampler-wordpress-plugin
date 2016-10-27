@@ -16,7 +16,7 @@
     label {
         display: block;
         font-family: monospace;
-        color: #999;
+        color: #666;
         margin: 1em 0;
 
         &:hover, &:focus {
@@ -98,6 +98,7 @@
 
     small {
         font-size: x-small;
+        font-family: sans-serif;
         line-height: 1em;
     }
 
@@ -219,6 +220,14 @@
         }
     }
 
+    #fontsampler-options-checkboxes {
+        display: block;
+
+        &.use-defaults {
+            display: none;
+        }
+    }
+
     .fontsampler-admin-column-half {
         float: left;
         margin-right: 5%;
@@ -227,10 +236,12 @@
 
     .form-settings label {
         clear: both;
-        span.setting-description {
-            float: left;
+        span.setting-description, small {
             display: inline-block; 
             width: 23em;
+        }
+        span.styling-description {
+            float: left;
         }
         div.slider {
             display: inline-block;
@@ -244,11 +255,16 @@
         input[type="range"] {
             width: 20em;
         }
-        input, textarea {
-
+        textarea {
+            clear: both;
+            display: block;
         }
         small {
             display: block;
+            margin-bottom: 1em;
+        }
+        input[type="text"] {
+            width: 9em;
         }
     }
 

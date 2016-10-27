@@ -3,6 +3,7 @@ jQuery(function () {
 	$(".fontsampler").each(function () {
 		var file = $(this).data('fontfile'),
 			options = $(this).data('options');
+
 		$(this).fontSampler({
 			fontFile: file,
 			fontSize: options["font_size_initial"] + options["font_size_unit"],

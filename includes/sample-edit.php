@@ -70,35 +70,26 @@
 			<div class="fontsampler-options-checkbox fontsampler-admin-column-half">
 				<fieldset>
 					<legend>Common features</legend>
+
 					<label>
-						<input type="checkbox" name="size" <?php if ( ! empty( $set['size'] ) ) : echo ' checked="checked" '; endif; ?> >
-						<span>Size control</span>
+						<input data-toggle-class="use-defaults" data-toggle-id="fontsampler-options-checkboxes" type="radio"
+						       name="default_features" value="1"
+							<?php if ( $set['default_features'] ): echo 'checked="checked"'; endif; ?>>
+						<span>Use default features</span>
 					</label>
 					<label>
-						<input type="checkbox" name="letterspacing" <?php if ( ! empty( $set['letterspacing'] ) ) : echo ' checked="checked" '; endif; ?> >
-						<span>Letter spacing control</span>
+						<input data-toggle-class="use-defaults" data-toggle-id="fontsampler-options-checkboxes" type="radio"
+						       name="default_features" value="0"
+							<?php if ( ! $set['default_features'] ): echo 'checked="checked"'; endif; ?>>
+						<span>Select custom features</span>
 					</label>
-					<label>
-						<input type="checkbox" name="lineheight" <?php if ( ! empty( $set['lineheight'] ) ) : echo ' checked="checked" '; endif; ?> >
-						<span>Line height control</span>
-					</label>
-					<label>
-						<input type="checkbox" name="fontpicker" <?php if ( ! empty( $set['fontpicker'] ) ) : echo ' checked="checked" '; endif; ?> >
-						<span>Display dropdown selection for multiple fonts </span>
-						<small>(this will automatically be hidden if no more than one font are found)</small>
-					</label>
-					<label>
-						<input type="checkbox" name="sampletexts" <?php if ( ! empty( $set['sampletexts'] ) ) : echo ' checked="checked" '; endif; ?> >
-						<span>Display dropdown selection for sample texts</span>
-					</label>
-					<label>
-						<input type="checkbox" name="alignment" <?php if ( ! empty( $set['alignment'] ) ) : echo ' checked="checked" '; endif; ?> >
-						<span>Alignment controls</span>
-					</label>
-					<label>
-						<input type="checkbox" name="invert" <?php if ( ! empty( $set['invert'] ) ) : echo ' checked="checked" '; endif; ?> >
-						<span>Allow inverting the text field to display negative text</span>
-					</label>
+
+					<div id="fontsampler-options-checkboxes" class="<?php echo $set['default_features'] ? 'use-defaults' : '';?> ">
+						<?php
+						$options = $set;
+						include('fontsampler-options.php');
+						?>
+					</div>
 				</fieldset>
 			</div>
 
