@@ -11,10 +11,6 @@
 	<span>Line height control</span>
 </label>
 <label>
-	<input type="checkbox" name="fontpicker" <?php if ( ! empty( $options['fontpicker'] ) ) : echo ' checked="checked" '; endif; ?> >
-	<span>Display dropdown selection for multiple fonts <small>(this will automatically be hidden if no more than one font are found)</small></span>
-</label>
-<label>
 	<input type="checkbox" name="sampletexts" <?php if ( ! empty( $options['sampletexts'] ) ) : echo ' checked="checked" '; endif; ?> >
 	<span>Display dropdown selection for sample texts</span>
 </label>
