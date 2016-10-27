@@ -53,7 +53,7 @@
 			float: left;
 			position: relative;
 			padding: 0 5px;
-			width: 33%;
+			width: 32%;
 
 			&:first-of-type {
 				left: -5px;
@@ -94,7 +94,7 @@
             left: -5px;
             padding: 0 5px;
             margin-right: 5px;
-			width: 33%;
+			width: 32%;
 		}
 		select[name="alignment"],
 		select[name="invert"], 
@@ -191,12 +191,10 @@
 	.fontsampler {
 	    clear: both;
 	    margin-bottom: 20px;
-	    padding: 10px 20px;
-	    transition: all 0.2s ease-out;
+		transition: all 0.2s ease-out;
 
-		&.invert {
-			background: #333333;
-			color: #ffffff;
+		&:focus {
+			outline: none;
 		}
 	}
 }

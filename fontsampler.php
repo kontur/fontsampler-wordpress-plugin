@@ -621,8 +621,9 @@ class Fontsampler {
 			return false;
 		}
 
-		// generate order array with rows of arrays of ui fields
-		$set['ui_order_parsed'] = $this->parse_ui_order( $set['ui_order'] );
+		// generate order array with rows of arrays of ui fields, remove any fields from the ui_order string that
+		// are in fact not enabled in this set
+		$set['ui_order_parsed'] = $this->parse_ui_order( $this->prune_ui_order( $set['ui_order'], $set) );
 
 		if ( ! $including_fonts ) {
 			return $set;
@@ -1018,6 +1019,31 @@ class Fontsampler {
 		}
 
 		return $order;
+	}
+
+	/**
+	 * Helper to remove not acutally present elements from the compressed string
+	 *
+	 * @param $string the compressed string of ui elements, commaseparated and | -separated, i.e. size,letterspacing|fontsampler
+	 * @param $set the fontsampler set to validate it against
+	 */
+	function prune_ui_order( $string, $set ) {
+		// force include the non-db value "fontsampler"
+		$set['fontsampler'] = 1;
+
+		$parsed = $this->parse_ui_order( $string );
+		$pruned = array();
+		foreach ( $parsed as $row ) {
+			$prunedRow = array();
+			foreach ( $row as $item ) {
+				if ( isset( $set[ $item ] ) && $set[ $item ] == 1) {
+					array_push( $prunedRow, $item );
+				}
+			}
+			array_push( $pruned, implode( ',', $prunedRow ) );
+		}
+
+		return implode( '|', $pruned );
 	}
 
 

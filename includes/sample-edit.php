@@ -154,8 +154,10 @@
 			<?php for ( $r = 0; $r < 3; $r++ ) : $row = isset( $set['ui_order_parsed'][ $r ] ) ? $set['ui_order_parsed'][ $r ] : null; ?>
 				<ul class="fontsampler-ui-preview-list">
 				<?php if ( $row ) : foreach ( $row as $item ) : ?>
+					<?php if ( ! empty( $item ) ) : ?>
 					<li class="fontsampler-ui-block <?php if ( 'fontsampler' == $item ) : echo 'fontsampler-ui-placeholder-full'; endif; ?>"
 					    data-name="<?php echo $item; ?>"><?php echo $labels[ $item ]; ?></li>
+					<?php endif; ?>
 				<?php endforeach; endif; ?>
 				</ul>
 			<?php endfor; ?>
