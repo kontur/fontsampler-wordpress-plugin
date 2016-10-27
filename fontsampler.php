@@ -320,7 +320,8 @@ class Fontsampler {
 				break;
 
 			case 'set_edit':
-				$set   = $this->get_set( intval( $_GET['id'] ) );
+				$default_settings = $this->get_settings();
+				$set = $this->get_set( intval( $_GET['id'] ) );
 				if ( sizeof( $set['fonts'] ) > 1) {
 					$set['fontpicker'] = 1;
 				}

@@ -44,9 +44,7 @@ jQuery(function () {
             return $(this).val();
         }).get().join();
         $("input[name=fonts_order]").val(order);
-        console.log("updateFontsOrder");
     }
-    updateFontsOrder();
 
 
     // setting sliders
@@ -229,6 +227,34 @@ jQuery(function () {
             });
         }
     }
+
+
+    $("#fontsampler-edit-sample input[name=default_features]").on("change", function () {
+        var $checkboxes = $("#fontsampler-options-checkboxes input[type=checkbox]"),
+            $this = $(this);
+
+        $checkboxes.each(function () {
+            var $that = $(this);
+
+            if ( parseInt( $this.val() ) === 1 ) {
+                // use defaults:
+                if ($that.data('default') == 'checked') {
+                    $that.attr('checked', 'checked');
+                } else {
+                    $that.removeAttr('checked');
+                }
+            } else {
+                // use custom set:
+                if ($that.data('set') == 'checked') {
+                    $that.attr('checked', 'checked');
+                } else {
+                    $that.removeAttr('checked');
+                }
+            }
+            iterateCheckboxes($that);
+        });
+
+    });
 
     // toggling a class on given element from a radio set
     $("[data-toggle-id]").on("change", function () {
