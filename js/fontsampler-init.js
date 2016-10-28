@@ -10,6 +10,7 @@ jQuery(function () {
 			letterSpacing: options["letter_spacing_initial"] + options["letter_spacing_unit"],
 			leading: options["line_height_initial"] + options["line_height_unit"]
 		});
+
 	});
 
 

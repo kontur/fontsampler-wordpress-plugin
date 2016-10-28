@@ -58,7 +58,9 @@
 						if ( sizeof( $fonts ) > 1 ) : ?>
 							<select name="font-selector">
 								<?php foreach ( $fonts as $font ) : ?>
-									<option data-font-files='<?php echo $f->fontfiles_json( $font ); ?>'>
+									<option data-font-files='<?php echo $f->fontfiles_json( $font ); ?>'
+									<?php if ( isset( $set['initial_font'] ) && $set['initial_font'] == $font['id'] ) :
+										echo 'selected="selected"'; endif; ?>>
 										<?php echo $font['name']; ?></option>
 								<?php endforeach; ?>
 							</select>
@@ -158,10 +160,23 @@
 
 					case 'fontsampler':
 						// NOTE echo with " and class with ' to output json as ""-enclosed strings
+
+						// find the initial font, if one is set, and encode it as json for the fontsampler to start
+						// up with
+						$initial_font = NULL;
+						if ( isset( $set['initial_font'] ) && ! empty( $set['initial_font'] ) ) {
+							$initial_font = array_filter( $fonts, function ( $font ) use ( $set ) {
+								return ( isset( $font['id'] ) && $font['id'] == $set['initial_font'] );
+							} );
+							$initial_font = array_shift($initial_font);
+						} else {
+							$initial_font = $this->fontfiles_json( $fonts[0] );
+						}
+						$initial_font_json = $this->fontfiles_json( $initial_font );
 						?>
 						<div class="fontsampler fontsampler-id-<?php echo $set['id']; ?>"
 						     data-options='<?php echo json_encode($replace); ?>'
-							 data-font-files='<?php echo $this->fontfiles_json( $fonts[0] ); ?>'
+							 data-font-files='<?php echo $initial_font_json; ?>'
 							 dir="<?php echo ( ! isset( $set['is_ltr'] ) || $set['is_ltr'] == '1' ) ? 'ltr' : 'rtl'; ?>"
 						><?php echo str_replace( '\n', '<br>', $set['initial'] ); ?>
 						</div>
