@@ -412,7 +412,8 @@ class Fontsampler {
                 `default_features` tinyint( 1 ) NOT NULL DEFAULT '1',
                 `default_options` tinyint( 1 ) NOT NULL DEFAULT '0',
 			  PRIMARY KEY ( `id` )
-			)";
+			) DEFAULT CHARSET=utf8";
+
 		$this->db->query( $sql );
 	}
 
@@ -427,7 +428,7 @@ class Fontsampler {
 			  `svg` int( 11 ) unsigned DEFAULT NULL,
 			  `ttf` int( 11 ) unsigned DEFAULT NULL,
 			  PRIMARY KEY ( `id` )
-			)";
+			) DEFAULT CHARSET=utf8";
 		$this->db->query( $sql );
 	}
 
@@ -437,7 +438,7 @@ class Fontsampler {
 			   `set_id` int( 11 ) unsigned NOT NULL,
 			   `font_id` int( 11 ) unsigned NOT NULL,
 			   `order` smallint( 5 ) unsigned NOT NULL DEFAULT '0'
-				)";
+				) DEFAULT CHARSET=utf8";
 		$this->db->query( $sql );
 	}
 
@@ -480,7 +481,7 @@ class Fontsampler {
 			`invert` tinyint(1) unsigned NOT NULL DEFAULT '0',
 			`multiline` tinyint(1) unsigned NOT NULL DEFAULT '0',
 			PRIMARY KEY (`id`)
-			)";
+			) DEFAULT CHARSET=utf8";
 		$this->db->query( $sql );
 
 		$this->db->insert( $this->table_settings, $this->settings_defaults );
