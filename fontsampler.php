@@ -767,7 +767,17 @@ class Fontsampler {
 
 			echo '<div class="notice">';
 
-			$data = array( 'name' => $_POST['fontname'] );
+			// initially set all formats to NULL
+			// if there previously there was a font, and now it got deleted, it will not linger in the db as unaffected
+			// column, but instead get deleted
+			$data = array(
+				'name'  => $_POST['fontname'],
+				'woff2' => NULL,
+				'woff'  => NULL,
+				'eot'   => NULL,
+				'svg'   => NULL,
+				'ttf'   => NULL,
+			);
 
 			foreach ( $this->font_formats as $label ) {
 				if ( isset( $_FILES[ $label ] ) && $_FILES[ $label ]['size'] > 0 ) {
@@ -781,6 +791,7 @@ class Fontsampler {
 				} elseif ( ! empty( $_POST[ 'existing_file_' . $label ] ) ) {
 					// don't overwrite current file reference
 					$this->info( 'Existing ' . $label . ' file remains unchanged.' );
+					unset( $data[ $label ] );
 				} else {
 					$this->notice( 'No ' . $label . ' file provided. You can still add it later.' );
 				}

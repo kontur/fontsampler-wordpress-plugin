@@ -27,6 +27,7 @@
 			<th>Format</th>
 			<?php if ( ! empty( $font['id'] ) ) : ?><th>Current file</th><?php endif; ?>
 			<th>Upload new file</th>
+			<th>Remove existing file</th>
 		</tr>
 		</thead>
 		<tbody>
@@ -37,10 +38,15 @@
 				<td class="fontsampler-fontset-current-file"><?php if ( ! empty( $font[ $format ] ) ) : ?>
 						<span class="filename"><?php echo $font[ $format ]; ?></span>
 						<input type="hidden" name="existing_file_<?php echo $format; ?>"
-						       value="<?php echo $font[ $format ]; ?>">
+						       class="hidden-file-name" value="<?php echo $font[ $format ]; ?>">
 					<?php endif; ?></td>
 				<?php endif; ?>
-				<td><input type="file" name="<?php echo $format; ?>" data-validation="mime" data-validation-allowing="<?php echo $format; ?>"></td>
+				<td>
+					<input type="file" name="<?php echo $format; ?>" data-validation="mime" data-validation-allowing="<?php echo $format; ?>">
+				</td>
+				<td>
+					<?php if ( ! empty( $font[ $format ] ) ) : ?><button class="fontsampler-fontset-remove-font">&minus;</button><?php endif; ?>
+				</td>
 			</tr>
 		<?php endforeach; ?>
 		</tbody>

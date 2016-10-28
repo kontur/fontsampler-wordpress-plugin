@@ -92,6 +92,12 @@ jQuery(function () {
         $sliderInput.val(constrainedValue).change();
     });
 
+    $("#fontsampler-admin .fontsampler-fontset-remove-font").on("click", function (e) {
+        e.preventDefault();
+        $(this).closest("tr").find(".hidden-file-name").remove();
+        $(this).closest("tr").find(".filename").html("");
+    });
+
 
     // interface
     $("#fontsampler-admin .form-settings input[type=range]").on('change, input', function () {
