@@ -283,38 +283,8 @@ class Fontsampler {
 				$default_settings = $this->get_settings();
 				$set = array_intersect_key( $default_settings, array_flip( $this->default_features ) );
 				$set['default_features'] = 1; // by default pick the default UI options
+				$set['ui_order_parsed'] = $this->ui_order_parsed_from( $default_settings, $set );
 
-				// note: no fontpicker per default, since we start creating with 0 fonts
-				// when fonts get added the update function will push the picker to the UI
-				// TODO generate this more ideal and based off defaults to avoid funny gaps 2 / 1 / 1 kind of things
-				$set['ui_order_parsed'] = $this->parse_ui_order( 'size,letterspacing,options|sampletexts,lineheight|fontsampler' );
-
-				// all blocks except 'fontpicker' (no need when creating a new set with 0 fonts - gets dynamically
-				// added on selecting fonts)
-
-				$ui_blocks = array_intersect( array_keys( array_filter($default_settings, function ($a) {
-					return $a == "1";
-				}) ), array( 'size', 'letterspacing', 'lineheight', 'sampletexts', 'options' ) );
-				array_push( $ui_blocks, 'fontsampler' );
-
-				$set['ui_order_parsed'] = array();
-
-				for ( $r = 0; $r < 2; $r++ ) {
-					$set['ui_order_parsed'][ $r ] = array();
-
-					while ( sizeof( $set['ui_order_parsed'][ $r ] ) < 3 && sizeof( $ui_blocks ) > 0 ) {
-
-						$block = array_shift( $ui_blocks );
-						if ( ( 'options' !== $block && isset( $set[ $block ] ) ) ||
-						     ('options' === $block && $this->set_has_options( $set ) ) ) {
-							array_push( $set[ 'ui_order_parsed' ][ $r ], $block );
-						}
-					}
-					if ( sizeof( $ui_blocks ) == 0 ) {
-						break;
-					}
-				}
-				array_push( $set['ui_order_parsed'], array( 'fontsampler' ));
 				$fonts = $this->get_fontfile_posts();
 				include( 'includes/sample-edit.php' );
 				break;
@@ -975,10 +945,18 @@ class Fontsampler {
 	 * Helper function that updates all fontsampler sets with the new (default) options just saved
 	 * @param $options
 	 */
-	function update_defaults($options) {
-		$data = array_intersect_key( $options, array_flip($this->default_features) );
-		// TODO this needs to further update the ui_order field!!!
-		$this->db->update( $this->table_sets, $data, array( 'default_features' => '1'));
+	function update_defaults( $options ) {
+		// write all new default options to the corresponding columns in the sets
+		$data = array_intersect_key( $options, array_flip( $this->default_features ) );
+		$this->db->update( $this->table_sets, $data, array( 'default_features' => '1' ) );
+
+		// a bit clumsily with second update, but need to first have all fields in sync
+		// update the generated ui_order column so that editing the fontsampler the UI layout is reflected to match
+		// the current defaults
+		foreach ( $this->get_sets() as $set ) {
+			$data = array( 'ui_order' => $this->concat_ui_order( $this->ui_order_parsed_from( $options, $set ) ) );
+			$this->db->update( $this->table_sets, $data, array( 'default_features' => '1' ) );
+		}
 	}
 
 	/**
@@ -1073,6 +1051,17 @@ class Fontsampler {
 		return $order;
 	}
 
+
+	function concat_ui_order( $array ) {
+		$ui_order = '';
+		foreach ( $array as $row ) {
+			$ui_order .= implode( ',', $row) . '|';
+		}
+		$ui_order = substr($ui_order, 0, -1);
+		return $ui_order;
+	}
+
+
 	function set_has_options ( $set ) {
 		return ( isset( $set['invert'] ) || isset( $set['alignment'] ) ||
 		! empty( array_filter( $set, function ($var) { return substr( $var, 0, 3 ) === "ot_"; }) ) );
@@ -1110,6 +1099,51 @@ class Fontsampler {
 		}
 
 		return implode( '|', $pruned );
+	}
+
+
+	/**
+	 * Helper that returnes a parsed array with the correct UI blocks based on passed in settings and set
+	 *
+	 * @param $settings
+	 * @param $set
+	 *
+	 * @return array
+	 */
+	function ui_order_parsed_from( $settings, $set ) {
+
+		// all blocks except 'fontpicker' (no need when creating a new set with 0 fonts - gets dynamically
+		// added on selecting fonts)
+
+		// fetch the defaults and intersect them with the five possible options (mandatory fontsampler added last)
+		// to generate an array of ui_blocks that need to be arranhged
+		$ui_blocks = array_intersect( array_keys( array_filter($settings, function ($a) {
+			return $a == "1";
+		}) ), array( 'size', 'letterspacing', 'lineheight', 'sampletexts', 'options' ) );
+		array_push( $ui_blocks, 'fontsampler' );
+
+		$ui_order = array();
+
+		// generate the most "ideal" (no gaps in the row, no 2+2 rows) layout of ui_blocks and store them
+		// in a formate that is the same as ui_order_parsed
+		for ( $r = 0; $r < 2; $r++ ) {
+			$ui_order[ $r ] = array();
+
+			while ( sizeof( $ui_order[ $r ] ) < 3 && sizeof( $ui_blocks ) > 0 ) {
+
+				$block = array_shift( $ui_blocks );
+				if ( ( 'options' !== $block && isset( $set[ $block ] ) ) ||
+				     ('options' === $block && $this->set_has_options( $set ) ) ) {
+					array_push( $ui_order[ $r ], $block );
+				}
+			}
+			if ( sizeof( $ui_blocks ) == 0 ) {
+				break;
+			}
+		}
+		array_push( $ui_order, array( 'fontsampler' ) );
+
+		return $ui_order;
 	}
 
 
