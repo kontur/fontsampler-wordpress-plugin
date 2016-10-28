@@ -17,11 +17,13 @@
 		<p>Pick which font set or sets to use:</p>
 		<input type="hidden" name="fonts_order" value="<?php if ( ! empty( $fonts_order ) ) : echo $fonts_order; endif; ?>">
 		<ul id="fontsampler-fontset-list">
+			<?php // looop through all pased in $set['fonts'] ?>
 			<?php if ( ! empty( $set['id'] ) && ! empty( $set['fonts'] ) ) : foreach ( $set['fonts'] as $existing_font ) : ?>
 				<li>
 					<span class="fontsampler-fontset-sort-handle">&varr;</span>
 					<select name="font_id[]">
 						<option value="0">--</option>
+						<?php // for each dropdown loop print out all fonts and if the current font is in the set, select it ?>
 						<?php foreach ( $fonts as $font ) : ?>
 							<option <?php if ( in_array( $existing_font['name'], $font ) ) : echo ' selected="selected"'; endif; ?>
 								value="<?php echo $font['id']; ?>">
@@ -31,6 +33,19 @@
 						<?php endforeach; ?>
 					</select>
 					<button class="btn btn-small fontsampler-fontset-remove">&minus;</button>
+					<div class="fontsampler-initial-font-selection">
+					&nbsp;&nbsp;&nbsp;<input type="radio" name="initial_font" value="<?php echo $existing_font['id']; ?>"
+						<?php if ( ! isset( $set['initial_font'] ) || $set['initial_font'] == $existing_font['id'] ) : echo 'checked="checked"'; ?>>
+						<span class="fontsampler-initial-font selected">
+							<span class="initial-font-selected">Is initially selected</span>
+							<span class="initial-font-unselected">Set as initial</span>
+						</span>
+						<?php else : ?>
+						><span class="fontsampler-initial-font">
+							<span class="initial-font-selected">Is initially selected</span>
+							<span class="initial-font-unselected">Set as initial</span>
+						</span><?php endif; ?>
+					</div>
 				</li>
 			<?php endforeach; ?>
 

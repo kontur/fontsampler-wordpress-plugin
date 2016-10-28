@@ -382,6 +382,7 @@ class Fontsampler {
                 `ui_order` VARCHAR( 255 ) NOT NULL DEFAULT 'size,letterspacing,options|fontpicker,sampletexts,lineheight|fontsampler',
                 `default_features` tinyint( 1 ) NOT NULL DEFAULT '1',
                 `default_options` tinyint( 1 ) NOT NULL DEFAULT '0',
+                `initial_font` int( 10 ) unsigned DEFAULT NULL,
 			  PRIMARY KEY ( `id` )
 			) DEFAULT CHARSET=utf8";
 
@@ -509,6 +510,7 @@ class Fontsampler {
 				'ALTER TABLE ' . $this->table_sets . " ADD `default_options` tinyint( 1 ) NOT NULL DEFAULT '0'",
 				'ALTER TABLE ' . $this->table_sets . " ADD `default_features` tinyint( 1 ) NOT NULL DEFAULT '1'",
 				'ALTER TABLE ' . $this->table_sets . " ADD `is_ltr` tinyint( 1 ) NOT NULL DEFAULT '1'",
+				'ALTER TABLE ' . $this->table_sets . " ADD  `initial_font` int( 10 ) unsigned DEFAULT NULL",
 				'ALTER TABLE ' . $this->table_sets . ' DROP COLUMN `fontpicker`',
 				'ALTER TABLE ' . $this->table_settings . " ADD `size` tinyint( 1 ) unsigned NOT NULL DEFAULT '0'",
 				'ALTER TABLE ' . $this->table_settings . " ADD `letterspacing` tinyint( 1 ) unsigned NOT NULL DEFAULT '0'",
@@ -844,6 +846,17 @@ class Fontsampler {
 			// also allow for empty initial text
 			if ( ! empty( $_POST['initial'] ) ) {
 				$data['initial'] = $_POST['initial'];
+			}
+
+			// store the initial font, this is either the only font, or the selected font
+			if ( isset( $_POST['font_id'] ) && isset( $_POST['initial_font'] ) ) {
+				if ( sizeof( array_unique( $_POST['font_id'] ) ) == 1 ) {
+					$data['initial_font'] = $_POST['font_id'][0]['id'];
+				} else {
+					$data['initial_font'] = $_POST['initial_font'];
+				}
+			} else {
+				$data['initial_font'] = NULL;
 			}
 
 			// store script writing direction

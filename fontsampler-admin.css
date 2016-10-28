@@ -350,3 +350,18 @@
 #fontsampler-admin #fontsampler-edit-sample textarea[name="initial"] {
   width: 100%;
 }
+#fontsampler-admin .fontsampler-initial-font-selection {
+  display: inline-block;
+}
+#fontsampler-admin .fontsampler-initial-font.selected span.initial-font-selected {
+  display: inline-block;
+}
+#fontsampler-admin .fontsampler-initial-font.selected span.initial-font-unselected {
+  display: none;
+}
+#fontsampler-admin .fontsampler-initial-font span.initial-font-selected {
+  display: none;
+}
+#fontsampler-admin .fontsampler-initial-font span.initial-font-unselected {
+  display: inline-block;
+}

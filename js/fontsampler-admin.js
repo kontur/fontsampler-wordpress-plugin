@@ -13,6 +13,11 @@ jQuery(function () {
 		e.preventDefault();
 		if ($("#fontsampler-fontset-list li").length > 1) {
 			$(this).parent("li").remove();
+
+            // the the row with the current default font gets delete, move the default to the first font
+            if ($("#fontsampler-fontset-list input[name=initial_font]:checked").length === 0) {
+                $("#fontsampler-fontset-list li:first input[name=initial_font]").attr("checked", "checked");
+            }
 		} else {
 			console.log("Nope. Can't delete last picker");
 		}
@@ -22,14 +27,24 @@ jQuery(function () {
 
 	$("#fontsampler-admin").on("click", ".fontsampler-fontset-add", function (e) {
 		e.preventDefault();
-		$("#fontsampler-fontset-list li:last").clone().appendTo("#fontsampler-fontset-list");
+		var $clone = $("#fontsampler-fontset-list li:last").clone();
+        $clone.find("input[name=initial_font]").removeAttr("checked").val("0");
+        $clone.find("span.fontsampler-initial-font").removeClass('selected');
+        $clone.appendTo("#fontsampler-fontset-list");
+
 		$("#fontsampler-fontset-list li:last option[selected='selected']").removeAttr('selected');
         $("#fontsampler-fontset-list").sortable("refresh");
 
         updateFontsOrder();
 	});
 
+    $("#fontsampler-fontset-list input[name=initial_font]").on("change", function () {
+        $("#fontsampler-fontset-list span.fontsampler-initial-font").removeClass("selected");
+        $("#fontsampler-fontset-list input[name=initial_font]:checked").siblings("span.fontsampler-initial-font").addClass("selected");
+    });
+
     $("#fontsampler-admin").on("change", "#fontsampler-fontset-list select", function () {
+        $(this).siblings("input[name=initial_font]").val($(this).val());
         updateFontsOrder();
     });
 
