@@ -172,7 +172,7 @@
 				// since there is more than one font, a fontpicker should be present, check if this is the case
 				$fontpicker_present = false;
 				foreach ( $set['ui_order_parsed'] as $row ) {
-					if ( isset( $row['fontpicker'] ) ) {
+					if ( in_array( 'fontpicker', $row ) ) {
 						$fontpicker_present = true;
 						break;
 					}

@@ -145,7 +145,7 @@ class Fontsampler {
 		// do nothing if missing id
 		// TODO change or fallback to name= instead of id=
 		if ( 0 != $attributes['id'] ) {
-			$set   = $this->get_set( intval( $attributes['id'] ), false );
+			$set   = $this->get_set( intval( $attributes['id'] ) );
 			$fonts = $this->get_fontset_for_set( intval( $attributes['id'] ) );
 
 			if ( false == $set || false == $fonts ) {
@@ -640,11 +640,10 @@ class Fontsampler {
 			return false;
 		}
 
-		// generate order array with rows of arrays of ui fields, remove any fields from the ui_order string that
-		// are in fact not enabled in this set
-		$set['ui_order_parsed'] = $this->parse_ui_order( $this->prune_ui_order( $set['ui_order'], $set) );
-
 		if ( ! $including_fonts ) {
+			// generate order array with rows of arrays of ui fields, remove any fields from the ui_order string that
+			// are in fact not enabled in this set
+			$set['ui_order_parsed'] = $this->parse_ui_order( $this->prune_ui_order( $set['ui_order'], $set) );
 			return $set;
 		}
 
@@ -662,6 +661,7 @@ class Fontsampler {
 				ORDER BY j.`order` ASC';
 
 		$set['fonts'] = $this->db->get_results( $sql, ARRAY_A );
+		$set['ui_order_parsed'] = $this->parse_ui_order( $this->prune_ui_order( $set['ui_order'], $set ) );
 
 		return $set;
 	}
@@ -1078,10 +1078,14 @@ class Fontsampler {
 		// force include the non-db value "fontsampler"
 		$set['fontsampler'] = 1;
 
-
 		// force include the value "options" if any OT feature, invert or alignment are enabled
 		if ( $this->set_has_options( $set ) ) {
 			$set['options'] = 1;
+		}
+
+		// if there are more than 1 font in the set, make sure to not pluck the 'fontpicker' label
+		if ( isset( $set['fonts'] ) && sizeof( $set['fonts'] ) ) {
+			$set['fontpicker'] = 1;
 		}
 
 		// loop over the parsed array and rebuild the array only with values that are defined to be there as evident
