@@ -19,6 +19,6 @@
     "jquery-selectric": "^1.10.1",
     "rangeslider.js": "^2.2.1",
     "jquery-fontsampler": "~0.0.3",
-    "jquery-form-validator": "~2.3.44"
+    "jquery-form-validator": "git://github.com/kontur/jQuery-Form-Validator.git#439bd530967c96ac4156b4ec010a7cd674f15cc3"
   }
 }
