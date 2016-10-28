@@ -401,6 +401,7 @@ class Fontsampler {
                 `alignment` tinyint( 1 ) NOT NULL DEFAULT '0',
                 `invert` tinyint( 1 ) NOT NULL DEFAULT '0',
                 `multiline` tinyint( 1 ) NOT NULL DEFAULT '0',
+                `is_ltr` tinyint( 1 ) NOT NULL DEFAULT '1',
                 `ot_liga` tinyint( 1 ) NOT NULL DEFAULT '0',
                 `ot_dlig` tinyint( 1 ) NOT NULL DEFAULT '0',
                 `ot_hlig` tinyint( 1 ) NOT NULL DEFAULT '0',
@@ -537,6 +538,7 @@ class Fontsampler {
 			'0.0.3' => array(
 				'ALTER TABLE ' . $this->table_sets . " ADD `default_options` tinyint( 1 ) NOT NULL DEFAULT '0'",
 				'ALTER TABLE ' . $this->table_sets . " ADD `default_features` tinyint( 1 ) NOT NULL DEFAULT '1'",
+				'ALTER TABLE ' . $this->table_sets . " ADD `is_ltr` tinyint( 1 ) NOT NULL DEFAULT '1'",
 				'ALTER TABLE ' . $this->table_sets . ' DROP COLUMN `fontpicker`',
 				'ALTER TABLE ' . $this->table_settings . " ADD `size` tinyint( 1 ) unsigned NOT NULL DEFAULT '0'",
 				'ALTER TABLE ' . $this->table_settings . " ADD `letterspacing` tinyint( 1 ) unsigned NOT NULL DEFAULT '0'",
@@ -874,6 +876,9 @@ class Fontsampler {
 				$data['initial'] = $_POST['initial'];
 			}
 
+			// store script writing direction
+			$data['is_ltr'] = !empty( $_POST['is_ltr'] ) && $_POST['is_ltr'] == "1" ? 1 : 0;
+
 			$id = null;
 
 			$data['ui_order'] = $_POST['ui_order'];
@@ -966,8 +971,13 @@ class Fontsampler {
 	 * HELPERS
 	 */
 
+	/**
+	 * Helper function that updates all fontsampler sets with the new (default) options just saved
+	 * @param $options
+	 */
 	function update_defaults($options) {
 		$data = array_intersect_key( $options, array_flip($this->default_features) );
+		// TODO this needs to further update the ui_order field!!!
 		$this->db->update( $this->table_sets, $data, array( 'default_features' => '1'));
 	}
 

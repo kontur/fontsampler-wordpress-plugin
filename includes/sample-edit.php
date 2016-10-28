@@ -61,10 +61,24 @@
 
 		<h2>Interface options</h2>
 		<h3>Initial text</h3>
-		<label>
-			<span>The initial text displayed in the font sampler, for example the font name or pangram. You can use multi-line text here as well.</span><br>
-			<textarea name="initial" cols="60" rows="5"><?php if ( ! empty( $set['initial'] ) ) : echo $set['initial']; endif; ?></textarea>
-		</label>
+		<div style="overflow: hidden;">
+			<div class="fontsampler-admin-column-half">
+			<label>
+				<span>The initial text displayed in the font sampler, for example the font name or pangram. You can use multi-line text here as well.</span><br>
+				<textarea name="initial" rows="5"
+				          dir="<?php echo ( !isset( $set['is_ltr'] ) || $set['is_ltr'] == "1" ) ? 'ltr' : 'rtl'; ?>"><?php if ( ! empty( $set['initial'] ) ) : echo $set['initial']; endif; ?></textarea>
+			</label>
+			</div>
+			<div class="fontsampler-admin-column-half">
+				<p>Fontsampler direction is:</p>
+				<label><input type="radio" name="is_ltr" value="1"
+						<?php if ( empty( $set['is_ltr'] ) || $set['is_ltr'] == "1") : echo 'checked="checked"'; endif; ?>>
+						<span>Left to Right</span></label>
+				<label><input type="radio" name="is_ltr" value="0"
+						<?php if ( isset( $set['is_ltr'] ) && $set['is_ltr'] == "0") : echo 'checked="checked"'; endif; ?>>
+						<span>Right to Left</span></label>
+			</div>
+		</div>
 
 		<div style="overflow: hidden;">
 			<div class="fontsampler-options-checkbox fontsampler-admin-column-half">

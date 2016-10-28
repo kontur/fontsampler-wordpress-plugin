@@ -80,13 +80,15 @@
 					case 'options':
 						if ( $set['alignment'] ) : ?>
 							<div class="fontsampler-multiselect three-items" data-name="alignment">
-								<button class="fontsampler-multiselect-selected" data-value="left"><img
+								<button <?php if ( isset( $set['is_ltr']) && $set['is_ltr'] == "1" ) : echo 'class="fontsampler-multiselect-selected"'; endif; ?>
+										data-value="left"><img
 										src="<?php echo plugin_dir_url( __FILE__ ); ?>../icons/align-left.svg">
 								</button>
 								<button data-value="center"><img
 										src="<?php echo plugin_dir_url( __FILE__ ); ?>../icons/align-center.svg">
 								</button>
-								<button data-value="right"><img
+								<button <?php if ( isset( $set['is_ltr']) && $set['is_ltr'] == "0" ) : echo 'class="fontsampler-multiselect-selected"'; endif; ?>
+										data-value="right"><img
 										src="<?php echo plugin_dir_url( __FILE__ ); ?>../icons/align-right.svg">
 								</button>
 							</div>
@@ -156,10 +158,14 @@
 
 					case 'fontsampler':
 						// NOTE echo with " and class with ' to output json as ""-enclosed strings
-						echo "<div class='fontsampler fontsampler-id-" . $set['id'] . "' data-options='" .
-						     json_encode($replace) . "'
-							data-font-files='" . $this->fontfiles_json( $fonts[0] ) . "'>" .
-						    str_replace( '\n', '<br>', $set['initial'] ) . '</div>';
+						?>
+						<div class="fontsampler fontsampler-id-<?php echo $set['id']; ?>"
+						     data-options='<?php echo json_encode($replace); ?>'
+							 data-font-files='<?php echo $this->fontfiles_json( $fonts[0] ); ?>'
+							 dir="<?php echo ( ! isset( $set['is_ltr'] ) || $set['is_ltr'] == '1' ) ? 'ltr' : 'rtl'; ?>"
+						><?php echo str_replace( '\n', '<br>', $set['initial'] ); ?>
+						</div>
+						<?php
 						break;
 
 					default:

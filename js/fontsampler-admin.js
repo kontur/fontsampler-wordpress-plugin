@@ -253,7 +253,16 @@ jQuery(function () {
             }
             iterateCheckboxes($that);
         });
+    });
 
+    // update the script writing direction on selecting an option
+    $("#fontsampler-edit-sample input[name=is_ltr]").on("change", function () {
+        var $textarea = $(this).closest('form').find('textarea[name="initial"]');
+        if (parseInt($(this).val()) === 1) {
+            $textarea.attr("dir", "ltr");
+        } else {
+            $textarea.attr("dir", "rtl");
+        }
     });
 
     // toggling a class on given element from a radio set

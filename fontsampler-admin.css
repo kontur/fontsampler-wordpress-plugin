@@ -347,3 +347,6 @@
 #fontsampler-admin #fontsampler-fontset-from {
   max-width: 50em;
 }
+#fontsampler-admin #fontsampler-edit-sample textarea[name="initial"] {
+  width: 100%;
+}
