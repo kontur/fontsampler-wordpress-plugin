@@ -2,12 +2,9 @@
 <h1>Font sets &amp; files</h1>
 
 <?php if ( ! $fonts ) : ?>
-	<p>In order to make font samplers you need to first create a font set (the different webfont format versions of the font
-		you want to demo) and upload at least one format for the font. If you want to use a font sampler that has a font
-		switcher, for example to preview different weights or styles of the same typeface, you need to create a font set for
-		each of them.</p>
-
-	<p>You haven't created and fontsets yet.</p>
+	<p>Font sets are all the webfont files associated with one font. Any Fontsampler you create can use one or more
+	font sets.</p>
+	<p>Different weights or styles each need their own font set (which can consist of woff2, woff, eot, svg and ttf files).</p>
 
 <?php else : ?>
 	<p>Listed here are the fonts and the file formats that are provided for displaying them.</p>

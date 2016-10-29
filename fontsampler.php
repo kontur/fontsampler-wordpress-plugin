@@ -865,7 +865,7 @@ class Fontsampler {
 			// store the initial font, this is either the only font, or the selected font
 			if ( isset( $_POST['font_id'] ) && isset( $_POST['initial_font'] ) ) {
 				if ( sizeof( array_unique( $_POST['font_id'] ) ) == 1 ) {
-					$data['initial_font'] = $_POST['font_id'][0]['id'];
+					$data['initial_font'] = $_POST['font_id'][0];
 				} else {
 					$data['initial_font'] = $_POST['initial_font'];
 				}
