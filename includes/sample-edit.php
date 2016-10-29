@@ -33,7 +33,7 @@
 					</select>
 					<button class="btn btn-small fontsampler-fontset-remove">&minus;</button>
 					<div class="fontsampler-initial-font-selection">
-					&nbsp;&nbsp;&nbsp;<input type="radio" name="initial_font" value="<?php echo $existing_font['id']; ?>"
+						<input type="radio" name="initial_font" value="<?php echo $existing_font['id']; ?>"
 						<?php if ( ! isset( $set['initial_font'] ) || $set['initial_font'] == $existing_font['id'] ) : echo 'checked="checked"'; ?>>
 						<span class="fontsampler-initial-font selected">
 							<span class="initial-font-selected">Is initially selected</span>
@@ -58,8 +58,15 @@
 							<option value="<?php echo $font['id']; ?>"><?php echo $font['name']; ?></option>
 						<?php endforeach; ?>
 					</select>
-					<button class="btn btn-small fontsampler-fontset-remove">&minus;</button>
-					<span>Remove this fontset from sampler</span>
+					<button class="btn btn-small fontsampler-fontset-remove" title="Remove this fontset from sampler">&minus;</button>
+
+					<div class="fontsampler-initial-font-selection">
+						<input type="radio" name="initial_font" value="" checked="checked">
+						<span class="fontsampler-initial-font selected">
+						<span class="initial-font-selected">Is initially selected</span>
+						<span class="initial-font-unselected">Set as initial</span>
+					</span>
+					</div>
 				</li>
 			<?php endif; ?>
 		</ul>
@@ -71,21 +78,6 @@
 			<button class="btn btn-small fontsampler-fontset-create-inline">+</button>
 			<span>Add new fontset and upload fonts</span>
 		</p>
-
-		<ul id="fontsampler-fontset-inline-placeholder">
-			<li class="fontsampler-fontset-inline-placeholder">
-				<input class="inline_font_id" value="" type="hidden">
-				<span class="fontsampler-fontset-sort-handle">&varr;</span>
-				<div class="fontsampler-fontset-inline-wrapper">
-					<?php
-					unset($font);
-					include('fontset-fonts.php');
-					?>
-				</div>
-				<button class="btn btn-small fontsampler-fontset-remove">&minus;</button>
-				<span>Remove this fontset from sampler</span>
-			</li>
-		</ul>
 
 		<small>Picking multiple font set will enable the select field for switching between fonts used in the
 			Fontsampler.
@@ -269,4 +261,49 @@
 		<br>
 		<?php submit_button(); ?>
 	</form>
+
+	<div class="fontsampler-admin-placeholders">
+		<ul>
+			<li id="fontsampler-admin-fontpicker-placeholder">
+				<!-- for a new fontset, display one, non-selected, select choice -->
+				<span class="fontsampler-fontset-sort-handle">&varr;</span>
+				<select name="font_id[]">
+					<option value="0">-pick from existing-</option>
+					<?php foreach ( $fonts as $font ) : ?>
+						<option value="<?php echo $font['id']; ?>"><?php echo $font['name']; ?></option>
+					<?php endforeach; ?>
+				</select>
+				<button class="btn btn-small fontsampler-fontset-remove" title="Remove this fontset from sampler">&minus;</button>
+
+				<div class="fontsampler-initial-font-selection">
+					<input type="radio" name="initial_font" value="">
+					<span class="fontsampler-initial-font">
+						<span class="initial-font-selected">Is initially selected</span>
+						<span class="initial-font-unselected">Set as initial</span>
+					</span>
+				</div>
+			</li>
+			<li id="fontsampler-fontset-inline-placeholder" class="fontsampler-fontset-inline">
+				<input class="inline_font_id" value="" type="hidden">
+				<span class="fontsampler-fontset-sort-handle">&varr;</span>
+
+				<div class="fontsampler-fontset-inline-wrapper">
+					<?php
+					unset($font);
+					include('fontset-fonts.php');
+					?>
+				</div>
+				<button class="btn btn-small fontsampler-fontset-remove" title="Remove this fontset from sampler">&minus;</button>
+
+				<div class="fontsampler-initial-font-selection">
+					<input type="radio" name="initial_font" value="">
+					<span class="fontsampler-initial-font">
+						<span class="initial-font-selected">Is initially selected</span>
+						<span class="initial-font-unselected">Set as initial</span>
+					</span>
+				</div>
+			</li>
+		</ul>
+	</div>
+
 <?php endif; ?>

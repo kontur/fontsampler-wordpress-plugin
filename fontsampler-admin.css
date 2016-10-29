@@ -103,19 +103,16 @@
 #fontsampler-admin .form-settings label input.fontsampler-admin-slider-label {
   width: 15em;
 }
-#fontsampler-admin #fontsampler-fontset-inline-placeholder {
-  display: none;
-}
 #fontsampler-admin #fontsampler-fontset-list li select {
   width: 22.25em;
 }
-#fontsampler-admin .fontsampler-fontset-inline-placeholder h2 {
+#fontsampler-admin .fontsampler-fontset-inline h2 {
   display: none;
 }
-#fontsampler-admin .fontsampler-fontset-inline-placeholder thead {
+#fontsampler-admin .fontsampler-fontset-inline thead {
   display: none;
 }
-#fontsampler-admin .fontsampler-fontset-inline-placeholder .fontsampler-fontset-inline-wrapper {
+#fontsampler-admin .fontsampler-fontset-inline .fontsampler-fontset-inline-wrapper {
   display: inline-block;
   width: 24em;
 }
@@ -308,6 +305,9 @@
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
   color: #333;
+}
+#fontsampler-admin .fontsampler-admin-placeholders {
+  display: none;
 }
 #fontsampler-admin .fontsampler-options-checkbox label > span {
   display: inline;

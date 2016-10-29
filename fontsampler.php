@@ -883,16 +883,13 @@ class Fontsampler {
 			// handle any possibly included inline fontset creation
 			$inlineFontIds = array();
 
-			// pop off the fontname input field that was present because of the placeholder
-			// since the fontname array will also be used for checking the index size of the file upload
-			// rows, this also cuts off the placeholder's file upload inputs
-			array_pop( $_POST['fontname'] );
-
-			// if any fontname is present now, this is or they are a legit new fontset addition, so process
+			// Any items present in the fontname array indicate new fonts have been added inline and need to be
+			// processed
 			if ( isset( $_POST['fontname'] ) ) {
 				$inlineFontIds = $this->upload_multiple_fontset_files( $_POST['fontname'] );
 			}
 
+			// save the fontsampler to the DB
 			if ( ! isset( $_POST['id'] ) ) {
 				// insert new
 				$res = $this->db->insert( $this->table_sets, $data );
@@ -914,9 +911,9 @@ class Fontsampler {
 			$font_ids = [];
 			$font_index = 0;
 
-			// fonts_order looks something like like 3,2,1,inline_0,4 where ints are existing fonts and inline_x are newly
-			// inserted fontsets; those need to get substituted with the ids that were generated above from inserting
-			// them into the database
+			// fonts_order looks something like like 3,2,1,inline_0,4 where ints are existing fonts and inline_x are
+			// newly inserted fontsets; those need to get substituted with the ids that were generated above from
+			// inserting them into the database
 			if ( ! empty( $_POST['fonts_order'] ) ) {
 				$fonts_order = explode( ',', $_POST['fonts_order'] );
 				for ( $f = 0; $f < sizeof( $fonts_order ); $f ++ ) {

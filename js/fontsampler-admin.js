@@ -26,9 +26,12 @@ jQuery(function () {
         updateInlineFontIndexes();
 	});
 
-	$("#fontsampler-admin").on("click", ".fontsampler-fontset-add", function (e) {
+    /**
+     * Adding a new fontsampler select box with prefilled existing fonts
+     */
+	$("#fontsampler-edit-sample").on("click", ".fontsampler-fontset-add", function (e) {
 		e.preventDefault();
-		var $clone = $("#fontsampler-fontset-list li:last").clone();
+		var $clone = $("#fontsampler-admin-fontpicker-placeholder").clone();
         $clone.find("input[name=initial_font]").removeAttr("checked").val("0");
         $clone.find("span.fontsampler-initial-font").removeClass('selected');
         $clone.appendTo("#fontsampler-fontset-list");
@@ -39,7 +42,15 @@ jQuery(function () {
         updateFontsOrder();
 	});
 
-    $("#fontsampler-fontset-list input[name=initial_font]").on("change", function () {
+    /**
+     * On updating the select font dropdown in the fontsampler font section, update the input that send this font's ID
+     * if it is selected as the default font
+     */
+    $("#fontsampler-fontset-list").on("change", "select[name='font_id[]']", function () {
+        $(this).siblings(".fontsampler-initial-font-selection").find("input[name=initial_font]").val($(this).val());
+    });
+
+    $("#fontsampler-fontset-list").on("change", "input[name=initial_font]", function () {
         $("#fontsampler-fontset-list span.fontsampler-initial-font").removeClass("selected");
         $("#fontsampler-fontset-list input[name=initial_font]:checked").siblings("span.fontsampler-initial-font").addClass("selected");
     });
@@ -55,16 +66,11 @@ jQuery(function () {
         stop: updateFontsOrder
     });
 
-    function updateFontsOrder() {
-        var order = $("#fontsampler-fontset-list").find("select[name='font_id[]'], input.inline_font_id").map(function () {
-            return $(this).val();
-        }).get().join();
-        $("input[name=fonts_order]").val(order);
-        console.log(order);
-    }
-
+    /**
+     * Creating a new inline font upload form inside the form for creating a fontsampler
+     */
     $(".fontsampler-fontset-create-inline").on("click", function () {
-        var $clone = $("#fontsampler-fontset-inline-placeholder li:first").clone().show(),
+        var $clone = $("#fontsampler-fontset-inline-placeholder").clone().removeAttr("id"),
             $fontsList = $("#fontsampler-fontset-list");
 
         $fontsList.append($clone);
@@ -72,6 +78,18 @@ jQuery(function () {
         updateFontsOrder();
         return false;
     });
+
+
+    /**
+     * Update the input field fonts_order with a comma separated list of fonts, in the order they are sorted
+     * Note: newly created inline fontsets are marked in this list as "inline_ID"
+     */
+    function updateFontsOrder() {
+        var order = $("#fontsampler-fontset-list").find("select[name='font_id[]'], input.inline_font_id").map(function () {
+            return $(this).val();
+        }).get().join();
+        $("input[name=fonts_order]").val(order);
+    }
 
 
     /**
@@ -84,19 +102,24 @@ jQuery(function () {
 
         // for the actual font list, go through all now created fontsets and number all their containing
         // file inputs them 0 index based
-        $fontsList.find(".fontsampler-fontset-inline-placeholder").each(function (index, elem) {
+        $fontsList.find(".fontsampler-fontset-inline").each(function (index, elem) {
+            var $this = $(this);
 
             // set the entire set of file inputs with woff2, woff, etc to the right index of this inserted placeholder
-            $(this).find("input[type=file]").each(function () {
+            $this.find("input[type=file]").each(function () {
                 var currentName = $(this).attr("name");
                 $(this).attr("name", $(this).attr("name").substring(0, currentName.lastIndexOf("_") + 1) + index);
             });
 
             // to each of those fontsets add 'inline_x' to their hidden inline_font_id
             // this is used in updateFontsOrder to save a placeholder position of that particular font for processing
-            $(this).find("input.inline_font_id").each(function () {
+            $this.find("input.inline_font_id").each(function () {
                 $(this).val('inline_' + index);
             });
+
+            // update the radio for setting this font as default for this fontsampler to include a placeholder value
+            // so it can be replaced after upload
+            $this.find("input[name=initial_font]").val('inline_' + index);
         });
 
         // in the actual placeholder form, remove the index from the file input, so it doesn't get sent along (at least
