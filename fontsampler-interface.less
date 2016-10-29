@@ -198,5 +198,12 @@
 		&:focus {
 			outline: none;
 		}
+
+		// force single line when single line
+		&.fontsampler-is-singleline {
+			overflow-x: hidden;
+			overflow-y: visible;
+			white-space: nowrap;
+		}
 	}
 }

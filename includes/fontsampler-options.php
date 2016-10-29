@@ -37,6 +37,13 @@
 	<input type="checkbox" name="invert"
 	       data-default="<?php echo $default_settings['invert'] ? 'checked' : ''; ?>"
 	       data-set="<?php echo ( ! empty( $options['invert'] ) ) ? 'checked' : ''; ?>"
-		   <?php if ( ! empty( $options['invert'] ) ) : echo ' checked="checked" '; endif; ?> >
+		<?php if ( ! empty( $options['invert'] ) ) : echo ' checked="checked" '; endif; ?> >
 	<span>Allow inverting the text field to display negative text</span>
+</label>
+<label>
+	<input type="checkbox" name="multiline"
+	       data-default="<?php echo $default_settings['multiline'] ? 'checked' : ''; ?>"
+	       data-set="<?php echo ( ! empty( $options['multiline'] ) ) ? 'checked' : ''; ?>"
+		<?php if ( ! empty( $options['multiline'] ) ) : echo ' checked="checked" '; endif; ?> >
+	<span>Allow line breaks</span>
 </label>

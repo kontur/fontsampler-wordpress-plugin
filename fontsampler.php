@@ -370,7 +370,7 @@ class Fontsampler {
                 `sampletexts` tinyint( 1 ) NOT NULL DEFAULT '0',
                 `alignment` tinyint( 1 ) NOT NULL DEFAULT '0',
                 `invert` tinyint( 1 ) NOT NULL DEFAULT '0',
-                `multiline` tinyint( 1 ) NOT NULL DEFAULT '0',
+                `multiline` tinyint( 1 ) NOT NULL DEFAULT '1',
                 `is_ltr` tinyint( 1 ) NOT NULL DEFAULT '1',
                 `ot_liga` tinyint( 1 ) NOT NULL DEFAULT '0',
                 `ot_dlig` tinyint( 1 ) NOT NULL DEFAULT '0',
@@ -451,7 +451,7 @@ class Fontsampler {
 			`sampletexts` tinyint(1) unsigned NOT NULL DEFAULT '0',
 			`alignment` tinyint(1) unsigned NOT NULL DEFAULT '0',
 			`invert` tinyint(1) unsigned NOT NULL DEFAULT '0',
-			`multiline` tinyint(1) unsigned NOT NULL DEFAULT '0',
+			`multiline` tinyint(1) unsigned NOT NULL DEFAULT '1',
 			PRIMARY KEY (`id`)
 			) DEFAULT CHARSET=utf8";
 		$this->db->query( $sql );

@@ -413,3 +413,8 @@
 .fontsampler-wrapper .fontsampler:focus {
   outline: none;
 }
+.fontsampler-wrapper .fontsampler.fontsampler-is-singleline {
+  overflow-x: hidden;
+  overflow-y: visible;
+  white-space: nowrap;
+}

@@ -173,12 +173,22 @@
 							$initial_font = $this->fontfiles_json( $fonts[0] );
 						}
 						$initial_font_json = $this->fontfiles_json( $initial_font );
+
+						if ( isset( $set['multiline'] ) && $set['multiline'] == 1) {
+							preg_replace( '/\n/', ' ', $set['initial'] );
+							$initial_text = $set['initial'];
+						} else {
+							$initial_text = str_replace( '\n', '<br>', $set['initial'] );
+						}
+
 						?>
-						<div class="fontsampler fontsampler-id-<?php echo $set['id']; ?>"
+						<div class="fontsampler fontsampler-id-<?php echo $set['id']; ?>
+							<?php if ( ! isset( $set['multiline'] ) || ( isset( $set['multiline'] ) && $set['multiline'] != "1" ) ) :
+							 echo 'fontsampler-is-singleline'; endif; ?>"
 						     data-options='<?php echo json_encode($replace); ?>'
 							 data-font-files='<?php echo $initial_font_json; ?>'
 							 dir="<?php echo ( ! isset( $set['is_ltr'] ) || $set['is_ltr'] == '1' ) ? 'ltr' : 'rtl'; ?>"
-						><?php echo str_replace( '\n', '<br>', $set['initial'] ); ?>
+						><?php echo $initial_text; ?>
 						</div>
 						<?php
 						break;
