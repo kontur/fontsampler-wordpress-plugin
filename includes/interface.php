@@ -55,10 +55,12 @@
 						<?php endif;
 						break;
 					case 'fontpicker':
-						if ( $set['fontpicker'] && sizeof( $fonts ) > 1 ) : ?>
+						if ( sizeof( $fonts ) > 1 ) : ?>
 							<select name="font-selector">
 								<?php foreach ( $fonts as $font ) : ?>
-									<option data-font-files='<?php echo $f->fontfiles_json( $font ); ?>'>
+									<option data-font-files='<?php echo $f->fontfiles_json( $font ); ?>'
+									<?php if ( isset( $set['initial_font'] ) && $set['initial_font'] == $font['id'] ) :
+										echo 'selected="selected"'; endif; ?>>
 										<?php echo $font['name']; ?></option>
 								<?php endforeach; ?>
 							</select>
@@ -80,13 +82,15 @@
 					case 'options':
 						if ( $set['alignment'] ) : ?>
 							<div class="fontsampler-multiselect three-items" data-name="alignment">
-								<button class="fontsampler-multiselect-selected" data-value="left"><img
+								<button <?php if ( isset( $set['is_ltr']) && $set['is_ltr'] == "1" ) : echo 'class="fontsampler-multiselect-selected"'; endif; ?>
+										data-value="left"><img
 										src="<?php echo plugin_dir_url( __FILE__ ); ?>../icons/align-left.svg">
 								</button>
 								<button data-value="center"><img
 										src="<?php echo plugin_dir_url( __FILE__ ); ?>../icons/align-center.svg">
 								</button>
-								<button data-value="right"><img
+								<button <?php if ( isset( $set['is_ltr']) && $set['is_ltr'] == "0" ) : echo 'class="fontsampler-multiselect-selected"'; endif; ?>
+										data-value="right"><img
 										src="<?php echo plugin_dir_url( __FILE__ ); ?>../icons/align-right.svg">
 								</button>
 							</div>
@@ -156,10 +160,37 @@
 
 					case 'fontsampler':
 						// NOTE echo with " and class with ' to output json as ""-enclosed strings
-						echo "<div class='fontsampler fontsampler-id-" . $set['id'] . "' data-options='" .
-						     json_encode($replace) . "'
-							data-font-files='" . $this->fontfiles_json( $fonts[0] ) . "'>" .
-						    str_replace( '\n', '<br>', $set['initial'] ) . '</div>';
+
+						// find the initial font, if one is set, and encode it as json for the fontsampler to start
+						// up with
+						$initial_font = NULL;
+						if ( isset( $set['initial_font'] ) && ! empty( $set['initial_font'] ) ) {
+							$initial_font = array_filter( $fonts, function ( $font ) use ( $set ) {
+								return ( isset( $font['id'] ) && $font['id'] == $set['initial_font'] );
+							} );
+							$initial_font = array_shift($initial_font);
+						} else {
+							$initial_font = $fonts[0];
+						}
+						$initial_font_json = $this->fontfiles_json( $initial_font );
+
+						if ( isset( $set['multiline'] ) && $set['multiline'] == 1) {
+							preg_replace( '/\n/', ' ', $set['initial'] );
+							$initial_text = $set['initial'];
+						} else {
+							$initial_text = str_replace( '\n', '<br>', $set['initial'] );
+						}
+
+						?>
+						<div class="fontsampler fontsampler-id-<?php echo $set['id']; ?>
+							<?php if ( ! isset( $set['multiline'] ) || ( isset( $set['multiline'] ) && $set['multiline'] != "1" ) ) :
+							 echo 'fontsampler-is-singleline'; endif; ?>"
+						     data-options='<?php echo json_encode($replace); ?>'
+							 data-font-files='<?php echo $initial_font_json; ?>'
+							 dir="<?php echo ( ! isset( $set['is_ltr'] ) || $set['is_ltr'] == '1' ) ? 'ltr' : 'rtl'; ?>"
+						><?php echo $initial_text; ?>
+						</div>
+						<?php
 						break;
 
 					default:

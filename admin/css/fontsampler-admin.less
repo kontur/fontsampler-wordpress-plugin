@@ -1,4 +1,7 @@
-@import "fontsampler-custom-rangeslider.less";
+@import "../../css/fontsampler-custom-rangeslider.less";
+@import "admin-settings.less";
+@import "admin-sampler.less";
+
 /*
  * Scope all css to be contained only within the fontsampler wrapper
  */
@@ -16,7 +19,7 @@
     label {
         display: block;
         font-family: monospace;
-        color: #999;
+        color: #666;
         margin: 1em 0;
 
         &:hover, &:focus {
@@ -98,6 +101,7 @@
 
     small {
         font-size: x-small;
+        font-family: sans-serif;
         line-height: 1em;
     }
 
@@ -204,6 +208,11 @@
         }
     }
 
+    // any sort of hidden placeholder
+    .fontsampler-admin-placeholders {
+        display: none;
+    }
+
     // wrapper with label > span + input[type=checkbox]
     .fontsampler-options-checkbox {
         label > span {
@@ -219,44 +228,27 @@
         }
     }
 
+    #fontsampler-options-checkboxes {
+        display: block;
+
+        &.use-defaults {
+            display: none;
+        }
+    }
+
     .fontsampler-admin-column-half {
         float: left;
         margin-right: 5%;
         width: 45%;
     }
 
-    .form-settings label {
-        clear: both;
-        span.setting-description {
-            float: left;
-            display: inline-block; 
-            width: 23em;
-        }
-        div.slider {
-            display: inline-block;
-            width: 20em;
-        }
-        span input {
-            float: right;
-            margin: 0 1em;
-            width: 3em;
-        }
-        input[type="range"] {
-            width: 20em;
-        }
-        input, textarea {
 
-        }
-        small {
-            display: block;
-        }
-    }
 
     // fontsampler UI sortable
     ul.fontsampler-ui-preview-list {
         border: 1px dotted #ccc;
         background: #fff;
-        min-height: 3em;
+        min-height: 4em;
         margin: 5px 0;
         padding: 5px 0;
         width: 50em;
@@ -271,8 +263,8 @@
             margin-right: 1.5%;
             margin-left: 1.5%;
             width: 30%;
-            position:relative;
-            min-height: 3em;
+            position: relative;
+            min-height: 4em;
 
             &.fontsampler-ui-placeholder-full {
                 width: 97%;
@@ -284,7 +276,38 @@
         }
     }
 
+    ul.fontsampler-ui-preview-placeholder {
+        li {
+            display: none;
+        }
+    }
+
     #fontsampler-fontset-from {
         max-width: 50em;
+    }
+
+    #fontsampler-edit-sample textarea[name="initial"] {
+        width: 100%;
+    }
+
+    .fontsampler-initial-font-selection {
+        display: inline-block;
+    }
+    .fontsampler-initial-font {
+        &.selected {
+            span.initial-font-selected {
+                display: inline-block;
+            }
+            span.initial-font-unselected {
+                display: none;
+            }
+        }
+        span.initial-font-selected {
+            display: none;
+        }
+        span.initial-font-unselected {
+            display: inline-block;
+        }
+
     }
 }

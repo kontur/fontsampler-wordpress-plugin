@@ -1,13 +1,5 @@
 /*
- *  jquery-fontsampler - v0.0.3
- *  A jQuery plugin for displaying, manipulating and testing webfont type samples
- *  https://github.com/kontur/jquery-fontsampler
- *
- *  Made by Johannes Neumeier
- *  Under Apache 2.0 License
- */
-/*
- *  jquery-fontsampler - v0.0.3
+ *  jquery-fontsampler - v0.0.4
  *  A jQuery plugin for displaying, manipulating and testing webfont type samples
  *  https://github.com/kontur/jquery-fontsampler
  *
@@ -129,16 +121,32 @@
         setupUI: function() {
             var that = this;
             $( this.element ).attr( "contenteditable", "true" );
-            $( this.element ).on( "keypress", function( event ) {
-                return that.onKeyPress( event, that );
+
+            $( this.element ).on( "keypress keyup change paste", function( event ) {
+                var r = that.onUpdate( event, that );
+                if ( !r ) {
+                    event.preventDefault();
+                }
+                return r;
             } );
         },
 
         // internal event listeners
-        onKeyPress: function( event, that ) {
-            if ( that.settings.multiLine === false && event.keyCode === 13 ) {
-                return false;
+        onUpdate: function( event, that ) {
+            if ( that.settings.multiLine === false ) {
+                if ( event.type === "keypress") {
+                    // for keypress events immediately block pressing enter for line break
+                    if ( event.keyCode === 13 ) {
+                        return false;
+                    }
+                } else {
+                    // allow other events, filter any html with $.text() and replace linebreaks
+                    // TODO fix paste event from setting the caret to the front of the non-input non-textarea
+                    var text = $( that.element ).text().replace('/\n/gi', '');
+                    $( that.element ).html( text );
+                }
             }
+            return true;
         },
 
         // manipulation methods mirrored from public mthods

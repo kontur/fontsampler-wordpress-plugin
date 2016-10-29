@@ -293,7 +293,7 @@
   float: left;
   position: relative;
   padding: 0 5px;
-  width: 33%;
+  width: 32%;
 }
 .fontsampler-wrapper .fontsampler-interface label.fontsampler-slider:first-of-type {
   left: -5px;
@@ -326,7 +326,7 @@
   left: -5px;
   padding: 0 5px;
   margin-right: 5px;
-  width: 33%;
+  width: 32%;
 }
 .fontsampler-wrapper .fontsampler-interface select[name="alignment"],
 .fontsampler-wrapper .fontsampler-interface select[name="invert"],
@@ -395,6 +395,7 @@
   background: #ffffff;
   height: 30px;
   padding: 5px;
+  z-index: 10;
 }
 .fontsampler-wrapper .fontsampler-interface .fontsampler-opentype-features.shown {
   display: block;
@@ -406,19 +407,23 @@
 .fontsampler-wrapper .fontsampler {
   clear: both;
   margin-bottom: 20px;
-  padding: 10px 20px;
+  margin-top: 0.25em;
   transition: all 0.2s ease-out;
 }
-.fontsampler-wrapper .fontsampler.invert {
-  background: #333333;
-  color: #ffffff;
+.fontsampler-wrapper .fontsampler:focus {
+  outline: none;
+}
+.fontsampler-wrapper .fontsampler.fontsampler-is-singleline {
+  overflow-x: hidden;
+  overflow-y: visible;
+  white-space: nowrap;
 }
 /* css_color_text */
 .fontsampler-interface .fontsampler {
-    color: #333333;
+    color: #d61313;
 }
 .fontsampler-interface .fontsampler.invert {
-    background: #333333;
+    background: #d61313;
 }
 
 /* css_color_background */

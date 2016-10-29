@@ -66,6 +66,56 @@
   touch-action: pan-x;
   -ms-touch-action: pan-x;
 }
+#fontsampler-admin .form-settings label {
+  clear: both;
+}
+#fontsampler-admin .form-settings label span.setting-description,
+#fontsampler-admin .form-settings label small {
+  display: inline-block;
+  width: 23em;
+}
+#fontsampler-admin .form-settings label span.styling-description {
+  float: left;
+}
+#fontsampler-admin .form-settings label div.slider {
+  display: inline-block;
+  width: 20em;
+}
+#fontsampler-admin .form-settings label span input {
+  float: right;
+  margin: 0 1em;
+  width: 3em;
+}
+#fontsampler-admin .form-settings label input[type="range"] {
+  width: 20em;
+}
+#fontsampler-admin .form-settings label textarea {
+  clear: both;
+  display: block;
+}
+#fontsampler-admin .form-settings label small {
+  display: block;
+  margin-bottom: 1em;
+}
+#fontsampler-admin .form-settings label input[type="text"] {
+  width: 9em;
+}
+#fontsampler-admin .form-settings label input.fontsampler-admin-slider-label {
+  width: 15em;
+}
+#fontsampler-admin #fontsampler-fontset-list li select {
+  width: 22.25em;
+}
+#fontsampler-admin .fontsampler-fontset-inline h2 {
+  display: none;
+}
+#fontsampler-admin .fontsampler-fontset-inline thead {
+  display: none;
+}
+#fontsampler-admin .fontsampler-fontset-inline .fontsampler-fontset-inline-wrapper {
+  display: inline-block;
+  width: 24em;
+}
 /*
  * Scope all css to be contained only within the fontsampler wrapper
  */
@@ -81,7 +131,7 @@
 #fontsampler-admin label {
   display: block;
   font-family: monospace;
-  color: #999;
+  color: #666;
   margin: 1em 0;
 }
 #fontsampler-admin .submit {
@@ -162,6 +212,7 @@
 }
 #fontsampler-admin small {
   font-size: x-small;
+  font-family: sans-serif;
   line-height: 1em;
 }
 #fontsampler-admin .notice {
@@ -255,6 +306,9 @@
   border-top-right-radius: 3px;
   color: #333;
 }
+#fontsampler-admin .fontsampler-admin-placeholders {
+  display: none;
+}
 #fontsampler-admin .fontsampler-options-checkbox label > span {
   display: inline;
   margin-left: -35px;
@@ -266,38 +320,21 @@
   display: block;
   margin-left: 40px;
 }
+#fontsampler-admin #fontsampler-options-checkboxes {
+  display: block;
+}
+#fontsampler-admin #fontsampler-options-checkboxes.use-defaults {
+  display: none;
+}
 #fontsampler-admin .fontsampler-admin-column-half {
   float: left;
   margin-right: 5%;
   width: 45%;
 }
-#fontsampler-admin .form-settings label {
-  clear: both;
-}
-#fontsampler-admin .form-settings label span.setting-description {
-  float: left;
-  display: inline-block;
-  width: 23em;
-}
-#fontsampler-admin .form-settings label div.slider {
-  display: inline-block;
-  width: 20em;
-}
-#fontsampler-admin .form-settings label span input {
-  float: right;
-  margin: 0 1em;
-  width: 3em;
-}
-#fontsampler-admin .form-settings label input[type="range"] {
-  width: 20em;
-}
-#fontsampler-admin .form-settings label small {
-  display: block;
-}
 #fontsampler-admin ul.fontsampler-ui-preview-list {
   border: 1px dotted #ccc;
   background: #fff;
-  min-height: 3em;
+  min-height: 4em;
   margin: 5px 0;
   padding: 5px 0;
   width: 50em;
@@ -314,7 +351,7 @@
   margin-left: 1.5%;
   width: 30%;
   position: relative;
-  min-height: 3em;
+  min-height: 4em;
 }
 #fontsampler-admin ul.fontsampler-ui-preview-list li.fontsampler-ui-placeholder-full {
   width: 97%;
@@ -323,6 +360,27 @@
   background: transparent;
   border: 1px dotted orange;
 }
+#fontsampler-admin ul.fontsampler-ui-preview-placeholder li {
+  display: none;
+}
 #fontsampler-admin #fontsampler-fontset-from {
   max-width: 50em;
+}
+#fontsampler-admin #fontsampler-edit-sample textarea[name="initial"] {
+  width: 100%;
+}
+#fontsampler-admin .fontsampler-initial-font-selection {
+  display: inline-block;
+}
+#fontsampler-admin .fontsampler-initial-font.selected span.initial-font-selected {
+  display: inline-block;
+}
+#fontsampler-admin .fontsampler-initial-font.selected span.initial-font-unselected {
+  display: none;
+}
+#fontsampler-admin .fontsampler-initial-font span.initial-font-selected {
+  display: none;
+}
+#fontsampler-admin .fontsampler-initial-font span.initial-font-unselected {
+  display: inline-block;
 }
