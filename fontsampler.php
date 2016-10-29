@@ -3,7 +3,7 @@
 Plugin Name: Fontsampler
 Plugin URI:  https://github.com/kontur/fontsampler-wordpress-plugin
 Description: Create editable webfont previews via shortcodes
-Version:     0.0.3
+Version:     0.0.4
 Author:      Johannes Neumeier
 Author URI:  http://johannesneumeier.com
 Copyright:   Copyright 2016 Johannes Neumeier
@@ -49,7 +49,7 @@ class Fontsampler {
 		// keep track of db versions and migrations via this
 		// simply set this to the current PLUGIN VERSION number when bumping it
 		// i.e. a database update always bumps the version number of the plugin as well
-		$this->fontsampler_db_version = '0.0.3';
+		$this->fontsampler_db_version = '0.0.4';
 
 		$current_db_version = get_option( 'fontsampler_db_version' );
 
