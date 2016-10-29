@@ -674,7 +674,9 @@ class Fontsampler {
 	 * Remove a fontsampler set
 	 */
 	function delete_set( $id ) {
-		return $this->db->delete( $this->table_sets, array( 'id' => $id ) );
+		$this->db->delete( $this->table_join, array( 'set_id' => $id ) );
+		$this->db->delete( $this->table_sets, array( 'id' => $id ) );
+		return true;
 	}
 
 
