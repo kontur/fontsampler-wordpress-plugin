@@ -269,13 +269,22 @@ class Fontsampler {
                     uploads folder at: <em>' . $upload . '</em></p>';
 		}
 
+
+		// handle any kind of form processing and output any messages inside a notice, if there were any
 		if ( 'POST' == $_SERVER['REQUEST_METHOD'] && isset( $_POST['action'] ) ) {
+			ob_start( function ( $buffer ) {
+				if ( ! empty( $buffer ) ) {
+					return '<div class="notice">' . $buffer . '</div>';
+				}
+			});
 			$this->handle_font_edit();
 			$this->handle_font_delete();
 			$this->handle_set_edit();
 			$this->handle_set_delete();
 			$this->handle_settings_edit();
+			ob_end_flush();
 		}
+
 
 		$subpage = isset( $_GET['subpage'] ) ? $_GET['subpage'] : '';
 		switch ( $subpage ) {
@@ -864,17 +873,6 @@ class Fontsampler {
 				$data['initial'] = $_POST['initial'];
 			}
 
-			// store the initial font, this is either the only font, or the selected font
-			if ( isset( $_POST['font_id'] ) && isset( $_POST['initial_font'] ) ) {
-				if ( sizeof( array_unique( $_POST['font_id'] ) ) == 1 ) {
-					$data['initial_font'] = $_POST['font_id'][0];
-				} else {
-					$data['initial_font'] = $_POST['initial_font'];
-				}
-			} else {
-				$data['initial_font'] = NULL;
-			}
-
 			// store script writing direction
 			$data['is_ltr'] = !empty( $_POST['is_ltr'] ) && $_POST['is_ltr'] == "1" ? 1 : 0;
 
@@ -889,6 +887,41 @@ class Fontsampler {
 			// processed
 			if ( isset( $_POST['fontname'] ) ) {
 				$inlineFontIds = $this->upload_multiple_fontset_files( $_POST['fontname'] );
+			}
+
+			// store the initial font, this is either the only font, or the selected font
+			if ( isset( $_POST['font_id'] ) && isset( $_POST['initial_font'] ) ) {
+
+				if ( sizeof( array_unique( $_POST['font_id'] ) ) + sizeof( $inlineFontIds ) == 1 ) {
+					// single font sent along
+					if ( strpos( $_POST['initial_font'], '_' ) !== false && sizeof( $inlineFontIds ) > 0 ) {
+						// the initial_font was inline uploaded, use fresh insert id
+						$data['initial_font'] = $inlineFontIds[0];
+					} else {
+						// the initial font was a existing select font, use id
+						$data['initial_font'] = $_POST['font_id'][0];
+					}
+				} else {
+					// multiple fonts sent along
+					if ( strpos( $_POST['initial_font'], '_' ) !== false && ! empty( $_POST['fonts_order'] ) ) {
+						// the initial_font was one of the inline uploaded ones
+						// reduce the fonts_order to get an array with only newly created fonts (in case there is several)
+						$inline = array_filter(explode( ',', $_POST['fonts_order'] ), function ( $val ) {
+							return strpos($val, "_") !== false;
+						});
+
+						// then pick that one of the newly created fonts, which has the suffix gotten from "initial_X"
+						// NOTE there is a danger that two fonts were inline created and one of them fails upload, and thus
+						// skews this default - but in that case one of the uploaded fonts is missing, which is the bigger
+						// problem
+						$data['initial_font'] = array_values($inlineFontIds)[ intval( substr( $_POST['initial_font'], -1) ) ];
+					} else {
+						// initial_font was existing one, take that id provided
+						$data['initial_font'] = $_POST['initial_font'];
+					}
+				}
+			} else {
+				$data['initial_font'] = NULL;
 			}
 
 			// save the fontsampler to the DB
