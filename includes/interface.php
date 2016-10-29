@@ -170,7 +170,7 @@
 							} );
 							$initial_font = array_shift($initial_font);
 						} else {
-							$initial_font = $this->fontfiles_json( $fonts[0] );
+							$initial_font = $fonts[0];
 						}
 						$initial_font_json = $this->fontfiles_json( $initial_font );
 
