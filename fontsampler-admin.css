@@ -66,6 +66,43 @@
   touch-action: pan-x;
   -ms-touch-action: pan-x;
 }
+#fontsampler-admin .form-settings label {
+  clear: both;
+}
+#fontsampler-admin .form-settings label span.setting-description,
+#fontsampler-admin .form-settings label small {
+  display: inline-block;
+  width: 23em;
+}
+#fontsampler-admin .form-settings label span.styling-description {
+  float: left;
+}
+#fontsampler-admin .form-settings label div.slider {
+  display: inline-block;
+  width: 20em;
+}
+#fontsampler-admin .form-settings label span input {
+  float: right;
+  margin: 0 1em;
+  width: 3em;
+}
+#fontsampler-admin .form-settings label input[type="range"] {
+  width: 20em;
+}
+#fontsampler-admin .form-settings label textarea {
+  clear: both;
+  display: block;
+}
+#fontsampler-admin .form-settings label small {
+  display: block;
+  margin-bottom: 1em;
+}
+#fontsampler-admin .form-settings label input[type="text"] {
+  width: 9em;
+}
+#fontsampler-admin .form-settings label input.fontsampler-admin-slider-label {
+  width: 15em;
+}
 /*
  * Scope all css to be contained only within the fontsampler wrapper
  */
@@ -277,40 +314,6 @@
   float: left;
   margin-right: 5%;
   width: 45%;
-}
-#fontsampler-admin .form-settings label {
-  clear: both;
-}
-#fontsampler-admin .form-settings label span.setting-description,
-#fontsampler-admin .form-settings label small {
-  display: inline-block;
-  width: 23em;
-}
-#fontsampler-admin .form-settings label span.styling-description {
-  float: left;
-}
-#fontsampler-admin .form-settings label div.slider {
-  display: inline-block;
-  width: 20em;
-}
-#fontsampler-admin .form-settings label span input {
-  float: right;
-  margin: 0 1em;
-  width: 3em;
-}
-#fontsampler-admin .form-settings label input[type="range"] {
-  width: 20em;
-}
-#fontsampler-admin .form-settings label textarea {
-  clear: both;
-  display: block;
-}
-#fontsampler-admin .form-settings label small {
-  display: block;
-  margin-bottom: 1em;
-}
-#fontsampler-admin .form-settings label input[type="text"] {
-  width: 9em;
 }
 #fontsampler-admin ul.fontsampler-ui-preview-list {
   border: 1px dotted #ccc;
