@@ -7,7 +7,7 @@
 <?php else : ?>
 	<h1><?php echo empty( $set['id'] ) ? 'New fontsampler' : 'Edit fontsampler ' . $set['id'] ?></h1>
 	<p>Once you create the fontsampler, it will be saved with an ID you use to embed it on your wordpress pages</p>
-	<form method="post" action="?page=fontsampler" id="fontsampler-edit-sample">
+	<form method="post" enctype="multipart/form-data" action="?page=fontsampler" id="fontsampler-edit-sample">
 		<input type="hidden" name="action" value="edit_set">
 		<?php if ( function_exists( 'wp_nonce_field' ) ) : wp_nonce_field( 'fontsampler-action-edit_set' ); endif; ?>
 		<?php if ( ! empty( $set['id'] ) ) : ?><input type="hidden" name="id" value="<?php echo $set['id']; ?>"><?php endif; ?>
@@ -22,13 +22,12 @@
 				<li>
 					<span class="fontsampler-fontset-sort-handle">&varr;</span>
 					<select name="font_id[]">
-						<option value="0">--</option>
+						<option value="0">-pick from existing-</option>
 						<?php // for each dropdown loop print out all fonts and if the current font is in the set, select it ?>
 						<?php foreach ( $fonts as $font ) : ?>
 							<option <?php if ( in_array( $existing_font['name'], $font ) ) : echo ' selected="selected"'; endif; ?>
 								value="<?php echo $font['id']; ?>">
 								<?php echo $font['name']; ?>
-								<?php echo $font['id']; ?>
 							</option>
 						<?php endforeach; ?>
 					</select>
@@ -54,7 +53,7 @@
 					<!-- for a new fontset, display one, non-selected, select choice -->
 					<span class="fontsampler-fontset-sort-handle">&varr;</span>
 					<select name="font_id[]">
-						<option value="0">--</option>
+						<option value="0">-pick from existing-</option>
 						<?php foreach ( $fonts as $font ) : ?>
 							<option value="<?php echo $font['id']; ?>"><?php echo $font['name']; ?></option>
 						<?php endforeach; ?>
@@ -64,9 +63,29 @@
 				</li>
 			<?php endif; ?>
 		</ul>
-		<button class="btn btn-small fontsampler-fontset-add">+</button>
+		<p>
+			<button class="btn btn-small fontsampler-fontset-add">+</button>
+			<span>Add existing fontset</span>
+		</p>
+		<p>
+			<button class="btn btn-small fontsampler-fontset-create-inline">+</button>
+			<span>Add new fontset and upload fonts</span>
+		</p>
 
-		<span>Add another fontset to this sampler</span><br><br>
+		<ul id="fontsampler-fontset-inline-placeholder">
+			<li class="fontsampler-fontset-inline-placeholder">
+				<input class="inline_font_id" value="" type="hidden">
+				<span class="fontsampler-fontset-sort-handle">&varr;</span>
+				<div class="fontsampler-fontset-inline-wrapper">
+					<?php
+					unset($font);
+					include('fontset-fonts.php');
+					?>
+				</div>
+				<button class="btn btn-small fontsampler-fontset-remove">&minus;</button>
+				<span>Remove this fontset from sampler</span>
+			</li>
+		</ul>
 
 		<small>Picking multiple font set will enable the select field for switching between fonts used in the
 			Fontsampler.

@@ -103,6 +103,22 @@
 #fontsampler-admin .form-settings label input.fontsampler-admin-slider-label {
   width: 15em;
 }
+#fontsampler-admin #fontsampler-fontset-inline-placeholder {
+  display: none;
+}
+#fontsampler-admin #fontsampler-fontset-list li select {
+  width: 22.25em;
+}
+#fontsampler-admin .fontsampler-fontset-inline-placeholder h2 {
+  display: none;
+}
+#fontsampler-admin .fontsampler-fontset-inline-placeholder thead {
+  display: none;
+}
+#fontsampler-admin .fontsampler-fontset-inline-placeholder .fontsampler-fontset-inline-wrapper {
+  display: inline-block;
+  width: 24em;
+}
 /*
  * Scope all css to be contained only within the fontsampler wrapper
  */

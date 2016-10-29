@@ -23,6 +23,7 @@ jQuery(function () {
 		}
         $("#fontsampler-fontset-list").sortable("refresh");
         updateFontsOrder();
+        updateInlineFontIndexes();
 	});
 
 	$("#fontsampler-admin").on("click", ".fontsampler-fontset-add", function (e) {
@@ -55,10 +56,55 @@ jQuery(function () {
     });
 
     function updateFontsOrder() {
-        var order = $("#fontsampler-fontset-list li select[name='font_id[]']").map(function () {
+        var order = $("#fontsampler-fontset-list").find("select[name='font_id[]'], input.inline_font_id").map(function () {
             return $(this).val();
         }).get().join();
         $("input[name=fonts_order]").val(order);
+        console.log(order);
+    }
+
+    $(".fontsampler-fontset-create-inline").on("click", function () {
+        var $clone = $("#fontsampler-fontset-inline-placeholder li:first").clone().show(),
+            $fontsList = $("#fontsampler-fontset-list");
+
+        $fontsList.append($clone);
+        updateInlineFontIndexes();
+        updateFontsOrder();
+        return false;
+    });
+
+
+    /**
+     * Update the indexes of all file upload inputs of any inline from upload forms, so that they start with 0 index
+     * and have no gaps in the name attribute
+     */
+    function updateInlineFontIndexes() {
+        var $fontsList = $("#fontsampler-fontset-list"),
+            $placeholder = $("#fontsampler-fontset-inline-placeholder");
+
+        // for the actual font list, go through all now created fontsets and number all their containing
+        // file inputs them 0 index based
+        $fontsList.find(".fontsampler-fontset-inline-placeholder").each(function (index, elem) {
+
+            // set the entire set of file inputs with woff2, woff, etc to the right index of this inserted placeholder
+            $(this).find("input[type=file]").each(function () {
+                var currentName = $(this).attr("name");
+                $(this).attr("name", $(this).attr("name").substring(0, currentName.lastIndexOf("_") + 1) + index);
+            });
+
+            // to each of those fontsets add 'inline_x' to their hidden inline_font_id
+            // this is used in updateFontsOrder to save a placeholder position of that particular font for processing
+            $(this).find("input.inline_font_id").each(function () {
+                $(this).val('inline_' + index);
+            });
+        });
+
+        // in the actual placeholder form, remove the index from the file input, so it doesn't get sent along (at least
+        // not as woff_0 etc, which would overwrite the first uploaded fontset's files as empty
+        $placeholder.find("input[type=file]").each(function () {
+            var currentName = $(this).attr("name");
+            $(this).attr("name", $(this).attr("name").substring(0, currentName.lastIndexOf("_") + 1));
+        });
     }
 
 

@@ -285,6 +285,7 @@ class Fontsampler {
 				$set['default_features'] = 1; // by default pick the default UI options
 				$set['ui_order_parsed'] = $this->ui_order_parsed_from( $default_settings, $set );
 
+				$formats = $this->font_formats;
 				$fonts = $this->get_fontfile_posts();
 				include( 'includes/sample-edit.php' );
 				break;
@@ -299,7 +300,7 @@ class Fontsampler {
 				$fonts_order = implode( ',', array_map( function ( $font ) {
 					return $font['id'];
 				}, $set['fonts']));
-
+				$formats = $this->font_formats;
 				include( 'includes/sample-edit.php' );
 				break;
 
@@ -762,7 +763,7 @@ class Fontsampler {
 	 * Dealing with new fonts being defined and uploaded explicitly via the plugin ( instead of the media gallery )
 	 */
 	function handle_font_edit() {
-		if ( 'font_edit' == $_POST['action'] && ! empty( $_POST['fontname'] ) ) {
+		if ( 'font_edit' == $_POST['action'] && ! empty( $_POST['fontname'][0] ) ) {
 			check_admin_referer( 'fontsampler-action-font_edit' );
 
 			echo '<div class="notice">';
@@ -771,7 +772,7 @@ class Fontsampler {
 			// if there previously there was a font, and now it got deleted, it will not linger in the db as unaffected
 			// column, but instead get deleted
 			$data = array(
-				'name'  => $_POST['fontname'],
+				'name'  => $_POST['fontname'][0],
 				'woff2' => NULL,
 				'woff'  => NULL,
 				'eot'   => NULL,
@@ -780,15 +781,16 @@ class Fontsampler {
 			);
 
 			foreach ( $this->font_formats as $label ) {
-				if ( isset( $_FILES[ $label ] ) && $_FILES[ $label ]['size'] > 0 ) {
-					$uploaded = media_handle_upload( $label, 0 );
+				$file = $_FILES[ $label . '_0'];
+				if ( isset( $file ) && $file['size'] > 0 ) {
+					$uploaded = media_handle_upload( $label . '_0', 0 );
 					if ( is_wp_error( $uploaded ) ) {
 						$this->error( 'Error uploading ' . $label . ' file: ' . $uploaded->get_error_message() );
 					} else {
-						$this->info( 'Uploaded ' . $label . ' file: ' . $_FILES[ $label ]['name'] );
+						$this->info( 'Uploaded ' . $label . ' file: ' . $file['name'] );
 						$data[ $label ] = $uploaded;
 					}
-				} elseif ( ! empty( $_POST[ 'existing_file_' . $label ] ) ) {
+				} elseif ( ! empty( $_POST[ 'existing_file_' . $label ][0] ) ) {
 					// don't overwrite current file reference
 					$this->info( 'Existing ' . $label . ' file remains unchanged.' );
 					unset( $data[ $label ] );
@@ -798,8 +800,8 @@ class Fontsampler {
 			}
 
 			if ( 0 == $_POST['id'] ) {
-				$res = $this->db->insert( $this->table_fonts, $data );
-				$this->info( 'Created fontset ' . $_POST['fontname'] );
+				$this->db->insert( $this->table_fonts, $data );
+				$this->info( 'Created fontset ' . $_POST['fontname'][0] );
 			} else {
 				$this->db->update( $this->table_fonts, $data, array( 'ID' => $_POST['id'] ) );
 			}
@@ -840,6 +842,7 @@ class Fontsampler {
 			check_admin_referer( 'fontsampler-action-edit_set' );
 			$data = array();
 
+			// loop over all checkbox fields and register their state
 			foreach ( $this->boolean_options as $index ) {
 				$data[ $index ] = isset( $_POST[ $index ] );
 			}
@@ -877,14 +880,27 @@ class Fontsampler {
 
 			$data['ui_order'] = $_POST['ui_order'];
 
+			// handle any possibly included inline fontset creation
+			$inlineFontIds = array();
+
+			// pop off the fontname input field that was present because of the placeholder
+			// since the fontname array will also be used for checking the index size of the file upload
+			// rows, this also cuts off the placeholder's file upload inputs
+			array_pop( $_POST['fontname'] );
+
+			// if any fontname is present now, this is or they are a legit new fontset addition, so process
+			if ( isset( $_POST['fontname'] ) ) {
+				$inlineFontIds = $this->upload_multiple_fontset_files( $_POST['fontname'] );
+			}
+
 			if ( ! isset( $_POST['id'] ) ) {
 				// insert new
 				$res = $this->db->insert( $this->table_sets, $data );
 				if ( $res ) {
 					$id = $this->db->insert_id;
-					$this->info( 'Created set with id ' . $id );
+					$this->info( 'Created fontsampler with id ' . $id );
 				} else {
-					$this->error( 'Error: Failed to create new font set' );
+					$this->error( 'Error: Failed to create new fomtsampler.' );
 				}
 			} else {
 				// update existing
@@ -897,9 +913,21 @@ class Fontsampler {
 
 			$font_ids = [];
 			$font_index = 0;
+
+			// fonts_order looks something like like 3,2,1,inline_0,4 where ints are existing fonts and inline_x are newly
+			// inserted fontsets; those need to get substituted with the ids that were generated above from inserting
+			// them into the database
 			if ( ! empty( $_POST['fonts_order'] ) ) {
 				$fonts_order = explode( ',', $_POST['fonts_order'] );
-				foreach ( $fonts_order as $ordered_id ) {
+				for ( $f = 0; $f < sizeof( $fonts_order ); $f ++ ) {
+					$ordered_id = $fonts_order[ $f ];
+
+					// if the fonts_order has not just ids, but also "inline_0" values, replace those
+					// with the newly created font_ids, if indeed such a font was created as indicated by the presence of
+					// that inline_x in the $inlineFontIds array
+					if ( strpos($ordered_id, "_") !== false ) {
+						$ordered_id = array_shift( $inlineFontIds );
+					}
 					array_push( $font_ids, $ordered_id );
 				}
 			} else {
@@ -914,6 +942,69 @@ class Fontsampler {
 				}
 			}
 		}
+	}
+
+
+	/**
+	 * Handles uploading and inserting one or more fontset's fonts (woff2, woff, etc) from the $_FILES array
+	 *
+	 * @param $names: array of name fields
+	 */
+	function upload_multiple_fontset_files($names) {
+		$num_names = sizeof( $names );
+
+		if ( $num_names === 1) {
+			// single font, i.e. only one inline font, or create font dialog
+			return array( $this->upload_fontset_files( $names[0] ) );
+		} else {
+			// multiple fonts posted for saving
+			$created = array();
+			for ( $i = 0; $i < $num_names; $i++ ) {
+				$name = $names[ $i ];
+				array_push( $created, $this->upload_fontset_files( $name, $i) );
+			}
+			return $created;
+		}
+	}
+
+
+	/**
+	 * Handles uploading and inserting ONE fontset's fonts (woff2, woff, etc) from the $_FILES array
+	 *
+	 * @param $name
+	 * @param int $file_suffix
+	 *
+	 * @return int or boolean: inserted fontset database id or false
+	 */
+	function upload_fontset_files($name, $file_suffix = 0) {
+		$data = array(
+			'name' => $name,
+		);
+
+		foreach ( $this->font_formats as $label ) {
+			$file = $_FILES[ $label . '_' . $file_suffix ];
+
+			if ( ! empty( $file ) && $file['size'] > 0 ) {
+				$uploaded = media_handle_upload( $label . '_' . $file_suffix, 0 );
+
+				if ( is_wp_error( $uploaded ) ) {
+					$this->error( 'Error uploading ' . $label . ' file: ' . $uploaded->get_error_message() );
+				} else {
+					$this->info( 'Uploaded ' . $label . ' file: ' . $file['name'] );
+					$data[ $label ] = $uploaded;
+				}
+			} else {
+				$this->notice( 'No ' . $label . ' file provided for ' . $name . '. You can still add it later.');
+			}
+		}
+
+		if ( $this->db->insert( $this->table_fonts, $data ) ) {
+			$this->info( 'Created fontset ' . $name );
+
+			return $this->db->insert_id;
+		}
+
+		return false;
 	}
 
 
