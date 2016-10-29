@@ -15,7 +15,10 @@ wp-content/upgrade/
 wp-content/uploads/
 wp-content/wp-cache-config.php
 
-fontsampler-custom-selectric.css
+css/fontsampler-custom-selectric.css
+admin/css/*
+!admin/css/*.less
+!admin/css/fontsampler-admin.css
 
 bower_components/*
 

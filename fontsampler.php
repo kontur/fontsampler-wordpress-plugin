@@ -195,12 +195,12 @@ class Fontsampler {
 	function fontsampler_admin_enqueues() {
 		wp_enqueue_script( 'fontsampler-rangeslider-js', plugin_dir_url( __FILE__ ) . 'bower_components/rangeslider.js/dist/rangeslider.min.js', array( 'jquery' ) );
 		wp_enqueue_script( 'fontsampler-preview-js', plugin_dir_url( __FILE__ ) . 'bower_components/jquery-fontsampler/dist/jquery.fontsampler.js', array( 'jquery' ) );
-		wp_enqueue_script( 'fontsampler-admin-js', plugin_dir_url( __FILE__ ) . 'js/fontsampler-admin.js', array( 'jquery', false, true ) );
-		wp_enqueue_script( 'colour-pick', plugins_url( 'js/fontsampler-admin.js', __FILE__ ), array( 'wp-color-picker' ), false, true );
+		wp_enqueue_script( 'fontsampler-admin-js', plugin_dir_url( __FILE__ ) . 'admin/js/fontsampler-admin.js', array( 'jquery', false, true ) );
+		wp_enqueue_script( 'colour-pick', plugins_url( 'admin/js/fontsampler-admin.js', __FILE__ ), array( 'wp-color-picker' ), false, true );
 		wp_enqueue_script( 'jquery-ui-sortable', array( 'jquery' ) );
 		wp_enqueue_script( 'jquery-form-validator', plugin_dir_url( __FILE__ ) . 'bower_components/jquery-form-validator/form-validator/jquery.form-validator.js', array( 'jquery' ) );
 		wp_enqueue_style( 'wp-color-picker' );
-		wp_enqueue_style( 'fontsampler_admin_css', plugin_dir_url( __FILE__ ) . '/fontsampler-admin.css', false, '1.0.0' );
+		wp_enqueue_style( 'fontsampler_admin_css', plugin_dir_url( __FILE__ ) . '/admin/css/fontsampler-admin.css', false, '1.0.0' );
 	}
 
 
@@ -1077,16 +1077,16 @@ class Fontsampler {
 	function get_css_file() {
 		// check path for existing file
 		// if not, create it by merging css template with settings
-		if ( ! file_exists( plugin_dir_path( __FILE__ ) . 'fontsampler-css.css' ) ) {
+		if ( ! file_exists( plugin_dir_path( __FILE__ ) . 'css/fontsampler-css.css' ) ) {
 			$default_settings = $this->get_settings();
 			if ( ! $this->write_css_from_settings( $default_settings ) ) {
 				// if creating the missing file failed return the base styles by themselves
-				return plugin_dir_url( __FILE__ ) . 'fontsampler-interface.css';
+				return plugin_dir_url( __FILE__ ) . 'css/fontsampler-interface.css';
 			}
 		}
 
 		// return file path to the css that contains base css merged with settings css
-		return plugin_dir_url( __FILE__ ) . 'fontsampler-css.css';
+		return plugin_dir_url( __FILE__ ) . 'css/fontsampler-css.css';
 	}
 
 
@@ -1104,15 +1104,15 @@ class Fontsampler {
 			}
 		}
 
-		$template_path = plugin_dir_path( __FILE__ ) . 'fontsampler-css-template.tpl';
-		$styles_path   = plugin_dir_path( __FILE__ ) . 'fontsampler-interface.css';
+		$template_path = plugin_dir_path( __FILE__ ) . 'css/fontsampler-css-template.tpl';
+		$styles_path   = plugin_dir_path( __FILE__ ) . 'css/fontsampler-interface.css';
 		if ( file_exists( $template_path ) && file_exists( $styles_path ) ) {
 			$template = file_get_contents( $template_path );
 			$template = str_replace( array_keys( $settings_preped ), $settings_preped, $template );
 			$styles = file_get_contents( $styles_path );
 
 			// concat the base styles and the replaced template into the default css file
-			if ( file_put_contents( plugin_dir_path( __FILE__ ) . 'fontsampler-css.css', array(
+			if ( file_put_contents( plugin_dir_path( __FILE__ ) . 'css/fontsampler-css.css', array(
 				$styles,
 				$template,
 			) ) ) {
