@@ -18,4 +18,10 @@ $wpdb->query( $sql );
 
 $sql = "DROP TABLE IF EXISTS " . $wpdb->prefix . "fontsampler_settings";
 $wpdb->query( $sql );
+
+// finally, remove fontsampler settings from wp_options
+if ( get_option( 'fontsampler_db_version' ) ) {
+	delete_option();
+}
+
 ?>
