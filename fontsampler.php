@@ -11,6 +11,8 @@ Text Domain: fontsampler
 */
 defined( 'ABSPATH' ) or die( 'Nope.' );
 
+require_once( 'fontsampler-pagination.php' );
+
 global $wpdb;
 $f = new Fontsampler( $wpdb );
 
@@ -319,8 +321,17 @@ class Fontsampler {
 				break;
 
 			case 'fonts':
-				$fonts   = $this->get_fontsets();
+				$offset = isset( $_GET['offset'] ) ? intval( $_GET['offset'] ) : 0;
+				$num_rows = isset( $_GET['num_rows'] ) ? intval( $_GET['num_rows'] ) : 10;
+				$initials   = $this->get_fontsets_initials();
+
+				if ( sizeof( $initials ) > 10 ) {
+					$pagination = new FontsamplerPagination( $initials, $num_rows, $offset );
+				}
+
+				$fonts   = $this->get_fontsets( $offset, $num_rows );
 				$formats = $this->font_formats;
+
 				include( 'includes/fontsets.php' );
 				break;
 
@@ -750,16 +761,51 @@ class Fontsampler {
 	/*
 	 * Read all sets of fonts with font files
 	 */
-	function get_fontsets( $sorted = true ) {
+	function get_fontsets( $offset = 0, $num_rows = 25, $order_by = null ) {
 		$sql = 'SELECT f.id, f.name, ';
 		foreach ( $this->font_formats as $format ) {
 			$sql .= ' ( SELECT guid FROM ' . $this->db->prefix . 'posts p WHERE p.ID = f.' . $format . ' ) AS ' . $format . ',';
 		}
 		$sql = substr( $sql, 0, - 1 );
-		$sql .= ' FROM ' . $this->table_fonts . ' f';
+		$sql .= ' FROM ' . $this->table_fonts . ' f ';
+
+		if ( is_null( $order_by) ) {
+			$sql .= ' ORDER BY f.name ASC ';
+		} else {
+			$sql .= $order_by;
+		}
+
+		$sql .= ' LIMIT ' . $offset . ',' . $num_rows . ' ';
+
 		$result = $this->db->get_results( $sql, ARRAY_A );
 
 		return 0 == $this->db->num_rows ? false : $result;
+	}
+
+
+	function count_fontsets() {
+		$sql = 'SELECT COUNT(*) FROM ' . $this->table_fonts;
+		return $this->db->get_var( $sql );
+	}
+
+
+	/**
+	 * Get the first (first X) character of the fontset names in order
+	 *
+	 * @param null $order_by: optional ORDER BY clause
+	 *
+	 * @return mixed: Array of rows with only field 'initial'
+	 */
+	function get_fontsets_initials( $order_by = null) {
+		$sql = 'SELECT SUBSTRING(`name`, 1, 1) AS initial FROM ' . $this->table_fonts;
+
+		if ( is_null( $order_by) ) {
+			$sql .= ' ORDER BY `name` ASC ';
+		} else {
+			$sql .= $order_by;
+		}
+
+		return $this->db->get_results($sql, ARRAY_A);
 	}
 
 

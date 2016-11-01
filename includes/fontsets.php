@@ -7,7 +7,11 @@
 	<p>Different weights or styles each need their own font set (which can consist of woff2, woff, eot, svg and ttf files).</p>
 
 <?php else : ?>
+
 	<p>Listed here are the fonts and the file formats that are provided for displaying them.</p>
+
+	<?php include('fontsets-pagination.php'); ?>
+
 	<table>
 		<thead>
 		<tr>
@@ -22,7 +26,8 @@
 			<th>Delete</th>
 		</tr>
 		</thead>
-		<tbody>
+
+		<tbody id="fontsampler-admin-fontsets-table">
 		<?php foreach ( $fonts as $font ) : ?>
 			<tr>
 				<td><?php echo $font['name']; ?></td>
@@ -56,6 +61,9 @@
 		<?php endforeach; ?>
 		</tbody>
 	</table>
+
+	<?php include('fontsets-pagination.php'); ?>
+	<br>
 <?php endif; ?>
 
 <a class="button button-primary" href="?page=fontsampler&subpage=font_create">Create a new font record</a>

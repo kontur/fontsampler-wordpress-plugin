@@ -179,21 +179,22 @@ jQuery(function () {
 
 
     $(".fontsampler-preview").fontSampler();
-		//Colour picker
-		$('.color-picker').wpColorPicker({
-			color: false,
-            mode: 'hsl',
-            controls: {
-                horiz: 's', // horizontal defaults to saturation
-                vert: 'l', // vertical defaults to lightness
-                strip: 'h' // right strip defaults to hue
-            },
-            hide: true, // hide the color picker by default
-            border: false, // draw a border around the collection of UI elements
-            target: false, // a DOM element / jQuery selector that the element will be appended within. Only used when called on an input.
-            width: 200, // the width of the collection of UI elements
-            palettes: true // show a palette of basic colors beneath the square.
-		});
+
+    //Colour picker
+    $('.color-picker').wpColorPicker({
+        color: false,
+        mode: 'hsl',
+        controls: {
+            horiz: 's', // horizontal defaults to saturation
+            vert: 'l', // vertical defaults to lightness
+            strip: 'h' // right strip defaults to hue
+        },
+        hide: true, // hide the color picker by default
+        border: false, // draw a border around the collection of UI elements
+        target: false, // a DOM element / jQuery selector that the element will be appended within. Only used when called on an input.
+        width: 200, // the width of the collection of UI elements
+        palettes: true // show a palette of basic colors beneath the square.
+    });
 
 
     // UI preview sortable
@@ -362,6 +363,27 @@ jQuery(function () {
         } else {
             $("#" + $(this).data('toggle-id')).removeClass($(this).data('toggle-class'));
         }
+    });
+
+
+    // fontsets list pagination
+    $("#fontsampler-admin nav.fontsampler-pagination a").on("click", function (event) {
+        event.preventDefault();
+
+        var $this = $(this),
+            $target = $("#" + $this.data("target") ),
+            href = $this.attr("href");
+
+        $.get(href, function (result, error) {
+            $target.html($(result).find("#fontsampler-admin-fontsets-table").html());
+            $(".fontsampler-preview").fontSampler();
+            $("html, body").scrollTop(0);
+        });
+
+        $("#fontsampler-admin nav.fontsampler-pagination a.fontsampler-pagination-current-page").removeClass("fontsampler-pagination-current-page");
+        $("#fontsampler-admin nav.fontsampler-pagination a:nth-of-type(" + ($this.index() + 1) + ")").addClass("fontsampler-pagination-current-page");
+
+        return false;
     });
 
 });
