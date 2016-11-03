@@ -105,6 +105,7 @@
 								</button>
 							</div>
 						<?php endif;
+
 						if ( $set['ot_liga'] || $set['ot_dlig'] || $set['ot_hlig'] || $set['ot_calt'] ||
 						     $set['ot_frac'] || $set['ot_sups'] || $set['ot_subs']
 						) : ?>

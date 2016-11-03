@@ -178,8 +178,9 @@ class Fontsampler {
 
 			// TODO labels from options or translation file
 			$defaults = $this->get_settings();
+
 			// some of these get overwritten from defaults, but list them all here explicitly
-			$replace = array_merge( $this->settings_defaults, $defaults );
+			$replace = array_merge( $set, $this->settings_defaults, $defaults );
 
 			// buffer output until return
 			ob_start();
