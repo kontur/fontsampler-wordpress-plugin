@@ -12,11 +12,11 @@
 	<p>You can include your font samplers on any page or post by adding the respective shortcode listed in the table
 		below.</p>
 
+	<?php include('pagination.php'); ?>
+
 	<table>
 		<thead>
 		<tr>
-			<th>Id</th>
-			<th>Name</th>
 			<th>Fonts<br>
 				<small>List one or more font sets used in this sampler</small>
 			</th>
@@ -31,11 +31,9 @@
 			<th>Delete</th>
 		</tr>
 		</thead>
-		<tbody>
+		<tbody id="fontsampler-admin-tbody-ajax">
 		<?php foreach ( $sets as $set ) : ?>
 			<tr>
-				<td><?php echo $set['id']; ?></td>
-				<td><?php echo $set['name']; ?></td>
 				<td>
 					<ul>
 						<?php foreach ( $set['fonts'] as $font ) : ?>
@@ -73,6 +71,9 @@
 		<?php endforeach; ?>
 		</tbody>
 	</table>
+
+	<?php include('pagination.php'); ?>
+
 <?php endif; ?>
 
 <a class="button button-primary" href="?page=fontsampler&subpage=set_create">Create a new font sampler</a>

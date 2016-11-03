@@ -324,9 +324,8 @@ class Fontsampler {
 				$offset = isset( $_GET['offset'] ) ? intval( $_GET['offset'] ) : 0;
 				$num_rows = isset( $_GET['num_rows'] ) ? intval( $_GET['num_rows'] ) : 10;
 				$initials   = $this->get_fontsets_initials();
-
 				if ( sizeof( $initials ) > 10 ) {
-					$pagination = new FontsamplerPagination( $initials, $num_rows, $offset );
+					$pagination = new FontsamplerPagination( $initials, $num_rows, false, $offset );
 				}
 
 				$fonts   = $this->get_fontsets( $offset, $num_rows );
@@ -362,7 +361,14 @@ class Fontsampler {
 				break;
 
 			default:
-				$sets = $this->get_sets();
+				$offset = isset( $_GET['offset'] ) ? intval( $_GET['offset'] ) : 0;
+				$num_rows = isset( $_GET['num_rows'] ) ? intval( $_GET['num_rows'] ) : 10;
+				$initials = $this->get_samples_ids();
+				if ( sizeof( $initials ) > 10 ) {
+					$pagination = new FontsamplerPagination( $initials, $num_rows, true, $offset );
+				}
+
+				$sets = $this->get_sets( $offset, $num_rows );
 				include( 'includes/samples.php' );
 				break;
 		}
@@ -628,9 +634,23 @@ class Fontsampler {
 	/*
 	 * Read from fontsampler sets table
 	 */
-	function get_sets() {
+	function get_sets( $offset = null, $num_rows = null, $order_by = null ) {
+		// first fetch (a possibly limited amount of) fontsets
 		$sql = 'SELECT * FROM ' . $this->table_sets . ' s';
+
+		if ( is_null( $order_by ) ) {
+			$sql .= ' ORDER BY s.id ASC ';
+		} else {
+			$sql .= $order_by;
+		}
+
+		if ( ! is_null( $offset ) && ! is_null( $num_rows ) ) {
+			$sql .= ' LIMIT ' . $offset . ',' . $num_rows . ' ';
+		}
+
 		$sets  = $this->db->get_results( $sql, ARRAY_A );
+
+		// now sort all the fonts attachments of each sampler to the array
 		$set_with_fonts = array();
 		foreach ( $sets as $set ) {
 			$sql = 'SELECT f.name, f.id, ';
@@ -648,6 +668,7 @@ class Fontsampler {
 
 			$set['fonts'] = $this->db->get_results( $sql, ARRAY_A );
 			array_push( $set_with_fonts, $set );
+
 		}
 
 		return $set_with_fonts;
@@ -796,16 +817,29 @@ class Fontsampler {
 	 *
 	 * @return mixed: Array of rows with only field 'initial'
 	 */
-	function get_fontsets_initials( $order_by = null) {
-		$sql = 'SELECT SUBSTRING(`name`, 1, 1) AS initial FROM ' . $this->table_fonts;
+	function get_fontsets_initials( $order_by = null ) {
+		$sql = 'SELECT SUBSTRING( `name`, 1, 1 ) AS label FROM ' . $this->table_fonts;
 
-		if ( is_null( $order_by) ) {
+		if ( is_null( $order_by ) ) {
 			$sql .= ' ORDER BY `name` ASC ';
 		} else {
 			$sql .= $order_by;
 		}
 
-		return $this->db->get_results($sql, ARRAY_A);
+		return $this->db->get_results( $sql, ARRAY_A );
+	}
+
+
+	function get_samples_ids( $order_by = null  ) {
+		$sql = 'SELECT `id` AS label FROM ' . $this->table_sets;
+
+		if ( is_null( $order_by ) ) {
+			$sql .= ' ORDER BY `id` ASC';
+		} else {
+			$sql .= $order_by;
+		}
+
+		return $this->db->get_results( $sql, ARRAY_A );
 	}
 
 

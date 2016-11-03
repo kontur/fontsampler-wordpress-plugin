@@ -375,7 +375,7 @@ jQuery(function () {
             href = $this.attr("href");
 
         $.get(href, function (result, error) {
-            $target.html($(result).find("#fontsampler-admin-fontsets-table").html());
+            $target.html($(result).find("#fontsampler-admin-tbody-ajax").html());
             $(".fontsampler-preview").fontSampler();
             $("html, body").scrollTop(0);
         });

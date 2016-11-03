@@ -10,7 +10,7 @@
 
 	<p>Listed here are the fonts and the file formats that are provided for displaying them.</p>
 
-	<?php include('fontsets-pagination.php'); ?>
+	<?php include('pagination.php'); ?>
 
 	<table>
 		<thead>
@@ -27,7 +27,7 @@
 		</tr>
 		</thead>
 
-		<tbody id="fontsampler-admin-fontsets-table">
+		<tbody id="fontsampler-admin-tbody-ajax">
 		<?php foreach ( $fonts as $font ) : ?>
 			<tr>
 				<td><?php echo $font['name']; ?></td>
@@ -62,7 +62,7 @@
 		</tbody>
 	</table>
 
-	<?php include('fontsets-pagination.php'); ?>
+	<?php include('pagination.php'); ?>
 	<br>
 <?php endif; ?>
 
