@@ -27,7 +27,7 @@ if ( ! isset( $loop_i) ) {
 	</thead>
 	<tbody>
 	<?php foreach ( $formats as $format ) : ?>
-		<tr>
+		<tr class="<?php echo $this->is_legacy_format( $format ) ? 'fontsampler-admin-legacy-format' : 'fontsampler-admin-format'; ?>">
 			<td><code class="fileformat"><?php echo $format; ?></code></td>
 			<?php if ( ! empty( $font['id'] ) ) : ?>
 				<td class="fontsampler-fontset-current-file"><?php if ( ! empty( $font[ $format ] ) ) : ?>

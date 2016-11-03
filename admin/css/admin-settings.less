@@ -2,7 +2,7 @@
 #fontsampler-admin {
     .form-settings label {
         clear: both;
-        span.setting-description, small {
+        span.setting-description, .fontsampler-admin-settings-styling small {
             display: inline-block;
             width: 23em;
         }
@@ -13,7 +13,8 @@
             display: inline-block;
             width: 20em;
         }
-        span input {
+        span input[type="text"],
+        span input.current-value {
             float: right;
             margin: 0 1em;
             width: 3em;

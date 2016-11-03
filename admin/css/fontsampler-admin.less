@@ -19,7 +19,6 @@
 
     label {
         display: block;
-        font-family: monospace;
         color: #666;
         margin: 1em 0;
 
@@ -101,9 +100,12 @@
     }
 
     small {
-        font-size: x-small;
+        color: #AAA;
+        font-size: small;
         font-family: sans-serif;
         line-height: 1em;
+        margin-top: 0.5em;
+        margin-bottom: 0.5em;
     }
 
     // block at the top for displaying messages
@@ -310,5 +312,19 @@
             display: inline-block;
         }
 
+    }
+
+    // hiding or showing legacy file format fields
+    &.fontsampler-admin-hide-legacy-formats {
+        .fontsampler-admin-legacy-format {
+            display: none;
+        }
+        .fontsampler-admin-format {}
+    }
+
+    &.fontsampler-admin-show-legacy-formats {
+        .fontsampler-admin-legacy-format {
+            display: table-row;
+        }
     }
 }

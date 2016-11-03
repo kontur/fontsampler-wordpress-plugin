@@ -162,106 +162,121 @@
 	include( 'fontsampler-options.php' );
 	?>
 
-	<h2>Styling options</h2>
-	<small>Adjust the color scheme of all fontsamplers you embed.</small>
+	<div class="fontsampler-admin-settings-styling">
+		<h2>Styling options</h2>
+		<small>Adjust the color scheme of all fontsamplers you embed.</small>
 
-	<label>
-		<span class="setting-description styling-description">Color of the fontsampler text:</span>
-		<div class="picker"><input type="text" name="css_color_text" id="css_color_text" class="color-picker"
-		                           value="<?php echo $defaults['css_color_text']; ?>"
-		                           data-default-color="<?php echo $this->settings_defaults['css_color_text']; ?>"/>
-		</div>
-	</label>
+		<label>
+			<span class="setting-description styling-description">Color of the fontsampler text:</span>
+			<div class="picker"><input type="text" name="css_color_text" id="css_color_text" class="color-picker"
+			                           value="<?php echo $defaults['css_color_text']; ?>"
+			                           data-default-color="<?php echo $this->settings_defaults['css_color_text']; ?>"/>
+			</div>
+		</label>
 
-	<label>
-		<span class="setting-description styling-description">Color of the fontsampler background:</span>
-		<div class="picker"><input type="text" name="css_color_background" id="css_color_background"
-		                           class="color-picker"
-		                           value="<?php echo $defaults['css_color_background']; ?>"
-		                           data-default-color="<?php echo $this->settings_defaults['css_color_background']; ?>"/>
-		</div>
-	</label>
+		<label>
+			<span class="setting-description styling-description">Color of the fontsampler background:</span>
+			<div class="picker"><input type="text" name="css_color_background" id="css_color_background"
+			                           class="color-picker"
+			                           value="<?php echo $defaults['css_color_background']; ?>"
+			                           data-default-color="<?php echo $this->settings_defaults['css_color_background']; ?>"/>
+			</div>
+		</label>
 
-	<label>
-		<span class="setting-description styling-description">Text color of the UI labels:</span>
-		<div class="picker"><input type="text" name="css_color_label" id="css_color_label" class="color-picker"
-		                           value="<?php echo $defaults['css_color_label']; ?>"
-		                           data-default-color="<?php echo $this->settings_defaults['css_color_label']; ?>"/>
-		</div>
-	</label>
+		<label>
+			<span class="setting-description styling-description">Text color of the UI labels:</span>
+			<div class="picker"><input type="text" name="css_color_label" id="css_color_label" class="color-picker"
+			                           value="<?php echo $defaults['css_color_label']; ?>"
+			                           data-default-color="<?php echo $this->settings_defaults['css_color_label']; ?>"/>
+			</div>
+		</label>
 
-	<label>
-		<span class="setting-description styling-description">Font size of the UI labels:<br>
-		<small>You can use any valide <code>font-size</code> CSS declaration (Use 'inherit' for default look).</small></span>
-		<input type="text" name="css_size_label" value="<?php echo $defaults['css_size_label']; ?>"/>
-	</label>
+		<label>
+			<span class="setting-description styling-description">Font size of the UI labels:<br>
+			<small>You can use any valide <code>font-size</code> CSS declaration (Use 'inherit' for default look).</small></span>
+			<input type="text" name="css_size_label" value="<?php echo $defaults['css_size_label']; ?>"/>
+		</label>
 
-	<label>
-		<span class="setting-description styling-description">Font family of the UI labels:<br>
-		<small>You can use any valid <code>font-family</code> CSS declaration (Use 'inherit' for default look).</small></span>
-		<input type="text" name="css_fontfamily_label" value="<?php echo $defaults['css_fontfamily_label']; ?>"/>
-	</label>
+		<label>
+			<span class="setting-description styling-description">Font family of the UI labels:<br>
+			<small>You can use any valid <code>font-family</code> CSS declaration (Use 'inherit' for default look).</small></span>
+			<input type="text" name="css_fontfamily_label" value="<?php echo $defaults['css_fontfamily_label']; ?>"/>
+		</label>
 
-	<label>
-		<span class="setting-description styling-description">Background color of the dropdown items:</span>
-		<div class="picker"><input type="text" name="css_color_highlight" id="css_color_highlight" class="color-picker"
-		                           value="<?php echo $defaults['css_color_highlight']; ?>"
-		                           data-default-color="""<?php echo $this->settings_defaults['css_color_highlight']; ?>"
-			/>
-		</div>
-	</label>
+		<label>
+			<span class="setting-description styling-description">Background color of the dropdown items:</span>
+			<div class="picker"><input type="text" name="css_color_highlight" id="css_color_highlight" class="color-picker"
+			                           value="<?php echo $defaults['css_color_highlight']; ?>"
+			                           data-default-color="""<?php echo $this->settings_defaults['css_color_highlight']; ?>"
+				/>
+			</div>
+		</label>
 
-	<label>
-		<span
-			class="setting-description styling-description">Background color of the dropdown items when hovered:</span>
-		<div class="picker"><input type="text" name="css_color_highlight_hover" id="css_color_highlight_hover"
-		                           class="color-picker"
-		                           value="<?php echo $defaults['css_color_highlight_hover']; ?>"
-		                           data-default-color="<?php echo $this->settings_defaults['css_color_highlight_hover']; ?>"/>
-		</div>
-	</label>
+		<label>
+			<span
+				class="setting-description styling-description">Background color of the dropdown items when hovered:</span>
+			<div class="picker"><input type="text" name="css_color_highlight_hover" id="css_color_highlight_hover"
+			                           class="color-picker"
+			                           value="<?php echo $defaults['css_color_highlight_hover']; ?>"
+			                           data-default-color="<?php echo $this->settings_defaults['css_color_highlight_hover']; ?>"/>
+			</div>
+		</label>
 
-	<label>
-		<span class="setting-description styling-description">Color of the slider and dropdown line:</span>
-		<div class="picker"><input type="text" name="css_color_line" id="css_color_line" class="color-picker"
-		                           value="<?php echo $defaults['css_color_line']; ?>"
-		                           data-default-color="<?php echo $this->settings_defaults['css_color_line']; ?>"/>
-		</div>
-	</label>
+		<label>
+			<span class="setting-description styling-description">Color of the slider and dropdown line:</span>
+			<div class="picker"><input type="text" name="css_color_line" id="css_color_line" class="color-picker"
+			                           value="<?php echo $defaults['css_color_line']; ?>"
+			                           data-default-color="<?php echo $this->settings_defaults['css_color_line']; ?>"/>
+			</div>
+		</label>
 
-	<label>
-		<span class="setting-description styling-description">Color of the slider handle:</span>
-		<div class="picker"><input type="text" name="css_color_handle" id="css_color_handle" class="color-picker"
-		                           value="<?php echo $defaults['css_color_handle']; ?>"
-		                           data-default-color="<?php echo $this->settings_defaults['css_color_handle']; ?>"/>
-		</div>
-	</label>
+		<label>
+			<span class="setting-description styling-description">Color of the slider handle:</span>
+			<div class="picker"><input type="text" name="css_color_handle" id="css_color_handle" class="color-picker"
+			                           value="<?php echo $defaults['css_color_handle']; ?>"
+			                           data-default-color="<?php echo $this->settings_defaults['css_color_handle']; ?>"/>
+			</div>
+		</label>
 
-	<!--
-	<label>
-		<span class="setting-description">Color of the UI icons when selected:</span>
-		<div class="picker"><input type="text" name="css_color_icon_active" id="css_color_icon_active"
-		                           class="color-picker"
-		                           value="<?php echo $defaults['css_color_icon_active']; ?>"
-		                           data-default-color="<?php echo $this->settings_defaults['css_color_icon_active']; ?>" />
-		</div>
-	</label>
+		<!--
+		<label>
+			<span class="setting-description">Color of the UI icons when selected:</span>
+			<div class="picker"><input type="text" name="css_color_icon_active" id="css_color_icon_active"
+			                           class="color-picker"
+			                           value="<?php echo $defaults['css_color_icon_active']; ?>"
+			                           data-default-color="<?php echo $this->settings_defaults['css_color_icon_active']; ?>" />
+			</div>
+		</label>
 
-	<label>
-		<span class="setting-description">Color of the UI icons when unselected:</span>
-		<div class="picker"><input type="text" name="css_color_icon_inactive" id="css_color_icon_inactive"
-		                           class="color-picker"
-		                           value="<?php echo $defaults['css_color_icon_inactive']; ?>"
-		                           data-default-color="<?php echo $this->settings_defaults['css_color_icon_inactive']; ?>" />
-		</div>
-	</label>
-	-->
-
+		<label>
+			<span class="setting-description">Color of the UI icons when unselected:</span>
+			<div class="picker"><input type="text" name="css_color_icon_inactive" id="css_color_icon_inactive"
+			                           class="color-picker"
+			                           value="<?php echo $defaults['css_color_icon_inactive']; ?>"
+			                           data-default-color="<?php echo $this->settings_defaults['css_color_icon_inactive']; ?>" />
+			</div>
+		</label>
+		-->
+	</div>
 
 	<label>
 		<span class="setting-description styling-description">Sample texts
 		<small>(use simple line breaks for each option to be displayed in the dropdown)</small></span>
 		<textarea name="sample_texts" cols="60" rows="10"><?php echo $defaults['sample_texts']; ?></textarea>
+	</label>
+
+	<h2>Admin interface customizations</h2>
+	<label>
+		<input type="checkbox"
+		       name="admin_hide_legacy_formats"
+		       value="1"
+				<?php if ( $this->admin_hide_legacy_formats ): echo ' checked="checked" '; endif; ?>>
+		<span class="setting-description">Hide legacy webfont formats in admin interface.</span>
+		<small>When activated (recommended) this option hides all but the <span class="filename">WOFF</span> and
+			<span class="filename">WOFF2</span> webfont formats, since those are the formats sufficient for rendering
+			webfonts in modern browsers. Enabling this option de-clutters the interface. Disable only if you explicitly
+		want to upload <span class="filename">EOT</span>, <span class="filename">SVG</span> or
+			<span class="filename">TTF</span> files for the fontsamplers to use.</small>
 	</label>
 	<?php submit_button(); ?>
 </form>

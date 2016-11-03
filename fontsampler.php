@@ -37,8 +37,13 @@ class Fontsampler {
 	private $boolean_options;
 	private $default_features;
 	private $font_formats;
+	private $font_formats_legacy;
 	private $fontsampler_db_version;
 	private $settings_defaults;
+	private $admin_hide_legacy_formats;
+
+	const FONTSAMPLER_OPTION_DB_VERSION = 'fontsampler_db_version';
+	const FONTSAMPLER_OPTION_HIDE_LEGACY_FORMATS = 'fontsampler_hide_legacy_formats';
 
 	function Fontsampler( $wpdb ) {
 		// convenience variables for the wpdb object and the fontsampler db tables
@@ -48,23 +53,35 @@ class Fontsampler {
 		$this->table_join     = $this->db->prefix . 'fontsampler_sets_x_fonts';
 		$this->table_settings = $this->db->prefix . 'fontsampler_settings';
 
+
 		// keep track of db versions and migrations via this
 		// simply set this to the current PLUGIN VERSION number when bumping it
 		// i.e. a database update always bumps the version number of the plugin as well
 		$this->fontsampler_db_version = '0.0.4';
-
-		$current_db_version = get_option( 'fontsampler_db_version' );
+		$current_db_version = get_option( self::FONTSAMPLER_OPTION_DB_VERSION );
 
 		// if no previous db version has been registered assume new install and set to v 0.0.1 which was the "last"
 		// version install without the db option
 		if ( ! $current_db_version ) {
-			add_option( 'fontsampler_db_version', '0.0.1' );
+			add_option( self::FONTSAMPLER_OPTION_DB_VERSION, '0.0.1' );
 			$current_db_version = '0.0.1';
 		}
-
 		if ( version_compare( $current_db_version, $this->fontsampler_db_version ) < 0 ) {
 			$this->migrate_db();
 		}
+
+
+		// check if to display legacy formats or not
+		$option_legacy_formats = get_option( self::FONTSAMPLER_OPTION_HIDE_LEGACY_FORMATS );
+
+		// set the option in the db, if it's unset; default to hiding the legacy formats
+		if ( $option_legacy_formats === false ) {
+			add_option( self::FONTSAMPLER_OPTION_HIDE_LEGACY_FORMATS, '1');
+			$this->admin_hide_legacy_formats = 1;
+		} else {
+			$this->admin_hide_legacy_formats = $option_legacy_formats;
+		}
+
 
 		$this->boolean_options = array(
 			'size',
@@ -91,6 +108,7 @@ class Fontsampler {
 			'multiline',
 		);
 		$this->font_formats = array( 'woff2', 'woff', 'eot', 'svg', 'ttf' );
+		$this->font_formats_legacy = array( 'svg', 'eot', 'ttf' );
 
 		$this->settings_defaults = array(
 			'font_size_label'		    => 'Size',
@@ -255,7 +273,9 @@ class Fontsampler {
 	 */
 	function fontsampler_admin_init() {
 
-		echo '<section id="fontsampler-admin">';
+		echo '<section id="fontsampler-admin" class="';
+		echo $this->admin_hide_legacy_formats ? 'fontsampler-admin-hide-legacy-formats' : 'fontsampler-admin-show-legacy-formats';
+		echo '">';
 
 		include( 'includes/header.php' );
 
@@ -1138,6 +1158,17 @@ class Fontsampler {
 		if ( isset( $_POST['id'] ) ) {
 			$id = (int) ( $_POST['id'] );
 			if ( 'edit_settings' == $_POST['action'] && isset( $id ) && is_int( $id ) && $id > 0 ) {
+				// update the wp_option field for hiding legacy font formats
+				if ( isset( $_POST['admin_hide_legacy_formats'] ) ) {
+					$val = intval( $_POST['admin_hide_legacy_formats'] );
+					update_option( self::FONTSAMPLER_OPTION_HIDE_LEGACY_FORMATS, $val );
+					$this->admin_hide_legacy_formats = $val;
+				} else {
+					update_option( self::FONTSAMPLER_OPTION_HIDE_LEGACY_FORMATS, 0 );
+					$this->admin_hide_legacy_formats = 0;
+				}
+
+
 				$settings_fields = array_keys( $this->settings_defaults );
 
 				$data = array();
@@ -1375,6 +1406,11 @@ class Fontsampler {
 		array_push( $ui_order, array( 'fontsampler' ) );
 
 		return $ui_order;
+	}
+
+
+	function is_legacy_format( $format ) {
+		return in_array( $format, $this->font_formats_legacy );
 	}
 
 

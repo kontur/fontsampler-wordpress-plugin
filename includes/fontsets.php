@@ -20,7 +20,8 @@
 			</th>
 			<th>Preview</th>
 			<th>Formats<br>
-				<small>A list of all formats provided (and used) for rendering type samplers using this font. <br>You should at the very least provide a woff file.</small>
+				<small>A list of all formats provided (and used) for rendering type samplers using this font. <br>
+					You should at the very least provide a <span class="filename">WOFF</span> file.</small>
 			</th>
 			<th>Edit</th>
 			<th>Delete</th>
