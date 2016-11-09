@@ -128,7 +128,6 @@ define([
           ;
 
         this._options[sliderName] = {};
-        console.log(sliderName);
 
         for(i=0;i<sliderDataOptions.length;i++) {
             // for each slider like "font-size" iterate over all of
@@ -146,7 +145,6 @@ define([
                 this._options[sliderName][sliderDataOptions[i]] =
                   this._options['slider_default_' + sliderDataOptions[i]];
         }
-        console.log(this._options);
     };
 
     _p._initSlider = function(element) {

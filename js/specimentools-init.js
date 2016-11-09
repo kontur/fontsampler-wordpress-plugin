@@ -30,7 +30,7 @@ define([
      * with the factories array
      */
 
-    function main(window) {
+    function main(window, callback) {
 
         var wrappers = window.document.getElementsByClassName("fontsampler-wrapper");
 
@@ -59,8 +59,10 @@ define([
 
             initDocumentWidgets(wrappers[i], factories, pubsub);
 
+
             pubsub.subscribe('allFontsLoaded', function () {
                 this.publish('activateFont', 0);
+                callback();
             }.bind(pubsub));
 
             loadFonts.fromUrl(pubsub, fonts);

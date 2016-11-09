@@ -466,7 +466,7 @@
 .fontsampler-interface .selectric .button,
 .fontsampler-wrapper .fontsampler-interface .fontsampler-multiselect > button,
 .fontsampler-interface .rangeslider__fill {
-    border-bottom: 1px solid #333333;
+    border-bottom: 1px solid #ec1c1c;
 }
 
 /* css_color_handle */

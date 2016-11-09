@@ -243,22 +243,18 @@ class Fontsampler {
 	 * Register all script and styles needed in the front end
 	 */
 	function fontsampler_interface_enqueues() {
-		wp_enqueue_script( 'fontsampler-js', plugin_dir_url( __FILE__ ) . 'bower_components/jquery-fontsampler/dist/jquery.fontsampler.js', array( 'jquery' ) );
-		//wp_enqueue_script( 'fontsampler-init-js', plugin_dir_url( __FILE__ ) . 'js/fontsampler-init.js', array( 'fontsampler-js' ) );
-		wp_enqueue_script( 'fontsampler-rangeslider-js', plugin_dir_url( __FILE__ ) . 'bower_components/rangeslider.js/dist/rangeslider.min.js', array( 'jquery' ) );
-		wp_enqueue_script( 'fontsampler-selectric-js', plugin_dir_url( __FILE__ ) . 'bower_components/jquery-selectric/public/jquery.selectric.min.js', array( 'jquery' ) );
-
 		wp_enqueue_script( 'require-js', plugin_dir_url( __FILE__ ) . 'bower_components/requirejs/require.js' );
-		wp_enqueue_script( 'init-js', plugin_dir_url( __FILE__ ) . 'js/init.js');
-		//wp_enqueue_script( 'init-js', plugin_dir_url( __FILE__ ) . 'js/init.js', array( 'require-js' ) );
+		wp_enqueue_script( 'main-js', plugin_dir_url( __FILE__ ) . 'js/main.js');
 		wp_enqueue_style( 'fontsampler-css', $this->get_css_file() );
 	}
+
 
 	/*
 	 * Register scripts and styles needed in the admin panel
 	 */
 	function fontsampler_admin_enqueues() {
-		wp_enqueue_script( 'fontsampler-rangeslider-js', plugin_dir_url( __FILE__ ) . 'bower_components/rangeslider.js/dist/rangeslider.min.js', array( 'jquery' ) );
+		wp_enqueue_script( 'fontsampler-js', plugin_dir_url( __FILE__ ) . 'bower_components/jquery-fontsampler/dist/jquery.fontsampler.js', array( 'jquery' ) );
+		wp_enqueue_script( 'fontsampler-rangeslider-js', plugin_dir_url( __FILE__ ) . 'bower_components/rangeslider.js/dist/rangeslider.js', array( 'jquery' ) );
 		wp_enqueue_script( 'fontsampler-preview-js', plugin_dir_url( __FILE__ ) . 'bower_components/jquery-fontsampler/dist/jquery.fontsampler.js', array( 'jquery' ) );
 		wp_enqueue_script( 'fontsampler-admin-js', plugin_dir_url( __FILE__ ) . 'admin/js/fontsampler-admin.js', array( 'jquery', false, true ) );
 		wp_enqueue_script( 'colour-pick', plugins_url( 'admin/js/fontsampler-admin.js', __FILE__ ), array( 'wp-color-picker' ), false, true );
