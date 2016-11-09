@@ -1,16 +1,16 @@
 /* css_color_text */
-.fontsampler-interface .fontsampler {
+.fontsampler-interface .type-tester__content {
     color: @css_color_text;
 }
-.fontsampler-interface .fontsampler.invert {
+.fontsampler-interface .type-tester__content.invert {
     background: @css_color_text;
 }
 
 /* css_color_background */
-.fontsampler-interface .fontsampler {
+.fontsampler-interface .type-tester__content {
     background: @css_color_background;
 }
-.fontsampler-interface .fontsampler.invert {
+.fontsampler-interface .type-tester__content.invert {
     color: @css_color_background;
 }
 

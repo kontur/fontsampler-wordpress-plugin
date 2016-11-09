@@ -322,6 +322,7 @@
 }
 .fontsampler-wrapper .fontsampler-interface select[name="font-selector"],
 .fontsampler-wrapper .fontsampler-interface select[name="sample-text"],
+.fontsampler-wrapper .fontsampler-interface div.font-lister select,
 .fontsampler-wrapper .fontsampler-interface .selectric-wide {
   left: -5px;
   padding: 0 5px;
@@ -404,16 +405,19 @@
   height: 20px;
   width: 20px;
 }
-.fontsampler-wrapper .fontsampler {
+.fontsampler-wrapper .fontsampler,
+.fontsampler-wrapper .type-tester__content {
   clear: both;
   margin-bottom: 20px;
   margin-top: 0.25em;
   transition: all 0.2s ease-out;
 }
-.fontsampler-wrapper .fontsampler:focus {
+.fontsampler-wrapper .fontsampler:focus,
+.fontsampler-wrapper .type-tester__content:focus {
   outline: none;
 }
-.fontsampler-wrapper .fontsampler.fontsampler-is-singleline {
+.fontsampler-wrapper .fontsampler.fontsampler-is-singleline,
+.fontsampler-wrapper .type-tester__content.fontsampler-is-singleline {
   overflow-x: hidden;
   overflow-y: visible;
   white-space: nowrap;

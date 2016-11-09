@@ -44,4 +44,9 @@ bower_components/jquery-form-validator/form-validator/*
 bower_components/jquery-fontsampler/*
 !bower_components/jquery-fontsampler/dist/
 
+!bower_components/specimen-tools/
+bower_components/specimen-tools/*
+!bower_components/specimen-tools/build/
+!bower_components/specimen-tools/lib/
+
 config.codekit

@@ -163,7 +163,6 @@ class Fontsampler {
 		// merge in possibly passed in attributes
 		$attributes = shortcode_atts( array( 'id' => '0' ), $atts );
 		// do nothing if missing id
-		// TODO change or fallback to name= instead of id=
 		if ( 0 != $attributes['id'] ) {
 			$set   = $this->get_set( intval( $attributes['id'] ) );
 			$fonts = $this->get_fontset_for_set( intval( $attributes['id'] ) );
@@ -185,17 +184,58 @@ class Fontsampler {
 			// buffer output until return
 			ob_start();
 
-			echo '<div class="fontsampler-wrapper">';
+			$script_url = preg_replace("/^http\:\/\/[^\/]*/", "", plugin_dir_url( __FILE__ ) );
+			?>
+
+			<script>
+				var fontsamplerBaseUrl = '<?php echo $script_url; ?>';
+			</script>
+			<?php
+			$fonts = array_map(function($item) {
+				return $item['woff'];
+			}, $fonts);
+
+			echo "<div class='fontsampler-wrapper' data-fonts='" . implode(',', $fonts) . "'>";
+
+			echo '<div class="type-tester" ';
+
+			echo '
+			data-min-font-size="' . $replace['font_size_min'] . '"
+			data-max-font-size="' . $replace['font_size_max'] . '"
+			data-unit-font-size="' . $replace['font_size_unit'] . '"
+			data-value-font-size="' . $replace['font_size_initial'] . '"
+			data-step-font-size="1"
+
+			data-min-letter-spacing="' . $replace['letter_spacing_min'] . '"
+			data-max-letter-spacing="' . $replace['letter_spacing_max'] . '"
+			data-unit-letter-spacing="' . $replace['letter_spacing_unit'] . '"
+			data-value-letter-spacing="' . $replace['letter_spacing_initial'] . '"
+			data-step-letter-spacing="1"
+
+			data-min-line-height="' . $replace['line_height_min'] . '"
+			data-max-line-height="' . $replace['line_height_max'] . '"
+			data-unit-line-height="' . $replace['line_height_unit'] . '"
+			data-value-line-height="' . $replace['line_height_initial'] . '"
+			data-step-line-height="1"
+			';
+			
+			echo ">";
+
+
+			// TODO add slider data- settings
+
 			$settings = $this->get_settings();
 
 			// include, aka echo, template with replaced values from $replace above
 			include( 'includes/interface.php' );
 
 			echo '</div>';
+			echo '</div>';
 
 			// return all that's been buffered
 			return ob_get_clean();
 		}
+		// TODO change or fallback to name= instead of id=
 	}
 
 
@@ -204,9 +244,13 @@ class Fontsampler {
 	 */
 	function fontsampler_interface_enqueues() {
 		wp_enqueue_script( 'fontsampler-js', plugin_dir_url( __FILE__ ) . 'bower_components/jquery-fontsampler/dist/jquery.fontsampler.js', array( 'jquery' ) );
-		wp_enqueue_script( 'fontsampler-init-js', plugin_dir_url( __FILE__ ) . 'js/fontsampler-init.js', array( 'fontsampler-js' ) );
+		//wp_enqueue_script( 'fontsampler-init-js', plugin_dir_url( __FILE__ ) . 'js/fontsampler-init.js', array( 'fontsampler-js' ) );
 		wp_enqueue_script( 'fontsampler-rangeslider-js', plugin_dir_url( __FILE__ ) . 'bower_components/rangeslider.js/dist/rangeslider.min.js', array( 'jquery' ) );
 		wp_enqueue_script( 'fontsampler-selectric-js', plugin_dir_url( __FILE__ ) . 'bower_components/jquery-selectric/public/jquery.selectric.min.js', array( 'jquery' ) );
+
+		wp_enqueue_script( 'require-js', plugin_dir_url( __FILE__ ) . 'bower_components/requirejs/require.js' );
+		wp_enqueue_script( 'init-js', plugin_dir_url( __FILE__ ) . 'js/init.js');
+		//wp_enqueue_script( 'init-js', plugin_dir_url( __FILE__ ) . 'js/init.js', array( 'require-js' ) );
 		wp_enqueue_style( 'fontsampler-css', $this->get_css_file() );
 	}
 
