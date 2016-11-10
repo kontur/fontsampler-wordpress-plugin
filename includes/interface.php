@@ -1,5 +1,24 @@
 <?php global $f; ?>
 
+<div class="type-tester"
+	data-min-font-size="<?php echo $replace['font_size_min']; ?>"
+	data-max-font-size="<?php echo $replace['font_size_max']; ?>"
+	data-unit-font-size="<?php echo $replace['font_size_unit']; ?>"
+	data-value-font-size="<?php echo $replace['font_size_initial']; ?>"
+	data-step-font-size="1"
+
+	data-min-letter-spacing="<?php echo $replace['letter_spacing_min']; ?>"
+	data-max-letter-spacing="<?php echo $replace['letter_spacing_max']; ?>"
+	data-unit-letter-spacing="<?php echo $replace['letter_spacing_unit']; ?>"
+	data-value-letter-spacing="<?php echo $replace['letter_spacing_initial']; ?>"
+	data-step-letter-spacing="1"
+
+	data-min-line-height="<?php echo $replace['line_height_min']; ?>"
+	data-max-line-height="<?php echo $replace['line_height_max']; ?>"
+	data-unit-line-height="<?php echo $replace['line_height_unit']; ?>"
+	data-value-line-height="<?php echo $replace['line_height_initial']; ?>"
+	data-step-line-height="1">
+
 <div class="fontsampler-interface">
 
 	<?php if (isset( $set['ui_order_parsed'] )) : ?>
@@ -130,10 +149,7 @@
 								</button>
 							</div>
 						<?php endif;
-
-						if ( $set['ot_liga'] || $set['ot_dlig'] || $set['ot_hlig'] || $set['ot_calt'] ||
-						     $set['ot_frac'] || $set['ot_sups'] || $set['ot_subs']
-						) : ?>
+						if ( $set['opentype']) : ?>
 							<div class="fontsampler-multiselect one-item fontsampler-opentype">
 
 								<button class="fontsampler-opentype-toggle">O</button>
@@ -169,19 +185,10 @@
 
 						?>
 
-
-							<!--<h2 class="mdl-card__title-text">Test the Font</h2>
-							<h5>Default Features</h5>
-							<div class="type-tester__features--default"></div>
-							<h5>Optional Features</h5>
-							<div class="type-tester__features--optional"></div>-->
-
-							<div class="current-font type-tester__content" contenteditable="true"
-							<?php if ( ! isset( $set['multiline'] ) || ( isset( $set['multiline'] )
-								&& $set['multiline'] != "1" ) ) :
-								echo 'fontsampler-is-singleline'; endif; ?>"><?php echo $initial_text; ?></div>
-
-
+						<div class="current-font type-tester__content" contenteditable="true"
+						<?php if ( ! isset( $set['multiline'] ) || ( isset( $set['multiline'] )
+							&& $set['multiline'] != "1" ) ) :
+							echo 'fontsampler-is-singleline'; endif; ?>"><?php echo $initial_text; ?></div>
 
 						<!--
 						<div class="fontsampler fontsampler-id-<?php echo $set['id']; ?>
@@ -203,4 +210,6 @@
 		</div>
 	<?php endforeach; ?>
 <?php endif; ?>
+
+</div>
 </div>

@@ -246,13 +246,13 @@
 			<ul class="fontsampler-ui-preview-list">
 				<?php
 				if ( $row and is_array( $row ) ) :
-					foreach ( $row as $item ) :
+					foreach ( $row as $item ) : if ( ! empty( $item ) ) :
 						?>
 						<li class="fontsampler-ui-block <?php if ( 'fontsampler' == $item ) : echo 'fontsampler-ui-placeholder-full'; endif; ?>"
 						    data-name="<?php echo $item; ?>"><?php echo $labels[ $item ]; ?></li>
 						<?php array_push( $visible, $item ); ?>
 						<?php
-					endforeach;
+					endif; endforeach;
 				endif;
 				?>
 			</ul>

@@ -41,6 +41,13 @@
 	<span>Allow inverting the text field to display negative text</span>
 </label>
 <label>
+	<input type="checkbox" name="opentype"
+	       data-default="<?php echo $default_settings['opentype'] ? 'checked' : ''; ?>"
+	       data-set="<?php echo ( ! empty( $options['opentype'] ) ) ? 'checked' : ''; ?>"
+		<?php if ( ! empty( $options['opentype'] ) ) : echo ' checked="checked" '; endif; ?> >
+	<span>Display OpenType feature controls (for those fonts where they are available)</span>
+</label>
+<label>
 	<input type="checkbox" name="multiline"
 	       data-default="<?php echo $default_settings['multiline'] ? 'checked' : ''; ?>"
 	       data-set="<?php echo ( ! empty( $options['multiline'] ) ) ? 'checked' : ''; ?>"

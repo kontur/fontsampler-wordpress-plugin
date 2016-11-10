@@ -57,7 +57,7 @@ class Fontsampler {
 		// keep track of db versions and migrations via this
 		// simply set this to the current PLUGIN VERSION number when bumping it
 		// i.e. a database update always bumps the version number of the plugin as well
-		$this->fontsampler_db_version = '0.0.4';
+		$this->fontsampler_db_version = '0.0.5';
 		$current_db_version = get_option( self::FONTSAMPLER_OPTION_DB_VERSION );
 
 		// if no previous db version has been registered assume new install and set to v 0.0.1 which was the "last"
@@ -90,13 +90,7 @@ class Fontsampler {
 			'sampletexts',
 			'alignment',
 			'invert',
-			'ot_liga',
-			'ot_hlig',
-			'ot_dlig',
-			'ot_calt',
-			'ot_frac',
-			'ot_sups',
-			'ot_subs',
+			'opentype',
 		);
 		$this->default_features = array(
 			'size',
@@ -106,6 +100,7 @@ class Fontsampler {
 			'alignment',
 			'invert',
 			'multiline',
+			'opentype',
 		);
 		$this->font_formats = array( 'woff2', 'woff', 'eot', 'svg', 'ttf' );
 		$this->font_formats_legacy = array( 'svg', 'eot', 'ttf' );
@@ -145,6 +140,7 @@ class Fontsampler {
 			'alignment'                 => 0,
 			'invert'                    => 0,
 			'multiline'                 => 1,
+			'opentype'                  => 0,
 		);
 	}
 
@@ -175,67 +171,33 @@ class Fontsampler {
 				}
 			}
 
-			// TODO labels from options or translation file
 			$defaults = $this->get_settings();
 
 			// some of these get overwritten from defaults, but list them all here explicitly
 			$replace = array_merge( $set, $this->settings_defaults, $defaults );
 
-			// buffer output until return
-			ob_start();
-
 			$script_url = preg_replace("/^http\:\/\/[^\/]*/", "", plugin_dir_url( __FILE__ ) );
-			?>
-
-			<script>
-				var fontsamplerBaseUrl = '<?php echo $script_url; ?>';
-			</script>
-			<?php
 			$fonts = array_map(function($item) {
 				return $item['woff'];
 			}, $fonts);
 
-			echo "<div class='fontsampler-wrapper' data-fonts='" . implode(',', $fonts) . "'>";
-
-			echo '<div class="type-tester" ';
-
-			echo '
-			data-min-font-size="' . $replace['font_size_min'] . '"
-			data-max-font-size="' . $replace['font_size_max'] . '"
-			data-unit-font-size="' . $replace['font_size_unit'] . '"
-			data-value-font-size="' . $replace['font_size_initial'] . '"
-			data-step-font-size="1"
-
-			data-min-letter-spacing="' . $replace['letter_spacing_min'] . '"
-			data-max-letter-spacing="' . $replace['letter_spacing_max'] . '"
-			data-unit-letter-spacing="' . $replace['letter_spacing_unit'] . '"
-			data-value-letter-spacing="' . $replace['letter_spacing_initial'] . '"
-			data-step-letter-spacing="1"
-
-			data-min-line-height="' . $replace['line_height_min'] . '"
-			data-max-line-height="' . $replace['line_height_max'] . '"
-			data-unit-line-height="' . $replace['line_height_unit'] . '"
-			data-value-line-height="' . $replace['line_height_initial'] . '"
-			data-step-line-height="1"
-			';
-			
-			echo ">";
-
-
-			// TODO add slider data- settings
-
 			$settings = $this->get_settings();
+
+			// buffer output until return
+			ob_start();
+			?>
+			<script> var fontsamplerBaseUrl = '<?php echo $script_url; ?>'; </script>
+			<?php
+			echo "<div class='fontsampler-wrapper' data-fonts='" . implode(',', $fonts) . "'>";
 
 			// include, aka echo, template with replaced values from $replace above
 			include( 'includes/interface.php' );
 
 			echo '</div>';
-			echo '</div>';
 
 			// return all that's been buffered
 			return ob_get_clean();
 		}
-		// TODO change or fallback to name= instead of id=
 	}
 
 
@@ -459,14 +421,8 @@ class Fontsampler {
                 `alignment` tinyint( 1 ) NOT NULL DEFAULT '0',
                 `invert` tinyint( 1 ) NOT NULL DEFAULT '0',
                 `multiline` tinyint( 1 ) NOT NULL DEFAULT '1',
+                `opentype` tinyint( 1 ) NOT NULL DEFAULT '0',
                 `is_ltr` tinyint( 1 ) NOT NULL DEFAULT '1',
-                `ot_liga` tinyint( 1 ) NOT NULL DEFAULT '0',
-                `ot_dlig` tinyint( 1 ) NOT NULL DEFAULT '0',
-                `ot_hlig` tinyint( 1 ) NOT NULL DEFAULT '0',
-                `ot_calt` tinyint( 1 ) NOT NULL DEFAULT '0',
-                `ot_frac` tinyint( 1 ) NOT NULL DEFAULT '0',
-                `ot_sups` tinyint( 1 ) NOT NULL DEFAULT '0',
-                `ot_subs` tinyint( 1 ) NOT NULL DEFAULT '0',
                 `ui_order` VARCHAR( 255 ) NOT NULL DEFAULT 'size,letterspacing,options|fontpicker,sampletexts,lineheight|fontsampler',
                 `default_features` tinyint( 1 ) NOT NULL DEFAULT '1',
                 `default_options` tinyint( 1 ) NOT NULL DEFAULT '0',
@@ -540,6 +496,7 @@ class Fontsampler {
 			`alignment` tinyint(1) unsigned NOT NULL DEFAULT '0',
 			`invert` tinyint(1) unsigned NOT NULL DEFAULT '0',
 			`multiline` tinyint(1) unsigned NOT NULL DEFAULT '1',
+			`opentype` tinyint(1) unsigned NOT NULL DEFAULT '0',
 			PRIMARY KEY (`id`)
 			) DEFAULT CHARSET=utf8";
 		$this->db->query( $sql );
@@ -609,6 +566,17 @@ class Fontsampler {
 				'ALTER TABLE ' . $this->table_settings . " ADD `invert` tinyint( 1 ) unsigned NOT NULL DEFAULT '0'",
 				'ALTER TABLE ' . $this->table_settings . " ADD `multiline` tinyint( 1 ) unsigned NOT NULL DEFAULT '1'",
 			),
+			'0.0.5' => array(
+				'ALTER TABLE ' . $this->table_sets . ' DROP COLUMN `ot_liga`',
+				'ALTER TABLE ' . $this->table_sets . ' DROP COLUMN `ot_dlig`',
+				'ALTER TABLE ' . $this->table_sets . ' DROP COLUMN `ot_hlig`',
+				'ALTER TABLE ' . $this->table_sets . ' DROP COLUMN `ot_calt`',
+				'ALTER TABLE ' . $this->table_sets . ' DROP COLUMN `ot_frac`',
+				'ALTER TABLE ' . $this->table_sets . ' DROP COLUMN `ot_sups`',
+				'ALTER TABLE ' . $this->table_sets . ' DROP COLUMN `ot_subs`',
+				'ALTER TABLE ' . $this->table_sets . " ADD `opentype` tinyint( 1 ) unsigned NOT NULL DEFAULT '0'",
+				'ALTER TABLE ' . $this->table_settings . " ADD `opentype` tinyint(1) unsigned NOT NULL DEFAULT '0'",
+			)
 		);
 
 		// loop through the available update queries and execute those that are higher versions than the currently
@@ -1361,9 +1329,8 @@ class Fontsampler {
 	}
 
 
-	function set_has_options ( $set ) {
-		return ( isset( $set['invert'] ) || isset( $set['alignment'] ) ||
-		! empty( array_filter( $set, function ($var) { return substr( $var, 0, 3 ) === "ot_"; }) ) );
+	function set_has_options_ui ( $set ) {
+		return ( isset( $set['invert'] ) || isset( $set['alignment'] ) || isset( $set['opentype'] ) );
 	}
 
 	/**
@@ -1378,7 +1345,7 @@ class Fontsampler {
 		$set['fontsampler'] = 1;
 
 		// force include the value "options" if any OT feature, invert or alignment are enabled
-		if ( $this->set_has_options( $set ) ) {
+		if ( $this->set_has_options_ui( $set ) ) {
 			$set['options'] = 1;
 		}
 
@@ -1414,29 +1381,45 @@ class Fontsampler {
 	 * @return array
 	 */
 	function ui_order_parsed_from( $settings, $set ) {
-
 		// all blocks except 'fontpicker' (no need when creating a new set with 0 fonts - gets dynamically
 		// added on selecting fonts)
 
 		// fetch the defaults and intersect them with the five possible options (mandatory fontsampler added last)
-		// to generate an array of ui_blocks that need to be arranhged
-		$ui_blocks = array_intersect( array_keys( array_filter($settings, function ($a) {
+		// to generate an array of ui_blocks that need to be arranged
+		$ui_blocks_default = array( 'size', 'letterspacing', 'lineheight', 'sampletexts' );
+		$ui_blocks_settings =  array_keys( array_filter($settings, function ($a) {
 			return $a == "1";
-		}) ), array( 'size', 'letterspacing', 'lineheight', 'sampletexts', 'options' ) );
+		}) );
+
+		$ui_blocks = array_intersect( $ui_blocks_settings, $ui_blocks_default );
+
+		if ( sizeof( $set['fonts'] ) > 0 ) {
+			array_push( $ui_blocks, 'fontpicker' );
+		}
+
+		if ( $this->set_has_options_ui( array_flip( $ui_blocks_settings ) ) ) {
+			array_push( $ui_blocks, 'options' );
+		}
+
+		// every fontsampler has this block:
 		array_push( $ui_blocks, 'fontsampler' );
 
 		$ui_order = array();
 
 		// generate the most "ideal" (no gaps in the row, no 2+2 rows) layout of ui_blocks and store them
-		// in a formate that is the same as ui_order_parsed
+		// in a format that is the same as ui_order_parsed
+
+		// magic $r < 2 comes from max. 3 rows of interface elements altogether
 		for ( $r = 0; $r < 2; $r++ ) {
 			$ui_order[ $r ] = array();
 
+			// as long as there is less than 3 elements in this row and there is block to distribute
 			while ( sizeof( $ui_order[ $r ] ) < 3 && sizeof( $ui_blocks ) > 0 ) {
-
 				$block = array_shift( $ui_blocks );
 				if ( ( 'options' !== $block && isset( $set[ $block ] ) ) ||
-				     ('options' === $block && $this->set_has_options( $set ) ) ) {
+				     ( 'options' === $block && $this->set_has_options_ui( $set ) ) ||
+				     ( 'fontpicker' === $block ) )
+				{
 					array_push( $ui_order[ $r ], $block );
 				}
 			}

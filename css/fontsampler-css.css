@@ -389,13 +389,14 @@
 .fontsampler-wrapper .fontsampler-interface .fontsampler-opentype-features {
   display: none;
   position: absolute;
-  width: auto;
   right: 0;
   top: 35px;
   text-align: right;
   background: #ffffff;
   height: auto;
+  text-align: left;
   padding: 5px;
+  width: 100%;
   z-index: 10;
 }
 .fontsampler-wrapper .fontsampler-interface .fontsampler-opentype-features.shown {
@@ -410,7 +411,11 @@
   margin: 0;
   border: 0;
   height: auto;
-  padding: 0 10px;
+  padding: 10px;
+}
+.fontsampler-wrapper .fontsampler-interface .fontsampler-opentype-features fieldset label {
+  float: left;
+  width: 50%;
 }
 .fontsampler-wrapper .fontsampler,
 .fontsampler-wrapper .type-tester__content {
