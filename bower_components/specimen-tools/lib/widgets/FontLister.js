@@ -21,6 +21,7 @@ define([
         this._pubSub.subscribe('prepareFont', this._prepareLoadHook.bind(this));
         this._pubSub.subscribe('loadFont', this._onLoadFont.bind(this));
         this._pubSub.subscribe('allFontsLoaded', this._onAllFontsLoaded.bind(this));
+        this._pubSub.subscribe('activateFont', this._onActivateFont.bind(this));
     }
 
     var _p = FontLister.prototype;
@@ -29,7 +30,7 @@ define([
         var option = this._selectContainer.ownerDocument.createElement('option');
         option.textContent = '';
         option.value = i;
-        option.addEventListener('click', this._activateFont.bind(this, i), true);
+        option.addEventListener('change', this._activateFont.bind(this, i));
         this._elements.push(option);
         this._selectContainer.appendChild(option);
     };
@@ -42,6 +43,10 @@ define([
     _p._activateFont = function(i) {
         // this will call this._onActivateFont
         this._pubSub.publish('activateFont', i);
+    };
+
+    _p._onActivateFont = function (fontIndex) {
+        this._elements[fontIndex].setAttribute('selected', true);
     };
 
     _p._onAllFontsLoaded = function() {

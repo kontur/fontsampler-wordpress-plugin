@@ -60,6 +60,7 @@ define([
         this._fontsData = fontsData;
 
         this._pubSub.subscribe('activateFont', this._onActivateFont.bind(this));
+        this._pubSub.subscribe('onChangeFontFeatures', this._onChangeFontFeatures.bind(this));
 
         this._contentContainers = this._getByClass(this._options.contentContainerClass);
 
@@ -480,6 +481,11 @@ define([
             for(k in this._values)
                 container.style[this._cssName2jsName(k)] = this._values[k];
         }
+    };
+
+    _p._onChangeFontFeatures = function (features) {
+        this._values['font-feature-settings'] = features;
+        this._applyValues();
     };
 
     _p._onActivateFont = function(fontIndex) {

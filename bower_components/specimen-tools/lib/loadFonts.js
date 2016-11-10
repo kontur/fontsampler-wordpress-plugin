@@ -6,18 +6,35 @@ define([
     "use strict";
     /*globals FileReader, XMLHttpRequest, console*/
 
+    /**
+     * Callback for when a fontfile has been loaded
+     *
+     * @param i: index of the font loaded
+     * @param fontFileName
+     * @param err: null or string with error message
+     * @param fontArraybuffer
+     */
     function onLoadFont(i, fontFileName, err, fontArraybuffer) {
+        var error = !(err === null);
         /* jshint validthis: true */
-        if(err) {
-            console.warn('Can\'t load font', fontFileName, ' with error:', err);
-            return;
+        try {
+            var font = opentype.parse(fontArraybuffer);
+        } catch (e) {
+            error = e;
         }
-        var font = opentype.parse(fontArraybuffer);
-        this.pubsub.publish('loadFont', i, fontFileName, font, fontArraybuffer);
-        this.countLoaded += 1;
-        // if there was an error loading a font (above) this will never run
-        if(this.countLoaded === this.countAll)
+
+        if (error !== false) {
+            console.warn('Can\'t load font', fontFileName, ' with error:', error);
+            this.countAll--;
+        } else {
+            this.pubsub.publish('loadFont', i, fontFileName, font, fontArraybuffer);
+            this.countLoaded += 1;
+            // if there was an error loading a font (above) this will never run
+        }
+        if(this.countLoaded === this.countAll) {
+            console.log("allFontsLoaded");
             this.pubsub.publish('allFontsLoaded', this.countAll);
+        }
     }
 
     function loadFromUrl(fontInfo, callback) {

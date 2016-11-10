@@ -44,6 +44,9 @@
 .fontsampler-interface .rangeslider__fill {
     border-bottom: 1px solid @css_color_line;
 }
+.fontsampler-interface .fontsampler-opentype-features {
+    border: 1px solid @css_color_line;
+}
 
 /* css_color_handle */
 .fontsampler-interface .rangeslider__handle {
@@ -52,3 +55,4 @@
 
 /* css_color_icon_active */
 /* css_color_icon_inactive */
+
