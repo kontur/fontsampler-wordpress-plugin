@@ -254,6 +254,14 @@
   touch-action: pan-x;
   -ms-touch-action: pan-x;
 }
+.fontsampler-wrapper.on-loading > * {
+  opacity: 0;
+  transition: opacity 0s;
+}
+.fontsampler-wrapper > * {
+  opacity: 1;
+  transition: opacity 0.2s ease-in-out;
+}
 .fontsampler-wrapper .fontsampler-interface .fontsampler-interface-row {
   clear: both;
   position: relative;

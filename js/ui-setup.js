@@ -110,7 +110,9 @@ define(['jquery', 'rangeslider', 'selectric'], function($) {
                     var text = $(this).text().replace('/\n/gi', '');
                     $(this).html(text);
                 }
-            } );
+        } );
+
+        $wrapper.removeClass("on-loading");
     }
 
     return main;

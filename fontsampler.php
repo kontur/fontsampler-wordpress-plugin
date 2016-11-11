@@ -189,7 +189,7 @@ class Fontsampler {
 			ob_start();
 			?>
 			<script> var fontsamplerBaseUrl = '<?php echo $script_url; ?>'; </script>
-			<div class='fontsampler-wrapper'
+			<div class='fontsampler-wrapper on-loading'
 			     data-fonts='<?php echo implode(',', $fonts); ?>'
 				<?php if ($initialFont) : ?>
 				 data-initial-font='<?php echo $initialFont; ?>'
