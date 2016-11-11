@@ -3,7 +3,7 @@
 Plugin Name: Fontsampler
 Plugin URI:  https://github.com/kontur/fontsampler-wordpress-plugin
 Description: Create editable webfont previews via shortcodes
-Version:     0.0.4
+Version:     0.0.5
 Author:      Johannes Neumeier
 Author URI:  http://johannesneumeier.com
 Copyright:   Copyright 2016 Johannes Neumeier
@@ -83,6 +83,8 @@ class Fontsampler {
 		}
 
 
+		// TODO combined default_features and boolean options as array of objects
+		// with "isBoolean" attribute
 		$this->boolean_options = array(
 			'size',
 			'letterspacing',
@@ -102,8 +104,9 @@ class Fontsampler {
 			'multiline',
 			'opentype',
 		);
-		$this->font_formats = array( 'woff2', 'woff', 'eot', 'ttf', 'svg' );
-		$this->font_formats_legacy = array( 'svg', 'eot', 'ttf' );
+		// note: font_formats order matters: most preferred to least preferred
+		$this->font_formats = array( 'woff2', 'woff', 'eot', 'ttf' );
+		$this->font_formats_legacy = array( 'eot', 'ttf' );
 
 		$this->settings_defaults = array(
 			'font_size_label'		    => 'Size',
@@ -161,7 +164,7 @@ class Fontsampler {
 		// do nothing if missing id
 		if ( 0 != $attributes['id'] ) {
 			$set   = $this->get_set( intval( $attributes['id'] ) );
-			$fonts = $this->get_fontset_for_set( intval( $attributes['id'] ) );
+			$fonts = $this->get_best_file_from_fonts( $this->get_fontset_for_set( intval( $attributes['id'] ) ) );
 
 			if ( false == $set || false == $fonts ) {
 				if ( current_user_can( 'edit_posts' ) || current_user_can( 'edit_pages' ) ) {
@@ -178,19 +181,7 @@ class Fontsampler {
 
 			$script_url = preg_replace("/^http\:\/\/[^\/]*/", "", plugin_dir_url( __FILE__ ) );
 
-			$fontsFiltered = [];
-			foreach ($fonts as $font) {
-				$formats = $this->font_formats;
-				$best = false;
-				while ( $best === false && sizeof( $formats ) > 0 ) {
-					$check = array_shift($formats);
-					if ( isset( $font[ $check ] ) ) {
-						$best = $font[ $check ];
-					}
-				}
-				$fontsFiltered[ $font['id'] ] = $best;
-			}
-			$initialFont = $fontsFiltered[$set['initial_font']] ? $fontsFiltered[$set['initial_font']] : false;
+			$initialFont = isset( $fonts[ $set[ 'initial_font' ] ] ) ? $fonts[$set['initial_font']] : false;
 
 			$settings = $this->get_settings();
 
@@ -199,7 +190,7 @@ class Fontsampler {
 			?>
 			<script> var fontsamplerBaseUrl = '<?php echo $script_url; ?>'; </script>
 			<div class='fontsampler-wrapper'
-			     data-fonts='<?php echo implode(',', $fontsFiltered); ?>'
+			     data-fonts='<?php echo implode(',', $fonts); ?>'
 				<?php if ($initialFont) : ?>
 				 data-initial-font='<?php echo $initialFont; ?>'
 				 <?php endif; ?>
@@ -262,7 +253,6 @@ class Fontsampler {
 		$existing_mimes['woff']  = 'application/font-woff';
 		$existing_mimes['woff2'] = 'application/font-woff2';
 		$existing_mimes['eot']   = 'application/eot';
-		$existing_mimes['svg']   = 'application/svg';
 		$existing_mimes['ttf']   = 'application/ttf';
 
 		return $existing_mimes;
@@ -458,7 +448,6 @@ class Fontsampler {
 			  `woff` int( 11 ) unsigned DEFAULT NULL,
 			  `woff2` int( 11 ) unsigned DEFAULT NULL,
 			  `eot` int( 11 ) unsigned DEFAULT NULL,
-			  `svg` int( 11 ) unsigned DEFAULT NULL,
 			  `ttf` int( 11 ) unsigned DEFAULT NULL,
 			  PRIMARY KEY ( `id` )
 			) DEFAULT CHARSET=utf8";
@@ -593,6 +582,7 @@ class Fontsampler {
 				'ALTER TABLE ' . $this->table_sets . ' DROP COLUMN `ot_subs`',
 				'ALTER TABLE ' . $this->table_sets . " ADD `opentype` tinyint( 1 ) unsigned NOT NULL DEFAULT '0'",
 				'ALTER TABLE ' . $this->table_settings . " ADD `opentype` tinyint(1) unsigned NOT NULL DEFAULT '0'",
+				'ALTER TABLE ' . $this->table_fonts . ' DROP COLUMN `svg`',
 			)
 		);
 
@@ -795,11 +785,30 @@ class Fontsampler {
 		$sql .= ' FROM ' . $this->table_fonts . ' f
 		        LEFT JOIN ' . $this->table_join . ' j
 		        ON j.font_id = f.id
-				WHERE j.set_id = ' . intval( $set_id ) . '
+				WHERE j.set_id = ' . intval( $set_id ) . ' AND f.id IS NOT NULL
 				ORDER BY j.`order` ASC';
 		$result = $this->db->get_results( $sql, ARRAY_A );
 
 		return 0 == $this->db->num_rows ? false : $result;
+	}
+
+
+	function get_best_file_from_fonts( $fonts ) {
+		$fontsFiltered = [];
+		foreach ($fonts as $font) {
+			$formats = $this->font_formats;
+			$best = false;
+			while ( $best === false && sizeof( $formats ) > 0 ) {
+				$check = array_shift($formats);
+				if ( isset( $font[ $check ] ) && ! empty( $font[ $check ] ) ) {
+					$best = $font[ $check ];
+				}
+			}
+			if ( false !== $best ) {
+				$fontsFiltered[ $font['id'] ] = $best;
+			}
+		}
+		return sizeof($fontsFiltered) > 0 ? $fontsFiltered : false;
 	}
 
 
@@ -913,7 +922,6 @@ class Fontsampler {
 				'woff2' => NULL,
 				'woff'  => NULL,
 				'eot'   => NULL,
-				'svg'   => NULL,
 				'ttf'   => NULL,
 			);
 

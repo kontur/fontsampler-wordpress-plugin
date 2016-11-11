@@ -94,6 +94,23 @@ define(['jquery', 'rangeslider', 'selectric'], function($) {
             $(this).siblings("button").removeClass("fontsampler-multiselect-selected");
             $(this).addClass("fontsampler-multiselect-selected");
         });
+
+        // prevent line breaks on single line instances
+        $wrapper.find(typeTesterContentSelector + '.fontsampler-is-singleline')
+            .on( "keypress keyup change paste", function( event ) {
+
+                if (event.type === "keypress") {
+                    // for keypress events immediately block pressing enter for line break
+                    if (event.keyCode === 13) {
+                        return false;
+                    }
+                } else {
+                    // allow other events, filter any html with $.text() and replace linebreaks
+                    // TODO fix paste event from setting the caret to the front of the non-input non-textarea
+                    var text = $(this).text().replace('/\n/gi', '');
+                    $(this).html(text);
+                }
+            } );
     }
 
     return main;

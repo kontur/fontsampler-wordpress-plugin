@@ -120,19 +120,6 @@
 					case 'fontsampler':
 						// NOTE echo with " and class with ' to output json as ""-enclosed strings
 
-						// find the initial font, if one is set, and encode it as json for the fontsampler to start
-						// up with
-						$initial_font = NULL;
-						if ( isset( $set['initial_font'] ) && ! empty( $set['initial_font'] ) ) {
-							$initial_font = array_filter( $fonts, function ( $font ) use ( $set ) {
-								return ( isset( $font['id'] ) && $font['id'] == $set['initial_font'] );
-							} );
-							$initial_font = array_shift($initial_font);
-						} else {
-							$initial_font = $fonts[0];
-						}
-						$initial_font_json = $this->fontfiles_json( $initial_font );
-
 						if ( isset( $set['multiline'] ) && $set['multiline'] == 1) {
 							preg_replace( '/\n/', ' ', $set['initial'] );
 							$initial_text = $set['initial'];
@@ -142,20 +129,13 @@
 
 						?>
 
-						<div class="current-font type-tester__content" contenteditable="true"
-						<?php if ( ! isset( $set['multiline'] ) || ( isset( $set['multiline'] )
-							&& $set['multiline'] != "1" ) ) :
-							echo 'fontsampler-is-singleline'; endif; ?>"><?php echo $initial_text; ?></div>
+						<div class="current-font type-tester__content<?php
+							if ( ! isset( $set['multiline'] ) ||
+							     ( isset( $set['multiline'] ) && $set['multiline'] != "1" ) ) :
+								echo ' fontsampler-is-singleline';
+							endif; ?>" contenteditable="true"
+						><?php echo $initial_text; ?></div>
 
-						<!--
-						<div class="fontsampler fontsampler-id-<?php echo $set['id']; ?>
-							<?php if ( ! isset( $set['multiline'] ) || ( isset( $set['multiline'] ) && $set['multiline'] != "1" ) ) :
-							 echo 'fontsampler-is-singleline'; endif; ?>"
-						     data-options='<?php echo json_encode($replace); ?>'
-							 data-font-files='<?php echo $initial_font_json; ?>'
-							 dir="<?php echo ( ! isset( $set['is_ltr'] ) || $set['is_ltr'] == '1' ) ? 'ltr' : 'rtl'; ?>"
-						><?php echo $initial_text; ?>
-						</div>-->
 						<?php
 						break;
 
