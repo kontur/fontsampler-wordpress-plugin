@@ -34,21 +34,10 @@
 					case 'size':
 						if ( $set['size'] ) : ?>
 							<label class="fontsampler-slider">
-							<span class="slider-label"><?php echo $replace['font_size_label']; ?></span>
-							<span class="slider-value type-tester__label" data-target-property="font-size"></span>
-							<div class="type-tester__slider" data-target-property="font-size"></div>
-							</label>
-							<!--
-							<label class="fontsampler-slider">
 								<span class="slider-label"><?php echo $replace['font_size_label']; ?></span>
-						<span class="slider-value"><?php echo $replace['font_size_initial']; ?>
-							&nbsp;<?php echo $replace['font_size_unit']; ?></span>
-								<input type="range" min="<?php echo $replace['font_size_min']; ?>"
-								       max="<?php echo $replace['font_size_max']; ?>"
-								       value="<?php echo $replace['font_size_initial']; ?>"
-								       data-unit="<?php echo $replace['font_size_unit']; ?>" name="font-size">
+								<span class="slider-value type-tester__label" data-target-property="font-size"></span>
+								<div class="type-tester__slider" data-target-property="font-size"></div>
 							</label>
-							-->
 						<?php endif;
 						break;
 
@@ -59,18 +48,6 @@
 								<span class="slider-value type-tester__label" data-target-property="letter-spacing"></span>
 								<div class="type-tester__slider" data-target-property="letter-spacing"></div>
 							</label>
-							<!--
-							<label class="fontsampler-slider">
-								<span class="slider-label"><?php /*echo $replace['letter_spacing_label']; */?></span>
-							<span class="slider-value"><?php /*echo $replace['letter_spacing_initial']; */?>
-								&nbsp;<?php /*echo $replace['letter_spacing_unit']; */?></span>
-								<input type="range" min="<?php /*echo $replace['letter_spacing_min']; */?>"
-								       max="<?php /*echo $replace['letter_spacing_max']; */?>"
-								       value="<?php /*echo $replace['letter_spacing_initial']; */?>"
-								       data-unit="<?php /*echo $replace['letter_spacing_unit']; */?>"
-								       name="letter-spacing">
-							</label>
--->
 						<?php endif;
 						break;
 
@@ -81,32 +58,11 @@
 								<span class="slider-value type-tester__label" data-target-property="line-height"></span>
 								<div class="type-tester__slider" data-target-property="line-height"></div>
 							</label>
-							<!--
-							<label class="fontsampler-slider">
-								<span class="slider-label"><?php /*echo $replace['line_height_label']; */?></span>
-							<span class="slider-value"><?php /*echo $replace['line_height_initial']; */?>
-								&nbsp;<?php /*echo $replace['line_height_unit']; */?></span>
-								<input type="range" min="<?php /*echo $replace['line_height_min']; */?>"
-								       max="<?php /*echo $replace['line_height_max']; */?>"
-								       value="<?php /*echo $replace['line_height_initial']; */?>"
-								       data-unit="<?php /*echo $replace['line_height_unit']; */?>" name="line-height">
-							</label>
-							-->
 						<?php endif;
 						break;
+
 					case 'fontpicker':
 						if ( sizeof( $fonts ) > 1 ) : ?>
-							<!--
-							<select name="font-selector">
-								<?php /*foreach ( $fonts as $font ) : */?>
-									<option data-font-files='<?php /*echo $f->fontfiles_json( $font ); */?>'
-									<?php /*if ( isset( $set['initial_font'] ) && $set['initial_font'] == $font['id'] ) :
-										echo 'selected="selected"'; endif; */?>>
-										<?php /*echo $font['name']; */?></option>
-								<?php /*endforeach; */?>
-							</select>
-							-->
-
 							<div class="font-lister"></div>
 						<?php endif;
 						break;
@@ -150,12 +106,13 @@
 							</div>
 						<?php endif;
 						if ( $set['opentype']) : ?>
-							<div class="fontsampler-multiselect one-item fontsampler-opentype">
-
+							<div class="fontsampler-multiselect one-item fontsampler-opentype feature-lister"
+							     data-name="opentype">
 								<button class="fontsampler-opentype-toggle">O</button>
-
-								<div class="feature-lister fontsampler-opentype-features"></div>
-
+								<div class="fontsampler-opentype-features">
+									<fieldset class="feature-lister__features--default"></fieldset>
+									<fieldset class="feature-lister__features--optional"></fieldset>
+								</div>
 							</div>
 						<?php endif;
 						break;

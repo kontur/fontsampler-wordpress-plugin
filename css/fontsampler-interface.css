@@ -386,7 +386,10 @@
 .fontsampler-wrapper .fontsampler-interface .fontsampler-multiselect .fontsampler-multiselect-selected {
   opacity: 1;
 }
-.fontsampler-wrapper .fontsampler-interface .fontsampler-opentype-features {
+.fontsampler-wrapper .fontsampler-interface .fontsampler-opentype.feature-lister__features-empty {
+  display: none;
+}
+.fontsampler-wrapper .fontsampler-interface .fontsampler-opentype .fontsampler-opentype-features {
   display: none;
   position: absolute;
   right: 0;
@@ -399,21 +402,21 @@
   width: 100%;
   z-index: 10;
 }
-.fontsampler-wrapper .fontsampler-interface .fontsampler-opentype-features.shown {
+.fontsampler-wrapper .fontsampler-interface .fontsampler-opentype .fontsampler-opentype-features.shown {
   display: block;
 }
-.fontsampler-wrapper .fontsampler-interface .fontsampler-opentype-features button.fontsampler-toggle {
+.fontsampler-wrapper .fontsampler-interface .fontsampler-opentype .fontsampler-opentype-features button.fontsampler-toggle {
   height: 20px;
   width: 20px;
 }
-.fontsampler-wrapper .fontsampler-interface .fontsampler-opentype-features fieldset {
+.fontsampler-wrapper .fontsampler-interface .fontsampler-opentype .fontsampler-opentype-features fieldset {
   display: block;
   margin: 0;
   border: 0;
   height: auto;
   padding: 10px;
 }
-.fontsampler-wrapper .fontsampler-interface .fontsampler-opentype-features fieldset label {
+.fontsampler-wrapper .fontsampler-interface .fontsampler-opentype .fontsampler-opentype-features fieldset label {
   float: left;
   width: 50%;
 }

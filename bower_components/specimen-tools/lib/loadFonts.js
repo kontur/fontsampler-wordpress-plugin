@@ -32,7 +32,6 @@ define([
             // if there was an error loading a font (above) this will never run
         }
         if(this.countLoaded === this.countAll) {
-            console.log("allFontsLoaded");
             this.pubsub.publish('allFontsLoaded', this.countAll);
         }
     }

@@ -104,25 +104,27 @@ define([
               , i, l, j, m, script, scriptTag, lang
               ;
 
-            for(i=0,l=scripts.length;i<l;i++) {
-                script = scripts[i].script;
-                scriptTag = scripts[i].tag;
-                if(script.defaultLangSys) {
-                    lang = 'Default';
-                    FontsData._getFeatures.call(features
-                        , table.features
-                        , [scriptTag, lang].join(':')
-                        , script.defaultLangSys.featureIndexes
-                    );
-                }
-                if(script.langSysRecords) {
-                    for(j=0,m=script.langSysRecords.length;j<m;j++){
-                        lang = script.langSysRecords[j].tag;
+            if (scripts) {
+                for(i=0,l=scripts.length;i<l;i++) {
+                    script = scripts[i].script;
+                    scriptTag = scripts[i].tag;
+                    if(script.defaultLangSys) {
+                        lang = 'Default';
                         FontsData._getFeatures.call(features
-                            , table.features
-                            , [scriptTag, lang].join(':')
-                            , script.langSysRecords[j].langSys.featureIndexes
+                          , table.features
+                          , [scriptTag, lang].join(':')
+                          , script.defaultLangSys.featureIndexes
                         );
+                    }
+                    if(script.langSysRecords) {
+                        for(j = 0, m = script.langSysRecords.length; j < m; j++) {
+                            lang = script.langSysRecords[j].tag;
+                            FontsData._getFeatures.call(features
+                              , table.features
+                              , [scriptTag, lang].join(':')
+                              , script.langSysRecords[j].langSys.featureIndexes
+                            );
+                        }
                     }
                 }
             }

@@ -8,30 +8,11 @@ define([
   "use strict";
 
   /**
-   * TypeTester provides interfaces that help to test the current webfont.
+   * FeatureLister provides interfaces that help to test the current webfont.
    * See the CurrentWebFont widget.
    *
    * The interfaces provided are:
    *
-   * - Dynamic slider inputs for controlling linear css attributes of the
-   *      TypeTester
-   *      Use the CSS-class configured at `sliderControlsClass` on a host
-   *      element for the range input element.
-   *      Provide a data-target-property on the input to specify the css
-   *      attribute it should affect; Further, the following data attributes
-   *      can be set on the container for customizing the slider, each including
-   *      the css attribute the slider controls, e.g. to customize a slider
-   *      for font-size:
-   *              `data-min-font-size`
-   *              `data-max-font-size`
-   *              `data-value-font-size`
-   *              `data-unit-font-size`
-   *              `data-step-font-size`
-   * - Dynamic element displaying the current font size:
-   *      Use the CSS-class configured at `tester__label` as well as a
-   *      data-target-property with the value of the css value this label
-   *      corresponds to. The `element.textContent` of elements matching this
-   *      class will be set to the current value of the TypeTester widget.
    * - Switches to deactivate OpenType-Features that are activated by default.
    *      Use the CSS-class configured at `defaultFeaturesControlsClass`
    *      to have a de-/activating button appended to the host element
@@ -42,15 +23,6 @@ define([
    *      to have a de-/activating button appended to the host element
    *      for each OpenType Feature that is optional.
    *      Initial button state is inactive.
-   * - An element that receives the settings made by the elements described above.
-   *      Use the CSS-class configured at `contentContainerClass` to have
-   *      the element.style set to the fontSize and fontFeatureSettings
-   *      made by the control elements of this widget.
-   *
-   *      To use the current font on this element, see the CurrentWebFont
-   *      widget.
-   *      To enable the users typing text themselves use either the DOM
-   *      attribute `contenteditable=True` or use a `<textarea>` element.
    *
    */
   function FeatureLister(container, pubSub, fontsData, options) {
@@ -83,23 +55,35 @@ define([
   FeatureLister.defaultOptions = {
       optionalFeaturesControlsClass: 'feature-lister__features--optional'
     , defaultFeaturesControlsClass: 'feature-lister__features--default'
+    , emptyFeaturesClass: 'feature-lister__features-empty'
     , optionalFeatureButtonClasses: ''
     , defaultFeatureButtonClasses: ''
     , activateFeatureControls: null
     , featureButtonActiveClass: 'active'
   };
 
+  /**
+   * Setup the container references for OT features of @param type
+   * @param type: 'optional' or 'default'
+   */
   _p._initFeaturesControl = function(type) {
+    var containers = type === 'default' ?
+          this._getByClass(this._options.defaultFeaturesControlsClass) :
+          this._getByClass(this._options.optionalFeaturesControlsClass)
+      , element
+      , i, l
+      ;
 
-    var element = this._container.ownerDocument.createElement('fieldset');
-    element.setAttribute('data-feature-type', type);
-    this._container.append(element);
-
-    if (!(type in this._controls.features.containers)) {
-      this._controls.features.containers[type] = [];
+    // for any containers for this type of feature present in the widget
+    // add it to the control elements for later reference
+    for (i=0,l=containers.length;i<l;i++) {
+      element = containers[i];
+      element.setAttribute('data-feature-type', type);
+      if (!(type in this._controls.features.containers)) {
+        this._controls.features.containers[type] = [];
+      }
+      this._controls.features.containers[type].push(element);
     }
-
-    this._controls.features.containers[type].push(element);
   };
 
 
@@ -232,7 +216,18 @@ define([
       , uiElements, uiElementsToActivate = []
       , featureContainers
       , features, order
+      , containerClasses = this._container.className.split(' ')
+      , emptyClassIndex = containerClasses .indexOf(this._options.emptyFeaturesClass)
       ;
+
+    if ( availableFeatureTags.length === 0 ) {
+      this._container.className += " " + this._options.emptyFeaturesClass;
+    } else {
+      if (emptyClassIndex > -1)
+        containerClasses.splice(emptyClassIndex);
+
+      this._container.className = containerClasses.join(' ');
+    }
 
     // delete old tag => buttons registry
     featureData.buttons = Object.create(null);

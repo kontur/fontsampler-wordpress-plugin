@@ -37,7 +37,8 @@ define([
         var wrappers = window.document.getElementsByClassName("fontsampler-wrapper");
 
         for (var i = 0; i < wrappers.length; i++) {
-            var fonts = wrappers[i].dataset.fonts.split(",");
+            var wrapper = wrappers[i],
+                fonts = wrappers[i].dataset.fonts.split(",");
 
             // This PubSub instance is the centrally connecting element between
             // all modules. The order in which modules subscribe to PubSub
@@ -60,13 +61,21 @@ define([
                 , ['type-tester', TypeTester, fontsData]
             ];
 
-            initDocumentWidgets(wrappers[i], factories, pubsub);
+            initDocumentWidgets(wrapper, factories, pubsub);
 
+            // create an object to bind to the callback that has both this
+            // instance's pubsub as well as distinct wrapper
+            // the callback which sets up jquery based UI will then receive
+            // the wrapper to bind events to that wrapper only
+            var instance = {
+                pubsub: pubsub,
+                wrapper: wrapper
+            };
 
             pubsub.subscribe('allFontsLoaded', function () {
-                this.publish('activateFont', 0);
-                callback();
-            }.bind(pubsub));
+                this.pubsub.publish('activateFont', 0);
+                callback(this.wrapper);
+            }.bind(instance));
 
             loadFonts.fromUrl(pubsub, fonts);
         }

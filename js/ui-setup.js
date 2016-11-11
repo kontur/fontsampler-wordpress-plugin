@@ -33,18 +33,19 @@ define(['jquery', 'rangeslider', 'selectric'], function($) {
      * setup function for all those UI components and interactions
      * that require jquery
      */
-    function main() {
-        var typeTesterSelector = ".type-tester",
+    function main(wrapper) {
+        var $wrapper = $(wrapper),
+            typeTesterSelector = ".type-tester",
             typeTesterContentSelector = ".type-tester__content";
 
-        $(".fontsampler-interface select[name='sample-text']").on('change', function () {
+        $wrapper.find(".fontsampler-interface select[name='sample-text']").on('change', function () {
             var $fs = $(this).closest('.fontsampler-interface').find(typeTesterContentSelector),
                 val = $(this).val();
 
             $fs.html(val);
         });
 
-        $('.fontsampler-interface input[type="range"]').rangeslider({
+        $wrapper.find('.fontsampler-interface input[type="range"]').rangeslider({
             // Feature detection the default is `true`.
             // Set this to `false` if you want to use
             // the polyfill also in Browsers which support
@@ -59,7 +60,7 @@ define(['jquery', 'rangeslider', 'selectric'], function($) {
         });
 
         // transform select dropdowns
-        $(".fontsampler-interface select").not("[size]").each(function () {
+        $wrapper.find(".fontsampler-interface select").not("[size]").each(function () {
             $(this).selectric({
                 onChange: function (element) {
                     debounce(dispatchVanillaEvent(element, 'change'));
@@ -68,7 +69,7 @@ define(['jquery', 'rangeslider', 'selectric'], function($) {
         });
 
 
-        $(".fontsampler-multiselect").on("click", "button", function () {
+        $wrapper.find(".fontsampler-interface .fontsampler-multiselect").on("click", "button", function () {
             var $fs = $(this).closest('.fontsampler-interface').find(typeTesterContentSelector),
                 val = $(this).data("value");
 
@@ -84,34 +85,14 @@ define(['jquery', 'rangeslider', 'selectric'], function($) {
                         $fs.addClass("invert");
                     }
                     break;
+
+                case "opentype":
+                    $(this).siblings(".fontsampler-opentype-features").toggleClass("shown");
+                    break;
             }
 
             $(this).siblings("button").removeClass("fontsampler-multiselect-selected");
             $(this).addClass("fontsampler-multiselect-selected");
-        });
-
-
-        $(".fontsampler-toggle").on("click", function () {
-            var $this = $(this),
-                isOn = $this.hasClass("fontsampler-toggle-on"),
-                feature = $this.data("feature"),
-                $fs = $(this).closest('.fontsampler-interface').find(typeTesterContentSelector);
-
-            $this.toggleClass("fontsampler-toggle-on");
-
-            if (isOn) {
-                $fs.fontSampler("disableOTFeature", feature);
-            } else {
-                $fs.fontSampler("enableOTFeature", feature);
-            }
-        });
-
-
-        $(".fontsampler-opentype-toggle").on("click", function () {
-            $(this).siblings(".fontsampler-opentype-features").toggleClass("shown");
-        });
-        $(".fontsampler-opentype-features").on("click", "button", function () {
-            $(this).closest(".fontsampler-opentype-features").removeClass("shown");
         });
     }
 
