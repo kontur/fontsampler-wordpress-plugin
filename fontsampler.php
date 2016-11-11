@@ -105,7 +105,8 @@ class Fontsampler {
 			'opentype',
 		);
 		// note: font_formats order matters: most preferred to least preferred
-		$this->font_formats = array( 'woff2', 'woff', 'eot', 'ttf' );
+		// note: so far no feature detection and no fallbacks, so woff2 last until fixed
+		$this->font_formats = array( 'woff', 'ttf', 'eot', 'woff2' );
 		$this->font_formats_legacy = array( 'eot', 'ttf' );
 
 		$this->settings_defaults = array(
