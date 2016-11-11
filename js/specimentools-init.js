@@ -38,7 +38,9 @@ define([
 
         for (var i = 0; i < wrappers.length; i++) {
             var wrapper = wrappers[i],
-                fonts = wrappers[i].dataset.fonts.split(",");
+                fonts = wrapper.dataset.fonts.split(","),
+                initialFont = wrapper.dataset.initialFont,
+                initialFontIndex = fonts.indexOf(initialFont);
 
             // This PubSub instance is the centrally connecting element between
             // all modules. The order in which modules subscribe to PubSub
@@ -69,11 +71,12 @@ define([
             // the wrapper to bind events to that wrapper only
             var instance = {
                 pubsub: pubsub,
-                wrapper: wrapper
+                wrapper: wrapper,
+                initialFont: initialFontIndex > -1 ? initialFontIndex : 0,
             };
 
             pubsub.subscribe('allFontsLoaded', function () {
-                this.pubsub.publish('activateFont', 0);
+                this.pubsub.publish('activateFont', this.initialFont);
                 callback(this.wrapper);
             }.bind(instance));
 

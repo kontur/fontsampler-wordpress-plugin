@@ -102,7 +102,7 @@ class Fontsampler {
 			'multiline',
 			'opentype',
 		);
-		$this->font_formats = array( 'woff2', 'woff', 'eot', 'svg', 'ttf' );
+		$this->font_formats = array( 'woff2', 'woff', 'eot', 'ttf', 'svg' );
 		$this->font_formats_legacy = array( 'svg', 'eot', 'ttf' );
 
 		$this->settings_defaults = array(
@@ -177,9 +177,20 @@ class Fontsampler {
 			$replace = array_merge( $set, $this->settings_defaults, $defaults );
 
 			$script_url = preg_replace("/^http\:\/\/[^\/]*/", "", plugin_dir_url( __FILE__ ) );
-			$fonts = array_map(function($item) {
-				return $item['woff'];
-			}, $fonts);
+
+			$fontsFiltered = [];
+			foreach ($fonts as $font) {
+				$formats = $this->font_formats;
+				$best = false;
+				while ( $best === false && sizeof( $formats ) > 0 ) {
+					$check = array_shift($formats);
+					if ( isset( $font[ $check ] ) ) {
+						$best = $font[ $check ];
+					}
+				}
+				$fontsFiltered[ $font['id'] ] = $best;
+			}
+			$initialFont = $fontsFiltered[$set['initial_font']] ? $fontsFiltered[$set['initial_font']] : false;
 
 			$settings = $this->get_settings();
 
@@ -187,8 +198,14 @@ class Fontsampler {
 			ob_start();
 			?>
 			<script> var fontsamplerBaseUrl = '<?php echo $script_url; ?>'; </script>
+			<div class='fontsampler-wrapper'
+			     data-fonts='<?php echo implode(',', $fontsFiltered); ?>'
+				<?php if ($initialFont) : ?>
+				 data-initial-font='<?php echo $initialFont; ?>'
+				 <?php endif; ?>
+			>
 			<?php
-			echo "<div class='fontsampler-wrapper' data-fonts='" . implode(',', $fonts) . "'>";
+
 
 			// include, aka echo, template with replaced values from $replace above
 			include( 'includes/interface.php' );
