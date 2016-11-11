@@ -11,7 +11,7 @@ In the place of the shortcode the plugin will render the appropriate interface f
 font.
 
 ## Current status
-The plugin is currently **under development**. Feel free to get involved by opening issues or feature requests here, or join 
+The plugin is currently **nearing beta release**. Feel free to get involved by opening issues or feature requests here, or join 
 [the discussion group](https://groups.google.com/forum/#!forum/fontsampler-wordpress-plugin-development) to hear more
 about the progress and development schedule.
  
@@ -20,14 +20,13 @@ Once released, the plugin will be available for free to all Wordpress users.
 Eventually, the plugin will be available via the Wordpress plugin directory for simple one-click install.
 
 ## Supporting development
-You can support the development of the plugin via funding the indiegogo campaign **(coming soon)** or, later, donating to
+You can support the development of the plugin via funding the [indiegogo campaign](https://www.indiegogo.com/projects/wordpress-plugin-for-letting-users-test-typefaces#/) or, later, donating to
 the project to show your appreciation. Furthermore, beta testers are very welcome to try out first builds and give feedback.
 
 **Pull requests are more than welcome** as well, but let me know in the issues list what you are working on.
 
 ### Planned features not implemented yet
-* Customizing the interface layout and styling
-* Better Opentype feature support
+See the [issues](https://github.com/kontur/fontsampler-wordpress-plugin/issues) for the latest up-to-date information:
 
 ### Installing preview version
 **IMPORTANT DISCLAIMER: This is pre-release quality and might be instable.** 
