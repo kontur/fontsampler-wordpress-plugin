@@ -9,7 +9,9 @@
 		$url = '?page=fontsampler&amp;subpage=' . $subpage . '&amp;offset=';
 		$url .= $page['first'] . '&amp;num_rows=' . $pagination->get_items_per_page();
 
-		$label = $pagination->get_pagenumbers_as_labels() ? $page['page'] : $page['first_label'] . '&ndash;' . $page['last_label'];
+		$label = $pagination->get_pagenumbers_as_labels()
+			? $page['page']
+			: $page['first_label'] . '&ndash;' . $page['last_label'];
         ?>
 		href="<?php echo $url; ?>"><?php echo $label; ?></a>
 	<?php endforeach; ?>

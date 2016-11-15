@@ -1,4 +1,3 @@
-<?php global $f; ?>
 <h1>Font samplers</h1>
 
 <?php if ( empty( $sets ) ) : ?>
@@ -48,7 +47,7 @@
 						<?php foreach ( $set['fonts'] as $font ) : ?>
 							<li>
 								<div class="fontsampler-preview"
-								     data-font-files='<?php echo $f->fontfiles_JSON( $font ); ?>'><?php echo $font['name']; ?></div>
+								     data-font-files='<?php echo $this->helpers->fontfiles_JSON( $font ); ?>'><?php echo $font['name']; ?></div>
 							</li>
 						<?php endforeach; ?>
 					</ul>
@@ -76,4 +75,4 @@
 
 <?php endif; ?>
 
-<a class="button button-primary" href="?page=fontsampler&subpage=set_create">Create a new font sampler</a>
+<a class="button button-primary" href="?page=fontsampler&amp;subpage=set_create">Create a new font sampler</a>
