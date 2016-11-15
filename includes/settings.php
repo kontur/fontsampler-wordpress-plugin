@@ -162,6 +162,14 @@
 	include( 'fontsampler-options.php' );
 	?>
 
+
+
+	<label>
+		<span class="setting-description styling-description">Sample texts
+		<small>(use simple line breaks for each option to be displayed in the dropdown)</small></span>
+		<textarea name="sample_texts" cols="60" rows="10"><?php echo $defaults['sample_texts']; ?></textarea>
+	</label>
+
 	<div class="fontsampler-admin-settings-styling">
 		<h2>Styling options</h2>
 		<small>Adjust the color scheme of all fontsamplers you embed.</small>
@@ -258,12 +266,6 @@
 		</label>
 		-->
 	</div>
-
-	<label>
-		<span class="setting-description styling-description">Sample texts
-		<small>(use simple line breaks for each option to be displayed in the dropdown)</small></span>
-		<textarea name="sample_texts" cols="60" rows="10"><?php echo $defaults['sample_texts']; ?></textarea>
-	</label>
 
 	<h2>Admin interface customizations</h2>
 	<label>
