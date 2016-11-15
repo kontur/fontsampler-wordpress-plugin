@@ -4,8 +4,8 @@ define([
     , 'specimenTools/services/PubSub'
     , 'specimenTools/services/FontsData'
     , 'specimenTools/services/WebfontProvider'
-    , 'specimenTools/widgets/GlyphTables'
-    , 'specimenTools/widgets/FamilyChooser'
+    // , 'specimenTools/widgets/GlyphTables'
+    // , 'specimenTools/widgets/FamilyChooser'
     , 'specimenTools/widgets/GenericFontData'
     , 'specimenTools/widgets/CurrentWebFont'
     , 'specimenTools/widgets/TypeTester'
@@ -17,8 +17,8 @@ define([
     , PubSub
     , FontsData
     , WebFontProvider
-    , GlyphTables
-    , FamilyChooser
+    // , GlyphTables
+    // , FamilyChooser
     , GenericFontData
     , CurrentWebFont
     , TypeTester
@@ -57,7 +57,7 @@ define([
                 // All Constructors are given [dom-container, pubsub] as the first two arguments.
                   ['font-lister', FontLister, fontsData]
                 , ['feature-lister', FeatureLister, fontsData]
-                , ['glyph-table', GlyphTables]
+                // , ['glyph-table', GlyphTables]
                 , ['font-data', GenericFontData, fontsData]
                 , ['current-font', CurrentWebFont, webFontProvider]
                 , ['type-tester', TypeTester, fontsData]

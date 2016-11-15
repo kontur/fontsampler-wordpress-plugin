@@ -11,11 +11,11 @@ define([
      *
      * @param i: index of the font loaded
      * @param fontFileName
-     * @param err: null or string with error message
+     * @param err: null, error-object or string with error message
      * @param fontArraybuffer
      */
     function onLoadFont(i, fontFileName, err, fontArraybuffer) {
-        var error = !(err === null);
+        var error = err;
         /* jshint validthis: true */
         try {
             var font = opentype.parse(fontArraybuffer);
@@ -23,7 +23,7 @@ define([
             error = e;
         }
 
-        if (error !== false) {
+        if (error) {
             console.warn('Can\'t load font', fontFileName, ' with error:', error);
             this.countAll--;
         } else {

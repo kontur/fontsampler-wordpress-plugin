@@ -22,6 +22,9 @@ define([
           , 700: 'Bold'
           , 800: 'ExtraBold'
           , 900: 'Black'
+          // bad values (found first in WorkSans)
+          , 260: 'Thin'
+          , 280: 'ExtraLight'
         };
 
     function FamilyChooser(container, pubSub, fontsData, options) {
@@ -66,49 +69,6 @@ define([
 
     _p._onLoadFont = function (fontIndex, fontFileName, font) {
         this._fonts[fontIndex] = font;
-    };
-
-    _p._getFamiliesData = function(countAll) {
-        /*jshint unused:vars*/
-        // organize fonts
-        var families = Object.create(null)
-          , weightDict, styleDict
-          , fontFamily, fontWeight, fontStyle
-          , fontIndex, l
-          ;
-        for(fontIndex=0,l=this._fonts.length;fontIndex<l;fontIndex++) {
-            fontFamily  = this._fontsDataObject.getFamilyName(fontIndex);
-            fontWeight = this._fontsDataObject.getCSSWeight(fontIndex);
-            fontStyle = this._fontsDataObject.getCSSStyle(fontIndex);
-
-            weightDict = families[fontFamily];
-            if(!weightDict)
-                families[fontFamily] = weightDict = Object.create(null);
-
-            styleDict = weightDict[fontWeight];
-            if(!styleDict)
-                weightDict[fontWeight] = styleDict = Object.create(null);
-
-            if(fontStyle in styleDict) {
-                console.warn('A font with weight ' + fontWeight
-                                + ' and style "'+fontStyle+'"'
-                                + ' has already appeared for '
-                                +'"' +fontFamily+'".\nFirst was the file: '
-                                + styleDict[fontStyle] + ' '
-                                + this._fontsDataObject.getFileName(styleDict[fontStyle])
-                                + '.\nNow the file: ' + fontIndex + ' '
-                                +  this._fontsDataObject.getFileName(fontIndex)
-                                + ' is in conflict.\nThis may hint to a bad '
-                                + 'OS/2 table entry.\nSkipping.'
-                                );
-                continue;
-            }
-            // assert(fontStyle not in weightDict)
-            styleDict[fontStyle] = fontIndex;
-        }
-
-        return Object.keys(families).sort()
-              .map(function(key){ return [key, this[key]];}, families);
     };
 
     _p._switchItalic = function(checkbox) {
@@ -252,7 +212,7 @@ define([
 
     _p._onAllFontsLoaded = function(countAll) {
         /*jshint unused:vars*/
-        var familiesData = this._getFamiliesData()
+        var familiesData = this._fontsDataObject.getFamiliesData()
           , familyElements = []
           , doc = this._container.ownerDocument
           , i, l

@@ -214,7 +214,7 @@ class Fontsampler {
 	 * Register all script and styles needed in the front end
 	 */
 	function fontsampler_interface_enqueues() {
-		wp_enqueue_script( 'require-js', plugin_dir_url( __FILE__ ) . 'bower_components/requirejs/require.js' );
+		wp_enqueue_script( 'require-js', plugin_dir_url( __FILE__ ) . 'js/libs/requirejs/require.js' );
 		wp_enqueue_script( 'main-js', plugin_dir_url( __FILE__ ) . 'js/main.js');
 		wp_enqueue_style( 'fontsampler-css', $this->get_css_file() );
 	}
@@ -224,13 +224,13 @@ class Fontsampler {
 	 * Register scripts and styles needed in the admin panel
 	 */
 	function fontsampler_admin_enqueues() {
-		wp_enqueue_script( 'fontsampler-js', plugin_dir_url( __FILE__ ) . 'bower_components/jquery-fontsampler/dist/jquery.fontsampler.js', array( 'jquery' ) );
-		wp_enqueue_script( 'fontsampler-rangeslider-js', plugin_dir_url( __FILE__ ) . 'bower_components/rangeslider.js/dist/rangeslider.js', array( 'jquery' ) );
-		wp_enqueue_script( 'fontsampler-preview-js', plugin_dir_url( __FILE__ ) . 'bower_components/jquery-fontsampler/dist/jquery.fontsampler.js', array( 'jquery' ) );
+		wp_enqueue_script( 'fontsampler-js', plugin_dir_url( __FILE__ ) . 'js/libs/jquery-fontsampler/dist/jquery.fontsampler.js', array( 'jquery' ) );
+		wp_enqueue_script( 'fontsampler-rangeslider-js', plugin_dir_url( __FILE__ ) . 'js/libs/rangeslider.js/dist/rangeslider.js', array( 'jquery' ) );
+		wp_enqueue_script( 'fontsampler-preview-js', plugin_dir_url( __FILE__ ) . 'js/libs/jquery-fontsampler/dist/jquery.fontsampler.js', array( 'jquery' ) );
 		wp_enqueue_script( 'fontsampler-admin-js', plugin_dir_url( __FILE__ ) . 'admin/js/fontsampler-admin.js', array( 'jquery', false, true ) );
 		wp_enqueue_script( 'colour-pick', plugins_url( 'admin/js/fontsampler-admin.js', __FILE__ ), array( 'wp-color-picker' ), false, true );
 		wp_enqueue_script( 'jquery-ui-sortable', array( 'jquery' ) );
-		wp_enqueue_script( 'jquery-form-validator', plugin_dir_url( __FILE__ ) . 'bower_components/jquery-form-validator/form-validator/jquery.form-validator.js', array( 'jquery' ) );
+		wp_enqueue_script( 'jquery-form-validator', plugin_dir_url( __FILE__ ) . 'js/libs/jquery-form-validator/form-validator/jquery.form-validator.js', array( 'jquery' ) );
 		wp_enqueue_style( 'wp-color-picker' );
 		wp_enqueue_style( 'fontsampler_admin_css', plugin_dir_url( __FILE__ ) . '/admin/css/fontsampler-admin.css', false, '1.0.0' );
 	}

@@ -18,6 +18,9 @@ define([
           , 700: 'Bold'
           , 800: 'ExtraBold'
           , 900: 'Black'
+          // bad values (found first in WorkSans)
+          , 260: 'Thin'
+          , 280: 'ExtraLight'
         }
       , weight2cssWeight = {
             250: '100'
@@ -29,6 +32,9 @@ define([
           , 700: '700'
           , 800: '800'
           , 900: '900'
+          // bad values (found first in WorkSans)
+          , 260: '100'
+          , 280: '200'
         }
       ;
 
@@ -37,6 +43,9 @@ define([
         this._pubSub = pubsub;
         this._pubSub.subscribe('loadFont', this._onLoadFont.bind(this));
         this._data = [];
+        Object.defineProperty(this._data, 'globalCache', {
+            value: Object.create(null)
+        });
     }
 
     var _p = FontsData.prototype = Object.create(Parent.prototype);
@@ -55,8 +64,6 @@ define([
         return function(fontIndex) {
             /*jshint validthis:true*/
             var args = [], i, l, data, cached;
-
-
 
             for(i=0,l=arguments.length;i<l;i++)
                 args[i] = arguments[i];
@@ -97,35 +104,32 @@ define([
 
     FontsData.getFeatures = function getFeatures(font) {
         // get all gsub features:
-        if('gsub' in font.tables) {
-            var table = font.tables.gsub
-              , scripts = font.tables.gsub.scripts
-              , features = {/*tag: ["{script:lang}", {script:lang}]*/}
-              , i, l, j, m, script, scriptTag, lang
-              ;
-
-            if (scripts) {
-                for(i=0,l=scripts.length;i<l;i++) {
-                    script = scripts[i].script;
-                    scriptTag = scripts[i].tag;
-                    if(script.defaultLangSys) {
-                        lang = 'Default';
-                        FontsData._getFeatures.call(features
-                          , table.features
-                          , [scriptTag, lang].join(':')
-                          , script.defaultLangSys.featureIndexes
-                        );
-                    }
-                    if(script.langSysRecords) {
-                        for(j = 0, m = script.langSysRecords.length; j < m; j++) {
-                            lang = script.langSysRecords[j].tag;
-                            FontsData._getFeatures.call(features
-                              , table.features
-                              , [scriptTag, lang].join(':')
-                              , script.langSysRecords[j].langSys.featureIndexes
-                            );
-                        }
-                    }
+        var features = {/*tag: ["{script:lang}", {script:lang}]*/}
+          ,  table, scripts, i, l, j, m, script, scriptTag, lang
+          ;
+        if(!('gsub' in font.tables) || !font.tables.gsub.scripts)
+            return features;
+        table = font.tables.gsub;
+        scripts = font.tables.gsub.scripts;
+        for(i=0,l=scripts.length;i<l;i++) {
+            script = scripts[i].script;
+            scriptTag = scripts[i].tag;
+            if(script.defaultLangSys) {
+                lang = 'Default';
+                FontsData._getFeatures.call(features
+                  , table.features
+                  , [scriptTag, lang].join(':')
+                  , script.defaultLangSys.featureIndexes
+                );
+            }
+            if(script.langSysRecords) {
+                for(j = 0, m = script.langSysRecords.length; j < m; j++) {
+                    lang = script.langSysRecords[j].tag;
+                    FontsData._getFeatures.call(features
+                      , table.features
+                      , [scriptTag, lang].join(':')
+                      , script.langSysRecords[j].langSys.featureIndexes
+                    );
                 }
             }
             return features;
@@ -137,7 +141,7 @@ define([
 
     FontsData.sortCoverage = function sortCoverage(a, b) {
         if(a[1] === b[1])
-            // compare the names of the languages, to sort by alphabetical;
+            // compare the names of the languages, to sort alphabetical;
             return a[0].localeCompare(b[0]);
         return b[1] - a[1] ;
     };
@@ -220,6 +224,14 @@ define([
         return FontsData.getLanguageCoverage(this._data[fontIndex].font, this._options.useLaxDetection);
     };
 
+    _p._getLanguageCoverageStrict = function(fontIndex) {
+        return FontsData.getLanguageCoverage(this._data[fontIndex].font, false);
+    };
+
+    _p._getLanguageCoverageLax = function(fontIndex) {
+        return FontsData.getLanguageCoverage(this._data[fontIndex].font, true);
+    };
+
     _p._getSupportedLanguages = function(fontIndex) {
         var coverage = this.getLanguageCoverage(fontIndex)
           , i, l
@@ -269,6 +281,54 @@ define([
         return !!(font.tables.os2.fsSelection & font.fsSelectionValues.ITALIC);
     };
 
+    _p.getFamiliesData = function() {
+        var cacheKey = 'getFamiliesData';
+        if(cacheKey in this._data.globalCache)
+            return this._data.globalCache[cacheKey];
+
+        var families = Object.create(null)
+          , weightDict, styleDict
+          , fontFamily, fontWeight, fontStyle
+          , fontIndex, l
+          , result
+          ;
+        for(fontIndex=0,l=this._data.length;fontIndex<l;fontIndex++) {
+            fontFamily  = this.getFamilyName(fontIndex);
+            fontWeight = this.getCSSWeight(fontIndex);
+            fontStyle = this.getCSSStyle(fontIndex);
+
+            weightDict = families[fontFamily];
+            if(!weightDict)
+                families[fontFamily] = weightDict = Object.create(null);
+
+            styleDict = weightDict[fontWeight];
+            if(!styleDict)
+                weightDict[fontWeight] = styleDict = Object.create(null);
+
+            if(fontStyle in styleDict) {
+                console.warn('A font with weight ' + fontWeight
+                                + ' and style "'+fontStyle+'"'
+                                + ' has already appeared for '
+                                +'"' +fontFamily+'".\nFirst was the file: '
+                                + styleDict[fontStyle] + ' '
+                                + this.getFileName(styleDict[fontStyle])
+                                + '.\nNow the file: ' + fontIndex + ' '
+                                +  this.getFileName(fontIndex)
+                                + ' is in conflict.\nThis may hint to a bad '
+                                + 'OS/2 table entry.\nSkipping.'
+                                );
+                continue;
+            }
+            // assert(fontStyle not in weightDict)
+            styleDict[fontStyle] = fontIndex;
+        }
+
+        result =  Object.keys(families).sort()
+              .map(function(key){ return [key, this[key]];}, families);
+        this._data.globalCache[cacheKey] = result;
+        return result;
+    };
+
     // no need to cache these: No underscore will prevent
     //_installPublicCachedInterface from doing anything.
     _p.getNumberSupportedLanguages = function(fontIndex) {
@@ -299,8 +359,49 @@ define([
         return this.getIsItalic(fontIndex) ? 'italic' : 'normal';
     };
 
+    _p.getStyleName = function(fontIndex) {
+        return this.getWeightName(fontIndex) + (this.getIsItalic(fontIndex) ? ' Italic' : '');
+    };
+
     _p.getPostScriptName = function(fontIndex) {
         return this._aquireFontData(fontIndex).font.names.postScriptName;
+    };
+
+    _p.getGlyphByName = function(fontIndex, name) {
+        var font = this._aquireFontData(fontIndex).font
+          , glyphIndex = font.glyphNames.nameToGlyphIndex(name)
+          , glyph = font.glyphs.get(glyphIndex)
+          ;
+        return glyph;
+    };
+
+    _p.getFontValue = function(fontIndex, name /* like: "xHeight" */) {
+        var font = this._aquireFontData(fontIndex).font;
+        switch(name){
+            case('xHeight'):
+                return font.tables.os2.sxHeight;
+            default:
+                console.warn('getFontValue: don\'t know how to get "'+ name +'".');
+        }
+    };
+
+    function familiesDataReducer(all, item) {
+        var i, l, weightDict, weights, styles, result = [];
+        weightDict = item[1];
+        weights = Object.keys(weightDict).sort();
+        for(i=0,l=weights.length;i<l;i++) {
+            styles = weightDict[weights[i]];
+            if('normal' in styles)
+                result.push(styles.normal);
+            if('italic' in styles)
+                result.push(styles.italic);
+        }
+        return all.concat(result);
+    }
+
+    _p.getFontIndexesInFamilyOrder = function(){
+        var familiesData = this.getFamiliesData();
+        return familiesData.reduce(familiesDataReducer, []);
     }
 
     FontsData._installPublicCachedInterface(_p);

@@ -1,52 +1,8 @@
-# Created by .ignore support plugin (hsz.mobi)
-### WordPress template
-*.log
-*.orig
-.htaccess
-sitemap.xml
-sitemap.xml.gz
-wp-config.php
-wp-content/advanced-cache.php
-wp-content/backup-db/
-wp-content/backups/
-wp-content/blogs.dir/
-wp-content/cache/
-wp-content/upgrade/
-wp-content/uploads/
-wp-content/wp-cache-config.php
 
-css/fontsampler-custom-selectric.css
 admin/css/*
 !admin/css/*.less
 !admin/css/fontsampler-admin.css
 
-bower_components/*
+bower_components
 
-!bower_components/rangeslider.js/
-bower_components/rangeslider.js/*
-!bower_components/rangeslider.js/dist/
-
-!bower_components/jquery-selectric/
-bower_components/jquery-selectric/*
-!bower_components/jquery-selectric/public/
-bower_components/jquery-selectric/public/*
-!bower_components/jquery-selectric/public/jquery.selectric.js
-!bower_components/jquery-selectric/public/jquery.selectric.min.js
-
-!bower_components/jquery-form-validator/
-bower_components/jquery-form-validator/*
-!bower_components/jquery-form-validator/form-validator/
-bower_components/jquery-form-validator/form-validator/*
-!bower_components/jquery-form-validator/form-validator/jquery.form-validator.js
-!bower_components/jquery-form-validator/form-validator/file.js
-
-!bower_components/jquery-fontsampler/
-bower_components/jquery-fontsampler/*
-!bower_components/jquery-fontsampler/dist/
-
-!bower_components/specimen-tools/
-bower_components/specimen-tools/*
-!bower_components/specimen-tools/build/
-!bower_components/specimen-tools/lib/
-
-config.codekit
+node_modules
