@@ -11,7 +11,7 @@
 <h2>Supported by</h2>
 <p>The following people have supported the development of this plugin through their generous donations:</p>
 <ul class="real-list">
-	<li><strong>James Puckett</strong></li>
+	<li><strong><a href="http://dunwichtype.com/">James Puckett</a></strong></li>
 	<li><strong>George Thomas</strong></li>
 	<li><strong><a href="https://paulogoode.com">Paulo Goode</a></strong></li>
 	<li><strong><a href="http://quadrat.com">David Vereschagin</a></strong></li>
@@ -27,7 +27,7 @@
 <p>This plugin uses the following libraries for rendering interface components:</p>
 <ul class="real-list">
 	<li><a href="https://github.com/graphicore/specimenTools">specimenTools</a> (<a
-			href="https://github.com/graphicore/specimenTools/blob/master/LICENSE">License</a>
+			href="https://github.com/graphicore/specimenTools/blob/master/LICENSE">License</a>)
 	</li>
 	<li><a href="http://selectric.js.org/">selectric.js for custom dropdowns</a> (<a
 			href="https://github.com/lcdsantos/jQuery-Selectric/blob/master/LICENSE">License</a>)
