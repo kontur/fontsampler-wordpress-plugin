@@ -1,8 +1,7 @@
 <?php
+defined( 'ABSPATH' ) or die( 'Access denied.' );
 // if uninstall.php is not called by WordPress, die
-if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
-	die;
-}
+defined( 'WP_UNINSTALL_PLUGIN' ) or die( 'Uninstall denied.' );
 
 require_once( 'FontsamplerPlugin.php' );
 
@@ -15,6 +14,4 @@ require_once( 'FontsamplerMessages.php' );
 
 // TODO figure out why I can't embed and call Fontsampler->uninstall() instead
 global $wpdb;
-$f = new FontsamplerPlugin( $wpdb );
-
-$f->fontsampler_uninstall();
+$f = new FontsamplerPlugin( $wpdb);
