@@ -31,4 +31,4 @@ add_action( 'admin_menu', array( $f, 'fontsampler_plugin_setup_menu' ) );
 add_action( 'admin_enqueue_scripts', array( $f, 'fontsampler_admin_enqueues' ) );
 add_filter( 'upload_mimes', array( $f, 'allow_font_upload_types' ) );
 register_activation_hook( __FILE__, array( $f, 'fontsampler_activate' ) );
-register_uninstall_hook( __FILE__, array( $f, 'fontsampler_uninstall' ) );
+

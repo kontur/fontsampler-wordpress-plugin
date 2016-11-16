@@ -130,21 +130,6 @@ class FontsamplerDatabase {
 	}
 
 
-	function delete_tables() {
-		$sql = 'DROP TABLE IF EXISTS ' . $this->table_join;
-		$this->wpdb->query( $sql );
-
-		$sql = 'DROP TABLE IF EXISTS ' . $this->table_fonts;
-		$this->wpdb->query( $sql );
-
-		$sql = 'DROP TABLE IF EXISTS ' . $this->table_sets;
-		$this->wpdb->query( $sql );
-
-		$sql = 'DROP TABLE IF EXISTS ' . $this->table_settings;
-		$this->wpdb->query( $sql );
-	}
-
-
 	/**
 	 * Updates the database schemas based on current db version and target db version
 	 */
