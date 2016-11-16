@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * Class FontsamplerDatabase
+ *
+ * Wrapper for all sort of database interactions, including:
+ *  - Creating database tables on install
+ *  - Checking all needed tables exist on run
+ *  - CRUD operations on the database
+ *  - Migrating database versions base on the WP_OPTION 'fontsampler_db_version'
+ */
 class FontsamplerDatabase {
 
 	private $wpdb;
@@ -11,7 +20,7 @@ class FontsamplerDatabase {
 	private $fontsampler;
 	private $helpers;
 
-	function FontsamplerDatabase ($wpdb, $fontsampler) {
+	function FontsamplerDatabase( $wpdb, $fontsampler ) {
 		$this->wpdb = $wpdb;
 
 		$this->table_sets     = $this->wpdb->prefix . 'fontsampler_sets';
@@ -20,7 +29,7 @@ class FontsamplerDatabase {
 		$this->table_settings = $this->wpdb->prefix . 'fontsampler_settings';
 
 		$this->fontsampler = $fontsampler;
-		$this->helpers = new FontsamplerHelpers( $fontsampler );
+		$this->helpers     = new FontsamplerHelpers( $fontsampler );
 	}
 
 	/*
@@ -117,7 +126,7 @@ class FontsamplerDatabase {
 			) DEFAULT CHARSET=utf8";
 		$this->wpdb->query( $sql );
 
-		$this->wpdb->insert( $this->table_settings, $this->settings_defaults );
+		$this->wpdb->insert( $this->table_settings, $this->fontsampler->settings_defaults );
 	}
 
 
@@ -202,8 +211,9 @@ class FontsamplerDatabase {
 			// check that:
 			// 1) not updating beyond what is the coded fontsampler_db_version even if there is update entries in the array
 			// 2) the current version stored in the db is smaller than what we're updating to
-			if ( version_compare( $version, $this->fontsampler_db_version ) <= 0 &&
-			     version_compare( get_option( 'fontsampler_db_version' ), $version ) < 0 ) {
+			if ( version_compare( $version, $this->fontsampler->fontsampler_db_version ) <= 0 &&
+			     version_compare( get_option( 'fontsampler_db_version' ), $version ) < 0
+			) {
 				foreach ( $queries as $sql ) {
 					try {
 						// this try catch doesn't seem to do anything, since WP throwns and prints it's own errors
@@ -211,7 +221,7 @@ class FontsamplerDatabase {
 						// NOTE: most important though that single error (i.e. existing column or something) doesn't break
 						// the entire update loop
 						$res = $this->wpdb->query( $sql );
-					} catch (Exception $e) {
+					} catch ( Exception $e ) {
 						$this->msg->error( "Problem updating database to version $version. The following sql query failed: " . $sql );
 					}
 				}
@@ -222,8 +232,9 @@ class FontsamplerDatabase {
 		}
 		// if all executed bump the version number option in the options database to the manually entered db version
 		// even if the last query was not of that high of a version (which it shouldn't)
-		update_option( 'fontsampler_db_version', $this->fontsampler_db_version );
+		update_option( 'fontsampler_db_version', $this->fontsampler->fontsampler_db_version );
 		$this->msg->info( 'Database schemas now up to date' );
+
 		return true;
 	}
 
@@ -259,7 +270,6 @@ class FontsamplerDatabase {
 	}
 
 
-
 	/*
 	 * Read from settings table ( currently only one row with defaults )
 	 */
@@ -272,6 +282,7 @@ class FontsamplerDatabase {
 
 		// return that row but make sure any missing or empty settings fields get substituted from the hardcoded defaults
 		$defaults = array_merge( $this->fontsampler->settings_defaults, $res );
+
 		return $defaults;
 	}
 
@@ -293,7 +304,7 @@ class FontsamplerDatabase {
 			$sql .= ' LIMIT ' . $offset . ',' . $num_rows . ' ';
 		}
 
-		$sets  = $this->wpdb->get_results( $sql, ARRAY_A );
+		$sets = $this->wpdb->get_results( $sql, ARRAY_A );
 
 		// now sort all the fonts attachments of each sampler to the array
 		$set_with_fonts = array();
@@ -334,8 +345,9 @@ class FontsamplerDatabase {
 			// generate order array with rows of arrays of ui fields, remove any fields from the ui_order string that
 			// are in fact not enabled in this set
 			$set['ui_order_parsed'] = $this->parse_ui_order(
-				$this->prune_ui_order( $set['ui_order'], $set)
+				$this->prune_ui_order( $set['ui_order'], $set )
 			);
+
 			return $set;
 		}
 
@@ -353,15 +365,13 @@ class FontsamplerDatabase {
 				WHERE j.set_id = ' . intval( $id ) . '
 				ORDER BY j.`order` ASC';
 
-		$set['fonts'] = $this->wpdb->get_results( $sql, ARRAY_A );
+		$set['fonts']           = $this->wpdb->get_results( $sql, ARRAY_A );
 		$set['ui_order_parsed'] = $this->helpers->parse_ui_order(
 			$this->helpers->prune_ui_order( $set['ui_order'], $set )
 		);
 
 		return $set;
 	}
-
-
 
 
 	/*
@@ -437,7 +447,7 @@ class FontsamplerDatabase {
 		$sql = substr( $sql, 0, - 1 );
 		$sql .= ' FROM ' . $this->table_fonts . ' f ';
 
-		if ( is_null( $order_by) ) {
+		if ( is_null( $order_by ) ) {
 			$sql .= ' ORDER BY f.name ASC ';
 		} else {
 			$sql .= $order_by;
@@ -453,6 +463,7 @@ class FontsamplerDatabase {
 
 	function count_fontsets() {
 		$sql = 'SELECT COUNT(*) FROM ' . $this->table_fonts;
+
 		return $this->wpdb->get_var( $sql );
 	}
 
@@ -460,7 +471,7 @@ class FontsamplerDatabase {
 	/**
 	 * Get the first (first X) character of the fontset names in order
 	 *
-	 * @param null $order_by: optional ORDER BY clause
+	 * @param null $order_by : optional ORDER BY clause
 	 *
 	 * @return mixed: Array of rows with only field 'initial'
 	 */
@@ -477,7 +488,7 @@ class FontsamplerDatabase {
 	}
 
 
-	function get_samples_ids( $order_by = null  ) {
+	function get_samples_ids( $order_by = null ) {
 		$sql = 'SELECT `id` AS label FROM ' . $this->table_sets;
 
 		if ( is_null( $order_by ) ) {
@@ -492,6 +503,7 @@ class FontsamplerDatabase {
 
 	/**
 	 * Helper function that updates all fontsampler sets with the new (default) options just saved
+	 *
 	 * @param $options
 	 */
 	function update_defaults( $options ) {
@@ -503,9 +515,11 @@ class FontsamplerDatabase {
 		// update the generated ui_order column so that editing the fontsampler the UI layout is reflected to match
 		// the current defaults
 		foreach ( $this->get_sets() as $set ) {
-			$data = array( 'ui_order' => $this->fontsampler->helpers->concat_ui_order(
-				$this->fontsampler->helpers->ui_order_parsed_from( $options, $set )
-			) );
+			$data = array(
+				'ui_order' => $this->fontsampler->helpers->concat_ui_order(
+					$this->fontsampler->helpers->ui_order_parsed_from( $options, $set )
+				)
+			);
 			$this->wpdb->update( $this->table_sets, $data, array( 'default_features' => '1' ) );
 		}
 	}
@@ -539,6 +553,7 @@ class FontsamplerDatabase {
 
 	function insert_set( $data ) {
 		$res = $this->wpdb->insert( $this->table_sets, $data );
+
 		return $res ? $this->wpdb->insert_id : false;
 	}
 

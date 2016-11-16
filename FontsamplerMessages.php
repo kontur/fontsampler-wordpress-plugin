@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Class FontsamplerMessages
+ *
+ * Simple unified way of outputting messages of difference priority
+ */
 class FontsamplerMessages {
 	/*
 	 * Render different confirmation messages

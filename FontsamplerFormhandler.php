@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Class FontsamplerFormhandler
+ *
+ * Wrapper for all kind of form and file processing in the admin panel
+ */
 class FontsamplerFormhandler {
 
 	private $fontsampler;

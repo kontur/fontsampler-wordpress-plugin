@@ -1,7 +1,7 @@
 <?php
 // if uninstall.php is not called by WordPress, die
-if (!defined('WP_UNINSTALL_PLUGIN')) {
-    die;
+if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
+	die;
 }
 
 // TODO figure out why I can't embed and call Fontsampler->uninstall() instead

@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Class FontsamplerHelpers
+ *
+ * Wrapper for misc helper functions useful throughout the plugin
+ */
 class FontsamplerHelpers {
 
 	private $fontsampler;
@@ -46,7 +51,7 @@ class FontsamplerHelpers {
 		if ( file_exists( $template_path ) && file_exists( $styles_path ) ) {
 			$template = file_get_contents( $template_path );
 			$template = str_replace( array_keys( $settings_preped ), $settings_preped, $template );
-			$styles = file_get_contents( $styles_path );
+			$styles   = file_get_contents( $styles_path );
 
 			// concat the base styles and the replaced template into the default css file
 			if ( file_put_contents( plugin_dir_path( __FILE__ ) . 'css/fontsampler-css.css', array(
@@ -84,6 +89,7 @@ class FontsamplerHelpers {
 
 	/**
 	 * Helper to parse the comma,separated|value|string,in,the database into an multidimensional array
+	 *
 	 * @param $string
 	 *
 	 * @return array
@@ -104,22 +110,25 @@ class FontsamplerHelpers {
 	function concat_ui_order( $array ) {
 		$ui_order = '';
 		foreach ( $array as $row ) {
-			$ui_order .= implode( ',', $row) . '|';
+			$ui_order .= implode( ',', $row ) . '|';
 		}
-		$ui_order = substr($ui_order, 0, -1);
+		$ui_order = substr( $ui_order, 0, - 1 );
+
 		return $ui_order;
 	}
 
 
-	function set_has_options_ui ( $set ) {
+	function set_has_options_ui( $set ) {
 		return ( isset( $set['invert'] ) || isset( $set['alignment'] ) || isset( $set['opentype'] ) );
 	}
 
 	/**
 	 * Helper to remove not acutally present elements from the compressed string
 	 *
-	 * @param $string the compressed string of ui elements, commaseparated and | -separated, i.e. size,letterspacing|fontsampler
-	 * @param $set the fontsampler set to validate it against
+	 * @param $string the compressed string of ui elements, commaseparated and | -separated, i.e.
+	 *                size,letterspacing|fontsampler
+	 * @param $set    the fontsampler set to validate it against
+	 *
 	 * @return $string of the ui fields, separated by fields with comma, and rows with |
 	 */
 	function prune_ui_order( $string, $set ) {
@@ -143,7 +152,7 @@ class FontsamplerHelpers {
 		foreach ( $parsed as $row ) {
 			$prunedRow = array();
 			foreach ( $row as $item ) {
-				if ( isset( $set[ $item ] ) && $set[ $item ] == 1) {
+				if ( isset( $set[ $item ] ) && $set[ $item ] == 1 ) {
 					array_push( $prunedRow, $item );
 				}
 			}
@@ -168,10 +177,10 @@ class FontsamplerHelpers {
 
 		// fetch the defaults and intersect them with the five possible options (mandatory fontsampler added last)
 		// to generate an array of ui_blocks that need to be arranged
-		$ui_blocks_default = array( 'size', 'letterspacing', 'lineheight', 'sampletexts' );
-		$ui_blocks_settings =  array_keys( array_filter($settings, function ($a) {
+		$ui_blocks_default  = array( 'size', 'letterspacing', 'lineheight', 'sampletexts' );
+		$ui_blocks_settings = array_keys( array_filter( $settings, function ( $a ) {
 			return $a == "1";
-		}) );
+		} ) );
 
 		$ui_blocks = array_intersect( $ui_blocks_settings, $ui_blocks_default );
 
@@ -192,7 +201,7 @@ class FontsamplerHelpers {
 		// in a format that is the same as ui_order_parsed
 
 		// magic $r < 2 comes from max. 3 rows of interface elements altogether
-		for ( $r = 0; $r < 2; $r++ ) {
+		for ( $r = 0; $r < 2; $r ++ ) {
 			$ui_order[ $r ] = array();
 
 			// as long as there is less than 3 elements in this row and there is block to distribute
@@ -200,8 +209,8 @@ class FontsamplerHelpers {
 				$block = array_shift( $ui_blocks );
 				if ( ( 'options' !== $block && isset( $set[ $block ] ) ) ||
 				     ( 'options' === $block && $this->set_has_options_ui( $set ) ) ||
-				     ( 'fontpicker' === $block ) )
-				{
+				     ( 'fontpicker' === $block )
+				) {
 					array_push( $ui_order[ $r ], $block );
 				}
 			}
@@ -227,9 +236,9 @@ class FontsamplerHelpers {
 		}
 		foreach ( $fonts as $font ) {
 			$formats = $this->fontsampler->font_formats;
-			$best = false;
+			$best    = false;
 			while ( $best === false && sizeof( $formats ) > 0 ) {
-				$check = array_shift($formats);
+				$check = array_shift( $formats );
 				if ( isset( $font[ $check ] ) && ! empty( $font[ $check ] ) ) {
 					$best = $font[ $check ];
 				}
@@ -238,7 +247,8 @@ class FontsamplerHelpers {
 				$fontsFiltered[ $font['id'] ] = $best;
 			}
 		}
-		return sizeof($fontsFiltered) > 0 ? $fontsFiltered : false;
+
+		return sizeof( $fontsFiltered ) > 0 ? $fontsFiltered : false;
 	}
 
 }
