@@ -539,7 +539,6 @@ class FontsamplerDatabase {
 
 	function insert_set( $data ) {
 		$res = $this->wpdb->insert( $this->table_sets, $data );
-
 		return $res ? $this->wpdb->insert_id : false;
 	}
 

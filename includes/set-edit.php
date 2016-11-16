@@ -99,7 +99,7 @@
 			</label>
 		</div>
 		<div class="fontsampler-admin-column-half">
-			<p>Fontsampler direction is:</p>
+			<p>Fontsampler script direction is:</p>
 			<label><input type="radio" name="is_ltr" value="1"
 					<?php if ( empty( $set['is_ltr'] ) || $set['is_ltr'] == "1" ) : echo 'checked="checked"'; endif; ?>>
 				<span>Left to Right</span></label>
@@ -110,7 +110,7 @@
 	</div>
 
 	<div style="overflow: hidden;">
-		<div class="fontsampler-options-checkbox fontsampler-admin-column-half">
+		<div class="fontsampler-options-checkbox">
 			<fieldset>
 				<legend>Common features</legend>
 
@@ -134,52 +134,6 @@
 					include( 'fontsampler-options.php' );
 					?>
 				</div>
-			</fieldset>
-		</div>
-
-		<div class="fontsampler-admin-column-half">
-			<fieldset>
-				<legend>Opentype options</legend>
-
-				<p>Enable those features only if your fonts support them - the plugin simply offers the interface
-					without
-					checking availability.</p>
-				<label>
-					<input type="checkbox"
-					       name="ot_liga" <?php if ( ! empty( $set['ot_liga'] ) ) : echo ' checked="checked" '; endif; ?> >
-					<span>Common ligatures</span>
-				</label>
-				<label>
-					<input type="checkbox"
-					       name="ot_dlig" <?php if ( ! empty( $set['ot_dlig'] ) ) : echo ' checked="checked" '; endif; ?> >
-					<span>Discretionary ligatures</span>
-				</label>
-				<label>
-					<input type="checkbox"
-					       name="ot_hlig" <?php if ( ! empty( $set['ot_hlig'] ) ) : echo ' checked="checked" '; endif; ?> >
-					<span>Historical ligatures</span>
-				</label>
-				<label>
-					<input type="checkbox"
-					       name="ot_calt" <?php if ( ! empty( $set['ot_calt'] ) ) : echo ' checked="checked" '; endif; ?> >
-					<span>Contextual alternates</span>
-				</label>
-				<hr>
-				<label>
-					<input type="checkbox"
-					       name="ot_frac" <?php if ( ! empty( $set['ot_frac'] ) ) : echo ' checked="checked" '; endif; ?> >
-					<span>Fractions</span>
-				</label>
-				<label>
-					<input type="checkbox"
-					       name="ot_sups" <?php if ( ! empty( $set['ot_sups'] ) ) : echo ' checked="checked" '; endif; ?> >
-					<span>Superscript</span>
-				</label>
-				<label>
-					<input type="checkbox"
-					       name="ot_subs" <?php if ( ! empty( $set['ot_subs'] ) ) : echo ' checked="checked" '; endif; ?> >
-					<span>Subscript</span>
-				</label>
 			</fieldset>
 		</div>
 	</div>

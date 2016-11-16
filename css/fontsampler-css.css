@@ -448,10 +448,10 @@
 }
 /* css_color_text */
 .fontsampler-interface .type-tester__content {
-    color: #d61313;
+    color: #dd3333;
 }
 .fontsampler-interface .type-tester__content.invert {
-    background: #d61313;
+    background: #dd3333;
 }
 
 /* css_color_background */
@@ -490,15 +490,15 @@
 .fontsampler-interface .selectric .button,
 .fontsampler-wrapper .fontsampler-interface .fontsampler-multiselect > button,
 .fontsampler-interface .rangeslider__fill {
-    border-bottom: 1px solid #ec1c1c;
+    border-bottom: 1px solid #dd3333;
 }
 .fontsampler-interface .fontsampler-opentype-features {
-    border: 1px solid #ec1c1c;
+    border: 1px solid #dd3333;
 }
 
 /* css_color_handle */
 .fontsampler-interface .rangeslider__handle {
-    background: #333333;
+    background: #000000;
 }
 
 /* css_color_icon_active */

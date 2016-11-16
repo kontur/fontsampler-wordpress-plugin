@@ -20,6 +20,7 @@ class FontsamplerFormhandler {
 			'alignment',
 			'invert',
 			'opentype',
+			'multiline',
 		);
 	}
 
@@ -109,9 +110,11 @@ class FontsamplerFormhandler {
 			// insert new
 			$set_id = $this->fontsampler->db->insert_set( $data );
 			if ( $set_id ) {
-				$this->fontsampler->msg->info( 'Created fontsampler with id ' . $res );
+				$this->fontsampler->msg->info( 'Created fontsampler with id ' . $set_id
+				                               . '. You can now embed it in your posts or pages by adding [fontsampler id='
+				                               . $set_id . '].' );
 			} else {
-				$this->fontsampler->msg->error( 'Error: Failed to create new fomtsampler.' );
+				$this->fontsampler->msg->error( 'Error: Failed to create new fontsampler.' );
 
 				return false;
 			}
@@ -120,7 +123,7 @@ class FontsamplerFormhandler {
 			if ( $this->fontsampler->db->update_set( $data, $id ) ) {
 				$set_id = $id;
 			} else {
-				$this->fontsampler->msg->error( 'Error: Failed to update fomtsampler ' . $id . '.' );
+				$this->fontsampler->msg->error( 'Error: Failed to update fontsampler ' . $id . '.' );
 
 				return false;
 			}
@@ -316,19 +319,19 @@ class FontsamplerFormhandler {
 				// update the wp_option field for hiding legacy font formats
 				if ( isset( $this->post['admin_hide_legacy_formats'] ) ) {
 					$val = intval( $this->post['admin_hide_legacy_formats'] );
-					update_option( self::FONTSAMPLER_OPTION_HIDE_LEGACY_FORMATS, $val );
+					update_option( constant( get_class( $this->fontsampler ) . "::FONTSAMPLER_OPTION_HIDE_LEGACY_FORMATS" ), $val );
 					$this->fontsampler->admin_hide_legacy_formats = $val;
 				} else {
-					update_option( self::FONTSAMPLER_OPTION_HIDE_LEGACY_FORMATS, 0 );
+					update_option( constant( get_class( $this->fontsampler ) . "::FONTSAMPLER_OPTION_HIDE_LEGACY_FORMATS" ), 0 );
 					$this->fontsampler->admin_hide_legacy_formats = 0;
 				}
 
 
-				$settings_fields = array_keys( $this->settings_defaults );
+				$settings_fields = array_keys( $this->fontsampler->settings_defaults );
 
 				$data = array();
 				foreach ( $settings_fields as $field ) {
-					if ( in_array( $field, $this->default_features ) ) {
+					if ( in_array( $field, $this->fontsampler->default_features ) ) {
 						$data[ $field ] = isset( $this->post[ $field ] ) ? 1 : 0;
 					} else {
 						if ( isset( $this->post[ $field ] ) ) {
@@ -344,7 +347,7 @@ class FontsamplerFormhandler {
 				$this->fontsampler->db->update_defaults( $data );
 
 				// further generate a new settings css file
-				$this->helpers->write_css_from_settings( $data );
+				$this->fontsampler->helpers->write_css_from_settings( $data );
 			}
 		}
 	}

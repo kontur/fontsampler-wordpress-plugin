@@ -317,7 +317,7 @@ class Fontsampler {
 				}
 			} );
 
-			$id = isset( $_POST['id'] ) ? intval( $_POST['id'] ) : null;
+			$id = isset( $_POST['id'] ) && intval( $_POST['id'] ) > 0 ? intval( $_POST['id'] ) : null;
 			switch ( $_POST['action'] ) {
 				case 'edit_font':
 					if ( ! isset( $id ) ) {

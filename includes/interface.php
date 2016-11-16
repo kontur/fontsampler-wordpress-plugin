@@ -108,7 +108,7 @@
 						if ( $set['opentype']) : ?>
 							<div class="fontsampler-multiselect one-item fontsampler-opentype feature-lister"
 							     data-name="opentype">
-								<button class="fontsampler-opentype-toggle">O</button>
+								<button class="fontsampler-opentype-toggle">OT</button>
 								<div class="fontsampler-opentype-features">
 									<fieldset class="feature-lister__features--default"></fieldset>
 									<fieldset class="feature-lister__features--optional"></fieldset>
@@ -120,11 +120,11 @@
 					case 'fontsampler':
 						// NOTE echo with " and class with ' to output json as ""-enclosed strings
 
+						$initial_text_db = isset( $set['initial'] ) ? $set['initial'] : "";
 						if ( isset( $set['multiline'] ) && $set['multiline'] == 1) {
-							preg_replace( '/\n/', ' ', $set['initial'] );
-							$initial_text = $set['initial'];
+							$initial_text = str_replace( "\n", '<br>', $initial_text_db );
 						} else {
-							$initial_text = str_replace( '\n', '<br>', $set['initial'] );
+							$initial_text = preg_replace( '/\n/', ' ', $initial_text_db );
 						}
 						?>
 						<div class="current-font type-tester__content<?php

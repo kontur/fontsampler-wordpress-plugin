@@ -53,7 +53,6 @@
 				</td>
 				<td>
 					<form method="post" action="?page=fontsampler&amp;subpage=font_delete&amp;id=<?php echo $font['id']; ?>">
-						<input type="hidden" name="action" value="delete_font">
 						<?php submit_button( 'delete', 'secondary' ); ?>
 					</form>
 				</td>

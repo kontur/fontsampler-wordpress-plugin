@@ -22,7 +22,7 @@ if ( ! isset( $loop_i) ) {
 		<th>Format</th>
 		<?php if ( ! empty( $font['id'] ) ) : ?><th>Current file</th><?php endif; ?>
 		<th>Upload new file</th>
-		<th>Remove existing file</th>
+		<th><?php if ( ! empty( $font['id'] ) ) : ?>Remove existing file<?php endif; ?></th>
 	</tr>
 	</thead>
 	<tbody>
