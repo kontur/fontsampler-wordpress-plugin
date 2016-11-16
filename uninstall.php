@@ -1,5 +1,5 @@
 <?php
-defined( 'WP_UNINSTALL_PLUGIN' ) or die( 'Uninstall denied.' );
+defined( 'WP_UNINSTALL_PLUGIN' ) or die();
 /**
  * Uninstall script for the Fontsampler plugin
  *
