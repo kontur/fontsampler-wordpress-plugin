@@ -128,8 +128,14 @@ class FontsamplerPlugin {
 	function fontsampler_shortcode( $atts ) {
 		$this->fontsampler_interface_enqueues();
 
+		$script_url = preg_replace( "/^http\:\/\/[^\/]*/", "", plugin_dir_url( __FILE__ ) );
+		?>
+		<script> var fontsamplerBaseUrl = '<?php echo $script_url; ?>'; </script>
+
+		<?php
 		// merge in possibly passed in attributes
 		$attributes = shortcode_atts( array( 'id' => '0' ), $atts );
+
 		// do nothing if missing id
 		if ( 0 != $attributes['id'] ) {
 			$set   = $this->db->get_set( intval( $attributes['id'] ) );
@@ -147,9 +153,7 @@ class FontsamplerPlugin {
 
 			// some of these get overwritten from defaults, but list them all here explicitly
 			$replace = array_merge( $set, $this->settings_defaults, $defaults );
-
-			$script_url = preg_replace( "/^http\:\/\/[^\/]*/", "", plugin_dir_url( __FILE__ ) );
-
+			
 			$initialFont = isset( $fonts[ $set['initial_font'] ] ) ? $fonts[ $set['initial_font'] ] : false;
 
 			$settings = $this->db->get_settings();
@@ -157,7 +161,6 @@ class FontsamplerPlugin {
 			// buffer output until return
 			ob_start();
 			?>
-			<script> var fontsamplerBaseUrl = '<?php echo $script_url; ?>'; </script>
 			<div class='fontsampler-wrapper on-loading'
 			     data-fonts='<?php echo implode( ',', $fonts ); ?>'
 				<?php if ( $initialFont ) : ?>
