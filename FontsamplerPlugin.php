@@ -240,25 +240,6 @@ class FontsamplerPlugin {
 	}
 
 	/*
-	 *
-	 */
-	function fontsampler_uninstall() {
-		// drop all tables
-		$this->db->delete_tables();
-
-		// finally, remove fontsampler settings from wp_options
-		if ( get_option( 'fontsampler_db_version' ) ) {
-			delete_option( 'fontsampler_db_version' );
-		}
-
-		if ( get_option( 'fontsampler_hide_legacy_formats' ) ) {
-			delete_options( 'fontsampler_hide_legacy_formats' );
-		}
-
-	}
-
-
-	/*
 	 * FLOW CONTROL
 	 */
 
