@@ -126,14 +126,14 @@
 						} else {
 							$initial_text = str_replace( '\n', '<br>', $set['initial'] );
 						}
-
 						?>
-
 						<div class="current-font type-tester__content<?php
 							if ( ! isset( $set['multiline'] ) ||
 							     ( isset( $set['multiline'] ) && $set['multiline'] != "1" ) ) :
 								echo ' fontsampler-is-singleline';
-							endif; ?>" contenteditable="true"
+							endif; ?>"
+						     contenteditable="true"
+						     <?php if ( !$set['is_ltr'] ): echo ' dir="rtl" '; endif; ?>
 						><?php echo $initial_text; ?></div>
 
 						<?php

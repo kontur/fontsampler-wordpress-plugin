@@ -386,7 +386,7 @@ class FontsamplerDatabase {
 	 */
 	function get_fontset_for_set( $set_id ) {
 		$sql = 'SELECT f.id, f.name, ';
-		foreach ( $this->font_formats as $format ) {
+		foreach ( $this->fontsampler->font_formats as $format ) {
 			$sql .= ' ( SELECT guid FROM ' . $this->wpdb->prefix . 'posts p 
 					WHERE p.ID = f.' . $format . ' ) AS ' . $format . ',';
 		}
@@ -496,64 +496,81 @@ class FontsamplerDatabase {
 	 */
 	function update_defaults( $options ) {
 		// write all new default options to the corresponding columns in the sets
-		$data = array_intersect_key( $options, array_flip( $this->default_features ) );
+		$data = array_intersect_key( $options, array_flip( $this->fontsampler->default_features ) );
 		$this->wpdb->update( $this->table_sets, $data, array( 'default_features' => '1' ) );
 
 		// a bit clumsily with second update, but need to first have all fields in sync
 		// update the generated ui_order column so that editing the fontsampler the UI layout is reflected to match
 		// the current defaults
 		foreach ( $this->get_sets() as $set ) {
-			$data = array( 'ui_order' => $this->concat_ui_order( $this->ui_order_parsed_from( $options, $set ) ) );
+			$data = array( 'ui_order' => $this->fontsampler->helpers->concat_ui_order(
+				$this->fontsampler->helpers->ui_order_parsed_from( $options, $set )
+			) );
 			$this->wpdb->update( $this->table_sets, $data, array( 'default_features' => '1' ) );
 		}
 	}
 
 
-
 	function update_settings( $data, $id ) {
-		$this->wpdb->update( $this->table_settings, $data, array( 'id' => $id ) );
+		$res = $this->wpdb->update( $this->table_settings, $data, array( 'id' => $id ) );
+
+		return $res !== false ? true : false;
 	}
 
 
 	function insert_font( $data ) {
-		$this->wpdb->insert( $this->table_fonts, $data );
+		$res = $this->wpdb->insert( $this->table_fonts, $data );
+
+		return $res ? $this->wpdb->insert_id : false;
 	}
 
 	function update_font( $data, $id ) {
-		$this->wpdb->update( $this->table_fonts, $data, array( 'id' => $id ) );
+		$res = $this->wpdb->update( $this->table_fonts, $data, array( 'id' => $id ) );
+
+		return $res !== false ? true : false;
 	}
 
 	function delete_font( $id ) {
 		$this->wpdb->delete( $this->table_fonts, array( 'id' => $id ) );
+
+		return true;
 	}
 
 
 	function insert_set( $data ) {
-		return $this->wpdb->insert( $this->table_sets, $data );
+		$res = $this->wpdb->insert( $this->table_sets, $data );
+
+		return $res ? $this->wpdb->insert_id : false;
 	}
 
 	function update_set( $data, $id ) {
-		$this->wpdb->update( $this->table_sets, $data, array( 'id' => $id ) );
+		$res = $this->wpdb->update( $this->table_sets, $data, array( 'id' => $id ) );
+
+		return $res !== false ? true : false;
 	}
 
 	function delete_set( $id ) {
 		$this->wpdb->delete( $this->table_join, array( 'set_id' => $id ) );
 		$this->wpdb->delete( $this->table_sets, array( 'id' => $id ) );
+
 		return true;
 	}
 
 
 	function insert_join( $data ) {
-		$this->wpdb->insert( $this->table_join, $data );
+		$res = $this->wpdb->insert( $this->table_join, $data );
+
+		return $res ? $this->wpdb->insert_id : false;
 	}
+
 	function delete_join( $data ) {
 		$this->wpdb->delete( $this->table_join, $data );
+
+		return true;
 	}
 
 
 	function get_insert_id() {
 		return $this->wpdb->insert_id;
 	}
-
-
 }

@@ -110,8 +110,9 @@
 
     // block at the top for displaying messages
     .notice {
-        border: 1px solid;
+        border: 1px solid #eee;
         padding: 1em;
+        margin: 0 0 2em;
     }
 
     code {
@@ -351,6 +352,36 @@
     &.fontsampler-admin-show-legacy-formats {
         .fontsampler-admin-legacy-format {
             display: table-row;
+        }
+    }
+
+    // pagination
+    .fontsampler-pagination {
+        margin: 1em auto;
+
+        a {
+            background: #eee;
+            border: 1px solid #eee;
+            color: #888;
+            text-decoration: none;
+            text-transform: uppercase;
+            margin: 0 0.25em;
+            padding: 0.25em 0.75em;
+            outline: none;
+            box-shadow: none;
+            border-radius: 3px;
+            letter-spacing: 2px;
+
+            &.fontsampler-pagination-current-page {
+                color: #008ec2;
+                background: #eee;
+                border: 1px solid #ccc !important;
+            }
+
+            &:hover, &:focus {
+                border: 1px solid #008ec2;
+                color: #006799;
+            }
         }
     }
 }

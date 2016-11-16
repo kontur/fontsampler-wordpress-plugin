@@ -1,4 +1,3 @@
-<?php global $f; ?>
 <h1>Font sets &amp; files</h1>
 
 <?php if ( ! $fonts ) : ?>
@@ -34,7 +33,7 @@
 				<td><?php echo $font['name']; ?></td>
 				<td>
 					<div class="fontsampler-preview"
-					     data-font-files='<?php echo $f->fontfiles_JSON( $font ); ?>'><?php echo $font['name']; ?></div>
+					     data-font-files='<?php echo $this->helpers->fontfiles_JSON( $font ); ?>'><?php echo $font['name']; ?></div>
 				</td>
 				<td>
 					<ul>

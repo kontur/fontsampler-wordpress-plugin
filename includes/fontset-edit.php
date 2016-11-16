@@ -1,7 +1,7 @@
 <h1><?php echo ! empty( $font['id'] ) ? 'Edit this font set' : 'Upload new font files'; ?></h1>
 <form method="post" enctype="multipart/form-data" action="?page=fontsampler&amp;subpage=fonts" id="fontsampler-fontset-from" class="fontsampler-validate">
-	<input type="hidden" name="action" value="font_edit">
-	<?php if ( function_exists( 'wp_nonce_field' ) ) : wp_nonce_field( 'fontsampler-action-font_edit' ); endif; ?>
+	<input type="hidden" name="action" value="edit_font">
+	<?php if ( function_exists( 'wp_nonce_field' ) ) : wp_nonce_field( 'fontsampler-action-edit_font' ); endif; ?>
 	<input type="hidden" name="id" value="<?php echo empty( $font['id'] ) ? 0 : $font['id']; ?>">
 
 	<h2>Font name</h2>

@@ -117,31 +117,6 @@
   display: inline-block;
   width: 24em;
 }
-#fontsampler-admin .fontsampler-pagination {
-  margin: 1em auto;
-}
-#fontsampler-admin .fontsampler-pagination a {
-  color: #888;
-  text-decoration: none;
-  text-transform: uppercase;
-  margin: 0 0.25em;
-  padding: 0.1em 0.5em;
-  outline: none;
-  box-shadow: none;
-  border-radius: 3px;
-  border: 1px solid #fff;
-  letter-spacing: 2px;
-}
-#fontsampler-admin .fontsampler-pagination a.fontsampler-pagination-current-page {
-  color: #008ec2;
-  background: #ccc;
-  border: 1px solid #ccc;
-}
-#fontsampler-admin .fontsampler-pagination a:hover,
-#fontsampler-admin .fontsampler-pagination a:focus {
-  border: 1px solid #008ec2;
-  color: #006799;
-}
 /*
  * Scope all css to be contained only within the fontsampler wrapper
  */
@@ -244,8 +219,9 @@
   margin-bottom: 0.5em;
 }
 #fontsampler-admin .notice {
-  border: 1px solid;
+  border: 1px solid #eee;
   padding: 1em;
+  margin: 0 0 2em;
 }
 #fontsampler-admin code {
   border: 1px solid #ddd;
@@ -441,4 +417,30 @@
 }
 #fontsampler-admin.fontsampler-admin-show-legacy-formats .fontsampler-admin-legacy-format {
   display: table-row;
+}
+#fontsampler-admin .fontsampler-pagination {
+  margin: 1em auto;
+}
+#fontsampler-admin .fontsampler-pagination a {
+  background: #eee;
+  border: 1px solid #eee;
+  color: #888;
+  text-decoration: none;
+  text-transform: uppercase;
+  margin: 0 0.25em;
+  padding: 0.25em 0.75em;
+  outline: none;
+  box-shadow: none;
+  border-radius: 3px;
+  letter-spacing: 2px;
+}
+#fontsampler-admin .fontsampler-pagination a.fontsampler-pagination-current-page {
+  color: #008ec2;
+  background: #eee;
+  border: 1px solid #ccc !important;
+}
+#fontsampler-admin .fontsampler-pagination a:hover,
+#fontsampler-admin .fontsampler-pagination a:focus {
+  border: 1px solid #008ec2;
+  color: #006799;
 }
