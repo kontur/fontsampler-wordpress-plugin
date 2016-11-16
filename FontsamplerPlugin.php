@@ -37,11 +37,11 @@ class FontsamplerPlugin {
 		$this->fontsampler_db_version = '0.1.0';
 		$current_db_version           = get_option( self::FONTSAMPLER_OPTION_DB_VERSION );
 
-		// if no previous db version has been registered assume new install and set to v 0.0.1 which was the "last"
-		// version install without the db option
+		// if no previous db version has been registered assume new install and set
+		// to current version
 		if ( ! $current_db_version ) {
-			add_option( self::FONTSAMPLER_OPTION_DB_VERSION, '0.0.1' );
-			$current_db_version = '0.0.1';
+			add_option( self::FONTSAMPLER_OPTION_DB_VERSION, $this->fontsampler_db_version );
+			$current_db_version = $this->fontsampler_db_version;
 		}
 		if ( version_compare( $current_db_version, $this->fontsampler_db_version ) < 0 ) {
 			$this->db->migrate_db();
