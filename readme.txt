@@ -8,10 +8,7 @@ Stable tag: 0.1.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-This is a plugin directed primarily at type designers, foundries or resellers using Wordpress to showcase their fonts.
-
-The plugin allows you to embed interactive webfont specimens on your site via shortcodes. Users can preview, type with,
-and switch the webfonts in a preview, as well as use other interface options to manipulate the font sample.
+This is a plugin directed primarily at type designers, foundries or resellers to showcase webfonts by embedding interactive specimens via shortcodes.
 
 == Description ==
 
@@ -60,4 +57,4 @@ Coming soon
 == Changelog ==
 
 = 0.1.0 =
-* Initial public release 
+* Initial public release
