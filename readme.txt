@@ -20,18 +20,21 @@ and switch the webfonts in a preview, as well as use other interface options to 
 After installing the plugin and creating a Fontsampler, you are able to showcase a set of webfonts by adding a simple
 [fontsampler id=123] shortcode to any page or post.
 
+More information and clickable examples available [on the plugin website](http://fontsampler.johannesneumeier.com).
+
 Features include:
-- Interactive text field where users can type to preview the font
-- Controls for switching between fonts (if several are added to one Fontsampler)
-- Slider controls for manipulating font size, letter spacing & line height
-- Customizable dropdown with preset texts
-- Automatic detection and controls for testing Opentype features
-- Switches for alignment and inverting the text and background color
-- Support for any language script and script direction
-- Supports woff2, woff, eot and ttf files
-- Unlimited Fontsamplers per page
-- Customizable interface layout
-- Customizable interface styling (colors)
+
+* Interactive text field where users can type to preview the font
+* Controls for switching between fonts (if several are added to one Fontsampler)
+* Slider controls for manipulating font size, letter spacing & line height
+* Customizable dropdown with preset texts
+* Automatic detection and controls for testing Opentype features
+* Switches for alignment and inverting the text and background color
+* Support for any language script and script direction
+* Supports woff2, woff, eot and ttf files
+* Unlimited Fontsamplers per page
+* Customizable interface layout
+* Customizable interface styling (colors)
 
 == Installation ==
 
@@ -52,7 +55,12 @@ that are set to use the default values.
 
 == Screenshots ==
 
-Coming soon
+1. The Fontsampler plugin comes with plenty of customizable options to tweak the appearance and interface of your webfont previews
+2. You can go minimal on the UI, or even without any options at all
+3. The main elements of the UI can be styled site-wide from the settings
+4. Manage your typeface samples via the admin panel
+5. Settings for many defaults can be tweaked to your site's needs
+6. This is how you include a Fontsampler in a page or post: Simply add the shortcode for the created Fontsampler to your text
 
 == Changelog ==
 
