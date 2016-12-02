@@ -155,6 +155,20 @@
 		</div>
 	</label>
 
+	<br>
+
+	<label>
+		<span class="setting-description">Label of the "Buy" link (if supplied):</span>
+		<input type="text" name="buy_label" class="fontsampler-admin-slider-label"
+		       value="<?php echo $defaults['buy_label']; ?>"/>
+	</label>
+
+	<label>
+		<span class="setting-description">Label of the "Specimen" link (if supplied):</span>
+		<input type="text" name="specimen_label" class="fontsampler-admin-slider-label"
+		       value="<?php echo $defaults['specimen_label']; ?>"/>
+	</label>
+
 	<h2>Common features (UI options)</h2>
 	<small>Updating these defaults will automatically update any fontsamplers that use the defaults.</small>
 	<?php

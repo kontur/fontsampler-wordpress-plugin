@@ -53,6 +53,8 @@ class FontsamplerDatabase {
                 `default_features` tinyint( 1 ) NOT NULL DEFAULT '1',
                 `default_options` tinyint( 1 ) NOT NULL DEFAULT '0',
                 `initial_font` int( 10 ) unsigned DEFAULT NULL,
+                `buy_url` VARCHAR( 255 ) DEFAULT NULL,
+				`specimen_url` VARCHAR( 255 ) DEFAULT NULL,
 			  PRIMARY KEY ( `id` )
 			) DEFAULT CHARSET=utf8";
 
@@ -122,6 +124,8 @@ class FontsamplerDatabase {
 			`invert` tinyint(1) unsigned NOT NULL DEFAULT '0',
 			`multiline` tinyint(1) unsigned NOT NULL DEFAULT '1',
 			`opentype` tinyint(1) unsigned NOT NULL DEFAULT '0',
+			`buy_label` VARCHAR(255) DEFAULT 'Buy',
+			`specimen_label` VARCHAR(255) DEFAULT 'Specimen',
 			PRIMARY KEY (`id`)
 			) DEFAULT CHARSET=utf8";
 		$this->wpdb->query( $sql );
@@ -187,6 +191,12 @@ class FontsamplerDatabase {
 				'ALTER TABLE ' . $this->table_sets . " ADD `opentype` tinyint( 1 ) unsigned NOT NULL DEFAULT '0'",
 				'ALTER TABLE ' . $this->table_settings . " ADD `opentype` tinyint(1) unsigned NOT NULL DEFAULT '0'",
 				'ALTER TABLE ' . $this->table_fonts . ' DROP COLUMN `svg`',
+			),
+			'0.1.1' => array(
+				'ALTER TABLE ' . $this->table_settings . " ADD `buy_label` VARCHAR(255) DEFAULT 'Buy'",
+				'ALTER TABLE ' . $this->table_settings . " ADD `specimen_label` VARCHAR(255) DEFAULT 'Specimen'",
+				'ALTER TABLE ' . $this->table_sets . " ADD `buy_url` VARCHAR(255) DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_sets . " ADD `specimen_url` VARCHAR(255) DEFAULT NULL",
 			)
 		);
 
@@ -207,18 +217,18 @@ class FontsamplerDatabase {
 						// the entire update loop
 						$res = $this->wpdb->query( $sql );
 					} catch ( Exception $e ) {
-						$this->msg->error( "Problem updating database to version $version. The following sql query failed: " . $sql );
+						$this->fontsampler->msg->error( "Problem updating database to version $version. The following sql query failed: " . $sql );
 					}
 				}
 				// bump the version number option in the options database
-				$this->msg->info( "Updated database schema to $version" );
+				$this->fontsampler->msg->info( "Updated database schema to $version" );
 				update_option( 'fontsampler_db_version', $version );
 			}
 		}
 		// if all executed bump the version number option in the options database to the manually entered db version
 		// even if the last query was not of that high of a version (which it shouldn't)
 		update_option( 'fontsampler_db_version', $this->fontsampler->fontsampler_db_version );
-		$this->msg->info( 'Database schemas now up to date' );
+		$this->fontsampler->msg->info( 'Database schemas now up to date' );
 
 		return true;
 	}

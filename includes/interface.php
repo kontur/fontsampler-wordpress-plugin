@@ -148,5 +148,12 @@
 	<?php endforeach; ?>
 <?php endif; ?>
 
+<?php if ( ! empty( $set['buy_url'] ) ) : ?>
+	<a href="<?php echo $set['buy_url']; ?>"><?php echo $settings['buy_label']; ?></a>
+<?php endif; ?>
+<?php if ( ! empty( $set['specimen_url'] ) ) : ?>
+	<a href="<?php echo $set['specimen_url']; ?>"><?php echo $settings['specimen_label']; ?></a>
+<?php endif; ?>
+
 </div>
 </div>

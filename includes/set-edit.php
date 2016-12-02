@@ -136,6 +136,22 @@
 				</div>
 			</fieldset>
 		</div>
+
+
+		<fieldset>
+			<legend>Links</legend>
+			<small>Leave the field empty to not include a buy or specimen button in the interface.</small>
+			<label>
+				<span class="input-description">"Buy" url for this fontsampler:</span>
+				<input type="text" name="buy_url" class="fontsampler-admin-slider-label"
+				       value="<?php echo $set['buy_url']; ?>"/>
+			</label>
+			<label>
+				<span class="input-description">"Speciment" url for this fontsampler:</span>
+				<input type="text" name="specimen_url" class="fontsampler-admin-slider-label"
+				       value="<?php echo $set['specimen_url']; ?>"/>
+			</label>
+		</fieldset>
 	</div>
 
 	<h2>Interface layout</h2>
