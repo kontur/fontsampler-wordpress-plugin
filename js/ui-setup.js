@@ -34,6 +34,7 @@ define(['jquery', 'rangeslider', 'selectric'], function($) {
      * that require jquery
      */
     function main(wrapper) {
+
         var $wrapper = $(wrapper),
             typeTesterSelector = ".type-tester",
             typeTesterContentSelector = ".type-tester__content";
@@ -81,8 +82,10 @@ define(['jquery', 'rangeslider', 'selectric'], function($) {
                 case "invert":
                     if (val == "positive") {
                         $fs.removeClass("invert");
+                        $("body").removeClass("fontsampler-inverted");
                     } else {
                         $fs.addClass("invert");
+                        $("body").addClass("fontsampler-inverted");
                     }
                     break;
 
@@ -113,6 +116,12 @@ define(['jquery', 'rangeslider', 'selectric'], function($) {
         } );
 
         $wrapper.removeClass("on-loading");
+
+        // for fontsamplers that only have one font but display the fontpicker label,
+        // insert the font family name that opentype.js loaded into the label
+        $wrapper.find(".fontsampler-font-label").each(function () {
+            $(this).children('label').html($wrapper.data('initial-font-name'))
+        });
     }
 
     return main;

@@ -21,7 +21,7 @@
   text-overflow: ellipsis;
   margin: 0 30px 0 0;
   font-size: inherit;
-  line-height: 30px;
+  line-height: inherit;
   color: #333333;
   height: 30px;
   border-bottom: 1px solid #333;

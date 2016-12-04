@@ -71,6 +71,7 @@ class FontsamplerPlugin {
 			'invert',
 			'multiline',
 			'opentype',
+			'fontpicker',
 		);
 		// note: font_formats order matters: most preferred to least preferred
 		// note: so far no feature detection and no fallbacks, so woff2 last until fixed
@@ -113,6 +114,7 @@ class FontsamplerPlugin {
 			'invert'                    => 0,
 			'multiline'                 => 1,
 			'opentype'                  => 0,
+			'fontpicker'                => 0,
 			'buy_label'                 => 'Buy',
 			'specimen_label'            => 'Specimen',
 		);
@@ -154,11 +156,14 @@ class FontsamplerPlugin {
 			$defaults = $this->db->get_settings();
 
 			// some of these get overwritten from defaults, but list them all here explicitly
-			$replace = array_merge( $set, $this->settings_defaults, $defaults );
+			$options = array_merge( $set, $this->settings_defaults, $defaults );
 			
 			$initialFont = isset( $fonts[ $set['initial_font'] ] ) ? $fonts[ $set['initial_font'] ] : false;
 
 			$settings = $this->db->get_settings();
+
+			$layout = new FontsamplerLayout();
+			$blocks = $layout->stringToArray( $set['ui_order'], $set );
 
 			// buffer output until return
 			ob_start();
@@ -197,18 +202,16 @@ class FontsamplerPlugin {
 	 * Register scripts and styles needed in the admin panel
 	 */
 	function fontsampler_admin_enqueues() {
+		wp_enqueue_script( 'require-js', plugin_dir_url( __FILE__ ) . 'js/libs/requirejs/require.js', array(), false, true);
+		wp_enqueue_script( 'fontsampler-admin-main-js', plugin_dir_url( __FILE__ ) . 'admin/js/fontsampler-admin-main.js', array(
+			'wp-color-picker',
+			'jquery-ui-sortable'
+		), false, true);
+
 		wp_enqueue_script( 'fontsampler-js', plugin_dir_url( __FILE__ ) . 'js/libs/jquery-fontsampler/dist/jquery.fontsampler.js', array( 'jquery' ) );
-		wp_enqueue_script( 'fontsampler-rangeslider-js', plugin_dir_url( __FILE__ ) . 'js/libs/rangeslider.js/dist/rangeslider.js', array( 'jquery' ) );
-		wp_enqueue_script( 'fontsampler-preview-js', plugin_dir_url( __FILE__ ) . 'js/libs/jquery-fontsampler/dist/jquery.fontsampler.js', array( 'jquery' ) );
-		wp_enqueue_script( 'fontsampler-admin-js', plugin_dir_url( __FILE__ ) . 'admin/js/fontsampler-admin.js', array(
-			'jquery',
-			false,
-			true
-		) );
-		wp_enqueue_script( 'colour-pick', plugins_url( 'admin/js/fontsampler-admin.js', __FILE__ ), array( 'wp-color-picker' ), false, true );
-		wp_enqueue_script( 'jquery-ui-sortable', array( 'jquery' ) );
-		wp_enqueue_script( 'jquery-form-validator', plugin_dir_url( __FILE__ ) . 'js/libs/jquery-form-validator/form-validator/jquery.form-validator.js', array( 'jquery' ) );
+
 		wp_enqueue_style( 'wp-color-picker' );
+		wp_enqueue_style( 'fontsampler-css', $this->helpers->get_css_file() );
 		wp_enqueue_style( 'fontsampler_admin_css', plugin_dir_url( __FILE__ ) . '/admin/css/fontsampler-admin.css', false, '1.0.0' );
 	}
 
@@ -258,6 +261,11 @@ class FontsamplerPlugin {
 			? 'fontsampler-admin-hide-legacy-formats'
 			: 'fontsampler-admin-show-legacy-formats';
 		echo '">';
+
+		$script_url = preg_replace( "/^http\:\/\/[^\/]*/", "", plugin_dir_url( __FILE__ ) );
+		?>
+		<script> var fontsamplerBaseUrl = '<?php echo $script_url; ?>'; </script>
+		<?php
 
 		include( 'includes/header.php' );
 
@@ -338,6 +346,11 @@ class FontsamplerPlugin {
 				if ( sizeof( $set['fonts'] ) > 1 ) {
 					$set['fontpicker'] = 1;
 				}
+
+				$layout = new FontsamplerLayout();
+				$str = $layout->sanitizeString($set['ui_order'], $set);
+				$layout->stringToArray($str);
+
 				$fonts       = $this->db->get_fontfile_posts();
 				$fonts_order = implode( ',', array_map( function ( $font ) {
 					return $font['id'];
@@ -407,6 +420,56 @@ class FontsamplerPlugin {
 
 		include( 'includes/footer.php' );
 		echo '</section>';
+	}
+
+
+	/**
+	 * Registered ajax action to get a mockup fontsampler in the admin interface
+	 * for layout previewing
+	 */
+	function ajax_get_mock_fontsampler () {
+		check_ajax_referer( 'ajax_get_mock_fontsampler', 'action', false );
+
+		$layout = new FontsamplerLayout();
+
+		$data = $_POST['data'];
+
+		// data['ui_order'] contains a string with all the blocks transmitted
+		// from the admin UI
+		$fields = array_keys($layout->stringToArray($data['ui_order']));
+
+		// fill all these with a simple "1", like they would be fetched from a
+		// set in the db that has those fields enabled (or content in them signifiying
+		// they should render)
+		$fieldsFromUI = array_combine($fields, array_fill(0, sizeof($fields), 1));
+
+		// emulate a set from the passed in mock data
+		// if any field like "specimen" got not just passed in ui_order but as explicit
+		// field with content, that overwrites the "1" array value
+		$set = array_merge( $fieldsFromUI, $data, array(
+			'multiline' => 0,
+			'is_ltr' => 1
+		));
+
+		$font = plugin_dir_url( __FILE__ ) . 'admin/fonts/PTS55F-webfont.woff';
+		$set['fonts'] = array('woff' => $font);
+
+		// from this set create all blocks; pass in the generated set to make
+		// sure all fields sync
+		$blocks = $layout->stringToArray( $set['ui_order'], $set );
+
+		$options = $this->db->get_settings();
+		$settings = $this->db->get_settings();
+
+?>
+
+			<div class='fontsampler-wrapper on-loading'
+			     data-fonts='<?php echo $font; ?>'
+				 data-initial-font='<?php echo $font; ?>'>
+				 <?php include( 'includes/interface.php' ); ?>
+			</div>
+				<?php
+		die();
 	}
 
 }

@@ -49,7 +49,9 @@ class FontsamplerDatabase {
                 `multiline` tinyint( 1 ) NOT NULL DEFAULT '1',
                 `opentype` tinyint( 1 ) NOT NULL DEFAULT '0',
                 `is_ltr` tinyint( 1 ) NOT NULL DEFAULT '1',
-                `ui_order` VARCHAR( 255 ) NOT NULL DEFAULT 'size,letterspacing,options|fontpicker,sampletexts,lineheight|fontsampler',
+                `fontpicker` tinyint( 1 ) NOT NULL DEFAULT '0',
+                `ui_order` VARCHAR( 255 ) NOT NULL DEFAULT 'size,letterspacing,options,fontpicker,sampletexts,lineheight,fontsampler',
+                `ui_columns` tinyint( 1 ) NOT NULL DEFAULT '3',
                 `default_features` tinyint( 1 ) NOT NULL DEFAULT '1',
                 `default_options` tinyint( 1 ) NOT NULL DEFAULT '0',
                 `initial_font` int( 10 ) unsigned DEFAULT NULL,
@@ -124,6 +126,7 @@ class FontsamplerDatabase {
 			`invert` tinyint(1) unsigned NOT NULL DEFAULT '0',
 			`multiline` tinyint(1) unsigned NOT NULL DEFAULT '1',
 			`opentype` tinyint(1) unsigned NOT NULL DEFAULT '0',
+			`fontpicker` tinyint( 1 ) NOT NULL DEFAULT '0',
 			`buy_label` VARCHAR(255) DEFAULT 'Buy',
 			`specimen_label` VARCHAR(255) DEFAULT 'Specimen',
 			PRIMARY KEY (`id`)
@@ -195,8 +198,11 @@ class FontsamplerDatabase {
 			'0.1.1' => array(
 				'ALTER TABLE ' . $this->table_settings . " ADD `buy_label` VARCHAR(255) DEFAULT 'Buy'",
 				'ALTER TABLE ' . $this->table_settings . " ADD `specimen_label` VARCHAR(255) DEFAULT 'Specimen'",
+				'ALTER TABLE ' . $this->table_settings . " ADD `fontpicker` tinyint( 1 ) NOT NULL DEFAULT '0'",
 				'ALTER TABLE ' . $this->table_sets . " ADD `buy_url` VARCHAR(255) DEFAULT NULL",
 				'ALTER TABLE ' . $this->table_sets . " ADD `specimen_url` VARCHAR(255) DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_sets . " ADD `ui_columns` tinyint( 1 ) NOT NULL DEFAULT '3'",
+				'ALTER TABLE ' . $this->table_sets . " ADD `fontpicker` tinyint( 1 ) NOT NULL DEFAULT '0'",
 			)
 		);
 

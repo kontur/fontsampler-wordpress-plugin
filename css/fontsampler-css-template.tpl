@@ -20,7 +20,8 @@
 .fontsampler-interface .fontsampler-slider .slider-label,
 .fontsampler-interface .fontsampler-slider .slider-value,
 .fontsampler-interface .selectric .label,
-.fontsampler-interface .selectric-items li {
+.fontsampler-interface .selectric-items li,
+.fontsampler-ui-block-fontpicker .fontsampler-font-label label {
     color: @css_color_label;
     font-size: @css_size_label;
     font-family: @css_fontfamily_label;
@@ -41,7 +42,8 @@
 .fontsampler-interface .selectric .label,
 .fontsampler-interface .selectric .button,
 .fontsampler-wrapper .fontsampler-interface .fontsampler-multiselect > button,
-.fontsampler-interface .rangeslider__fill {
+.fontsampler-interface .rangeslider__fill,
+.fontsampler-ui-block-fontpicker .fontsampler-font-label label {
     border-bottom: 1px solid @css_color_line;
 }
 .fontsampler-interface .fontsampler-opentype-features {

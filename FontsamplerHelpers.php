@@ -29,6 +29,9 @@ class FontsamplerHelpers {
 
 		// return file path to the css that contains base css merged with settings css
 		return plugin_dir_url( __FILE__ ) . 'css/fontsampler-css.css';
+
+		// For testing changes to the default:
+		// return plugin_dir_url( __FILE__ ) . 'css/fontsampler-interface.css';
 	}
 
 

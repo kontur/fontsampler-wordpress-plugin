@@ -21,7 +21,6 @@
   opacity: 0.4;
 }
 .rangeslider__fill {
-  background: #333;
   position: absolute;
 }
 .rangeslider--horizontal .rangeslider__fill {

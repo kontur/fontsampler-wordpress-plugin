@@ -17,7 +17,7 @@
         padding: 1em 2em;
     }
 
-    label {
+    fieldset label, label.fontsampler-admin-label-block {
         display: block;
         color: #666;
         margin: 1em 0;
@@ -274,43 +274,125 @@
         }
     }
 
+    .fontsampler-admin-column-wrapper {
+        clear: both;
+        overflow: auto;
+    }
+
     .fontsampler-admin-column-half {
         float: left;
         margin-right: 5%;
         width: 45%;
     }
 
+    #fontsampler-admin-ui-wrapper {
+        position: relative;
 
-
-    // fontsampler UI sortable
-    ul.fontsampler-ui-preview-list {
-        border: 1px dotted #ccc;
-        background: #fff;
-        min-height: 4em;
-        margin: 5px 0;
-        padding: 5px 0;
-        width: 50em;
-        li {
-            box-sizing: border-box;
-            border: 1px solid #ccc;
-            background: #eee;
-            cursor: pointer;
-            float: left;
-            padding: 5px 10px;
-            text-align: center;
-            margin-right: 1.5%;
-            margin-left: 1.5%;
-            width: 30%;
-            position: relative;
-            min-height: 4em;
-
-            &.fontsampler-ui-placeholder-full {
-                width: 97%;
+        &:hover {
+            .fontsampler-ui-block {
+                outline: 1px dotted orange;
             }
         }
-        .ui-state-highlight {
-            background: transparent;
-            border: 1px dotted orange;
+
+        #fontsampler-ui-blocks-list {
+            display: none;
+        }
+
+        // fontsampler UI sortable
+        #fontsampler-ui-layout-preview {
+            border: 1px dotted grey;
+            padding: 10px;
+
+            // sortable preview fontsamplers
+            .fontsampler-interface {
+                position: relative;
+
+                .fontsampler-ui-block {
+                    position: relative;
+
+                    &.fontsampler-ui-block-fontsampler {
+                        .fontsampler-ui-block-layout {
+                            display: none !important;
+                        }
+                    }
+
+                    .fontsampler-ui-block-overlay {
+                        display: none;
+                        .fontsampler-ui-block-layout {
+                            div {
+                                opacity: 0;
+                                display: none;
+                                label {
+                                    display: block;
+                                }
+                            }
+                        }
+                    }
+
+                    &:hover {
+                        cursor: move !important;
+                        outline: 1px solid orange;
+
+                        .fontsampler-ui-block-overlay {
+                            background: rgba(255, 155, 0, 0.9);
+                            display: block;
+                            position: absolute;
+                            height: 100%;
+                            width: 100%;
+                            top: 0;
+                            left: 0;
+                            z-index: 19;
+                            box-sizing: border-box;
+                            padding: 10px;
+                            opacity: 1;
+
+                            .fontsampler-ui-block-layout {
+                                position: absolute;
+                                z-index: 29;
+                                right: 0;
+                                background: lightyellow;
+                                top: 31px;
+                                min-width: 8em;
+
+                                &:hover {
+                                    div {
+                                        display: block;
+                                        opacity: 1;
+                                        transition: opacity 0.2s ease-in-out;
+                                    }
+                                }
+
+                                button.fontsampler-ui-block-layout-open {
+                                    position: absolute;
+                                    top: -31px;
+                                    right: 1px;
+                                    height: 30px;
+                                }
+
+                                div {
+                                    outline: 1px solid orange;
+                                    padding: 10px;
+                                    display: none;
+                                    opacity: 0;
+
+                                    label {
+                                        display: block;
+                                        margin: 0.5em 0;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        #fontsampler-ui-layout-preview-options {
+            clear: both;
+            display: block;
+        }
+        
+        .type-tester__slider {
+            margin-top: 4px;
         }
     }
 
@@ -318,6 +400,10 @@
         li {
             display: none;
         }
+    }
+
+    .selectric .button {
+        border: none;
     }
 
     #fontsampler-fontset-from {
@@ -354,7 +440,8 @@
         .fontsampler-admin-legacy-format {
             display: none;
         }
-        .fontsampler-admin-format {}
+        .fontsampler-admin-format {
+        }
     }
 
     &.fontsampler-admin-show-legacy-formats {
@@ -392,4 +479,5 @@
             }
         }
     }
+
 }

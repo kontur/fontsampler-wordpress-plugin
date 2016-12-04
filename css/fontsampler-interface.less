@@ -3,242 +3,247 @@
 
 .fontsampler-wrapper {
 
-	&.on-loading {
-		> * {
-			opacity: 0;
-			transition: opacity 0s;
-		}
-	}
+    &.on-loading {
+        > * {
+            opacity: 0;
+            transition: opacity 0s;
+        }
+    }
 
-	> * {
-		opacity: 1;
-		transition: opacity 0.2s ease-in-out;
-	}
+    > * {
+        opacity: 1;
+        transition: opacity 0.2s ease-in-out;
+    }
 
-	.fontsampler-interface {
 
-		.fontsampler-interface-row {
-			clear: both;
-			position: relative;
-			overflow: visible;
-			margin: 0 0 1em;
-			font-size: smaller;
+    .fontsampler-interface {
+        clear: both;
 
-			&:after {
-				clear: both;
-				content: '';
-				display: block;
-				width: 100%;
-			}
-		}
-
-        button.fontsampler-toggle {
-            height: 30px;
-            width: 30px;
-            padding: 0;
-            border-radius: 3px;
-            overflow: hidden;
-            outline: none;
-            opacity: 0.75;
-            transition: opacity 0.2s ease-in-out;
-
-            &.fontsampler-toggle-on {
-                opacity: 1;
-            }
-
-            img {
-                font-size: 12px;
-                line-height: 10px;
-                float: left;
-                display: block;
-                width: 100%;
-            }
-
-            &:hover, &:focus {
-            }
-
+        // make the wrapper span around all floated content blocks
+        &:after {
+            clear: both;
+            content: " ";
+            display: block;
+            width: 100%;
         }
 
-		label.fontsampler-slider {
-			box-sizing: border-box;
-			display: block;
-			float: left;
-			position: relative;
-			padding: 0 5px;
-			width: 32%;
+        // different column layouts; define all
+        // .fontsampler-ui-blocks accordingly via mixin
+        &.columns-1 {
+            .blocks(1);
+        }
 
-			&:first-of-type {
-				left: -5px;
-			}
+        &.columns-2 {
+            .blocks(2);
+        }
 
-			&:last-of-type {
-				right: -5px;
-			}
+        &.columns-3 {
+            .blocks(3);
+        }
 
-			span {
-			}
-			.slider-label {
-				float: left;
-				margin-bottom: 0.5em;
-			}
-			.slider-value {
-				float: right;
-				margin-bottom: 0.5em;
-			}
+        @media screen and (max-width: 768px) {
+            .blocks(1) !important;
+        }
 
-			input {
-				clear: left;
-				display: block;
-				width: 100%;
-			} 
-		}
+        // any and all fontsampler UI elements are wrapped in this
+        .fontsampler-ui-block {
+            box-sizing: border-box;
+            float: left;
+            height: 30px;
+            line-height: 30px;
+            margin-bottom: 10px;
+            padding-right: 10px;
 
-		select,
-		.selectric-wide,
-		.selectric-small {
-			display: block;
-			float: left;
-		}
+            &.fontsampler-ui-block-fontsampler {
+                height: auto;
+            }
+        }
 
-		select[name="font-selector"],
-		select[name="sample-text"],
-		div.font-lister select,
-		.selectric-wide {
-            left: -5px;
-            padding: 0 5px;
-            margin-right: 5px;
-			width: 32%;
-		}
-		select[name="alignment"],
-		select[name="invert"], 
-		.selectric-small {
-			width: 10%;
-		}
-
-
-		.fontsampler-multiselect {
-			box-sizing: border-box;
-			float: left;
-			padding-right: 5px;
+        // generic class for "paired" up toggle buttons
+        .fontsampler-multiselect {
+            box-sizing: border-box;
+            float: left;
+            padding-right: 5px;
 
             &.one-item {
-                width: 17/3%;
+                width: 30px;
                 > button {
                     width: 100%;
                 }
             }
 
-			&.two-items {
-                width: 32/3%;
-				> button {
-					width: 50%;
-				}
-			}
-			&.three-items {
-                width: 46/3%;
-				> button {
-					width: 33%;
-				}
-			}
+            &.two-items {
+                width: 60px;
+                > button {
+                    width: 50%;
+                }
+            }
+            &.three-items {
+                width: 90px;
+                > button {
+                    width: 33%;
+                }
+            }
 
-			> button {
-				background: #fff;
-				border: 0;
-			    border-bottom: 1px solid #333;
-			    font-size: inherit;
-			    font-family: inherit;
-			    color: #333;
-			    font-weight: inherit;
-			    height: 30px;
-			    line-height: 4px;
-			    text-transform: none;
-			    border-radius: 0;
-			    display: block;
-			    float: left;
-			    padding: 0 2px;
-			    margin: 0;
-			    text-align: center;
-			    opacity: 0.5;
-			    outline: none;
+            > button {
+                background: #fff;
+                border: 0;
+                border-bottom: 1px solid #333;
+                font-size: inherit;
+                font-family: inherit;
+                color: #333;
+                font-weight: inherit;
+                height: 30px;
+                line-height: 4px;
+                text-transform: none;
+                border-radius: 0;
+                display: block;
+                float: left;
+                padding: 0 2px;
+                margin: 0;
+                text-align: center;
+                opacity: 0.5;
+                outline: none;
 
-			    img {
-			    	display: block;
-			    	max-width: 15px;
-			    	max-height: 15px;
-			    	margin: 0 auto;
-			    }
-			}
+                img {
+                    display: block;
+                    max-width: 15px;
+                    max-height: 15px;
+                    margin: 0 auto;
+                }
+            }
 
-			.fontsampler-multiselect-selected {
-				opacity: 1;
-			}
-		}
+            .fontsampler-multiselect-selected {
+                opacity: 1;
+            }
+        }
 
+        .type-tester__slider {
+            margin-top: -3px;
+        }
 
-		.fontsampler-opentype {
-			&.feature-lister__features-empty {
-				display: none;
-			}
+        label.fontsampler-slider {
+            display: block;
+            position: relative;
+            width: 100%;
 
-			.fontsampler-opentype-toggle {
+            // the label above the slider
+            .slider-label {
+                padding-right: 3em;
+                width: 100%;
+                display: block;
+                height: 2em;
+                overflow: hidden;
+            }
 
-			}
+            // the value above the slider
+            .slider-value {
+                position: absolute;
+                right: 5px;
+                top: 0;
+            }
+        }
 
-			.fontsampler-opentype-features {
-				display: none;
-				position: absolute;
-				right: 0;
-				top: 35px;
-				text-align: right;
-				background: #ffffff;
-				height: auto;
-				text-align: left;
-				padding: 5px;
-				width: 100%;
-				z-index: 10;
+        // several specific blocks:
 
-				&.shown {
-					display: block;
-				}
+        // dropdown for font family picker OR font family name if single font
+        .fontsampler-ui-block-fontpicker {
+            .fontsampler-font-label label {
+                display: block;
+                height: 30px;
+            }
+        }
 
-				button.fontsampler-toggle {
-					height: 20px;
-					width: 20px;
-				}
+        // links for buy and specimen download
+        .fontsampler-ui-block-buy,
+        .fontsampler-ui-block-specimen {
+            a {
+                border: 0;
+                border-bottom: 1px solid #333;
+                box-shadow: none;
+                display: block;
+                height: 100%;
+                text-decoration: none !Important;
+            }
+        }
 
-				fieldset {
-					display: block;
-					margin: 0;
-					border: 0;
-					height: auto;
-					padding: 10px;
+        // the actual container of the type sample
+        .fontsampler, .type-tester__content {
+            clear: both;
+            margin-bottom: 20px;
+            margin-top: 0.25em;
+            transition: all 0.2s ease-out;
+            padding: 0.25em 0.15em;
 
-					label {
-						float: left;
-						width: 50%;
-					}
-				}
-			}
-		}
-	}
+            &:focus {
+                outline: none;
+            }
 
-	// the actual container of the type sample
-	.fontsampler, .type-tester__content {
-	    clear: both;
-	    margin-bottom: 20px;
-		margin-top: 0.25em;
-		transition: all 0.2s ease-out;
-		padding: 0.25em 0.15em;
+            // force single line when single line
+            &.fontsampler-is-singleline {
+                overflow-x: hidden;
+                overflow-y: visible;
+                white-space: nowrap;
+            }
 
-		&:focus {
-			outline: none;
-		}
+            &.invert {
+                color: #eee;
+                background: #333;
+            }
+        }
 
-		// force single line when single line
-		&.fontsampler-is-singleline {
-			overflow-x: hidden;
-			overflow-y: visible;
-			white-space: nowrap;
-		}
-	}
+        .fontsampler-opentype {
+            &.feature-lister__features-empty {
+                display: none;
+            }
+
+            .fontsampler-opentype-features {
+                display: none;
+                position: absolute;
+                right: 0;
+                top: 35px;
+                text-align: right;
+                background: #ffffff;
+                height: auto;
+                text-align: left;
+                padding: 5px;
+                width: 100%;
+                z-index: 10;
+
+                &.shown {
+                    display: block;
+                }
+
+                button.fontsampler-toggle {
+                    height: 20px;
+                    width: 20px;
+                }
+
+                fieldset {
+                    display: block;
+                    margin: 0;
+                    border: 0;
+                    height: auto;
+                    padding: 10px;
+
+                    label {
+                        float: left;
+                        width: 50%;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.blocks(@cols) {
+    .fontsampler-ui-block {
+        &.column {
+            width: 100% / @cols;
+        }
+        &.inline {}
+        &.full {
+            width: 100%;
+        }
+    }
 }

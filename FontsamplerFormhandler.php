@@ -26,6 +26,7 @@ class FontsamplerFormhandler {
 			'invert',
 			'opentype',
 			'multiline',
+			'fontpicker',
 		);
 	}
 
@@ -108,8 +109,8 @@ class FontsamplerFormhandler {
 		$data['is_ltr']       = ! empty( $this->post['is_ltr'] ) && $this->post['is_ltr'] == "1" ? 1 : 0;
 		$data['ui_order']     = $this->post['ui_order'];
 		$data['initial_font'] = $this->handle_set_get_initial_font( $inlineFontIds );
-		$data['buy_url']      = ! empty( $this->post['buy_url'] ) ? $this->post['buy_url'] : "";
-		$data['specimen_url'] = ! empty( $this->post['specimen_url'] ) ? $this->post['specimen_url'] : "";
+		$data['buy']          = ! empty( $this->post['buy'] ) ? $this->post['buy'] : "";
+		$data['specimen']     = ! empty( $this->post['specimen'] ) ? $this->post['specimen'] : "";
 
 		$set_id = null;
 		// save the fontsampler set to the DB
