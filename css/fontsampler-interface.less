@@ -158,12 +158,17 @@
         .fontsampler-ui-block-buy,
         .fontsampler-ui-block-specimen {
             a {
-                border: 0;
-                border-bottom: 1px solid #333;
                 box-shadow: none;
-                display: block;
+                display: inline-block;
                 height: 100%;
+                width: auto;
                 text-decoration: none !Important;
+
+                img {
+                    display: block;
+                    max-height: 30px;
+                    width: auto;
+                }
             }
         }
 

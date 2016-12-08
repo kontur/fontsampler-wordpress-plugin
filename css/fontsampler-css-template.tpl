@@ -43,7 +43,9 @@
 .fontsampler-interface .selectric .button,
 .fontsampler-wrapper .fontsampler-interface .fontsampler-multiselect > button,
 .fontsampler-interface .rangeslider__fill,
-.fontsampler-ui-block-fontpicker .fontsampler-font-label label {
+.fontsampler-ui-block-fontpicker .fontsampler-font-label label,
+.fontsampler-ui-block-buy a,
+.fontsampler-ui-block-specimen a {
     border-bottom: 1px solid @css_color_line;
 }
 .fontsampler-interface .fontsampler-opentype-features {

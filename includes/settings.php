@@ -157,8 +157,7 @@
 
 	<br><br><br>
 
-	<p>The following link labels and images can be overwritten individually for each Fontsampler.
-		The image is used when provided, otherwise the label text is used to create a text link.</p>
+	<p>The image is used when provided, otherwise the label text is used to create a text link.</p>
 
 	<label>
 		<span class="setting-description">Default label of the "Buy" link (if supplied):</span>
@@ -207,7 +206,7 @@
 		<textarea name="sample_texts" cols="60" rows="10"><?php echo $defaults['sample_texts']; ?></textarea>
 	</label>
 
-	
+
 	<br><br><br>
 
 	<div class="fontsampler-admin-settings-styling">

@@ -65,9 +65,9 @@
 					if ( $set['fontpicker'] ) :
 						if ( sizeof( $fonts ) > 1 ) : ?>
 							<div class="font-lister"></div>
-							<?php else: ?>
+						<?php else: ?>
 							<div class="fontsampler-font-label"><label></label></div>
-							<?php endif; ?>
+						<?php endif; ?>
 					<?php endif;
 					break;
 
@@ -86,14 +86,16 @@
 				case 'alignment':
 					if ( $set['alignment'] ) : ?>
 						<div class="fontsampler-multiselect three-items" data-name="alignment">
-							<button <?php if ( isset( $set['is_ltr'] ) && $set['is_ltr'] == "1" ) : echo 'class="fontsampler-multiselect-selected"'; endif; ?>
+							<button <?php if ( isset( $set['is_ltr'] ) && $set['is_ltr'] == "1" ) :
+								echo 'class="fontsampler-multiselect-selected"'; endif; ?>
 								data-value="left"><img
 									src="<?php echo plugin_dir_url( __FILE__ ); ?>../icons/align-left.svg">
 							</button>
 							<button data-value="center"><img
 									src="<?php echo plugin_dir_url( __FILE__ ); ?>../icons/align-center.svg">
 							</button>
-							<button <?php if ( isset( $set['is_ltr'] ) && $set['is_ltr'] == "0" ) : echo 'class="fontsampler-multiselect-selected"'; endif; ?>
+							<button <?php if ( isset( $set['is_ltr'] ) && $set['is_ltr'] == "0" ) :
+								echo 'class="fontsampler-multiselect-selected"'; endif; ?>
 								data-value="right"><img
 									src="<?php echo plugin_dir_url( __FILE__ ); ?>../icons/align-right.svg">
 							</button>
@@ -129,13 +131,35 @@
 
 				case 'buy':
 					if ( $set['buy'] ) : ?>
-						<a href="<?php echo $set['buy']; ?>"><?php echo $options['buy_label']; ?></a>
+						<a href="<?php echo $set['buy']; ?>" target="_blank">
+							<?php
+							if ( $options['buy_image'] ):
+								$image_src = wp_get_attachment_image_src( $options['buy_image'], 'full' );
+								?>
+								<img class="fontsampler-interface-link-image"
+								     src="<?php echo $image_src[0]; ?>"
+								     alt="<?php echo $options['buy_label']; ?>">
+							<?php else: ?>
+								<?php echo $options['buy_label']; ?>
+							<?php endif; ?>
+						</a>
 					<?php endif;
 					break;
 
 				case 'specimen':
 					if ( $set['specimen'] ) : ?>
-						<a href="<?php echo $set['specimen']; ?>"><?php echo $options['specimen_label']; ?></a>
+						<a href="<?php echo $set['specimen']; ?>" target="_blank">
+							<?php
+							if ( $options['specimen_image'] ):
+								$image_src = wp_get_attachment_image_src( $options['specimen_image'], 'full' );
+								?>
+								<img class="fontsampler-interface-link-image"
+								     src="<?php echo $image_src[0]; ?>"
+								     alt="<?php echo $options['specimen_label']; ?>">
+							<?php else: ?>
+								<?php echo $options['specimen_label']; ?>
+							<?php endif; ?>
+						</a>
 					<?php endif;
 					break;
 

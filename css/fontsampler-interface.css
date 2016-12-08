@@ -385,12 +385,17 @@
 }
 .fontsampler-wrapper .fontsampler-interface .fontsampler-ui-block-buy a,
 .fontsampler-wrapper .fontsampler-interface .fontsampler-ui-block-specimen a {
-  border: 0;
-  border-bottom: 1px solid #333;
   box-shadow: none;
-  display: block;
+  display: inline-block;
   height: 100%;
+  width: auto;
   text-decoration: none !Important;
+}
+.fontsampler-wrapper .fontsampler-interface .fontsampler-ui-block-buy a img,
+.fontsampler-wrapper .fontsampler-interface .fontsampler-ui-block-specimen a img {
+  display: block;
+  max-height: 30px;
+  width: auto;
 }
 .fontsampler-wrapper .fontsampler-interface .fontsampler,
 .fontsampler-wrapper .fontsampler-interface .type-tester__content {
