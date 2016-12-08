@@ -21,6 +21,8 @@ require_once( 'FontsamplerHelpers.php' );
 require_once( 'FontsamplerPagination.php' );
 require_once( 'FontsamplerMessages.php' );
 
+require_once( 'vendor/oyejorge/less.php/lessc.inc.php');
+
 global $wpdb;
 $f = new FontsamplerPlugin( $wpdb );
 

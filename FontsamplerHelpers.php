@@ -8,9 +8,11 @@
 class FontsamplerHelpers {
 
 	private $fontsampler;
+	private $less;
 
 	function FontsamplerHelpers( $fontsampler ) {
 		$this->fontsampler = $fontsampler;
+		$this->less        = new Less_Parser( array( 'compress' => true ) );
 	}
 
 	/**
@@ -39,28 +41,30 @@ class FontsamplerHelpers {
 	 * @param $settings db row of setting params as array
 	 */
 	function write_css_from_settings( $settings ) {
+		$input  = plugin_dir_path( __FILE__ ) . 'css/fontsampler-interface.less';
+		$output = plugin_dir_path( __FILE__ ) . 'css/fontsampler-css.css';
+
 		// reduce passed in settings row to only values for keys starting with css_ and prefix those keys with an @ for
 		// matching and replacing
-
-		$settings_preped = array();
+		$settings_less_vars = array();
 		foreach ( $settings as $key => $value ) {
 			if ( false !== strpos( $key, 'css_' ) ) {
-				$settings_preped[ '@' . $key ] = $value;
+				$settings_less_vars[ $key ] = $value;
 			}
 		}
 
-		$template_path = plugin_dir_path( __FILE__ ) . 'css/fontsampler-css-template.tpl';
-		$styles_path   = plugin_dir_path( __FILE__ ) . 'css/fontsampler-interface.css';
-		if ( file_exists( $template_path ) && file_exists( $styles_path ) ) {
-			$template = file_get_contents( $template_path );
-			$template = str_replace( array_keys( $settings_preped ), $settings_preped, $template );
-			$styles   = file_get_contents( $styles_path );
+		if ( file_exists( $input ) ) {
+			try {
+				$this->less->parseFile( $input );
+				$this->less->ModifyVars( $settings_less_vars );
+				$css = $this->less->getCss();
+			} catch ( Exception $e ) {
+				$error_message = $e->getMessage();
+				return false;
+			}
 
 			// concat the base styles and the replaced template into the default css file
-			if ( file_put_contents( plugin_dir_path( __FILE__ ) . 'css/fontsampler-css.css', array(
-				$styles,
-				$template,
-			) ) ) {
+			if ( file_put_contents( $output, $css ) ) {
 				return true;
 			}
 		}

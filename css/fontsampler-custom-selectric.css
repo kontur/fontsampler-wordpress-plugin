@@ -40,7 +40,6 @@
   height: 30px;
   color: #333333;
   text-align: center;
-  font: 0/0 a;
   *font: 1px Lucida Sans Unicode, Arial Unicode MS, Arial;
 }
 .selectric .button:after {
@@ -108,7 +107,6 @@
   height: 1px !important;
   outline: none !important;
   border: none !important;
-  *font: NaN a !important;
   background: none !important;
 }
 .selectric-temp-show {

@@ -40,7 +40,6 @@
   height: 30px;
   color: #333333;
   text-align: center;
-  font: 0/0 a;
   *font: 1px Lucida Sans Unicode, Arial Unicode MS, Arial;
 }
 .selectric .button:after {
@@ -108,7 +107,6 @@
   height: 1px !important;
   outline: none !important;
   border: none !important;
-  *font: NaN a !important;
   background: none !important;
 }
 .selectric-temp-show {
@@ -454,3 +452,57 @@
   float: left;
   width: 50%;
 }
+/* css_color_text */
+.fontsampler-interface .type-tester__content {
+  color: #333333;
+}
+.fontsampler-interface .type-tester__content.invert {
+  background: #333333;
+}
+/* css_color_background */
+.fontsampler-interface .type-tester__content {
+  background: #ffffff;
+}
+.fontsampler-interface .type-tester__content.invert {
+  color: #ffffff;
+}
+/* css_color_label */
+/* css_size_label */
+/* css_fontfamily_label */
+.fontsampler-interface .fontsampler-slider .slider-label,
+.fontsampler-interface .fontsampler-slider .slider-value,
+.fontsampler-interface .selectric .label,
+.fontsampler-interface .selectric-items li,
+.fontsampler-ui-block-fontpicker .fontsampler-font-label label {
+  color: #333333;
+  font-size: inherit;
+  font-family: inherit;
+}
+/* css_color_highlight */
+.fontsampler-interface .selectric-items {
+  background: #efefef;
+}
+/* css_color_highlight_hover */
+.fontsampler-interface .selectric-items li:hover {
+  background: #dedede;
+}
+/* css_color_line */
+.fontsampler-interface .selectric-open .selectric,
+.fontsampler-interface .selectric .label,
+.fontsampler-interface .selectric .button,
+.fontsampler-wrapper .fontsampler-interface .fontsampler-multiselect > button,
+.fontsampler-interface .rangeslider__fill,
+.fontsampler-ui-block-fontpicker .fontsampler-font-label label,
+.fontsampler-ui-block-buy a,
+.fontsampler-ui-block-specimen a {
+  border-bottom: 1px solid #333333;
+}
+.fontsampler-interface .fontsampler-opentype-features {
+  border: 1px solid #333333;
+}
+/* css_color_handle */
+.fontsampler-interface .rangeslider__handle {
+  background: #333333;
+}
+/* css_color_icon_active */
+/* css_color_icon_inactive */
