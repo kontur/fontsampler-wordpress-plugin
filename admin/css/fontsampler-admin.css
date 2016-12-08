@@ -105,6 +105,19 @@
 #fontsampler-admin .form-settings label input.fontsampler-admin-slider-label {
   width: 15em;
 }
+#fontsampler-admin .fontsampler-setting-image .fontsampler-upload-wrapper {
+  display: inline-block;
+  width: 10em;
+}
+#fontsampler-admin .fontsampler-setting-image .fontsampler-upload-wrapper .custom-img-container {
+  max-width: 100%;
+  max-height: 30px;
+  position: relative;
+}
+#fontsampler-admin .fontsampler-setting-image .fontsampler-upload-wrapper .custom-img-container img {
+  display: block;
+  max-height: 30px;
+}
 #fontsampler-admin #fontsampler-fontset-list li select {
   width: 22.25em;
 }

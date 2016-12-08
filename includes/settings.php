@@ -155,19 +155,43 @@
 		</div>
 	</label>
 
-	<br>
+	<br><br><br>
+
+	<p>The following link labels and images can be overwritten individually for each Fontsampler.
+		The image is used when provided, otherwise the label text is used to create a text link.</p>
 
 	<label>
-		<span class="setting-description">Label of the "Buy" link (if supplied):</span>
+		<span class="setting-description">Default label of the "Buy" link (if supplied):</span>
 		<input type="text" name="buy_label" class="fontsampler-admin-slider-label"
 		       value="<?php echo $defaults['buy_label']; ?>"/>
 	</label>
+	<label class="fontsampler-setting-image">
+		<span class="setting-description">Default image of the "Buy" link (if supplied):</span>
+		<?php
+		$image_id   = $defaults['buy_image'];
+		$image_name = 'buy_image';
+		include( "fontsampler-media-upload.php" );
+		?>
+		<br>
+		<small>Recommended size about 200 x 60 pixels</small>
+	</label>
 
 	<label>
-		<span class="setting-description">Label of the "Specimen" link (if supplied):</span>
+		<span class="setting-description">Default label of the "Specimen" link (if supplied):</span>
 		<input type="text" name="specimen_label" class="fontsampler-admin-slider-label"
 		       value="<?php echo $defaults['specimen_label']; ?>"/>
 	</label>
+	<label class="fontsampler-setting-image">
+		<span class="setting-description">Default image of the "Buy" link (if supplied):</span>
+		<?php
+		$image_id   = $defaults['specimen_image'];
+		$image_name = 'specimen_image';
+		include( "fontsampler-media-upload.php" );
+		?>
+		<br>
+		<small>Recommended size about 200 x 60 pixels</small>
+	</label>
+	<br><br><br>
 
 	<h2>Common features (UI options)</h2>
 	<small>Updating these defaults will automatically update any fontsamplers that use the defaults.</small>
@@ -177,12 +201,14 @@
 	?>
 
 
-
 	<label>
 		<span class="setting-description styling-description">Sample texts
 		<small>(use simple line breaks for each option to be displayed in the dropdown)</small></span>
 		<textarea name="sample_texts" cols="60" rows="10"><?php echo $defaults['sample_texts']; ?></textarea>
 	</label>
+
+	
+	<br><br><br>
 
 	<div class="fontsampler-admin-settings-styling">
 		<h2>Styling options</h2>
@@ -227,9 +253,11 @@
 
 		<label>
 			<span class="setting-description styling-description">Background color of the dropdown items:</span>
-			<div class="picker"><input type="text" name="css_color_highlight" id="css_color_highlight" class="color-picker"
+			<div class="picker"><input type="text" name="css_color_highlight" id="css_color_highlight"
+			                           class="color-picker"
 			                           value="<?php echo $defaults['css_color_highlight']; ?>"
-			                           data-default-color="""<?php echo $this->settings_defaults['css_color_highlight']; ?>"
+			                           data-default-color="""<?php echo $this->settings_defaults['css_color_highlight']; ?>
+				"
 				/>
 			</div>
 		</label>
@@ -280,19 +308,21 @@
 		</label>
 		-->
 	</div>
+	<br><br><br>
 
 	<h2>Admin interface customizations</h2>
 	<label>
 		<input type="checkbox"
 		       name="admin_hide_legacy_formats"
 		       value="1"
-				<?php if ( $this->admin_hide_legacy_formats ): echo ' checked="checked" '; endif; ?>>
+			<?php if ( $this->admin_hide_legacy_formats ): echo ' checked="checked" '; endif; ?>>
 		<span class="setting-description">Hide legacy webfont formats in admin interface.</span>
 		<small>When activated (recommended) this option hides all but the <span class="filename">WOFF</span> and
 			<span class="filename">WOFF2</span> webfont formats, since those are the formats sufficient for rendering
 			webfonts in modern browsers. Enabling this option de-clutters the interface. Disable only if you explicitly
-		want to upload <span class="filename">EOT</span>, <span class="filename">SVG</span> or
-			<span class="filename">TTF</span> files for the fontsamplers to use.</small>
+			want to upload <span class="filename">EOT</span>, <span class="filename">SVG</span> or
+			<span class="filename">TTF</span> files for the fontsamplers to use.
+		</small>
 	</label>
 	<?php submit_button(); ?>
 </form>

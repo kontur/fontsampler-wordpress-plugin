@@ -116,7 +116,9 @@ class FontsamplerPlugin {
 			'opentype'                  => 0,
 			'fontpicker'                => 0,
 			'buy_label'                 => 'Buy',
+			'buy_image'                 => '',
 			'specimen_label'            => 'Specimen',
+			'specimen_image'            => '',
 		);
 	}
 
@@ -213,6 +215,8 @@ class FontsamplerPlugin {
 		wp_enqueue_style( 'wp-color-picker' );
 		wp_enqueue_style( 'fontsampler-css', $this->helpers->get_css_file() );
 		wp_enqueue_style( 'fontsampler_admin_css', plugin_dir_url( __FILE__ ) . '/admin/css/fontsampler-admin.css', false, '1.0.0' );
+
+		wp_enqueue_media();
 	}
 
 

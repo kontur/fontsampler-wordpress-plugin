@@ -128,7 +128,9 @@ class FontsamplerDatabase {
 			`opentype` tinyint(1) unsigned NOT NULL DEFAULT '0',
 			`fontpicker` tinyint( 1 ) NOT NULL DEFAULT '0',
 			`buy_label` VARCHAR(255) DEFAULT 'Buy',
+			`buy_image` int( 11 ) unsigned DEFAULT NULL,
 			`specimen_label` VARCHAR(255) DEFAULT 'Specimen',
+			`specimen_image` int( 11 ) unsigned DEFAULT NULL,
 			PRIMARY KEY (`id`)
 			) DEFAULT CHARSET=utf8";
 		$this->wpdb->query( $sql );
@@ -197,7 +199,9 @@ class FontsamplerDatabase {
 			),
 			'0.1.1' => array(
 				'ALTER TABLE ' . $this->table_settings . " ADD `buy_label` VARCHAR(255) DEFAULT 'Buy'",
+				'ALTER TABLE ' . $this->table_settings . " ADD `buy_image` int( 11 ) unsigned DEFAULT NULL",
 				'ALTER TABLE ' . $this->table_settings . " ADD `specimen_label` VARCHAR(255) DEFAULT 'Specimen'",
+				'ALTER TABLE ' . $this->table_settings . " ADD `specimen_image` int( 11 ) unsigned DEFAULT NULL",
 				'ALTER TABLE ' . $this->table_settings . " ADD `fontpicker` tinyint( 1 ) NOT NULL DEFAULT '0'",
 				'ALTER TABLE ' . $this->table_sets . " ADD `buy_url` VARCHAR(255) DEFAULT NULL",
 				'ALTER TABLE ' . $this->table_sets . " ADD `specimen_url` VARCHAR(255) DEFAULT NULL",
