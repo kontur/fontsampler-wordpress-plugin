@@ -49,6 +49,7 @@
         .fontsampler-ui-block {
             box-sizing: border-box;
             float: left;
+            line-height: 1em;
 
             &.fontsampler-ui-block-fontsampler {
                 height: auto;
@@ -166,6 +167,10 @@
                     max-height: 30px;
                     width: auto;
                 }
+
+                .fontsampler-interface-link-text {
+                    display: block;
+                }
             }
         }
 
@@ -260,8 +265,8 @@
 @css_color_highlight_hover: #dedede;
 @css_color_line: #333333;
 @css_color_handle: #333333;
-@css_column_gutter: 5px;
-@css_row_height: 100px;
+@css_column_gutter: 10px;
+@css_row_height: 30px;
 @css_row_gutter: 10px;
 
 /* css_color_text */
@@ -328,7 +333,10 @@
 
 .fontsampler-interface .fontsampler-ui-block {
     height: @css_row_height;
-    line-height: 1em;
     margin-bottom: @css_row_gutter;
     padding-right: @css_column_gutter;
+}
+
+.fontsampler-interface-link-text {
+    height: @css_row_height;
 }

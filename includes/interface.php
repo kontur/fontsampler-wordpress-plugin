@@ -140,7 +140,7 @@
 								     src="<?php echo $image_src[0]; ?>"
 								     alt="<?php echo $options['buy_label']; ?>">
 							<?php else: ?>
-								<?php echo $options['buy_label']; ?>
+								<span class="fontsampler-interface-link-text"><?php echo $options['buy_label']; ?></span>
 							<?php endif; ?>
 						</a>
 					<?php endif;
@@ -157,7 +157,7 @@
 								     src="<?php echo $image_src[0]; ?>"
 								     alt="<?php echo $options['specimen_label']; ?>">
 							<?php else: ?>
-								<?php echo $options['specimen_label']; ?>
+							<span class="fontsampler-interface-link-text"><?php echo $options['specimen_label']; ?></span>
 							<?php endif; ?>
 						</a>
 					<?php endif;

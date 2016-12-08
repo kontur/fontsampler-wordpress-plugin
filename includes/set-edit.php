@@ -148,12 +148,12 @@
 			<label>
 				<span class="input-description">"Buy" URL for this fontsampler:</span>
 				<input type="text" name="buy" class="fontsampler-admin-slider-label"
-				       value="<?php echo $set['buy']; ?>"/>
+				       value="<?php if ( isset( $set['buy'] ) ): echo $set['buy']; endif; ?>"/>
 			</label>
 			<label>
 				<span class="input-description">"Speciment" URL for this fontsampler:</span>
 				<input type="text" name="specimen" class="fontsampler-admin-slider-label"
-				       value="<?php echo $set['specimen']; ?>"/>
+				       value="<?php if ( isset( $set['specimen'] ) ): echo $set['specimen']; endif; ?>"/>
 			</label>
 		</fieldset>
 	</div>
@@ -164,16 +164,23 @@
 		<div class="fontsampler-admin-column-half">
 			<p>You can customize the layout of interface elements to differ from the defaults.
 				Simply hover any element, then drag and drop it into a new position.
-				When hovering an element you can select the layout of that particular element in the top righthand corner's
+				When hovering an element you can select the layout of that particular element in the top righthand
+				corner's
 				select.</p>
-			<small>Only options you have enabled above will be available for sorting in this preview.</small><br>
+			<small>Only options you have enabled above will be available for sorting in this preview.</small>
+			<br>
 			<small>Note that the font and family displayed below are placeholders.</small>
 		</div>
 		<div class="fontsampler-admin-column-half">
 			<div id="fontsampler-ui-layout-preview-options">
 				<p>You can select the Fontsamplers column layout here. The size of the Fontsampler always depends
-					on its container in the page layout, so Fontsamplers might have an different overall size when rendered
-					in your site's theme. The columns work proportionally and scale with the Fontsampler's container.</p>
+					on its container in the page layout, so Fontsamplers might have an different overall size when
+					rendered
+					in your site's theme. The columns work proportionally and scale with the Fontsampler's
+					container.</p>
+				<?php
+				if ( ! isset( $set['ui_columns'] ) ): $set['ui_columns'] = 3; endif;
+				?>
 				<label class="fontsampler-admin-label-block">
 					<input type="radio" value="1" name="ui_columns"
 						<?php if ( $set['ui_columns'] == 1 ) {
@@ -203,7 +210,11 @@
 
 	<div id="fontsampler-admin-ui-wrapper">
 		<input name="ui_order" type="hidden"
-		       value="<?php if ( ! empty( $set['ui_order'] ) ) : echo $layout->sanitizeString( $set['ui_order'], $set ); endif; ?>">
+		       value="<?php if ( ! empty( $set['ui_order'] ) ) :
+			       echo $layout->sanitizeString( $set['ui_order'], $set );
+		       else:
+			       echo $layout->arrayToString( $layout->getDefaultBlocks(), $set );
+		       endif; ?>">
 
 		<ul id="fontsampler-ui-blocks-list">
 
@@ -217,17 +228,17 @@
 					     data-default-class="<?php echo $layout->blocks[ $item ][0]; ?>">
 						<button class="fontsampler-ui-block-layout-open">&#8633;</button>
 						<div>
-						<?php echo $layout->labels[ $item ]; ?> -block layout:
-						<?php foreach ( $layout->blocks[ $item ] as $cl ): ?>
-							<label><input type="radio"
-							              value="<?php echo $cl; ?>"
-							              data-target="<?php echo $item; ?>"
-							              name="layout_class_<?php echo $item; ?>"
-									<?php if ( $cl === $class ) {
-										echo ' checked="checked" ';
-									} ?>><span><?php echo $cl; ?></span>
-							</label>
-						<?php endforeach; ?>
+							<?php echo $layout->labels[ $item ]; ?> -block layout:
+							<?php foreach ( $layout->blocks[ $item ] as $cl ): ?>
+								<label><input type="radio"
+								              value="<?php echo $cl; ?>"
+								              data-target="<?php echo $item; ?>"
+								              name="layout_class_<?php echo $item; ?>"
+										<?php if ( $cl === $class ) {
+											echo ' checked="checked" ';
+										} ?>><span><?php echo $cl; ?></span>
+								</label>
+							<?php endforeach; ?>
 						</div>
 					</div>
 				</li>

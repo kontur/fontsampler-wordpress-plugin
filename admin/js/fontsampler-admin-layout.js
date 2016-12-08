@@ -54,7 +54,6 @@ define(['jquery'], function ($) {
          */
         $admin.find("input[name=buy],input[name=specimen]").on("change keyup", onUrlInput);
         function onUrlInput() {
-            console.log($(this).val());
             var item = $(this).attr("name"),
                 val = $.trim($(this).val()),
                 included = inUIOrder(item);
@@ -205,21 +204,12 @@ define(['jquery'], function ($) {
 
             if (checked) {
                 if (!inUIOrder(item)) {
-                    console.log("add to ui order");
-                    //add item to ui_order, reload
                     addToUIOrder(item);
-                    // get layout value for item from defaults list
-
                     reloadPreview();
                 }
             } else {
                 if (inUIOrder(item)) {
                     removeFromUIOrder(item);
-                    console.log("remove from ui order");
-
-                    // after updating the ui_order string, just reload the preview
-                    // with those new settings instead of trying to mess around in
-                    // the DOM
                     reloadPreview();
                 }
             }

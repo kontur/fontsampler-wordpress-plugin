@@ -55,8 +55,8 @@ class FontsamplerDatabase {
                 `default_features` tinyint( 1 ) NOT NULL DEFAULT '1',
                 `default_options` tinyint( 1 ) NOT NULL DEFAULT '0',
                 `initial_font` int( 10 ) unsigned DEFAULT NULL,
-                `buy_url` VARCHAR( 255 ) DEFAULT NULL,
-				`specimen_url` VARCHAR( 255 ) DEFAULT NULL,
+                `buy` VARCHAR( 255 ) DEFAULT NULL,
+				`specimen` VARCHAR( 255 ) DEFAULT NULL,
 			  PRIMARY KEY ( `id` )
 			) DEFAULT CHARSET=utf8";
 
@@ -209,8 +209,8 @@ class FontsamplerDatabase {
 				'ALTER TABLE ' . $this->table_settings . " ADD `css_column_gutter` tinytext NOT NULL",
 				'ALTER TABLE ' . $this->table_settings . " ADD `css_row_height` tinytext NOT NULL",
 				'ALTER TABLE ' . $this->table_settings . " ADD `css_row_gutter` tinytext NOT NULL",
-				'ALTER TABLE ' . $this->table_sets . " ADD `buy_url` VARCHAR(255) DEFAULT NULL",
-				'ALTER TABLE ' . $this->table_sets . " ADD `specimen_url` VARCHAR(255) DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_sets . " ADD `buy` VARCHAR(255) DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_sets . " ADD `specimen` VARCHAR(255) DEFAULT NULL",
 				'ALTER TABLE ' . $this->table_sets . " ADD `ui_columns` tinyint( 1 ) NOT NULL DEFAULT '3'",
 				'ALTER TABLE ' . $this->table_sets . " ADD `fontpicker` tinyint( 1 ) NOT NULL DEFAULT '0'",
 			)

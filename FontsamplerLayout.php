@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Class FontsamplerLayout
  *
@@ -47,13 +48,12 @@ class FontsamplerLayout {
 
 
 	/**
-	 * @param $string: ui_order from db
-	 * @param null $set: set against which to validate and supplement
+	 * @param $string   : ui_order from db
+	 * @param null $set : set against which to validate and supplement
 	 *
 	 * @return array: Array or layout blocks and their class as value
 	 */
 	public function stringToArray( $string, $set = null ) {
-		// tmp
 		$string = $this->sanitizeString( $string, $set );
 		$array  = array();
 
@@ -70,8 +70,23 @@ class FontsamplerLayout {
 	}
 
 
+	public function arrayToString( $blocks, $set = null ) {
+		$string = '';
+		foreach ( $blocks as $item => $class ) {
+			$string .= $item . '_' . $class . ',';
+		}
+		$string = rtrim( $string, ',' );
+
+		if ( ! empty ( $set ) ) {
+			$string = $this->sanitizeString( $string, $set );
+		}
+
+		return $string;
+	}
+
+
 	/**
-	 * @param $string: ui_order db value
+	 * @param $string   : ui_order db value
 	 * @param null $set : fontsampler_set against which to validate the ui_order
 	 *                  labels to make sure they do exist in that way
 	 *
@@ -104,7 +119,7 @@ class FontsamplerLayout {
 			 */
 
 			// reduce set to actual block relevant values
-			$set = array_intersect_key( $set, $this->blocks );
+			$set      = array_intersect_key( $set, $this->blocks );
 			$newarray = array();
 
 			// check of all the items in UI_ORDER are really be based on set
@@ -125,18 +140,18 @@ class FontsamplerLayout {
 			}
 
 			// check through all set items and check that those are in the ui_order
-			foreach ($set as $setblock => $value) {
-				if (!empty($value)) {
+			foreach ( $set as $setblock => $value ) {
+				if ( ! empty( $value ) ) {
 					// pass $uiOrder in, and get a name of all the blocks (without their layout suffix)
-					$justblocknames = array_map( function ($blockstring) {
+					$justblocknames = array_map( function ( $blockstring ) {
 						return substr( $blockstring, 0, strpos( $blockstring, '_' ) );
-					}, $uiOrder);
+					}, $uiOrder );
 
 					// if one of the set's blocks has a 1 value but is not in the array of blocks from $ui_order
 					// push it in
-					if (!in_array($setblock, $justblocknames)) {
+					if ( ! in_array( $setblock, $justblocknames ) ) {
 						// echo "<br>missing $setblock from ui_order but it is in set";
-						array_push($newarray, $setblock . '_' . $this->blocks[$setblock][0]);
+						array_push( $newarray, $setblock . '_' . $this->blocks[ $setblock ][0] );
 					}
 				}
 			}
