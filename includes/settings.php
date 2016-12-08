@@ -287,6 +287,23 @@
 			</div>
 		</label>
 
+
+		<label>
+			<span class="setting-description styling-description">UI columns gutter:<br>
+			<small>You can use any valid <code>size</code> CSS declaration (Default: 10px).</small></span>
+			<input type="text" name="css_column_gutter" value="<?php echo $defaults['css_column_gutter']; ?>"/>
+		</label>
+		<label>
+			<span class="setting-description styling-description">UI rows gutter:<br>
+			<small>You can use any valid <code>size</code> CSS declaration (Default: 10px).</small></span>
+			<input type="text" name="css_row_gutter" value="<?php echo $defaults['css_row_gutter']; ?>"/>
+		</label>
+		<label>
+			<span class="setting-description styling-description">UI rows height:<br>
+			<small>You can use any valid <code>size</code> CSS declaration (Default: 30px).</small></span>
+			<input type="text" name="css_row_height" value="<?php echo $defaults['css_row_height']; ?>"/>
+		</label>
+
 		<!--
 		<label>
 			<span class="setting-description">Color of the UI icons when selected:</span>

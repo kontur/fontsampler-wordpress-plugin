@@ -49,10 +49,6 @@
         .fontsampler-ui-block {
             box-sizing: border-box;
             float: left;
-            height: 30px;
-            line-height: 30px;
-            margin-bottom: 10px;
-            padding-right: 10px;
 
             &.fontsampler-ui-block-fontsampler {
                 height: auto;
@@ -151,6 +147,7 @@
             .fontsampler-font-label label {
                 display: block;
                 height: 30px;
+                overflow: hidden;
             }
         }
 
@@ -160,7 +157,7 @@
             a {
                 box-shadow: none;
                 display: inline-block;
-                height: 100%;
+                height: auto;
                 width: auto;
                 text-decoration: none !Important;
 
@@ -254,7 +251,6 @@
 }
 
 
-
 @css_color_text: #333;
 @css_color_background: #fff;
 @css_color_label: #333;
@@ -264,6 +260,9 @@
 @css_color_highlight_hover: #dedede;
 @css_color_line: #333333;
 @css_color_handle: #333333;
+@css_column_gutter: 5px;
+@css_row_height: 100px;
+@css_row_gutter: 10px;
 
 /* css_color_text */
 .fontsampler-interface .type-tester__content {
@@ -327,3 +326,9 @@
 /* css_color_icon_active */
 /* css_color_icon_inactive */
 
+.fontsampler-interface .fontsampler-ui-block {
+    height: @css_row_height;
+    line-height: 1em;
+    margin-bottom: @css_row_gutter;
+    padding-right: @css_column_gutter;
+}

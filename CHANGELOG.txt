@@ -3,4 +3,5 @@
 - Fontsampler layout preview now renders an actual mock Fontsampler in the admin interface to better visualise the layout
 - Added option to add links for Buying and viewing a Specimen to the interface
 - Added default label text and images for those two links to the settings
+- Added column and row gutter, as well as row height as customisable settings
 - Improved under the hood generation of css files when customising Fontsampler styling

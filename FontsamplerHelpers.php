@@ -41,7 +41,7 @@ class FontsamplerHelpers {
 	 * @param $settings db row of setting params as array
 	 */
 	function write_css_from_settings( $settings ) {
-		$input  = plugin_dir_path( __FILE__ ) . 'css/fontsampler-interface.less';
+		$input  = plugin_dir_path( __FILE__ ) . 'css/fontsampler-css.less';
 		$output = plugin_dir_path( __FILE__ ) . 'css/fontsampler-css.css';
 
 		// reduce passed in settings row to only values for keys starting with css_ and prefix those keys with an @ for
