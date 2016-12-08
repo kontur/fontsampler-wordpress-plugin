@@ -1,0 +1,6 @@
+# 0.1.1
+- Fontsampler layout preview and manipulation improved, including options for column count and column span of individual user interface elements
+- Fontsampler layout preview now renders an actual mock Fontsampler in the admin interface to better visualise the layout
+- Added option to add links for Buying and viewing a Specimen to the interface
+- Added default label text and images for those two links to the settings
+- Improved under the hood generation of css files when customising Fontsampler styling
