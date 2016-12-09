@@ -163,10 +163,10 @@
 	<div class="fontsampler-admin-column-wrapper">
 		<div class="fontsampler-admin-column-half">
 			<p>You can customize the layout of interface elements to differ from the defaults.
-				Simply hover any element, then drag and drop it into a new position.
-				When hovering an element you can select the layout of that particular element in the top righthand
-				corner's
-				select.</p>
+				Simply hover any element, then <strong style="background: orange; ">DRAG &amp; DROP the orange block</strong> into a new position.<br>
+				When hovering an element you can select the layout of that particular element when hovering the
+				<button>&#8633;</button> button.
+			</p>
 			<small>Only options you have enabled above will be available for sorting in this preview.</small>
 			<br>
 			<small>Note that the font and family displayed below are placeholders.</small>
@@ -199,6 +199,12 @@
 						<?php if ( $set['ui_columns'] == 3 ) {
 							echo ' checked="checked" ';
 						} ?>>3 columns
+				</label>
+				<label class="fontsampler-admin-label-block">
+					<input type="radio" value="4" name="ui_columns"
+						<?php if ( $set['ui_columns'] == 4 ) {
+							echo ' checked="checked" ';
+						} ?>>4 columns
 				</label>
 			</div>
 		</div>

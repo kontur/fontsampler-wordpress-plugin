@@ -15,13 +15,14 @@ define(['jquery'], function ($) {
 
             blockClass = "fontsampler-ui-block-",
             layoutClasses = ["full", "column", "inline"],
-            columnsClasses = "columns-1 columns-2 columns-3",
+            columnsClasses = "columns-1 columns-2 columns-3 columns-4",
             interfaceClass = "fontsampler-interface",
             blockOverlayClass = "fontsampler-ui-block-overlay";
 
         if ($preview.length) {
             reloadPreview();
         }
+
 
         /**
          * Listen for changes to the block layout
@@ -45,6 +46,7 @@ define(['jquery'], function ($) {
             $preview.removeClass(columnsClasses).addClass(colsClass);
             $("." + interfaceClass).removeClass(columnsClasses).addClass(colsClass);
         }
+
 
         /**
          * Listen for changes in the buy and specimen URL input fields
@@ -129,6 +131,7 @@ define(['jquery'], function ($) {
 
             setUIOrder(sortedOrder);
         }
+
 
         $preview.on("mouseenter", ".fontsampler-ui-block", onMouseOverPreviewBlock);
         function onMouseOverPreviewBlock() {
@@ -249,6 +252,7 @@ define(['jquery'], function ($) {
             }
             setUIOrder(newitems.join(","));
         }
+
 
         function addToUIOrder(item) {
             var layout = $(".fontsampler-ui-block-layout[data-item='" + item + "']").data('default-class');
