@@ -118,6 +118,10 @@ class FontsamplerLayout {
 			 *  - if an item is not in ui_order but actually present add to ui_order
 			 */
 
+			// there is no sets "without" the fontsampler ui block, but it's not in the set
+			// per se, so add it for this checking routing
+			$set['fontsampler'] = 1;
+
 			// reduce set to actual block relevant values
 			$set      = array_intersect_key( $set, $this->blocks );
 			$newarray = array();

@@ -19,6 +19,7 @@ class FontsamplerDatabase {
 	private $font_formats;
 	private $fontsampler;
 	private $helpers;
+	private $layout;
 
 	function FontsamplerDatabase( $wpdb, $fontsampler ) {
 		$this->wpdb = $wpdb;
@@ -30,6 +31,7 @@ class FontsamplerDatabase {
 
 		$this->fontsampler = $fontsampler;
 		$this->helpers     = new FontsamplerHelpers( $fontsampler );
+		$this->layout      = new FontsamplerLayout();
 	}
 
 	/*
@@ -376,10 +378,7 @@ class FontsamplerDatabase {
 				WHERE j.set_id = ' . intval( $id ) . '
 				ORDER BY j.`order` ASC';
 
-		$set['fonts']           = $this->wpdb->get_results( $sql, ARRAY_A );
-		$set['ui_order_parsed'] = $this->helpers->parse_ui_order(
-			$this->helpers->prune_ui_order( $set['ui_order'], $set )
-		);
+		$set['fonts'] = $this->wpdb->get_results( $sql, ARRAY_A );
 
 		return $set;
 	}
@@ -527,11 +526,9 @@ class FontsamplerDatabase {
 		// the current defaults
 		foreach ( $this->get_sets() as $set ) {
 			$data = array(
-				'ui_order' => $this->fontsampler->helpers->concat_ui_order(
-					$this->fontsampler->helpers->ui_order_parsed_from( $options, $set )
-				)
+				'ui_order' => $this->layout->sanitizeString( $set['ui_order'] , $set)
 			);
-			$this->wpdb->update( $this->table_sets, $data, array( 'default_features' => '1' ) );
+			$this->wpdb->update( $this->table_sets, $data, array( 'id' => $set['id'], 'default_features' => '1' ) );
 		}
 	}
 

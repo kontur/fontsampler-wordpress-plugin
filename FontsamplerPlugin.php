@@ -158,15 +158,10 @@ class FontsamplerPlugin {
 				}
 			}
 
-			$defaults = $this->db->get_settings();
-
 			// some of these get overwritten from defaults, but list them all here explicitly
-			$options = array_merge( $set, $this->settings_defaults, $defaults );
-			
+			$options = array_merge( $set, $this->settings_defaults, $this->db->get_settings() );
 			$initialFont = isset( $fonts[ $set['initial_font'] ] ) ? $fonts[ $set['initial_font'] ] : false;
-
 			$settings = $this->db->get_settings();
-
 			$layout = new FontsamplerLayout();
 			$blocks = $layout->stringToArray( $set['ui_order'], $set );
 
