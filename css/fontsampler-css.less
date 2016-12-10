@@ -203,22 +203,31 @@
             }
         }
 
-        .fontsampler-opentype {
+        .fontsampler-ui-block-opentype {
             &.feature-lister__features-empty {
                 display: none;
+            }
+
+            .fontsampler-opentype {
+                position: relative;
+            }
+
+            .fontsampler-opentype-toggle img {
+                max-height: 20px;
+                max-width: 20px;
             }
 
             .fontsampler-opentype-features {
                 display: none;
                 position: absolute;
-                right: 0;
+                left: 0;
                 top: 35px;
                 text-align: right;
                 background: #ffffff;
                 height: auto;
                 text-align: left;
                 padding: 5px;
-                width: 100%;
+                width: 30em;
                 z-index: 10;
 
                 &.shown {
@@ -242,6 +251,15 @@
                         width: 50%;
                     }
                 }
+            }
+        }
+
+        .fontsampler-ui-block-invert {
+            button[data-value="positive"] img {
+                background: #fff;
+            }
+            button[data-value="negative"] img {
+                background: #333;
             }
         }
     }

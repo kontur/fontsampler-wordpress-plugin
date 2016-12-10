@@ -120,7 +120,9 @@
 					if ( $set['opentype'] ) : ?>
 						<div class="fontsampler-multiselect one-item fontsampler-opentype feature-lister"
 						     data-name="opentype">
-							<button class="fontsampler-opentype-toggle">OT</button>
+							<button class="fontsampler-opentype-toggle">
+								<img src="<?php echo plugin_dir_url( __FILE__ ); ?>../icons/opentype.svg">
+							</button>
 							<div class="fontsampler-opentype-features">
 								<fieldset class="feature-lister__features--default"></fieldset>
 								<fieldset class="feature-lister__features--optional"></fieldset>
