@@ -4,4 +4,6 @@
 - Added option to add links for Buying and viewing a Specimen to the interface
 - Added default label text and images for those two links to the settings
 - Added column and row gutter, as well as row height as customisable settings
+- Activating the "Invert" UI option will add "fontsampler-inverted" to the <body>, so you can define styles for when it's active (e.g. inverting the overall page background color)
 - Improved under the hood generation of css files when customising Fontsampler styling
+- Improved under the hood admin javascript loading
