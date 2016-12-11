@@ -60,10 +60,14 @@ class FontsamplerLayout {
 		$arr = explode( ',', $string );
 
 		foreach ( $arr as $item ) {
-			$pos           = strpos( $item, '_' );
-			$key           = substr( $item, 0, $pos );
-			$class         = substr( $item, $pos + 1, strlen( $item ) - $pos );
-			$array[ $key ] = $class;
+			if ($item != "|") {
+				$pos           = strpos( $item, '_' );
+				$key           = substr( $item, 0, $pos );
+				$class         = substr( $item, $pos + 1, strlen( $item ) - $pos );
+				$array[ $key ] = $class;
+			} else {
+				$array[ "|" ] = "";
+			}
 		}
 
 		return $array;
@@ -96,14 +100,14 @@ class FontsamplerLayout {
 	public function sanitizeString( $string, $set = null ) {
 
 		// remove no longer used fields or formatting
-		$string = str_replace( '|', ',', $string );
+		//		$string = str_replace( '|', ',', $string );
 		$string = str_replace( 'options', '', $string );
 		$string = str_replace( ',,', ',', $string );
 
 		$uiOrder = array();
 		foreach ( explode( ',', $string ) as $item ) {
 			if ( ! empty( $item ) ) {
-				if ( strpos( $item, '_' ) === false ) {
+				if ( strpos( $item, '_' ) === false && $item != '|' ) {
 					array_push( $uiOrder, $item . '_' . $this->blocks[ $item ][0] );
 				} else {
 					array_push( $uiOrder, $item );
@@ -129,12 +133,16 @@ class FontsamplerLayout {
 			// check of all the items in UI_ORDER are really be based on set
 			// remove those that are in UI_ORDER but not actually present
 			foreach ( $uiOrder as $blockstring ) {
-				$block = substr( $blockstring, 0, strpos( $blockstring, '_' ) );
+				if ($blockstring != "|") {
+					$block = substr( $blockstring, 0, strpos( $blockstring, '_' ) );
 
-				// if an item is in ui_order but not actually present in set remove it
-				if ( ! isset( $set[ $block ] ) || empty( $set[ $block ] ) ) {
-					if ( $block != "fontsampler" ) {
-						// echo "<br>block $block in ui_order but not in set";
+					// if an item is in ui_order but not actually present in set remove it
+					if ( ! isset( $set[ $block ] ) || empty( $set[ $block ] ) ) {
+						if ( $block != "fontsampler" ) {
+							//						echo "<br>block $block in ui_order but not in set";
+						} else {
+							array_push( $newarray, $blockstring );
+						}
 					} else {
 						array_push( $newarray, $blockstring );
 					}
@@ -154,8 +162,8 @@ class FontsamplerLayout {
 					// if one of the set's blocks has a 1 value but is not in the array of blocks from $ui_order
 					// push it in
 					if ( ! in_array( $setblock, $justblocknames ) ) {
-						// echo "<br>missing $setblock from ui_order but it is in set";
-						array_push( $newarray, $setblock . '_' . $this->blocks[ $setblock ][0] );
+						 echo "<br>missing $setblock from ui_order but it is in set";
+//						array_push( $newarray, $setblock . '_' . $this->blocks[ $setblock ][0] );
 					}
 				}
 			}

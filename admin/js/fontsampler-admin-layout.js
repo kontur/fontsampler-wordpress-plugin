@@ -13,11 +13,10 @@ define(['jquery'], function ($) {
             $ui_order = $("input[name=ui_order]"),
             $optionsCheckboxes = $("#fontsampler-options-checkboxes"),
 
-            blockClass = "fontsampler-ui-block-",
             layoutClasses = ["full", "column", "inline"],
             columnsClasses = "columns-1 columns-2 columns-3 columns-4",
             interfaceClass = "fontsampler-interface",
-            blockOverlayClass = "fontsampler-ui-block-overlay";
+            blockMenuClass = "fontsampler-ui-block-menu-open";
 
         if ($preview.length) {
             reloadPreview();
@@ -27,9 +26,9 @@ define(['jquery'], function ($) {
         /**
          * Listen for changes to the block layout
          */
-        $admin.on("change", ".fontsampler-ui-block-layout input[type=radio]", changeBlockClass);
+        $preview.on("change", ".fontsampler-ui-block-overlay input[type=radio]", changeBlockClass);
         function changeBlockClass() {
-            var item = $(this).closest(".fontsampler-ui-block-layout").data("item");
+            var item = $(this).closest(".fontsampler-ui-block-overlay").data("item");
             var $previewBlock = $preview.find(".fontsampler-ui-block[data-block=" + item + "]");
             $previewBlock.removeClass(layoutClasses.join(" ")).addClass($(this).val());
             setUIOrder();
@@ -45,6 +44,9 @@ define(['jquery'], function ($) {
                 colsClass = "columns-" + cols;
             $preview.removeClass(columnsClasses).addClass(colsClass);
             $("." + interfaceClass).removeClass(columnsClasses).addClass(colsClass);
+
+            // trigger resize to make the sliders' bar and handle update implicitly
+            $(document, window).trigger("resize");
         }
 
 
@@ -69,6 +71,33 @@ define(['jquery'], function ($) {
                 removeFromUIOrder(item);
                 reloadPreview();
             }
+        }
+
+
+        $preview.on("click", ".fontsampler-ui-block-settings", onToggleBlockSettings);
+        function onToggleBlockSettings(e) {
+            e.preventDefault();
+            var $block = $(this).closest(".fontsampler-ui-block"),
+                hasMenuClass = $block.hasClass(blockMenuClass);
+
+            $(this).closest(".fontsampler-interface").find("." + blockMenuClass).removeClass(blockMenuClass);
+            if (!hasMenuClass) {
+                $(this).closest(".fontsampler-ui-block").addClass(blockMenuClass);
+            }
+        }
+
+
+        $preview.on("hover", ".fontsampler-ui-block", onHoverUiBlock);
+        function onHoverUiBlock() {
+            $(this).closest(".fontsampler-interface").find("." + blockMenuClass).removeClass(blockMenuClass);
+        }
+
+
+        $preview.on("click", ".fontsampler-ui-block-add-break", onAddRowBreak);
+        function onAddRowBreak(e) {
+            e.preventDefault();
+            $(this).closest(".fontsampler-ui-block").after('<div class="fontsampler-interface-row-break">ROW BREAK</div>');
+            setUIOrder();
         }
 
 
@@ -116,20 +145,28 @@ define(['jquery'], function ($) {
          * compile a new and updated ui_order
          */
         function onSortEnd() {
-            var sortedOrder = $(".fontsampler-interface .fontsampler-ui-block").map(function () {
+            var sortedOrder = $(".fontsampler-interface").children().map(function () {
                 var cssClasses = $(this).attr("class").split(" "),
-                    layoutClass = "";
-                for (var i = 0; i < cssClasses.length; i++) {
-                    var cl = cssClasses[i];
-                    if (layoutClasses.indexOf(cl) > -1) {
-                        layoutClass = cl;
-                        break;
+                    layoutClass = "",
+                    isRowBreak = $(this).hasClass("fontsampler-interface-row-break");
+
+                if (isRowBreak) {
+                    return "|";
+                } else {
+                    for (var i = 0; i < cssClasses.length; i++) {
+                        var cl = cssClasses[i];
+                        if (layoutClasses.indexOf(cl) > -1) {
+                            layoutClass = cl;
+                            break;
+                        }
                     }
+                    return $(this).data('block') + "_" + layoutClass;
                 }
-                return $(this).data('block') + "_" + layoutClass;
             }).get().join(",");
 
             setUIOrder(sortedOrder);
+
+            return sortedOrder;
         }
 
 
@@ -138,7 +175,7 @@ define(['jquery'], function ($) {
 
             // only add the overlay on the first hover
             // after mouseleave if will be hidden by css
-            if ($(this).find("." + blockOverlayClass).length > 0)
+            if ($(this).find(".fontsampler-ui-block-overlay").length > 0)
                 return;
 
             // copy the radios into the overlay from the $list (which has all
@@ -146,14 +183,25 @@ define(['jquery'], function ($) {
             var item = $(this).data("block"),
                 $clone = $list.find("div[data-item=" + item + "]").clone();
 
-            $(this).append('<div class="' + blockOverlayClass + '"></div>');
-            $(this).find("." + blockOverlayClass).html($clone);
+            $(this).append($clone);
         }
 
-        // $preview.on("mouseleave", ".fontsampler-ui-block", onMouseOutPreviewBlock);
-        // function onMouseOutPreviewBlock () {
-        //     //$(this).find("." + blockOverlayClass).remove();
-        // }
+
+        $preview.on("mouseenter", ".fontsampler-interface-row-break", onMouseOverRowBreak);
+        function onMouseOverRowBreak() {
+            if ($(this).find(".fontsampler-delete-row-break").length > 0)
+                return;
+
+            $(this).append('<button class="fontsampler-delete-row-break">&times;</button>');
+        }
+
+
+        $preview.on("click", ".fontsampler-delete-row-break", onDeleteRowBreak);
+        function onDeleteRowBreak(e) {
+            e.preventDefault();
+            $(this).closest(".fontsampler-interface-row-break").remove();
+            onSortEnd();
+        }
 
 
         /**
@@ -228,12 +276,7 @@ define(['jquery'], function ($) {
 
 
         function calculateUIOrder() {
-            var order = "";
-            $(".fontsampler-ui-block-layout input[type=radio]:checked").each(function (i, elem) {
-                order = order.concat($(elem).data("target"), '_', $(elem).val()).concat(",");
-            });
-            order = order.slice(0, -1);
-            return order;
+            return onSortEnd();
         }
 
 
@@ -255,7 +298,7 @@ define(['jquery'], function ($) {
 
 
         function addToUIOrder(item) {
-            var layout = $(".fontsampler-ui-block-layout[data-item='" + item + "']").data('default-class');
+            var layout = $(".fontsampler-ui-block-overlay[data-item='" + item + "']").data('default-class');
             var items = [];
             if (!inUIOrder(item)) {
                 items = getUIItems(true);

@@ -270,6 +270,11 @@
   display: block;
   width: 100%;
 }
+.fontsampler-wrapper .fontsampler-interface .fontsampler-interface-row-break {
+  clear: both;
+  height: 1px;
+  width: 100%;
+}
 .fontsampler-wrapper .fontsampler-interface.columns-1 .fontsampler-ui-block.column {
   width: 100%;
 }

@@ -163,9 +163,11 @@
 	<div class="fontsampler-admin-column-wrapper">
 		<div class="fontsampler-admin-column-half">
 			<p>You can customize the layout of interface elements to differ from the defaults.
-				Simply hover any element, then <strong style="background: orange; ">DRAG &amp; DROP the orange block</strong> into a new position.<br>
+				Simply hover any element, then <strong style="background: orange; ">DRAG &amp; DROP the orange
+					block</strong> into a new position.<br>
 				When hovering an element you can select the layout of that particular element when hovering the
-				<button>&#8633;</button> button.
+				<button>&#8633;</button>
+				button.
 			</p>
 			<small>Only options you have enabled above will be available for sorting in this preview.</small>
 			<br>
@@ -229,22 +231,27 @@
 
 			foreach ( $blocks as $item => $class ) : ?>
 				<li>
-					<div class="fontsampler-ui-block-layout"
+					<div class="fontsampler-ui-block-overlay"
 					     data-item="<?php echo $item; ?>"
 					     data-default-class="<?php echo $layout->blocks[ $item ][0]; ?>">
-						<button class="fontsampler-ui-block-layout-open">&#8633;</button>
-						<div>
-							<?php echo $layout->labels[ $item ]; ?> -block layout:
-							<?php foreach ( $layout->blocks[ $item ] as $cl ): ?>
-								<label><input type="radio"
-								              value="<?php echo $cl; ?>"
-								              data-target="<?php echo $item; ?>"
-								              name="layout_class_<?php echo $item; ?>"
-										<?php if ( $cl === $class ) {
-											echo ' checked="checked" ';
-										} ?>><span><?php echo $cl; ?></span>
-								</label>
-							<?php endforeach; ?>
+						<button class="fontsampler-ui-block-settings">
+							<img src="<?php echo plugin_dir_url( __FILE__ ); ?>../icons/settings.svg">
+						</button>
+						<div class="fontsampler-ui-block-options">
+							<button class="fontsampler-ui-block-add-break">Insert row break after</button>
+							<div class="fontsampler-ui-block-layout-classes">
+								<?php echo $layout->labels[ $item ]; ?> -block layout:
+								<?php foreach ( $layout->blocks[ $item ] as $cl ): ?>
+									<label><input type="radio"
+									              value="<?php echo $cl; ?>"
+									              data-target="<?php echo $item; ?>"
+									              name="layout_class_<?php echo $item; ?>"
+											<?php if ( $cl === $class ) {
+												echo ' checked="checked" ';
+											} ?>><span><?php echo $cl; ?></span>
+									</label>
+								<?php endforeach; ?>
+							</div>
 						</div>
 					</div>
 				</li>

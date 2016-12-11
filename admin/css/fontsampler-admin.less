@@ -289,7 +289,8 @@
         position: relative;
 
         &:hover {
-            .fontsampler-ui-block {
+            .fontsampler-ui-block,
+            .fontsampler-interface-row-break {
                 outline: 1px dotted orange;
             }
         }
@@ -307,81 +308,118 @@
             .fontsampler-interface {
                 position: relative;
 
-                .fontsampler-ui-block {
+                // style the otherwise invisible row break so it can be drag and dropped as well
+                .fontsampler-interface-row-break {
+                    cursor: move;
+                    height: 1.5em;
+                    background: #ccc;
+                    font-style: italic;
+                    text-align: center;
+                    margin-bottom: 10px;
                     position: relative;
 
-                    &.fontsampler-ui-block-fontsampler {
-                        .fontsampler-ui-block-layout {
-                            display: none !important;
-                        }
-                    }
-
-                    .fontsampler-ui-block-overlay {
-                        display: none;
-                        .fontsampler-ui-block-layout {
-                            div {
-                                opacity: 0;
-                                display: none;
-                                label {
-                                    display: block;
-                                }
-                            }
-                        }
+                    &:before {
+                        content: "ROW BREAK";
                     }
 
                     &:hover {
-                        cursor: move !important;
                         outline: 1px solid orange;
+                    }
 
+                    .fontsampler-delete-row-break {
+                        position: absolute;
+                        right: 0;
+                        top: 0;
+                        height: 100%;
+                        line-height: 1;
+                        border: none;
+                        background: transparent;
+                        cursor: pointer;
+                        font-weight: bold;
+                    }
+                }
+
+                .fontsampler-ui-block {
+                    position: relative;
+
+                    // on hovering a block show the overlay
+                    &:hover,
+                    &.fontsampler-ui-block-menu-open {
                         .fontsampler-ui-block-overlay {
-                            background: rgba(255, 155, 0, 0.9);
                             display: block;
-                            position: absolute;
-                            height: 100%;
-                            width: 100%;
-                            top: 0;
-                            left: 0;
-                            z-index: 19;
+                            outline: 1px solid orange;
+                        }
+                    }
+
+                    &.fontsampler-ui-block-menu-open {
+                        .fontsampler-ui-block-overlay {
+                            .fontsampler-ui-block-options {
+                                display: block;
+                            }
+                        }
+                    }
+
+                    // the admin overlay of each ui block with buttons for expanding settings and layout options
+                    .fontsampler-ui-block-overlay {
+                        background: rgba(255, 155, 0, 0.9);
+                        box-sizing: border-box;
+                        cursor: move !important;
+                        display: none;
+                        height: 100%;
+                        left: 0;
+                        outline: 1px dotted orange;
+                        opacity: 1;
+                        padding: 10px;
+                        position: absolute;
+                        top: 0;
+                        width: 100%;
+                        z-index: 19;
+
+                        // the button that toggles class settings and adding linebreak
+                        .fontsampler-ui-block-settings {
                             box-sizing: border-box;
+                            border: none;
+                            background: transparent;
+                            cursor: pointer;
+                            display: block;
+                            height: 100%;
+                            outline: none;
+                            padding: 5px;
+                            position: absolute;
+                            right: 0;
+                            top: 0;
+                            width: 30px;
+
+                            img {
+                                display: block;
+                                height: 20px;
+                                width: 20px;
+                            }
+                        }
+
+                        // wrapper that holds line break button and column class radios
+                        .fontsampler-ui-block-options {
+                            border: 2px solid orange;
+                            display: none;
                             padding: 10px;
-                            opacity: 1;
+                            position: absolute;
+                            right: -1px;
+                            top: 100%;
+                            background: rgba(255, 200, 50, 0.9);
+                            min-width: 15em;
+                            width: auto;
 
-                            .fontsampler-ui-block-layout {
-                                position: absolute;
-                                z-index: 29;
-                                right: 0;
-                                background: lightyellow;
-                                top: 31px;
-                                min-width: 8em;
-
-                                &:hover {
-                                    div {
-                                        display: block;
-                                        opacity: 1;
-                                        transition: opacity 0.2s ease-in-out;
-                                    }
-                                }
-
-                                button.fontsampler-ui-block-layout-open {
-                                    position: absolute;
-                                    top: -31px;
-                                    right: 1px;
-                                    height: 30px;
-                                }
-
-                                div {
-                                    outline: 1px solid orange;
-                                    padding: 10px;
-                                    display: none;
-                                    opacity: 0;
-
-                                    label {
-                                        display: block;
-                                        margin: 0.5em 0;
-                                    }
+                            .fontsampler-ui-block-add-break {
+                                margin-bottom: 1em;
+                            }
+                            .fontsampler-ui-block-layout-classes {
+                                label {
+                                    display: block;
+                                    margin: 0.5em 0;
                                 }
                             }
                         }
+
                     }
                 }
             }
@@ -417,6 +455,7 @@
     .fontsampler-initial-font-selection {
         display: inline-block;
     }
+
     .fontsampler-initial-font {
         &.selected {
             span.initial-font-selected {
