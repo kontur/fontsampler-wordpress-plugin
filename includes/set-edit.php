@@ -164,14 +164,11 @@
 		<div class="fontsampler-admin-column-half">
 			<p>You can customize the layout of interface elements to differ from the defaults.
 				Simply hover any element, then <strong style="background: orange; ">DRAG &amp; DROP the orange
-					block</strong> into a new position.<br>
-				When hovering an element you can select the layout of that particular element when hovering the
-				<button>&#8633;</button>
-				button.
+					block</strong> into a new position.
 			</p>
 			<small>Only options you have enabled above will be available for sorting in this preview.</small>
 			<br>
-			<small>Note that the font and family displayed below are placeholders.</small>
+			<small>Note that the font displayed below is only a placeholders to render the interface.</small>
 		</div>
 		<div class="fontsampler-admin-column-half">
 			<div id="fontsampler-ui-layout-preview-options">

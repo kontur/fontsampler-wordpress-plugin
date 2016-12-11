@@ -341,7 +341,6 @@ class FontsamplerPlugin {
 				$default_settings        = $this->db->get_settings();
 				$set                     = array_intersect_key( $default_settings, array_flip( $this->default_features ) );
 				$set['default_features'] = 1; // by default pick the default UI options
-				$set['ui_order_parsed']  = $this->helpers->ui_order_parsed_from( $default_settings, $set );
 
 				$formats = $this->font_formats;
 				$fonts   = $this->db->get_fontfile_posts();
