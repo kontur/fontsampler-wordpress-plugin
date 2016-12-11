@@ -27,6 +27,13 @@
 	<span>Display dropdown selection for sample texts</span>
 </label>
 <label>
+	<input type="checkbox" name="fontpicker"
+	       data-default="<?php echo $default_settings['fontpicker'] ? 'checked' : ''; ?>"
+	       data-set="<?php echo ( ! empty( $options['fontpicker'] ) ) ? 'checked' : ''; ?>"
+		<?php if ( ! empty( $options['fontpicker'] ) ) : echo ' checked="checked" '; endif; ?> >
+	<span>Display fonts in this Fontsampler as dropdown selection (for several fonts) or label (for a single font)</span>
+</label>
+<label>
 	<input type="checkbox" name="alignment"
 	       data-default="<?php echo $default_settings['alignment'] ? 'checked' : ''; ?>"
 	       data-set="<?php echo ( ! empty( $options['alignment'] ) ) ? 'checked' : ''; ?>"

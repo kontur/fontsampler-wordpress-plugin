@@ -1,4 +1,4 @@
-# Fontsampler Wordpress Plugin
+# Fontsampler Wordpress Plugin (v 0.1.0)
 This plugin allows Wordpress users to embed interactive webfont previews in their websites.
 
 ## How does it work?
@@ -11,26 +11,24 @@ In the place of the shortcode the plugin will render the appropriate interface f
 font.
 
 ## Current status
-The plugin is currently **nearing beta release**. Feel free to get involved by opening issues or feature requests here, or join 
-[the discussion group](https://groups.google.com/forum/#!forum/fontsampler-wordpress-plugin-development) to hear more
-about the progress and development schedule.
- 
-Once released, the plugin will be available for free to all Wordpress users.
-
-Eventually, the plugin will be available via the Wordpress plugin directory for simple one-click install.
+The plugin is hosted on the [Wordpress plugin directory](https://wordpress.org/plugins/fontsampler/) and you can install 
+it directly from your Wordpress admin panel. For improvements and suggestions, feel free to get involved by opening issues 
+or feature requests here, or join [the discussion group](https://groups.google.com/forum/#!forum/fontsampler-wordpress-plugin-development) 
+to hear more about the progress and development schedule.
 
 ## Supporting development
-You can support the development of the plugin via funding the [indiegogo campaign](https://www.indiegogo.com/projects/wordpress-plugin-for-letting-users-test-typefaces#/) or, later, donating to
-the project to show your appreciation. Furthermore, beta testers are very welcome to try out first builds and give feedback.
+You can support the development of the plugin via funding the [indiegogo campaign](https://www.indiegogo.com/projects/wordpress-plugin-for-letting-users-test-typefaces#/) 
+or, later, donating to the project to show your appreciation. Furthermore, beta testers are very welcome to try out first 
+builds and give feedback.
 
 **Pull requests are more than welcome** as well, but let me know in the issues list what you are working on.
 
 ### Planned features not implemented yet
 See the [issues](https://github.com/kontur/fontsampler-wordpress-plugin/issues) for the latest up-to-date information:
 
-### Installing preview version
-**IMPORTANT DISCLAIMER: This is pre-release quality and might be instable.** 
-For the time being, I recommend to test the plugin on backup or local Wordpress installations, not in your website's 
+### Installing preview versions
+**IMPORTANT DISCLAIMER: Install directly from this repository if you wish to contribute of check out latest development features.** 
+I recommend to test the plugin on backup or local Wordpress installations, not in your website's 
 production environment. At the very least back up your database and `wp-content` folder before testing the plugin. You 
 have been warned!
 

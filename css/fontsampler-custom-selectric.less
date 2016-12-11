@@ -44,7 +44,7 @@
   text-overflow: ellipsis;
   margin: 0 @innerHeight 0 @indent;
   font-size: inherit;
-  line-height: @innerHeight;
+  line-height: inherit;
   color: @labelColor;
   height: @innerHeight;
   border-bottom: 1px solid #333;
@@ -63,10 +63,11 @@
   height: @buttonSize;
   color: @buttonColor;
   text-align: center;
-  font: 0/0 a;
+  //font: 0/0 a;
   *font: @buttonSize/@buttonSize Lucida Sans Unicode, Arial Unicode MS, Arial;
 }
 .selectric .button:after {
+  /*
   content: " ";
   position: absolute;
   top: 0;
@@ -79,6 +80,7 @@
   border: 4px solid transparent;
   border-top-color: @buttonColor;
   border-bottom: none;
+  */
 }
 
 .selectric-hover .selectric {
@@ -136,7 +138,7 @@
   height: 1px !important;
   outline: none !important;
   border: none !important;
-  *font: 0/0 a !important;
+  //*font: 0/0 a !important;
   background: none !important;
 }
 

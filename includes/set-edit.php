@@ -136,99 +136,138 @@
 				</div>
 			</fieldset>
 		</div>
+
+
+		<fieldset>
+			<legend>Links</legend>
+			<small>Leave the field empty to not include a buy or specimen button in the interface. Provide full URLs
+				starting with <code>http://</code>.
+				<br>
+				Note: You can also link to files, like PDFs.
+			</small>
+			<label>
+				<span class="input-description">"Buy" URL for this fontsampler:</span>
+				<input type="text" name="buy" class="fontsampler-admin-slider-label"
+				       value="<?php if ( isset( $set['buy'] ) ): echo $set['buy']; endif; ?>"/>
+			</label>
+			<label>
+				<span class="input-description">"Speciment" URL for this fontsampler:</span>
+				<input type="text" name="specimen" class="fontsampler-admin-slider-label"
+				       value="<?php if ( isset( $set['specimen'] ) ): echo $set['specimen']; endif; ?>"/>
+			</label>
+		</fieldset>
 	</div>
 
 	<h2>Interface layout</h2>
 
-	<p>You can customize the layout of interface elements to differ from the defaults.</p>
-	<div class="fontsampler-ui-preview">
-		<input name="ui_order" type="hidden"
-		       value="<?php if ( ! empty( $set['ui_order'] ) ) : echo $set['ui_order']; endif; ?>">
-
-		<?php
-
-		// use these labels to substitute nicer description texts to stand in for the input names
-		$labels = array(
-			'fontsampler'   => 'Text input',
-			'size'          => 'Font size slider',
-			'letterspacing' => 'Letterspacing slider',
-			'lineheight'    => 'Lineheight slider',
-			'fontpicker'    => 'Font selection<br><small>(more than one font in set)</small>',
-			'sampletexts'   => 'Sample text selection',
-			'options'       => 'Alignment, Invert &amp; OT',
-		);
-
-		// fix a possibly missing 'fontpicker' UI element to be included in the ui_order_parsed
-		if ( isset( $set['fonts'] ) && sizeof( $set['fonts'] ) > 1 ) {
-
-			// since there is more than one font, a fontpicker should be present, check if this is the case
-			$fontpicker_present = false;
-			foreach ( $set['ui_order_parsed'] as $row ) {
-				if ( in_array( 'fontpicker', $row ) ) {
-					$fontpicker_present = true;
-					break;
-				}
-			}
-
-			// loop through the ui_order_parsed array and insert fontpicker element first chance possible
-			if ( ! $fontpicker_present ) {
-				for ( $i = 0; $i < 3; $i ++ ) {
-
-					// should the current ui_order_parsed be only with one or two subarrays, create a new "row"
-					if ( ! isset( $set['ui_order_parsed'][ $i ] ) ) {
-						$set['ui_order_parsed'][ $i ] = array();
-					}
-					$row = $set['ui_order_parsed'][ $i ];
-
-					// push the fontpicker into the first possible match for:
-					// - not a row with 3 elements
-					// - not a row with the 3 column spanning fontsampler elements
-					if ( sizeof( $row ) < 3 && ! isset( $row['fontsampler'] ) ) {
-						array_push( $set['ui_order_parsed'][ $i ], 'fontpicker' );
-						break;
-					}
-				}
-			}
-		}
-
-		// keep track of what has already been rendered and what should get rendered invisibly (the rest) into the
-		// placeholder
-		$visible   = array();
-		$invisible = array();
-
-		for ( $r = 0; $r < 3; $r ++ ) : $row = isset( $set['ui_order_parsed'][ $r ] ) ? $set['ui_order_parsed'][ $r ] : null; ?>
-			<ul class="fontsampler-ui-preview-list">
+	<div class="fontsampler-admin-column-wrapper">
+		<div class="fontsampler-admin-column-half">
+			<p>You can customize the layout of interface elements to differ from the defaults.
+				Simply hover any element, then <strong style="background: orange; ">DRAG &amp; DROP the orange
+					block</strong> into a new position.
+			</p>
+			<small>Only options you have enabled above will be available for sorting in this preview.</small>
+			<br>
+			<small>Note that the font displayed below is only a placeholders to render the interface.</small>
+		</div>
+		<div class="fontsampler-admin-column-half">
+			<div id="fontsampler-ui-layout-preview-options">
+				<p>You can select the Fontsamplers column layout here. The size of the Fontsampler always depends
+					on its container in the page layout, so Fontsamplers might have an different overall size when
+					rendered
+					in your site's theme. The columns work proportionally and scale with the Fontsampler's
+					container.</p>
 				<?php
-				if ( $row and is_array( $row ) ) :
-					foreach ( $row as $item ) : if ( ! empty( $item ) ) :
-						?>
-						<li class="fontsampler-ui-block <?php if ( 'fontsampler' == $item ) : echo 'fontsampler-ui-placeholder-full'; endif; ?>"
-						    data-name="<?php echo $item; ?>"><?php echo $labels[ $item ]; ?></li>
-						<?php array_push( $visible, $item ); ?>
-						<?php
-					endif; endforeach;
-				endif;
+				if ( ! isset( $set['ui_columns'] ) ): $set['ui_columns'] = 3; endif;
 				?>
-			</ul>
-		<?php endfor; ?>
-
-		<ul class="fontsampler-ui-preview-placeholder">
-			<?php
-			$invisible = array_diff_key( $labels, array_flip( $visible ) );
-			foreach ( $invisible as $key => $label ):
-				?>
-				<li class="fontsampler-ui-block" data-name="<?php echo $key; ?>"><?php echo $label; ?></li>
-			<?php endforeach; ?>
-		</ul>
+				<label class="fontsampler-admin-label-block">
+					<input type="radio" value="1" name="ui_columns"
+						<?php if ( $set['ui_columns'] == 1 ) {
+							echo ' checked="checked" ';
+						} ?>>1 column
+					<small>(For mobile devices this will automatically be used as fallback)</small>
+				</label>
+				<label class="fontsampler-admin-label-block">
+					<input type="radio" value="2" name="ui_columns"
+						<?php if ( $set['ui_columns'] == 2 ) {
+							echo ' checked="checked" ';
+						} ?>>2 columns
+				</label>
+				<label class="fontsampler-admin-label-block">
+					<input type="radio" value="3" name="ui_columns"
+						<?php if ( $set['ui_columns'] == 3 ) {
+							echo ' checked="checked" ';
+						} ?>>3 columns
+				</label>
+				<label class="fontsampler-admin-label-block">
+					<input type="radio" value="4" name="ui_columns"
+						<?php if ( $set['ui_columns'] == 4 ) {
+							echo ' checked="checked" ';
+						} ?>>4 columns
+				</label>
+			</div>
+		</div>
 	</div>
-	<small>Only items you have selected above will be available for sorting in this preview.</small>
-	<small>Below the elements in order of how they are displayed to the users of your site. <br>
-		You can sort them by dragging and dropping.
-	</small>
+
+	<?php
+	$layout = new FontsamplerLayout();
+	?>
+
+	<div id="fontsampler-admin-ui-wrapper">
+		<input name="ui_order" type="hidden"
+		       value="<?php if ( ! empty( $set['ui_order'] ) ) :
+			       echo $layout->sanitizeString( $set['ui_order'], $set );
+		       else:
+			       echo $layout->arrayToString( $layout->getDefaultBlocks(), $set );
+		       endif; ?>">
+
+		<ul id="fontsampler-ui-blocks-list">
+
+			<?php
+			$blocks = array_merge( $layout->getDefaultBlocks(), $layout->stringToArray( $set['ui_order'], $set ) );
+
+			foreach ( $blocks as $item => $class ) : ?>
+				<li>
+					<div class="fontsampler-ui-block-overlay"
+					     data-item="<?php echo $item; ?>"
+					     data-default-class="<?php echo $layout->blocks[ $item ][0]; ?>">
+						<button class="fontsampler-ui-block-settings">
+							<img src="<?php echo plugin_dir_url( __FILE__ ); ?>../icons/settings.svg">
+						</button>
+						<div class="fontsampler-ui-block-options">
+							<button class="fontsampler-ui-block-add-break">Insert row break after</button>
+							<div class="fontsampler-ui-block-layout-classes">
+								<?php echo $layout->labels[ $item ]; ?> -block layout:
+								<?php foreach ( $layout->blocks[ $item ] as $cl ): ?>
+									<label><input type="radio"
+									              value="<?php echo $cl; ?>"
+									              data-target="<?php echo $item; ?>"
+									              name="layout_class_<?php echo $item; ?>"
+											<?php if ( $cl === $class ) {
+												echo ' checked="checked" ';
+											} ?>><span><?php echo $cl; ?></span>
+									</label>
+								<?php endforeach; ?>
+							</div>
+						</div>
+					</div>
+				</li>
+
+				<?php
+			endforeach;
+			?>
+		</ul>
+
+		<!-- gets populated with the actual fontsampler instance loaded via ajax -->
+		<div id="fontsampler-ui-layout-preview"></div>
+
+	</div>
 	<br>
 	<?php submit_button(); ?>
 </form>
 
+
+<!-- hidden templates -->
 <div class="fontsampler-admin-placeholders">
 	<ul>
 		<li id="fontsampler-admin-fontpicker-placeholder">
@@ -278,3 +317,5 @@
 		</li>
 	</ul>
 </div>
+
+

@@ -19,6 +19,7 @@ class FontsamplerDatabase {
 	private $font_formats;
 	private $fontsampler;
 	private $helpers;
+	private $layout;
 
 	function FontsamplerDatabase( $wpdb, $fontsampler ) {
 		$this->wpdb = $wpdb;
@@ -30,6 +31,7 @@ class FontsamplerDatabase {
 
 		$this->fontsampler = $fontsampler;
 		$this->helpers     = new FontsamplerHelpers( $fontsampler );
+		$this->layout      = new FontsamplerLayout();
 	}
 
 	/*
@@ -49,10 +51,14 @@ class FontsamplerDatabase {
                 `multiline` tinyint( 1 ) NOT NULL DEFAULT '1',
                 `opentype` tinyint( 1 ) NOT NULL DEFAULT '0',
                 `is_ltr` tinyint( 1 ) NOT NULL DEFAULT '1',
-                `ui_order` VARCHAR( 255 ) NOT NULL DEFAULT 'size,letterspacing,options|fontpicker,sampletexts,lineheight|fontsampler',
+                `fontpicker` tinyint( 1 ) NOT NULL DEFAULT '0',
+                `ui_order` VARCHAR( 255 ) NOT NULL DEFAULT 'size,letterspacing,options,fontpicker,sampletexts,lineheight,fontsampler',
+                `ui_columns` tinyint( 1 ) NOT NULL DEFAULT '3',
                 `default_features` tinyint( 1 ) NOT NULL DEFAULT '1',
                 `default_options` tinyint( 1 ) NOT NULL DEFAULT '0',
                 `initial_font` int( 10 ) unsigned DEFAULT NULL,
+                `buy` VARCHAR( 255 ) DEFAULT NULL,
+				`specimen` VARCHAR( 255 ) DEFAULT NULL,
 			  PRIMARY KEY ( `id` )
 			) DEFAULT CHARSET=utf8";
 
@@ -114,6 +120,9 @@ class FontsamplerDatabase {
 			`css_color_handle` tinytext NOT NULL,
 			`css_color_icon_active` tinytext NOT NULL,
 			`css_color_icon_inactive` tinytext NOT NULL,
+			`css_column_gutter` tinytext NOT NULL,
+			`css_row_height` tinytext NOT NULL,
+			`css_row_gutter` tinytext NOT NULL,
 			`size` tinyint(1) unsigned NOT NULL DEFAULT '0',
 			`letterspacing` tinyint(1) unsigned NOT NULL DEFAULT '0',
 			`lineheight` tinyint(1) unsigned NOT NULL DEFAULT '0',
@@ -122,6 +131,11 @@ class FontsamplerDatabase {
 			`invert` tinyint(1) unsigned NOT NULL DEFAULT '0',
 			`multiline` tinyint(1) unsigned NOT NULL DEFAULT '1',
 			`opentype` tinyint(1) unsigned NOT NULL DEFAULT '0',
+			`fontpicker` tinyint( 1 ) NOT NULL DEFAULT '0',
+			`buy_label` VARCHAR(255) DEFAULT 'Buy',
+			`buy_image` int( 11 ) unsigned DEFAULT NULL,
+			`specimen_label` VARCHAR(255) DEFAULT 'Specimen',
+			`specimen_image` int( 11 ) unsigned DEFAULT NULL,
 			PRIMARY KEY (`id`)
 			) DEFAULT CHARSET=utf8";
 		$this->wpdb->query( $sql );
@@ -187,6 +201,20 @@ class FontsamplerDatabase {
 				'ALTER TABLE ' . $this->table_sets . " ADD `opentype` tinyint( 1 ) unsigned NOT NULL DEFAULT '0'",
 				'ALTER TABLE ' . $this->table_settings . " ADD `opentype` tinyint(1) unsigned NOT NULL DEFAULT '0'",
 				'ALTER TABLE ' . $this->table_fonts . ' DROP COLUMN `svg`',
+			),
+			'0.1.1' => array(
+				'ALTER TABLE ' . $this->table_settings . " ADD `buy_label` VARCHAR(255) DEFAULT 'Buy'",
+				'ALTER TABLE ' . $this->table_settings . " ADD `buy_image` int( 11 ) unsigned DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " ADD `specimen_label` VARCHAR(255) DEFAULT 'Specimen'",
+				'ALTER TABLE ' . $this->table_settings . " ADD `specimen_image` int( 11 ) unsigned DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " ADD `fontpicker` tinyint( 1 ) NOT NULL DEFAULT '0'",
+				'ALTER TABLE ' . $this->table_settings . " ADD `css_column_gutter` tinytext NOT NULL",
+				'ALTER TABLE ' . $this->table_settings . " ADD `css_row_height` tinytext NOT NULL",
+				'ALTER TABLE ' . $this->table_settings . " ADD `css_row_gutter` tinytext NOT NULL",
+				'ALTER TABLE ' . $this->table_sets . " ADD `buy` VARCHAR(255) DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_sets . " ADD `specimen` VARCHAR(255) DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_sets . " ADD `ui_columns` tinyint( 1 ) NOT NULL DEFAULT '3'",
+				'ALTER TABLE ' . $this->table_sets . " ADD `fontpicker` tinyint( 1 ) NOT NULL DEFAULT '0'",
 			)
 		);
 
@@ -207,18 +235,18 @@ class FontsamplerDatabase {
 						// the entire update loop
 						$res = $this->wpdb->query( $sql );
 					} catch ( Exception $e ) {
-						$this->msg->error( "Problem updating database to version $version. The following sql query failed: " . $sql );
+						$this->fontsampler->msg->error( "Problem updating database to version $version. The following sql query failed: " . $sql );
 					}
 				}
 				// bump the version number option in the options database
-				$this->msg->info( "Updated database schema to $version" );
+				$this->fontsampler->msg->info( "Updated database schema to $version" );
 				update_option( 'fontsampler_db_version', $version );
 			}
 		}
 		// if all executed bump the version number option in the options database to the manually entered db version
 		// even if the last query was not of that high of a version (which it shouldn't)
 		update_option( 'fontsampler_db_version', $this->fontsampler->fontsampler_db_version );
-		$this->msg->info( 'Database schemas now up to date' );
+		$this->fontsampler->msg->info( 'Database schemas now up to date' );
 
 		return true;
 	}
@@ -350,10 +378,7 @@ class FontsamplerDatabase {
 				WHERE j.set_id = ' . intval( $id ) . '
 				ORDER BY j.`order` ASC';
 
-		$set['fonts']           = $this->wpdb->get_results( $sql, ARRAY_A );
-		$set['ui_order_parsed'] = $this->helpers->parse_ui_order(
-			$this->helpers->prune_ui_order( $set['ui_order'], $set )
-		);
+		$set['fonts'] = $this->wpdb->get_results( $sql, ARRAY_A );
 
 		return $set;
 	}
@@ -501,11 +526,9 @@ class FontsamplerDatabase {
 		// the current defaults
 		foreach ( $this->get_sets() as $set ) {
 			$data = array(
-				'ui_order' => $this->fontsampler->helpers->concat_ui_order(
-					$this->fontsampler->helpers->ui_order_parsed_from( $options, $set )
-				)
+				'ui_order' => $this->layout->sanitizeString( $set['ui_order'] , $set)
 			);
-			$this->wpdb->update( $this->table_sets, $data, array( 'default_features' => '1' ) );
+			$this->wpdb->update( $this->table_sets, $data, array( 'id' => $set['id'], 'default_features' => '1' ) );
 		}
 	}
 

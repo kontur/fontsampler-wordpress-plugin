@@ -72,12 +72,16 @@ define([
             var instance = {
                 pubsub: pubsub,
                 wrapper: wrapper,
+                fontsData: fontsData,
                 initialFont: initialFontIndex > -1 ? initialFontIndex : 0,
             };
 
             pubsub.subscribe('allFontsLoaded', function () {
                 this.pubsub.publish('activateFont', this.initialFont);
-                callback(this.wrapper);
+                this.wrapper.dataset['initialFontName'] = this.fontsData.getFont(this.initialFont).names.fullName.en;
+                if (typeof callback === "function") {
+                    callback(this.wrapper);
+                }
             }.bind(instance));
 
             loadFonts.fromUrl(pubsub, fonts);

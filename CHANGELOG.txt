@@ -1,0 +1,9 @@
+# 0.1.1
+- Fontsampler layout preview and manipulation improved, including options for column count and column span of individual user interface elements
+- Fontsampler layout preview now renders an actual mock Fontsampler in the admin interface to better visualise the layout
+- Added option to add links for Buying and viewing a Specimen to the interface
+- Added default label text and images for those two links to the settings
+- Added column and row gutter, as well as row height as customisable settings
+- Activating the "Invert" UI option will add "fontsampler-inverted" to the <body>, so you can define styles for when it's active (e.g. inverting the overall page background color)
+- Improved under the hood generation of css files when customising Fontsampler styling
+- Improved under the hood admin javascript loading

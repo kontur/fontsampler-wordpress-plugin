@@ -2,6 +2,9 @@
 #fontsampler-admin {
     .form-settings label {
         clear: both;
+        display: block;
+        margin: 10px 0;
+
         span.setting-description, .fontsampler-admin-settings-styling small {
             display: inline-block;
             width: 23em;
@@ -37,6 +40,25 @@
 
         input.fontsampler-admin-slider-label {
             width: 15em;
+        }
+    }
+
+
+    .fontsampler-setting-image {
+        .fontsampler-upload-wrapper {
+            display: inline-block;
+            width: 10em;
+
+            .custom-img-container {
+                max-width: 100%;
+                max-height: 30px;
+                position: relative;
+
+                img {
+                    display: block;
+                    max-height: 30px;
+                }
+            }
         }
     }
 }

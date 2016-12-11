@@ -1,0 +1,371 @@
+@import "fontsampler-custom-selectric.less";
+@import "fontsampler-custom-rangeslider.less";
+
+.fontsampler-wrapper {
+
+    &.on-loading {
+        > * {
+            opacity: 0;
+            transition: opacity 0s;
+        }
+    }
+
+    > * {
+        opacity: 1;
+        transition: opacity 0.2s ease-in-out;
+    }
+
+
+    .fontsampler-interface {
+        clear: both;
+
+        // make the wrapper span around all floated content blocks
+        &:after {
+            clear: both;
+            content: " ";
+            display: block;
+            width: 100%;
+        }
+
+        // row breaks
+        .fontsampler-interface-row-break {
+            clear: both;
+            height: 1px;
+            width: 100%;
+        }
+
+        // different column layouts; define all
+        // .fontsampler-ui-blocks accordingly via mixin
+        &.columns-1 {
+            .blocks(1);
+        }
+
+        &.columns-2 {
+            .blocks(2);
+        }
+
+        &.columns-3 {
+            .blocks(3);
+        }
+
+        &.columns-4 {
+            .blocks(4);
+        }
+
+        @media screen and (max-width: 768px) {
+            .blocks(1) !important;
+        }
+
+        // any and all fontsampler UI elements are wrapped in this
+        .fontsampler-ui-block {
+            box-sizing: border-box;
+            float: left;
+            line-height: 1.2;
+
+            &.fontsampler-ui-block-fontsampler {
+                height: auto;
+            }
+        }
+
+        // generic class for "paired" up toggle buttons
+        .fontsampler-multiselect {
+            box-sizing: border-box;
+            float: left;
+            padding-right: 5px;
+
+            &.one-item {
+                width: 30px;
+                > button {
+                    width: 100%;
+                }
+            }
+
+            &.two-items {
+                width: 60px;
+                > button {
+                    width: 50%;
+                }
+            }
+            &.three-items {
+                width: 90px;
+                > button {
+                    width: 33%;
+                }
+            }
+
+            > button {
+                background: #fff;
+                border: 0;
+                border-bottom: 1px solid #333;
+                font-size: inherit;
+                font-family: inherit;
+                color: #333;
+                font-weight: inherit;
+                height: 30px;
+                line-height: 4px;
+                text-transform: none;
+                border-radius: 0;
+                display: block;
+                float: left;
+                padding: 0 2px;
+                margin: 0;
+                text-align: center;
+                opacity: 0.5;
+                outline: none;
+
+                img {
+                    display: block;
+                    max-width: 15px;
+                    max-height: 15px;
+                    margin: 0 auto;
+                }
+            }
+
+            .fontsampler-multiselect-selected {
+                opacity: 1;
+            }
+        }
+
+        .type-tester__slider {
+            margin-top: -3px;
+        }
+
+        label.fontsampler-slider {
+            display: block;
+            position: relative;
+            width: 100%;
+
+            // the label above the slider
+            .slider-label {
+                padding-right: 3em;
+                width: 100%;
+                display: block;
+                height: 2em;
+                overflow: hidden;
+            }
+
+            // the value above the slider
+            .slider-value {
+                position: absolute;
+                right: 5px;
+                top: 0;
+            }
+        }
+
+        // several specific blocks:
+
+        // dropdown for font family picker OR font family name if single font
+        .fontsampler-ui-block-fontpicker {
+            .fontsampler-font-label label {
+                display: block;
+                height: 30px;
+                overflow: hidden;
+            }
+        }
+
+        // links for buy and specimen download
+        .fontsampler-ui-block-buy,
+        .fontsampler-ui-block-specimen {
+            a {
+                box-shadow: none;
+                display: inline-block;
+                height: auto;
+                width: auto;
+                text-decoration: none !Important;
+
+                img {
+                    display: block;
+                    max-height: 30px;
+                    width: auto;
+                }
+
+                .fontsampler-interface-link-text {
+                    display: block;
+                }
+            }
+        }
+
+        // the actual container of the type sample
+        .fontsampler, .type-tester__content {
+            clear: both;
+            margin-bottom: 20px;
+            margin-top: 0.25em;
+            transition: all 0.2s ease-out;
+            padding: 0.25em 0.15em;
+
+            &:focus {
+                outline: none;
+            }
+
+            // force single line when single line
+            &.fontsampler-is-singleline {
+                overflow-x: hidden;
+                overflow-y: visible;
+                white-space: nowrap;
+            }
+
+            &.invert {
+                color: #eee;
+                background: #333;
+            }
+        }
+
+        .fontsampler-ui-block-opentype {
+            &.feature-lister__features-empty {
+                display: none;
+            }
+
+            .fontsampler-opentype {
+                position: relative;
+            }
+
+            .fontsampler-opentype-toggle img {
+                max-height: 20px;
+                max-width: 20px;
+            }
+
+            .fontsampler-opentype-features {
+                display: none;
+                position: absolute;
+                left: 0;
+                top: 35px;
+                text-align: right;
+                background: #ffffff;
+                height: auto;
+                text-align: left;
+                padding: 5px;
+                width: 30em;
+                z-index: 10;
+
+                &.shown {
+                    display: block;
+                }
+
+                button.fontsampler-toggle {
+                    height: 20px;
+                    width: 20px;
+                }
+
+                fieldset {
+                    display: block;
+                    margin: 0;
+                    border: 0;
+                    height: auto;
+                    padding: 10px;
+
+                    label {
+                        float: left;
+                        width: 50%;
+                    }
+                }
+            }
+        }
+
+        .fontsampler-ui-block-invert {
+            button[data-value="positive"] img {
+                background: #fff;
+            }
+            button[data-value="negative"] img {
+                background: #333;
+            }
+        }
+    }
+}
+
+.blocks(@cols) {
+    .fontsampler-ui-block {
+        &.column {
+            width: 100% / @cols;
+        }
+        &.inline {}
+        &.full {
+            width: 100%;
+        }
+    }
+}
+
+
+@css_color_text: #333;
+@css_color_background: #fff;
+@css_color_label: #333;
+@css_size_label: inherit;
+@css_fontfamily_label: inherit;
+@css_color_highlight: #efefef;
+@css_color_highlight_hover: #dedede;
+@css_color_line: #333333;
+@css_color_handle: #333333;
+@css_column_gutter: 10px;
+@css_row_height: 30px;
+@css_row_gutter: 10px;
+
+/* css_color_text */
+.fontsampler-interface .type-tester__content {
+    color: @css_color_text;
+}
+.fontsampler-interface .type-tester__content.invert {
+    background: @css_color_text;
+}
+
+/* css_color_background */
+.fontsampler-interface .type-tester__content {
+    background: @css_color_background;
+}
+.fontsampler-interface .type-tester__content.invert {
+    color: @css_color_background;
+}
+
+/* css_color_label */
+/* css_size_label */
+/* css_fontfamily_label */
+.fontsampler-interface .fontsampler-slider .slider-label,
+.fontsampler-interface .fontsampler-slider .slider-value,
+.fontsampler-interface .selectric .label,
+.fontsampler-interface .selectric-items li,
+.fontsampler-ui-block-fontpicker .fontsampler-font-label label {
+    color: @css_color_label;
+    font-size: @css_size_label;
+    font-family: @css_fontfamily_label;
+}
+
+/* css_color_highlight */
+.fontsampler-interface .selectric-items {
+    background: @css_color_highlight;
+}
+
+/* css_color_highlight_hover */
+.fontsampler-interface .selectric-items li:hover {
+    background: @css_color_highlight_hover;
+}
+
+/* css_color_line */
+.fontsampler-interface .selectric-open .selectric,
+.fontsampler-interface .selectric .label,
+.fontsampler-interface .selectric .button,
+.fontsampler-wrapper .fontsampler-interface .fontsampler-multiselect > button,
+.fontsampler-interface .rangeslider__fill,
+.fontsampler-ui-block-fontpicker .fontsampler-font-label label,
+.fontsampler-ui-block-buy a,
+.fontsampler-ui-block-specimen a {
+    border-bottom: 1px solid @css_color_line;
+}
+.fontsampler-interface .fontsampler-opentype-features {
+    border: 1px solid @css_color_line;
+}
+
+/* css_color_handle */
+.fontsampler-interface .rangeslider__handle {
+    background: @css_color_handle;
+}
+
+/* css_color_icon_active */
+/* css_color_icon_inactive */
+
+.fontsampler-interface .fontsampler-ui-block {
+    height: @css_row_height;
+    margin-bottom: @css_row_gutter;
+    padding-right: @css_column_gutter;
+}
+
+.fontsampler-interface-link-text {
+    height: @css_row_height;
+}
