@@ -108,6 +108,7 @@ class FontsamplerDatabase {
 			`line_height_min` smallint(5) NOT NULL DEFAULT '0',
 			`line_height_max` smallint(5) NOT NULL DEFAULT '300',
 			`line_height_unit` varchar(50) NOT NULL DEFAULT '%',
+			`alignment_initial` varchar(50) NOT NULL DEFAULT 'left',
 			`sample_texts` text NOT NULL,
 			`css_color_text` tinytext NOT NULL,
 			`css_color_background` tinytext NOT NULL,
@@ -215,6 +216,9 @@ class FontsamplerDatabase {
 				'ALTER TABLE ' . $this->table_sets . " ADD `specimen` VARCHAR(255) DEFAULT NULL",
 				'ALTER TABLE ' . $this->table_sets . " ADD `ui_columns` tinyint( 1 ) NOT NULL DEFAULT '3'",
 				'ALTER TABLE ' . $this->table_sets . " ADD `fontpicker` tinyint( 1 ) NOT NULL DEFAULT '0'",
+			),
+			'0.1.2' => array(
+				'ALTER TABLE ' . $this->table_settings . " ADD `alignment_initial` varchar(50) NOT NULL DEFAULT 'left'",
 			)
 		);
 

@@ -89,17 +89,21 @@
 						break;
 
 					case 'alignment':
-						if ( $set['alignment'] ) : ?>
+						if ( $set['alignment'] ) :
+							$is_ltr = isset( $set['is_ltr'] ) && $set['is_ltr'] == "1";
+							?>
 							<div class="fontsampler-multiselect three-items" data-name="alignment">
-								<button <?php if ( isset( $set['is_ltr'] ) && $set['is_ltr'] == "1" ) :
+								<button <?php if ( $is_ltr && $options['alignment_initial'] == "left" ) :
 									echo 'class="fontsampler-multiselect-selected"'; endif; ?>
 									data-value="left"><img
 										src="<?php echo plugin_dir_url( __FILE__ ); ?>../icons/align-left.svg">
 								</button>
-								<button data-value="center"><img
+								<button <?php if ( $options['alignment_initial'] == "center" ) :
+									echo 'class="fontsampler-multiselect-selected"'; endif; ?>
+									data-value="center"><img
 										src="<?php echo plugin_dir_url( __FILE__ ); ?>../icons/align-center.svg">
 								</button>
-								<button <?php if ( isset( $set['is_ltr'] ) && $set['is_ltr'] == "0" ) :
+								<button <?php if ( !$is_ltr || $options['alignment_initial'] == "right" ) :
 									echo 'class="fontsampler-multiselect-selected"'; endif; ?>
 									data-value="right"><img
 										src="<?php echo plugin_dir_url( __FILE__ ); ?>../icons/align-right.svg">
@@ -190,6 +194,8 @@
 						endif; ?>"
 						     contenteditable="true"
 							<?php if ( ! $set['is_ltr'] ): echo ' dir="rtl" '; endif; ?>
+
+							style="text-align: <?php echo $options['alignment_initial']; ?>;"
 						><?php echo $initial_text; ?></div>
 
 						<?php

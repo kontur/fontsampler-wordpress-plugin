@@ -34,7 +34,7 @@ class FontsamplerPlugin {
 		// keep track of db versions and migrations via this
 		// simply set this to the current PLUGIN VERSION number when bumping it
 		// i.e. a database update always bumps the version number of the plugin as well
-		$this->fontsampler_db_version = '0.1.1';
+		$this->fontsampler_db_version = '0.1.2';
 		$current_db_version           = get_option( self::FONTSAMPLER_OPTION_DB_VERSION );
 
 		// if no previous db version has been registered assume new install and set
@@ -94,6 +94,7 @@ class FontsamplerPlugin {
 			'line_height_max'           => '300',
 			'line_height_initial'       => '110',
 			'line_height_unit'          => '%',
+			'alignment_initial'         => 'left',
 			'sample_texts'              => "hamburgerfontstiv\nabcdefghijklmnopqrstuvwxyz\nABCDEFGHIJKLMNOPQRSTUVWXYZ\nThe quick brown fox jumps over the lazy cat",
 			'css_color_text'            => '#333333',
 			'css_color_background'      => '#ffffff',

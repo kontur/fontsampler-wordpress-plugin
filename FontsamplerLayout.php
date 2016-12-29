@@ -162,8 +162,8 @@ class FontsamplerLayout {
 					// if one of the set's blocks has a 1 value but is not in the array of blocks from $ui_order
 					// push it in
 					if ( ! in_array( $setblock, $justblocknames ) ) {
-						 echo "<br>missing $setblock from ui_order but it is in set";
-//						array_push( $newarray, $setblock . '_' . $this->blocks[ $setblock ][0] );
+//						 echo "<br>missing $setblock from ui_order but it is in set";
+						array_push( $newarray, $setblock . '_' . $this->blocks[ $setblock ][0] );
 					}
 				}
 			}

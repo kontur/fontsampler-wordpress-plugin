@@ -155,6 +155,28 @@
 		</div>
 	</label>
 
+	<label>
+		<span class="setting-description">Default text alignment:
+	</label>
+	<label>
+		<input type="radio" name="alignment_initial" value="left"
+			<?php if ($defaults['alignment_initial'] === "left") : echo ' checked="checked" '; endif; ?>>
+		<img class="fontsampler-admin-alignment-icon"
+		     src="<?php echo plugin_dir_url( __FILE__ ); ?>../icons/align-left.svg">Left
+	</label>
+	<label>
+		<input type="radio" name="alignment_initial" value="center"
+			<?php if ($defaults['alignment_initial'] === "center") : echo ' checked="checked" '; endif; ?>>
+		<img class="fontsampler-admin-alignment-icon"
+		     src="<?php echo plugin_dir_url( __FILE__ ); ?>../icons/align-center.svg">Centered
+	</label>
+	<label>
+		<input type="radio" name="alignment_initial" value="right"
+			<?php if ($defaults['alignment_initial'] === "right") : echo ' checked="checked" '; endif; ?>>
+		<img class="fontsampler-admin-alignment-icon"
+		     src="<?php echo plugin_dir_url( __FILE__ ); ?>../icons/align-right.svg">Right
+	</label>
+
 	<br><br><br>
 
 	<p>The image is used when provided, otherwise the label text is used to create a text link.</p>

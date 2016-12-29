@@ -4,7 +4,7 @@ Donate link: https://www.indiegogo.com/projects/wordpress-plugin-for-letting-use
 Tags: fonts, typeface, preview, shortcode
 Requires at least: 4.0
 Tested up to: 4.7
-Stable tag: 0.1.0
+Stable tag: 0.1.2
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -63,6 +63,20 @@ that are set to use the default values.
 6. This is how you include a Fontsampler in a page or post: Simply add the shortcode for the created Fontsampler to your text
 
 == Changelog ==
+
+= 0.1.2 =
+* Added editable default setting for alignment
+* Fixed some alignment issues not properly respecting editable UI block height and underline
+
+= 0.1.1 =
+* Fontsampler layout preview and manipulation improved, including options for column count and column span of individual user interface elements
+* Fontsampler layout preview now renders an actual mock Fontsampler in the admin interface to better visualise the layout
+* Added option to add links for Buying and viewing a Specimen to the interface
+* Added default label text and images for those two links to the settings
+* Added column and row gutter, as well as row height as customisable settings
+* Activating the "Invert" UI option will add "fontsampler-inverted" to the <body>, so you can define styles for when it's active (e.g. inverting the overall page background color)
+* Improved under the hood generation of css files when customising Fontsampler styling
+* Improved under the hood admin javascript loading
 
 = 0.1.0 =
 * Initial public release

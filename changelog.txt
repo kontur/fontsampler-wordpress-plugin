@@ -1,3 +1,7 @@
+# 0.1.2
+- Added editable default setting for alignment
+- Fixed some alignment issues not properly respecting editable UI block height and underline
+
 # 0.1.1
 - Fontsampler layout preview and manipulation improved, including options for column count and column span of individual user interface elements
 - Fontsampler layout preview now renders an actual mock Fontsampler in the admin interface to better visualise the layout

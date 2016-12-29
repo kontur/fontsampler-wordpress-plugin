@@ -140,8 +140,8 @@
   padding: 0;
   margin: 0;
   font-size: 12px;
-  line-height: 20px;
-  min-height: 20px;
+  line-height: 1em;
+  min-height: 1em;
 }
 .selectric-items li {
   display: block;
@@ -185,6 +185,16 @@
 }
 .selectric-items .selectric-group li {
   padding-left: 25px;
+}
+.selectric-wrapper {
+  height: 100%;
+}
+.selectric-wrapper .selectric {
+  height: 100%;
+}
+.selectric-wrapper .selectric .label,
+.selectric-wrapper .selectric .button {
+  height: 100%;
 }
 .rangeslider,
 .rangeslider__fill {
@@ -319,6 +329,7 @@
   box-sizing: border-box;
   float: left;
   padding-right: 5px;
+  height: 100%;
 }
 .fontsampler-wrapper .fontsampler-interface .fontsampler-multiselect.one-item {
   width: 30px;
@@ -346,7 +357,7 @@
   font-family: inherit;
   color: #333;
   font-weight: inherit;
-  height: 30px;
+  height: 100%;
   line-height: 4px;
   text-transform: none;
   border-radius: 0;
@@ -368,18 +379,21 @@
   opacity: 1;
 }
 .fontsampler-wrapper .fontsampler-interface .type-tester__slider {
-  margin-top: -3px;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
 }
 .fontsampler-wrapper .fontsampler-interface label.fontsampler-slider {
   display: block;
   position: relative;
+  height: 100%;
   width: 100%;
 }
 .fontsampler-wrapper .fontsampler-interface label.fontsampler-slider .slider-label {
   padding-right: 3em;
   width: 100%;
   display: block;
-  height: 2em;
+  height: 90%;
   overflow: hidden;
 }
 .fontsampler-wrapper .fontsampler-interface label.fontsampler-slider .slider-value {
@@ -387,10 +401,16 @@
   right: 5px;
   top: 0;
 }
+.fontsampler-wrapper .fontsampler-interface .fontsampler-ui-block-fontpicker .fontsampler-font-label {
+  height: 100%;
+}
 .fontsampler-wrapper .fontsampler-interface .fontsampler-ui-block-fontpicker .fontsampler-font-label label {
   display: block;
-  height: 30px;
+  height: 100%;
   overflow: hidden;
+}
+.fontsampler-wrapper .fontsampler-interface .fontsampler-ui-block-fontpicker .font-lister {
+  height: 100%;
 }
 .fontsampler-wrapper .fontsampler-interface .fontsampler-ui-block-buy a,
 .fontsampler-wrapper .fontsampler-interface .fontsampler-ui-block-specimen a {
@@ -403,7 +423,7 @@
 .fontsampler-wrapper .fontsampler-interface .fontsampler-ui-block-buy a img,
 .fontsampler-wrapper .fontsampler-interface .fontsampler-ui-block-specimen a img {
   display: block;
-  max-height: 30px;
+  max-height: 100%;
   width: auto;
 }
 .fontsampler-wrapper .fontsampler-interface .fontsampler-ui-block-buy a .fontsampler-interface-link-text,
