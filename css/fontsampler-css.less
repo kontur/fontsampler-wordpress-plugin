@@ -15,7 +15,6 @@
         transition: opacity 0.2s ease-in-out;
     }
 
-
     .fontsampler-interface {
         clear: both;
 
@@ -72,6 +71,7 @@
             box-sizing: border-box;
             float: left;
             padding-right: 5px;
+            height: 100%;
 
             &.one-item {
                 width: 30px;
@@ -101,7 +101,7 @@
                 font-family: inherit;
                 color: #333;
                 font-weight: inherit;
-                height: 30px;
+                height: 100%;
                 line-height: 4px;
                 text-transform: none;
                 border-radius: 0;
@@ -127,12 +127,15 @@
         }
 
         .type-tester__slider {
-            margin-top: -3px;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
         }
 
         label.fontsampler-slider {
             display: block;
             position: relative;
+            height: 100%;
             width: 100%;
 
             // the label above the slider
@@ -140,7 +143,7 @@
                 padding-right: 3em;
                 width: 100%;
                 display: block;
-                height: 2em;
+                height: 90%;
                 overflow: hidden;
             }
 
@@ -156,10 +159,21 @@
 
         // dropdown for font family picker OR font family name if single font
         .fontsampler-ui-block-fontpicker {
-            .fontsampler-font-label label {
-                display: block;
-                height: 30px;
-                overflow: hidden;
+
+            // single font: just display a label
+            .fontsampler-font-label {
+                height: 100%;
+
+                label {
+                    display: block;
+                    height: 100%;
+                    overflow: hidden;
+                }
+            }
+
+            // multiple fonts: display dropdown
+            .font-lister {
+                height: 100%;
             }
         }
 
@@ -175,7 +189,7 @@
 
                 img {
                     display: block;
-                    max-height: 30px;
+                    max-height: 100%;
                     width: auto;
                 }
 
@@ -277,13 +291,13 @@
         &.column {
             width: 100% / @cols;
         }
-        &.inline {}
+        &.inline {
+        }
         &.full {
             width: 100%;
         }
     }
 }
-
 
 @css_color_text: #333;
 @css_color_background: #fff;
@@ -302,6 +316,7 @@
 .fontsampler-interface .type-tester__content {
     color: @css_color_text;
 }
+
 .fontsampler-interface .type-tester__content.invert {
     background: @css_color_text;
 }
@@ -310,6 +325,7 @@
 .fontsampler-interface .type-tester__content {
     background: @css_color_background;
 }
+
 .fontsampler-interface .type-tester__content.invert {
     color: @css_color_background;
 }
@@ -348,6 +364,7 @@
 .fontsampler-ui-block-specimen a {
     border-bottom: 1px solid @css_color_line;
 }
+
 .fontsampler-interface .fontsampler-opentype-features {
     border: 1px solid @css_color_line;
 }

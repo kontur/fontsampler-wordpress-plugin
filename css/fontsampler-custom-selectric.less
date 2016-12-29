@@ -172,8 +172,8 @@
   padding: 0;
   margin: 0;
   font-size: 12px;
-  line-height: 20px;
-  min-height: 20px;
+  line-height: 1em;
+  min-height: 1em;
 }
 .selectric-items li {
   display: block;
@@ -219,4 +219,17 @@
 }
 .selectric-items .selectric-group li {
   padding-left: 25px;
+}
+
+
+// make selectric stretch to 100% height
+.selectric-wrapper {
+  height: 100%;
+  .selectric {
+    height: 100%;
+    .label,
+    .button {
+      height: 100%;
+    }
+  }
 }
