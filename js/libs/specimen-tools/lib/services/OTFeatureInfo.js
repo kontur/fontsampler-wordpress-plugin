@@ -116,7 +116,7 @@ define([
         // "
       , onByDefault: false
       , slSensitivity: ['European scripts', 'Spanish Language']
-      , exampleText: '(H-{E[L]L}O)'
+      , exampleText: '¡!(H-{E[L]L}O)'
     };
     featureData.ccmp = {
         friendlyName: 'Glyph Composition / Decomposition'
@@ -194,6 +194,7 @@ define([
         friendlyName: 'Small Capitals From Capitals'
       , onByDefault: false
       , slSensitivity: ['bicameral scripts', 'Latin', 'Greek', 'Cyrillic', 'Armenian']
+      , exampleText: 'HELLO WORLD'
     };
     featureData.dist = {
         friendlyName: 'Distances'
@@ -205,6 +206,7 @@ define([
         friendlyName: 'Discretionary Ligatures'
       , onByDefault: false
       , slSensitivity: []
+      , exampleText: 'act stand (1) (7)'
     };
     featureData.dnom = {
         friendlyName: 'Denominators'
@@ -288,6 +290,7 @@ define([
         friendlyName: 'Historical Forms'
       , onByDefault: false
       , slSensitivity: []
+      , exampleText: 'basic'
     };
     featureData.hkna = {
         friendlyName: 'Horizontal Kana Alternates'
@@ -298,6 +301,7 @@ define([
         friendlyName: 'Historical Ligatures'
       , onByDefault: false
       , slSensitivity: []
+      , exampleText: 'ba\u017fic \u017fs \u017fl'
     };
     featureData.hngl = {
         // DEPRECATED in 2016
@@ -385,7 +389,7 @@ define([
         friendlyName: 'Lining Figures'
       , onByDefault: false
       , slSensitivity: []
-      , exampleText: '123678'
+      , exampleText: '31337 H4X0R'
     };
     featureData.locl = {
         friendlyName: 'Localized Forms'
@@ -438,6 +442,7 @@ define([
         friendlyName: 'Alternate Annotation Forms'
       , onByDefault: false
       , slSensitivity: ['CJKV', 'European scripts']
+      , exampleText: '359264'
     };
     featureData.nlck = {
         // The National Language Council (NLC) of Japan has defined new
@@ -599,6 +604,7 @@ define([
         friendlyName: 'Scientific Inferiors'
       , onByDefault: false
       , slSensitivity: []
+      , exampleText: '1902835746'
     };
     featureData.size = {
         friendlyName: 'Optical size'
@@ -611,6 +617,7 @@ define([
         friendlyName: 'Small Capitals'
       , onByDefault: false
       , slSensitivity: [' bicameral scripts', 'Latin', 'Greek', 'Cyrillic', 'Armenian']
+      , exampleText: "Hello World"
     };
     featureData.smpl = {
         friendlyName: 'Simplified Forms'
@@ -757,6 +764,7 @@ define([
         friendlyName: 'Slashed Zero'
       , onByDefault: false
       , slSensitivity: []
+      , exampleText: '0123'
     };
 
     function deepFreeze(obj) {
@@ -786,7 +794,7 @@ define([
 
     OTFeatureInfo.defaultOptions = {};
 
-    function _makeGetter(target, key, filter){
+    function _makeGetter(target, key, filter) {
         function getter() {
             /* jshint validthis: true*/
             var data = this._caches[key]
@@ -832,6 +840,10 @@ define([
         }
         return result;
     };
+
+    _p.getFeature = function(tag) {
+        return featureData[tag];
+    }
 
     // singleton style (good idea??)
     return new OTFeatureInfo();

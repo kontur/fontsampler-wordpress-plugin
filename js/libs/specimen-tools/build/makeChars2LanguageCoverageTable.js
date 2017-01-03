@@ -96,8 +96,9 @@ function main() {
     //}
     var languageDirs = fs.readdirSync(cldrMiscPath)
                      // remove sublocales, too much resolution for our purpose
+                     // also remove the 'root' locale
                      // TODO: is this certainly OK?
-                     .filter(name => name.indexOf('-') === -1)
+                     .filter(name => name.indexOf('-') === -1 && name !== 'root')
 
       , result = {}
       ;

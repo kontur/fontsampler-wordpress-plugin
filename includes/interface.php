@@ -17,7 +17,7 @@
      data-value-line-height="<?php echo $options['line_height_initial']; ?>"
      data-step-line-height="1">
 
-	<div class="fontsampler-interface columns-<?php echo $set['ui_columns']; ?>">
+	<div class="fontsampler-interface columns-<?php echo $set['ui_columns']; echo ' fontsampler-id-' . $set['id']; ?>">
 
 		<?php
 
@@ -186,11 +186,12 @@
 							$initial_text = preg_replace( '/\n/', ' ', $initial_text_db );
 						}
 						?>
-						<div class="current-font type-tester__content<?php
+						<div class="current-font type-tester__content <?php
 						if ( ! isset( $set['multiline'] ) ||
 						     ( isset( $set['multiline'] ) && $set['multiline'] != "1" )
 						) :
 							echo ' fontsampler-is-singleline';
+
 						endif; ?>"
 						     contenteditable="true"
 							<?php if ( ! $set['is_ltr'] ): echo ' dir="rtl" '; endif; ?>

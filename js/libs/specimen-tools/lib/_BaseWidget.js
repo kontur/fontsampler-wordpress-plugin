@@ -1,4 +1,8 @@
-define([], function(){
+define([
+    './services/dom-tool'
+], function(
+    domTool
+){
     "use strict";
 
     function _BaseWidget(options) {
@@ -15,27 +19,21 @@ define([], function(){
             // of options but maybe we want this!?
         var keys = options ? Object.keys(options) : []
           , i, l
-          , result = Object.create(this.constructor.defaultOptions);
+          , result = Object.create(this.constructor.defaultOptions)
           ;
         for(i=0,l=keys.length;i<l;i++)
             result[keys[i]] = options[keys[i]];
         return result;
     };
 
-    _p._applyClasses = function (element, classes, remove) {
-        if(!classes)
-            return;
-        if(typeof classes === 'string')
-            classes = classes.split(' ').filter(function(item){return !!item;});
-        element.classList[remove ? 'remove' : 'add'].apply(element.classList, classes);
-    };
+    _p._applyClasses = domTool.applyClasses;
 
     _p._cssName2jsName = function (name) {
         var pieces = name.split('-'), i, l;
         for(i=1,l=pieces.length;i<l;i++)
             pieces[i] = pieces[i][0].toUpperCase() + pieces[i].slice(1);
         return pieces.join('');
-    }
+    };
 
     return _BaseWidget;
 });

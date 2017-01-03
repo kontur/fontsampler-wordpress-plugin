@@ -25,6 +25,7 @@
   color: #333333;
   height: 30px;
   border-bottom: 1px solid #333;
+  box-sizing: border-box;
 }
 .selectric .button {
   background: #ffffff;

@@ -55,9 +55,14 @@ define([
     };
 
     function _mapToClass(parent, class_, func, thisArg) {
-        var items = parent.getElementsByClassName(class_)
+        var items = []
           , i, l
           ;
+        if(parent.classList.contains(class_))
+            items.push(parent);
+
+        Array.prototype.push.apply(items, parent.getElementsByClassName(class_));
+
         for(i=0,l=items.length;i<l;i++)
             func.call(thisArg || null, items[i], i);
     }
@@ -77,8 +82,41 @@ define([
         return this._fontsData[getter](fontIndex);
     };
 
-    _p._createItem = function(bluePrintNode, fontIndex) {
-        var item = bluePrintNode.cloneNode(true);
+    _p._makeRotationItem = function(bluePrintNode, index) {
+        var item = bluePrintNode.cloneNode(false)
+          , rotationContent = []
+          , rotationContents = [rotationContent]
+          , childNode
+          , i, l, rotationIndex
+          ;
+        // Get all the rotation contents
+        // a special comment: <!-- rotate -->
+        // is used to separate the rotation contents
+        for(i=0,l=bluePrintNode.childNodes.length;i<l;i++) {
+            childNode = bluePrintNode.childNodes[i];
+            if(childNode.nodeType === 8 //Node.COMMENT_NODE == 8
+                           && childNode.textContent.trim() === 'rotate') {
+                rotationContent = [];
+                rotationContents.push(rotationContent);
+                continue;
+            }
+
+            rotationContent.push(childNode);
+        }
+
+        // apply rotationContent
+        rotationIndex = index % rotationContents.length;
+        rotationContent = rotationContents[rotationIndex];
+        for(i=0,l=rotationContent.length;i<l;i++)
+            item.appendChild(rotationContent[i].cloneNode(true));
+        return item;
+    };
+
+    _p._createItem = function(index, bluePrintNode, fontIndex) {
+        var item = bluePrintNode.hasAttribute('data-per-font-rotate')
+                        ? this._makeRotationItem(bluePrintNode, index)
+                        : bluePrintNode.cloneNode(true)
+                        ;
 
         _mapToClass(item, this._options.currentFontClass, function(item, i) {
             /*jshint unused:vars, validthis:true*/
@@ -93,17 +131,24 @@ define([
         return item;
     };
 
-    _p._createItems = function(fontIndex) {
+    _p._createItems = function(index, fonts) {
         // create new _contentElements
         var i, l, originalBluePrintNode, itemParentContainer
-          , bluePrintNode, item
+          , bluePrintNode, item, fontIndex
           , items = []
           ;
         for(i=0,l=this._bluePrintNodes.length;i<l;i++) {
             originalBluePrintNode = this._bluePrintNodes[i][0];
             itemParentContainer = this._bluePrintNodes[i][1];
             bluePrintNode = this._bluePrintNodes[i][2];
-            item = this._createItem(bluePrintNode, fontIndex);
+
+            if(bluePrintNode.hasAttribute('data-reverse-font-order'))
+                fontIndex = fonts[fonts.length - 1 - index];
+            else
+                fontIndex = fonts[index];
+
+
+            item = this._createItem(index, bluePrintNode, fontIndex);
             if(originalBluePrintNode !== null)
                 itemParentContainer.insertBefore(item, originalBluePrintNode);
             else
@@ -116,15 +161,14 @@ define([
     _p._onAllFontsLoaded = function(numberAllFonts) {
         //jshint unused:vars
         var fonts = this._fontsData.getFontIndexesInFamilyOrder()
-          , items, i, l, fontIndex
-          , fonts
+          , items, i, l
           ;
+
         for(i=this._contentElements.length-1;i>=0;i--)
             this._contentElements[i].parentNode.removeChild(this._contentElements[i]);
 
         for(i=0,l=fonts.length;i<l;i++) {
-            fontIndex = fonts[i];
-            items = this._createItems(fontIndex);
+            items = this._createItems(i, fonts);
             Array.prototype.push.apply(this._contentElements, items);
         }
     };

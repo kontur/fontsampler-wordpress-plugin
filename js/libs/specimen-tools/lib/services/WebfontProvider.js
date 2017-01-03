@@ -29,6 +29,7 @@ define([
         this._fontData = fontData;
         this._pubSub.subscribe('loadFont', this._onLoadFont.bind(this));
         this._data = [];
+        this._blobs = [];
 
         this.__stylesheet = null;
     }
@@ -57,6 +58,7 @@ define([
           , familyName = this._fontData.getCSSFamilyName(fontIndex)
           , weight = this._fontData.getCSSWeight(fontIndex)
           , style = this._fontData.getCSSStyle(fontIndex)
+          , stretch = this._fontData.getCSSStretch(fontIndex)
           , fontface, url, blob, styleData
           ;
 
@@ -64,6 +66,7 @@ define([
         styleData['font-style'] = style;
         styleData['font-weight'] = weight;
         styleData['font-family'] = familyName;
+        styleData['font-stretch'] = stretch;
         Object.defineProperty(styleData, '_props', {
             value: null
           , enumerable: false
@@ -73,7 +76,8 @@ define([
         if('FontFace' in this._window) {
             // more modern and direct
             fontface = new this._window.FontFace(familyName, arrBuff,{
-                        weight: weight
+                        stretch: stretch
+                      , weight: weight
                       , style: style
                     });
             this._window.document.fonts.add( fontface );
@@ -81,6 +85,7 @@ define([
         else {
             // oldschool, a bit bloated
             blob = new this._window.Blob([arrBuff], { type: 'font/opentype' });
+            this._blobs[fontIndex] = blob;
             url = this._window.URL.createObjectURL(blob);
             this._styleSheet.insertRule([
                     '@font-face {'
