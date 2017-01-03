@@ -15,25 +15,29 @@ define([
      * @param fontArraybuffer
      */
     function onLoadFont(i, fontFileName, err, fontArraybuffer) {
-        var error = err;
         /* jshint validthis: true */
-        try {
-            var font = opentype.parse(fontArraybuffer);
-        } catch (e) {
-            error = e;
+        var font;
+        if(!err) {
+            try {
+                font = opentype.parse(fontArraybuffer);
+            }
+            catch (parseError) {
+                err = parseError;
+            }
         }
 
-        if (error) {
-            console.warn('Can\'t load font', fontFileName, ' with error:', error);
+        if(err) {
+            console.warn('Can\'t load font', fontFileName, ' with error:', err);
             this.countAll--;
-        } else {
+        }
+        else {
             this.pubsub.publish('loadFont', i, fontFileName, font, fontArraybuffer);
             this.countLoaded += 1;
-            // if there was an error loading a font (above) this will never run
         }
-        if(this.countLoaded === this.countAll) {
+
+        if(this.countLoaded === this.countAll)
             this.pubsub.publish('allFontsLoaded', this.countAll);
-        }
+
     }
 
     function loadFromUrl(fontInfo, callback) {
@@ -77,9 +81,11 @@ define([
           , fontInfo = []
           ;
         for(i=0,l=fontFiles.length;i<l;i++) {
+            if (!fontFiles[i])
+                throw new Error('The url at index '+i+' appears to be invalid.');
             fontInfo.push({
                 name: fontFiles[i]
-              , url: fontFiles[i]
+                , url: fontFiles[i]
             });
         }
         _loadFonts(pubsub, fontInfo, loadFromUrl);

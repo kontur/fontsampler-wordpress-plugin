@@ -106,12 +106,24 @@ define([
 
     /**
      * Generic listener that reacts to a slider being moved
-     * The css property being manipulates is extracted from the wrapping DOM node's 
+     * The css property being manipulates is extracted from the wrapping DOM node's
      * data-target-property value
      */
     _p._sliderInputHandler = function(evt) {
-        var cssProperty = evt.target.parentElement.dataset.targetProperty
-          , value = evt.target.value;
+        var parentElement = evt.target.parentElement
+          , cssProperty = null
+          , value = evt.target.value
+          ;
+        while(parentElement !== this._container) {
+            if(parentElement.dataset.targetProperty === undefined) {
+                parentElement = parentElement.parentElement;
+                continue;
+            }
+            cssProperty = parentElement.dataset.targetProperty;
+            break;
+        }
+        if(cssProperty === null)
+            return;
         this._setCssValue(cssProperty, value);
         this._applyValues();
     };
@@ -251,7 +263,7 @@ define([
 
         // running these after all initializations, so `fontSizeIndicator`
         // gets initialized by the call to `_setFontSize` of `fontsize`
-        for(i=0,l=afterInit.length;i<l;i++) 
+        for(i=0,l=afterInit.length;i<l;i++)
             afterInit[i]();
     };
 

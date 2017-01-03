@@ -36,6 +36,20 @@ define([
           , 260: '100'
           , 280: '200'
         }
+      , width2cssWidth = {
+            'ultra-condensed':  'ultra-condensed'
+          , 'extra-condensed':  'extra-condensed'
+          , 'condensed':        'condensed'
+          , 'semi-condensed':   'semi-condensed'
+          , 'normal':           'normal'
+          , 'semi-expanded':    'semi-expanded'
+          , 'expanded':         'expanded'
+          , 'extra-expanded':   'extra-expanded'
+          , 'ultra-expanded':   'ultra-expanded'
+          // additional used PS values and their (arbitrary) css mapping
+          , 'narrow':           'condensed'
+          , 'wide':             'expanded'
+      }
       ;
 
     function FontsData(pubsub, options) {
@@ -363,6 +377,47 @@ define([
         return this.getWeightName(fontIndex) + (this.getIsItalic(fontIndex) ? ' Italic' : '');
     };
 
+    _p.getCSSStretch = function(fontIndex) {
+        return this.getStretchName(fontIndex);
+    };
+
+    _p.getStretchName = function(fontIndex) {
+        var font = this._data[fontIndex].font
+          , fontFamily, subFamily
+          , width, widths = Object.keys(width2cssWidth)
+          , i, l
+          ;
+
+        fontFamily = font.names.postScriptName.en
+                        || Object.values(font.names.postScriptName)[0]
+                        || font.names.fontFamily
+                        ;
+
+        // delete all before and incuded the first "-", don't use PS subfamily string
+        // but extract from full PS name;
+        // also use the entrie name if no "-" was found
+        if (fontFamily.indexOf("-") > -1) {
+            subFamily = fontFamily.substring(fontFamily.indexOf("-") + 1);
+        } else {
+            subFamily = fontFamily;
+        }
+        subFamily = subFamily.toLowerCase();
+
+        // since the "normal" width could be extracted but refer to style or weight
+        // try extract only other explicit width names and default to "normal" if
+        // none other were found
+        for (i=0,l=widths.length;i<l;i++) {
+            width = widths[i];
+            if (width !== 'normal') {
+                if (subFamily.indexOf(width) > -1) {
+                    return width2cssWidth[width];
+                }
+            }
+
+        }
+        return 'normal';
+    }
+
     _p.getPostScriptName = function(fontIndex) {
         return this._aquireFontData(fontIndex).font.names.postScriptName;
     };
@@ -380,6 +435,12 @@ define([
         switch(name){
             case('xHeight'):
                 return font.tables.os2.sxHeight;
+            case('capHeight'):
+                 return font.tables.os2.sCapHeight;
+            case('ascender'):
+            /*falls through*/
+            case('descender'):
+                return font[name];
             default:
                 console.warn('getFontValue: don\'t know how to get "'+ name +'".');
         }
@@ -402,7 +463,14 @@ define([
     _p.getFontIndexesInFamilyOrder = function(){
         var familiesData = this.getFamiliesData();
         return familiesData.reduce(familiesDataReducer, []);
-    }
+    };
+
+    _p.getFontIndexes = function() {
+        var fontIndex, l, result = [];
+        for(fontIndex=0,l=this._data.length;fontIndex<l;fontIndex++)
+            result.push(fontIndex);
+        return result;
+    };
 
     FontsData._installPublicCachedInterface(_p);
     return FontsData;
