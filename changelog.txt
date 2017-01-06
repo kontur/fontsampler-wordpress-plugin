@@ -1,3 +1,7 @@
+# 0.1.4
+- Updated to allow for more lenient italic detection (now also from Font name)
+- Fix small possible alignment interference from theme CSS
+
 # 0.1.3
 - Fontsamplers now support families with different widths
 - Each fontsampler instance is now wrapped in a DOM element with the fontsampler's ID for custom styling

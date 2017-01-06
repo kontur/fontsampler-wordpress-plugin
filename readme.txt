@@ -4,7 +4,7 @@ Donate link: https://www.indiegogo.com/projects/wordpress-plugin-for-letting-use
 Tags: fonts, typeface, preview, shortcode
 Requires at least: 4.0
 Tested up to: 4.7
-Stable tag: 0.1.2
+Stable tag: 0.1.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -63,6 +63,15 @@ that are set to use the default values.
 6. This is how you include a Fontsampler in a page or post: Simply add the shortcode for the created Fontsampler to your text
 
 == Changelog ==
+
+= 0.1.4 =
+* Updated to allow for more lenient italic detection (now also from Font name)
+* Fix small possible alignment interference from theme CSS
+
+= 0.1.3 =
+* Fontsamplers now support families with different widths
+* Each fontsampler instance is now wrapped in a DOM element with the fontsampler's ID for custom styling
+* Fixed a small interface alignment issues
 
 = 0.1.2 =
 * Added editable default setting for alignment

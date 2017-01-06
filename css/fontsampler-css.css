@@ -41,6 +41,7 @@
   height: 30px;
   color: #333333;
   text-align: center;
+  box-sizing: border-box;
   *font: 1px Lucida Sans Unicode, Arial Unicode MS, Arial;
 }
 .selectric .button:after {
@@ -220,6 +221,7 @@
   opacity: 0.4;
 }
 .rangeslider__fill {
+  box-sizing: border-box;
   position: absolute;
 }
 .rangeslider--horizontal .rangeslider__fill {
