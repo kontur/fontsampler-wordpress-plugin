@@ -21,6 +21,7 @@
   opacity: 0.4;
 }
 .rangeslider__fill {
+  box-sizing: border-box;
   position: absolute;
 }
 .rangeslider--horizontal .rangeslider__fill {
