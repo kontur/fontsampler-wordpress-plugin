@@ -291,8 +291,12 @@ define([
     _p._getCSSFamilyName = _p._getFamilyName;
 
     _p._getIsItalic = function(fontIndex) {
-        var font = this._data[fontIndex].font;
-        return !!(font.tables.os2.fsSelection & font.fsSelectionValues.ITALIC);
+        var font = this._data[fontIndex].font
+          , italicFromOS2 = !!(font.tables.os2.fsSelection & font.fsSelectionValues.ITALIC)
+          , subFamily = this.getSubfamilyName(fontIndex).toLowerCase()
+          , italicFromName = subFamily.indexOf("italic") > -1
+          ;
+        return italicFromOS2 || italicFromName;
     };
 
     _p.getFamiliesData = function() {
@@ -421,6 +425,27 @@ define([
     _p.getPostScriptName = function(fontIndex) {
         return this._aquireFontData(fontIndex).font.names.postScriptName;
     };
+
+    _p.getSubfamilyName = function(fontIndex) {
+        var font = this._data[fontIndex].font
+          , fontFamily, subFamily
+          ;
+
+        fontFamily = font.names.postScriptName.en
+                        || Object.values(font.names.postScriptName)[0]
+                        || font.names.fontFamily
+                        ;
+
+        // delete all before and incuded the first "-", don't use PS subfamily string
+        // but extract from full PS name;
+        // also use the entrie name if no "-" was found
+        if (fontFamily.indexOf("-") > -1) {
+            subFamily = fontFamily.substring(fontFamily.indexOf("-") + 1);
+        } else {
+            subFamily = fontFamily;
+        }
+        return subFamily;
+    }
 
     _p.getGlyphByName = function(fontIndex, name) {
         var font = this._aquireFontData(fontIndex).font
