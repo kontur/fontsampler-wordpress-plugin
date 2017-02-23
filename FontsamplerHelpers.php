@@ -10,7 +10,7 @@ class FontsamplerHelpers {
 	private $fontsampler;
 	private $less;
 
-	function FontsamplerHelpers( $fontsampler ) {
+	function __construct( $fontsampler ) {
 		$this->fontsampler = $fontsampler;
 		$this->less        = new Less_Parser( array( 'compress' => true ) );
 	}

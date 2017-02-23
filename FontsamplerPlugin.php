@@ -24,7 +24,7 @@ class FontsamplerPlugin {
 	const FONTSAMPLER_OPTION_DB_VERSION = 'fontsampler_db_version';
 	const FONTSAMPLER_OPTION_HIDE_LEGACY_FORMATS = 'fontsampler_hide_legacy_formats';
 
-	function FontsamplerPlugin( $wpdb ) {
+	function __construct( $wpdb ) {
 
 		// instantiate all needed helper subclasses
 		$this->msg     = new FontsamplerMessages();

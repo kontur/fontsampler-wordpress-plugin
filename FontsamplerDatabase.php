@@ -21,7 +21,7 @@ class FontsamplerDatabase {
 	private $helpers;
 	private $layout;
 
-	function FontsamplerDatabase( $wpdb, $fontsampler ) {
+	function __construct( $wpdb, $fontsampler ) {
 		$this->wpdb = $wpdb;
 
 		$this->table_sets     = $this->wpdb->prefix . 'fontsampler_sets';
