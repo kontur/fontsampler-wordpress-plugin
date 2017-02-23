@@ -3,10 +3,10 @@
 Plugin Name: Fontsampler
 Plugin URI:  https://fontsampler.johannesneumeier.com
 Description: Create interactive webfont previews via shortcodes
-Version:     0.1.4
+Version:     0.1.5
 Author:      Johannes Neumeier
 Author URI:  http://johannesneumeier.com
-Copyright:   Copyright 2016 Johannes Neumeier
+Copyright:   Copyright 2016-2017 Johannes Neumeier
 Text Domain: fontsampler
 */
 defined( 'ABSPATH' ) or die( 'Access denied.' );

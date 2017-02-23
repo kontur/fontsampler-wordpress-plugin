@@ -24,7 +24,7 @@ class FontsamplerPlugin {
 	const FONTSAMPLER_OPTION_DB_VERSION = 'fontsampler_db_version';
 	const FONTSAMPLER_OPTION_HIDE_LEGACY_FORMATS = 'fontsampler_hide_legacy_formats';
 
-	function FontsamplerPlugin( $wpdb ) {
+	function __construct( $wpdb ) {
 
 		// instantiate all needed helper subclasses
 		$this->msg     = new FontsamplerMessages();
@@ -34,7 +34,7 @@ class FontsamplerPlugin {
 		// keep track of db versions and migrations via this
 		// simply set this to the current PLUGIN VERSION number when bumping it
 		// i.e. a database update always bumps the version number of the plugin as well
-		$this->fontsampler_db_version = '0.1.2';
+		$this->fontsampler_db_version = '0.1.5';
 		$current_db_version           = get_option( self::FONTSAMPLER_OPTION_DB_VERSION );
 
 		// if no previous db version has been registered assume new install and set
@@ -405,6 +405,7 @@ class FontsamplerPlugin {
 
 			case 'settings':
 				$defaults = $this->db->get_settings();
+				$this->helpers->check_is_writeable( plugin_dir_path( __FILE__ ) . 'css/fontsampler-css.css', true );
 				include( 'includes/settings.php' );
 				break;
 

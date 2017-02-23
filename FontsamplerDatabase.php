@@ -21,7 +21,7 @@ class FontsamplerDatabase {
 	private $helpers;
 	private $layout;
 
-	function FontsamplerDatabase( $wpdb, $fontsampler ) {
+	function __construct( $wpdb, $fontsampler ) {
 		$this->wpdb = $wpdb;
 
 		$this->table_sets     = $this->wpdb->prefix . 'fontsampler_sets';
@@ -247,10 +247,16 @@ class FontsamplerDatabase {
 				update_option( 'fontsampler_db_version', $version );
 			}
 		}
+
+		// further generate a new settings css file (the update might have changed the less, so re-apply any
+		// stored css values to that less and generate the current css from it
+		$this->fontsampler->helpers->write_css_from_settings( $this->get_settings() );
+
 		// if all executed bump the version number option in the options database to the manually entered db version
 		// even if the last query was not of that high of a version (which it shouldn't)
 		update_option( 'fontsampler_db_version', $this->fontsampler->fontsampler_db_version );
 		$this->fontsampler->msg->info( 'Database schemas now up to date' );
+
 
 		return true;
 	}

@@ -12,7 +12,7 @@ class FontsamplerFormhandler {
 	private $files;
 	private $boolean_options;
 
-	function FontsamplerFormhandler( $fontsampler, $post, $files ) {
+	function __construct( $fontsampler, $post, $files ) {
 		$this->fontsampler = $fontsampler;
 		$this->post        = $post;
 		$this->files       = $files;

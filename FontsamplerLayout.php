@@ -10,7 +10,7 @@ class FontsamplerLayout {
 	public $blocks;
 	public $labels;
 
-	function FontsamplerLayout() {
+	function __construct() {
 		// any possible UI blocks available for sorting, and an array of their options for layout
 		// full means spanning all columns
 		// column means spanning one column

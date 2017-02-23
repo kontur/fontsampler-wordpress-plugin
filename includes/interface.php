@@ -186,7 +186,8 @@
 							$initial_text = preg_replace( '/\n/', ' ', $initial_text_db );
 						}
 						?>
-						<div class="current-font type-tester__content <?php
+						<div autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+							class="current-font type-tester__content <?php
 						if ( ! isset( $set['multiline'] ) ||
 						     ( isset( $set['multiline'] ) && $set['multiline'] != "1" )
 						) :

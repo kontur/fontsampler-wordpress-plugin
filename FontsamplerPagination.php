@@ -13,7 +13,7 @@ class FontsamplerPagination {
 	private $current_page;
 	private $pagenumbers_as_labels;
 
-	function FontsamplerPagination( $items, $items_per_page, $pagenumbers_as_labels = true, $current_offset = 0 ) {
+	function __construct( $items, $items_per_page, $pagenumbers_as_labels = true, $current_offset = 0 ) {
 		$this->items                 = $items;
 		$this->pages_total           = (int) ceil( sizeof( $items ) / $items_per_page );
 		$this->items_per_page        = $items_per_page;
