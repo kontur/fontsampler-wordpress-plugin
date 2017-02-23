@@ -44,6 +44,8 @@ class FontsamplerHelpers {
 		$input  = plugin_dir_path( __FILE__ ) . 'css/fontsampler-css.less';
 		$output = plugin_dir_path( __FILE__ ) . 'css/fontsampler-css.css';
 
+		$m = new FontsamplerMessages();
+
 		// reduce passed in settings row to only values for keys starting with css_ and prefix those keys with an @ for
 		// matching and replacing
 		$settings_less_vars = array();
@@ -59,18 +61,38 @@ class FontsamplerHelpers {
 				$this->less->ModifyVars( $settings_less_vars );
 				$css = $this->less->getCss();
 			} catch ( Exception $e ) {
-				$error_message = $e->getMessage();
-
+				$m->error( $e->getMessage() );
 				return false;
 			}
 
 			// concat the base styles and the replaced template into the default css file
-			if ( file_put_contents( $output, $css ) ) {
+			if ( false === $this->check_is_writeable( $output )) {
+				$m->error( 'Error: Permission to write to ' . $output . ' denied. Failed to update styles');
+				return false;
+			}
+			if ( false !== file_put_contents( $output, $css ) ) {
 				return true;
+			} else {
 			}
 		}
 
 		return false;
+	}
+
+
+	function check_is_writeable( $handle, $output_wrapper = false ) {
+		$m = new FontsamplerMessages();
+		if ( ( is_dir( $handle ) || is_file( $handle ) ) && false === is_writeable( $handle ) ) {
+			if ( $output_wrapper ) {
+				echo '<div class="notice">';
+			}
+			$m->notice( 'Warning: ' . $handle . ' not writable by the server, update the folder/file permissions.');
+			if ( $output_wrapper ) {
+				echo '</div>';
+			}
+			return false;
+		}
+		return true;
 	}
 
 

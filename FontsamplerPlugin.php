@@ -405,6 +405,7 @@ class FontsamplerPlugin {
 
 			case 'settings':
 				$defaults = $this->db->get_settings();
+				$this->helpers->check_is_writeable( plugin_dir_path( __FILE__ ) . 'css/fontsampler-css.css', true );
 				include( 'includes/settings.php' );
 				break;
 
