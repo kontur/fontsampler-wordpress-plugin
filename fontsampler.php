@@ -35,4 +35,35 @@ add_action( 'admin_enqueue_scripts', array( $f, 'fontsampler_admin_enqueues' ) )
 add_action( 'wp_ajax_get_mock_fontsampler', array( $f, 'ajax_get_mock_fontsampler'));
 add_filter( 'upload_mimes', array( $f, 'allow_font_upload_types' ) );
 register_activation_hook( __FILE__, array( $f, 'fontsampler_activate' ) );
+register_uninstall_hook( __FILE__, 'uninstall' );
 
+
+function uninstall() {
+	defined( 'WP_UNINSTALL_PLUGIN' ) or die();
+	/**
+	 * NOTE: There doesn't seem to be a sane way of accessing the FontsamplerPlugin
+	 * or related classes; table names and option names are magical ;(
+	 */
+	global $wpdb;
+
+	$sql = 'DROP TABLE IF EXISTS ' . $wpdb->prefix . 'fontsampler_sets_x_fonts';
+	$wpdb->query( $sql );
+
+	$sql = 'DROP TABLE IF EXISTS ' . $wpdb->prefix . 'fontsampler_fonts';
+	$wpdb->query( $sql );
+
+	$sql = 'DROP TABLE IF EXISTS ' . $wpdb->prefix . 'fontsampler_sets';
+	$wpdb->query( $sql );
+
+	$sql = 'DROP TABLE IF EXISTS ' . $wpdb->prefix . 'fontsampler_settings';
+	$wpdb->query( $sql );
+
+	// finally, remove fontsampler settings from wp_options
+	if ( get_option( 'fontsampler_db_version' ) ) {
+		delete_option( 'fontsampler_db_version' );
+	}
+
+	if ( get_option( 'fontsampler_hide_legacy_formats' ) ) {
+		delete_options( 'fontsampler_hide_legacy_formats' );
+	}
+}
