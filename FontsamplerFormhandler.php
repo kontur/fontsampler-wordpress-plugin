@@ -276,7 +276,11 @@ class FontsamplerFormhandler {
 			$file = $this->files[ $label . '_' . $file_suffix ];
 
 			if ( ! empty( $file ) && $file['size'] > 0 ) {
-				$uploaded = media_handle_upload( $label . '_' . $file_suffix, 0 );
+				$uploaded = media_handle_upload( $label . '_' . $file_suffix, 0);
+//				, null, array(
+//					'mimes' => get_allowed_mime_types(),
+//					'validate' =>
+//				) );
 
 				if ( is_wp_error( $uploaded ) ) {
 					$this->fontsampler->msg->error( 'Error uploading ' . $label . ' file: ' . $uploaded->get_error_message() );
