@@ -3,8 +3,8 @@ Contributors: kontur
 Donate link: https://www.indiegogo.com/projects/wordpress-plugin-for-letting-users-test-typefaces#/
 Tags: fonts, typeface, preview, shortcode
 Requires at least: 4.0
-Tested up to: 4.7
-Stable tag: 0.1.4
+Tested up to: 4.7.2
+Stable tag: 0.1.6
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -63,6 +63,15 @@ that are set to use the default values.
 6. This is how you include a Fontsampler in a page or post: Simply add the shortcode for the created Fontsampler to your text
 
 == Changelog ==
+
+= 0.1.6 =
+* Implemented workaround for WP core bug preventing file uploads for some users
+* Fixed uninstall script to run without error messages
+
+= 0.1.5 =
+* Fixed PHP 7 compability issues
+* Fixed issue that failed to apply css changes as a result from a plugin update
+* Forced browsers with spellcheckers and autocorrect to ignore the fontsampler text input
 
 = 0.1.4 =
 * Updated to allow for more lenient italic detection (now also from Font name)

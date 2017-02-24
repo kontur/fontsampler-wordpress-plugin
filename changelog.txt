@@ -1,6 +1,6 @@
-# 0.1.6
-- Implemented workaround for WP core bug preventing file uploads for some users
-- Fixed uninstall script to run without error messages
+= 0.1.6 =
+* Implemented workaround for WP core bug preventing file uploads for some users
+* Fixed uninstall script to run without error messages
 
 # 0.1.5
 - Fixed PHP 7 compability issues
