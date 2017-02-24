@@ -58,7 +58,6 @@ function common_upload_real_mimes($checked, $file, $filename, $mimes) {
 			$checked['type'] = true;
 			return $checked;
 		}
-		return false;
 	}
 	return $checked;
 }
