@@ -41,24 +41,7 @@ class FontsamplerDatabase {
 		$sql = "CREATE TABLE " . $this->table_sets . " (
                 `id` int( 11 ) unsigned NOT NULL AUTO_INCREMENT,
                 `name` varchar( 255 ) NOT NULL DEFAULT '',
-                `initial` text NOT NULL,
-                `size` tinyint( 1 ) NOT NULL DEFAULT '0',
-                `letterspacing` tinyint( 1 ) NOT NULL DEFAULT '0',
-                `lineheight` tinyint( 1 ) NOT NULL DEFAULT '0',
-                `sampletexts` tinyint( 1 ) NOT NULL DEFAULT '0',
-                `alignment` tinyint( 1 ) NOT NULL DEFAULT '0',
-                `invert` tinyint( 1 ) NOT NULL DEFAULT '0',
-                `multiline` tinyint( 1 ) NOT NULL DEFAULT '1',
-                `opentype` tinyint( 1 ) NOT NULL DEFAULT '0',
-                `is_ltr` tinyint( 1 ) NOT NULL DEFAULT '1',
-                `fontpicker` tinyint( 1 ) NOT NULL DEFAULT '0',
-                `ui_order` VARCHAR( 255 ) NOT NULL DEFAULT 'size,letterspacing,options,fontpicker,sampletexts,lineheight,fontsampler',
-                `ui_columns` tinyint( 1 ) NOT NULL DEFAULT '3',
-                `default_features` tinyint( 1 ) NOT NULL DEFAULT '1',
-                `default_options` tinyint( 1 ) NOT NULL DEFAULT '0',
                 `initial_font` int( 10 ) unsigned DEFAULT NULL,
-                `buy` VARCHAR( 255 ) DEFAULT NULL,
-				`specimen` VARCHAR( 255 ) DEFAULT NULL,
 			  PRIMARY KEY ( `id` )
 			) DEFAULT CHARSET=utf8";
 
@@ -93,50 +76,57 @@ class FontsamplerDatabase {
 	function create_table_settings() {
 		$sql = "CREATE TABLE " . $this->table_settings . "(
 			`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-			`font_size_label` varchar(50) NOT NULL DEFAULT 'Size',
-			`font_size_initial` smallint(5) unsigned NOT NULL DEFAULT '18',
-			`font_size_min` smallint(5) unsigned NOT NULL DEFAULT '8',
-			`font_size_max` smallint(5) unsigned NOT NULL DEFAULT '96',
-			`font_size_unit` varchar(50) NOT NULL DEFAULT 'px',
-			`letter_spacing_label` varchar(50) NOT NULL DEFAULT 'Letter spacing',
-			`letter_spacing_initial` tinyint(5) NOT NULL DEFAULT '0',
-			`letter_spacing_min` tinyint(3) NOT NULL DEFAULT '-5',
-			`letter_spacing_max` tinyint(3) NOT NULL DEFAULT '5',
-			`letter_spacing_unit` varchar(50) NOT NULL DEFAULT 'px',
-			`line_height_label` varchar(50) NOT NULL DEFAULT 'Line height',
-			`line_height_initial` smallint(5) NOT NULL DEFAULT '110',
-			`line_height_min` smallint(5) NOT NULL DEFAULT '0',
-			`line_height_max` smallint(5) NOT NULL DEFAULT '300',
-			`line_height_unit` varchar(50) NOT NULL DEFAULT '%',
-			`alignment_initial` varchar(50) NOT NULL DEFAULT 'left',
-			`sample_texts` text NOT NULL,
-			`css_color_text` tinytext NOT NULL,
-			`css_color_background` tinytext NOT NULL,
-			`css_color_label` tinytext NOT NULL,
-			`css_size_label` tinytext NOT NULL,
-			`css_fontfamily_label` tinytext NOT NULL,
-			`css_color_highlight` tinytext NOT NULL,
-			`css_color_highlight_hover` tinytext NOT NULL,
-			`css_color_line` tinytext NOT NULL,
-			`css_color_handle` tinytext NOT NULL,
-			`css_color_icon_active` tinytext NOT NULL,
-			`css_color_icon_inactive` tinytext NOT NULL,
-			`css_column_gutter` tinytext NOT NULL,
-			`css_row_height` tinytext NOT NULL,
-			`css_row_gutter` tinytext NOT NULL,
-			`size` tinyint(1) unsigned NOT NULL DEFAULT '0',
-			`letterspacing` tinyint(1) unsigned NOT NULL DEFAULT '0',
-			`lineheight` tinyint(1) unsigned NOT NULL DEFAULT '0',
-			`sampletexts` tinyint(1) unsigned NOT NULL DEFAULT '0',
-			`alignment` tinyint(1) unsigned NOT NULL DEFAULT '0',
-			`invert` tinyint(1) unsigned NOT NULL DEFAULT '0',
-			`multiline` tinyint(1) unsigned NOT NULL DEFAULT '1',
-			`opentype` tinyint(1) unsigned NOT NULL DEFAULT '0',
-			`fontpicker` tinyint( 1 ) NOT NULL DEFAULT '0',
-			`buy_label` VARCHAR(255) DEFAULT 'Buy',
+			`size` tinyint(1) unsigned DEFAULT NULL,
+			`letterspacing` tinyint(1) unsigned DEFAULT NULL,
+			`lineheight` tinyint(1) unsigned DEFAULT NULL,
+			`sampletexts` tinyint(1) unsigned DEFAULT NULL,
+			`alignment` tinyint(1) unsigned DEFAULT NULL,
+			`invert` tinyint(1) unsigned DEFAULT NULL,
+			`multiline` tinyint(1) unsigned DEFAULT NULL,
+			`opentype` tinyint(1) unsigned DEFAULT NULL,
+			`fontpicker` tinyint( 1 ) DEFAULT NULL,
+			`buy_label` VARCHAR(255) DEFAULT NULL,
 			`buy_image` int( 11 ) unsigned DEFAULT NULL,
-			`specimen_label` VARCHAR(255) DEFAULT 'Specimen',
+			`specimen_label` VARCHAR(255) DEFAULT NULL,
 			`specimen_image` int( 11 ) unsigned DEFAULT NULL,
+            `initial` text DEFAULT NULL,
+            `is_ltr` tinyint( 1 ) DEFAULT NULL,
+            `ui_order` VARCHAR( 255 ) DEFAULT NULL,
+            `ui_columns` tinyint( 1 ) DEFAULT NULL,
+            `buy` VARCHAR( 255 ) DEFAULT NULL,
+			`specimen` VARCHAR( 255 ) DEFAULT NULL,
+			`font_size_label` varchar(50) DEFAULT NULL,
+			`font_size_initial` smallint(5) unsigned DEFAULT NULL,
+			`font_size_min` smallint(5) unsigned DEFAULT NULL,
+			`font_size_max` smallint(5) unsigned DEFAULT NULL,
+			`font_size_unit` varchar(50) DEFAULT NULL,
+			`letter_spacing_label` varchar(50) DEFAULT NULL,
+			`letter_spacing_initial` tinyint(5) DEFAULT NULL,
+			`letter_spacing_min` tinyint(3) DEFAULT NULL,
+			`letter_spacing_max` tinyint(3) DEFAULT NULL,
+			`letter_spacing_unit` varchar(50) DEFAULT NULL,
+			`line_height_label` varchar(50) DEFAULT NULL,
+			`line_height_initial` smallint(5) DEFAULT NULL,
+			`line_height_min` smallint(5) DEFAULT NULL,
+			`line_height_max` smallint(5) DEFAULT NULL,
+			`line_height_unit` varchar(50) DEFAULT NULL,
+			`alignment_initial` varchar(50) DEFAULT NULL,
+			`sample_texts` text DEFAULT NULL,
+			`css_color_text` tinytext DEFAULT NULL,
+			`css_color_background` tinytext DEFAULT NULL,
+			`css_color_label` tinytext DEFAULT NULL,
+			`css_size_label` tinytext DEFAULT NULL,
+			`css_fontfamily_label` tinytext DEFAULT NULL,
+			`css_color_highlight` tinytext DEFAULT NULL,
+			`css_color_highlight_hover` tinytext DEFAULT NULL,
+			`css_color_line` tinytext DEFAULT NULL,
+			`css_color_handle` tinytext DEFAULT NULL,
+			`css_color_icon_active` tinytext DEFAULT NULL,
+			`css_color_icon_inactive` tinytext DEFAULT NULL,
+			`css_column_gutter` tinytext DEFAULT NULL,
+			`css_row_height` tinytext DEFAULT NULL,
+			`css_row_gutter` tinytext DEFAULT NULL,
+			`is_default` tinyint(1) unsigned NOT NULL DEFAULT 0,
 			PRIMARY KEY (`id`)
 			) DEFAULT CHARSET=utf8";
 		$this->wpdb->query( $sql );
@@ -219,6 +209,71 @@ class FontsamplerDatabase {
 			),
 			'0.1.2' => array(
 				'ALTER TABLE ' . $this->table_settings . " ADD `alignment_initial` varchar(50) NOT NULL DEFAULT 'left'",
+			),
+			// 0.2.0 sees a major DB refactoring; let's here first do those migrations that we can
+			// before transferring some more data explicitly later in the foreach loop below
+			'0.2.0' => array(
+				// remove this leftover
+				'ALTER TABLE ' . $this->table_sets . " DROP `default_options`",
+
+				// add these fields from sets to settings
+				'ALTER TABLE ' . $this->table_settings . " ADD `set_id` tinyint(1) unsigned DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " ADD `size` tinyint(1) unsigned DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " ADD `letterspacing` tinyint(1) unsigned DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " ADD `lineheight` tinyint(1) unsigned DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " ADD `sampletexts` tinyint(1) unsigned DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " ADD `alignment` tinyint(1) unsigned DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " ADD `invert` tinyint(1) unsigned DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " ADD `multiline` tinyint(1) unsigned DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " ADD `opentype` tinyint(1) unsigned DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " ADD `fontpicker` tinyint( 1 ) DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " ADD `buy_label` VARCHAR(255) DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " ADD `buy_image` int( 11 ) unsigned DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " ADD `specimen_label` VARCHAR(255) DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " ADD `specimen_image` int( 11 ) unsigned DEFAULT NULL",
+	            'ALTER TABLE ' . $this->table_settings . " ADD `initial` text DEFAULT NULL",
+	            'ALTER TABLE ' . $this->table_settings . " ADD `is_ltr` tinyint( 1 ) DEFAULT NULL",
+	            'ALTER TABLE ' . $this->table_settings . " ADD `ui_order` VARCHAR( 255 ) DEFAULT NULL",
+	            'ALTER TABLE ' . $this->table_settings . " ADD `ui_columns` tinyint( 1 ) DEFAULT NULL",
+	            'ALTER TABLE ' . $this->table_settings . " ADD `buy` VARCHAR( 255 ) DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " ADD `specimen` VARCHAR( 255 ) DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " ADD `is_default` tinyint(1) unsigned NOT NULL DEFAULT 0",
+
+				// change the defaults to allow NULL for existing settings fields
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `font_size_label` `font_size_label` varchar(50) NULL DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `font_size_initial` `font_size_initial` smallint(5) unsigned DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `font_size_min` `font_size_min` smallint(5) unsigned DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `font_size_max` `font_size_max` smallint(5) unsigned DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `font_size_unit` `font_size_unit` varchar(50) DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `letter_spacing_label` `letter_spacing_label` varchar(50) DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `letter_spacing_initial` `letter_spacing_initial` tinyint(5) DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `letter_spacing_min` `letter_spacing_min` tinyint(3) DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `letter_spacing_max` `letter_spacing_max` tinyint(3) DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `letter_spacing_unit` `letter_spacing_unit` varchar(50) DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `line_height_label` `line_height_label` varchar(50) DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `line_height_initial` `line_height_initial` smallint(5) DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `line_height_min` `line_height_min` smallint(5) DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `line_height_max` `line_height_max` smallint(5) DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `line_height_unit` `line_height_unit` varchar(50) DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `alignment_initial` `alignment_initial` varchar(50) DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `sample_texts` `sample_texts` text DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `css_color_text` `css_color_text` tinytext DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `css_color_background` `css_color_background` tinytext DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `css_color_label` `css_color_label` tinytext DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `css_size_label` `css_size_label` tinytext DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `css_fontfamily_label` `css_fontfamily_label` tinytext DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `css_color_highlight` `css_color_highlight` tinytext DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `css_color_highlight_hover` `css_color_highlight_hover` tinytext DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `css_color_line` `css_color_line` tinytext DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `css_color_handle` `css_color_handle` tinytext DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `css_color_icon_active` `css_color_icon_active` tinytext DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `css_color_icon_inactive` `css_color_icon_inactive` tinytext DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `css_column_gutter` `css_column_gutter` tinytext DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `css_row_height` `css_row_height` tinytext DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `css_row_gutter` `css_row_gutter` tinytext DEFAULT NULL",
+
+				// currently in the settings table is only the default, so set it that way
+				'UPDATE ' . $this->table_settings . " SET is_default = 1, set_id = NULL",
 			)
 		);
 
@@ -238,6 +293,10 @@ class FontsamplerDatabase {
 						// NOTE: most important though that single error (i.e. existing column or something) doesn't break
 						// the entire update loop
 						$res = $this->wpdb->query( $sql );
+
+						if ( '0.2.0' === $version ) {
+							$this->migrate_db_0_2_0();
+						}
 					} catch ( Exception $e ) {
 						$this->fontsampler->msg->error( "Problem updating database to version $version. The following sql query failed: " . $sql );
 					}
@@ -259,6 +318,40 @@ class FontsamplerDatabase {
 
 
 		return true;
+	}
+
+	/**
+	 * For the transition from < 0.2.0 some more additional db transforms are required
+	 */
+
+//COPY all settings from set to settings
+//for all setting rows except "is_default = 1" set font_size_* letter_spacing_* and line_height_* to NULL to use defaults
+//for those sets, that used some "default_features", set the respective fields in settings to NULL to use defaults
+//DELETE all set fields that are no longer used
+	function migrate_db_0_2_0() {
+		$sql = "SELECT * FROM " . $this->table_settings;
+		$res = $this->wpdb->get_results( $sql, ARRAY_A );
+
+		foreach ( $res as $row ) {
+			$row['set_id'] = $row['id'];
+
+			if ( $row['default_features'] == 1 ) {
+				unset( $row['size'], $row['letterspacing'], $row['lineheight'], $row['sampletexts'], $row['alignment'],
+					$row['invert'], $row['multiline'], $row['opentype'], $row['fontpicker']);
+			}
+
+			unset( $row['id'], $row['name'], $row['default_features'], $row['default_options'], $row['initial_font'] );
+			$this->wpdb->insert( $this->table_settings, $row);
+
+			$drop = array('size', 'letterspacing', 'lineheight', 'sampletexts', 'alignment', 'invert', 'multiline',
+				'opentype', 'is_ltr', 'fontpicker', 'ui_order', 'ui_columns', 'default_features', 'default_options',
+				'buy', 'specimen');
+
+			foreach ( $drop as $field ) {
+				$sql = "ALTER TABLE " . $this->table_sets . " DROP " . $field;
+				$this->wpdb->query( $sql );
+			}
+		}
 	}
 
 
