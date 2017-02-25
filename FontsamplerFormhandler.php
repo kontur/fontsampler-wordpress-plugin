@@ -354,7 +354,7 @@ class FontsamplerFormhandler {
 				}
 
 				// atm no inserts, only updating the defaults
-				$this->fontsampler->db->update_settings( $data, $id );
+				$this->fontsampler->db->update_settings( $data );
 
 				// rewrite any fontsampler sets that use the defaults
 				$this->fontsampler->db->update_defaults( $data );

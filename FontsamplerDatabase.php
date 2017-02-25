@@ -518,8 +518,6 @@ class FontsamplerDatabase {
 					WHERE j.set_id = ' . intval( $set['id'] ) . '
 					ORDER BY j.`order` ASC';
 
-			echo $sql;
-
 			$set['fonts'] = $this->wpdb->get_results( $sql, ARRAY_A );
 			array_push( $set_with_fonts, $set );
 
@@ -703,6 +701,8 @@ class FontsamplerDatabase {
 	 * @param $options
 	 */
 	function update_defaults( $options ) {
+		return;
+
 		// write all new default options to the corresponding columns in the sets
 		$data = array_intersect_key( $options, array_flip( $this->fontsampler->default_features ) );
 		$this->wpdb->update( $this->table_sets, $data, array( 'default_features' => '1' ) );
@@ -719,8 +719,14 @@ class FontsamplerDatabase {
 	}
 
 
-	function update_settings( $data, $id ) {
-		$res = $this->wpdb->update( $this->table_settings, $data, array( 'id' => $id ) );
+	function update_settings( $data, $set_id = false ) {
+		$where = [];
+		if ( false === $set_id ) {
+			$where['is_default'] = '1';
+		} else {
+			$where['set_id'] = $set_id;
+		}
+		$res = $this->wpdb->update( $this->table_settings, $data, $where );
 
 		return $res !== false ? true : false;
 	}
