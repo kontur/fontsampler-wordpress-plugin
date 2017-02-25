@@ -75,7 +75,7 @@ class FontsamplerDatabase {
 
 	function create_table_settings() {
 		$sql = "CREATE TABLE " . $this->table_settings . "(
-			`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+			`settings_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			`size` tinyint(1) unsigned DEFAULT NULL,
 			`letterspacing` tinyint(1) unsigned DEFAULT NULL,
 			`lineheight` tinyint(1) unsigned DEFAULT NULL,
@@ -216,26 +216,16 @@ class FontsamplerDatabase {
 				// remove this leftover
 				'ALTER TABLE ' . $this->table_sets . " DROP `default_options`",
 
+				// change the id field name to not interfere with the now more common joins
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `id` `settings_id` int(11) unsigned NOT NULL AUTO_INCREMENT,",
+
 				// add these fields from sets to settings
 				'ALTER TABLE ' . $this->table_settings . " ADD `set_id` tinyint(1) unsigned DEFAULT NULL",
-				'ALTER TABLE ' . $this->table_settings . " ADD `size` tinyint(1) unsigned DEFAULT NULL",
-				'ALTER TABLE ' . $this->table_settings . " ADD `letterspacing` tinyint(1) unsigned DEFAULT NULL",
-				'ALTER TABLE ' . $this->table_settings . " ADD `lineheight` tinyint(1) unsigned DEFAULT NULL",
-				'ALTER TABLE ' . $this->table_settings . " ADD `sampletexts` tinyint(1) unsigned DEFAULT NULL",
-				'ALTER TABLE ' . $this->table_settings . " ADD `alignment` tinyint(1) unsigned DEFAULT NULL",
-				'ALTER TABLE ' . $this->table_settings . " ADD `invert` tinyint(1) unsigned DEFAULT NULL",
-				'ALTER TABLE ' . $this->table_settings . " ADD `multiline` tinyint(1) unsigned DEFAULT NULL",
-				'ALTER TABLE ' . $this->table_settings . " ADD `opentype` tinyint(1) unsigned DEFAULT NULL",
-				'ALTER TABLE ' . $this->table_settings . " ADD `fontpicker` tinyint( 1 ) DEFAULT NULL",
-				'ALTER TABLE ' . $this->table_settings . " ADD `buy_label` VARCHAR(255) DEFAULT NULL",
-				'ALTER TABLE ' . $this->table_settings . " ADD `buy_image` int( 11 ) unsigned DEFAULT NULL",
-				'ALTER TABLE ' . $this->table_settings . " ADD `specimen_label` VARCHAR(255) DEFAULT NULL",
-				'ALTER TABLE ' . $this->table_settings . " ADD `specimen_image` int( 11 ) unsigned DEFAULT NULL",
-	            'ALTER TABLE ' . $this->table_settings . " ADD `initial` text DEFAULT NULL",
-	            'ALTER TABLE ' . $this->table_settings . " ADD `is_ltr` tinyint( 1 ) DEFAULT NULL",
-	            'ALTER TABLE ' . $this->table_settings . " ADD `ui_order` VARCHAR( 255 ) DEFAULT NULL",
-	            'ALTER TABLE ' . $this->table_settings . " ADD `ui_columns` tinyint( 1 ) DEFAULT NULL",
-	            'ALTER TABLE ' . $this->table_settings . " ADD `buy` VARCHAR( 255 ) DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " ADD `initial` text DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " ADD `is_ltr` tinyint( 1 ) DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " ADD `ui_order` VARCHAR( 255 ) DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " ADD `ui_columns` tinyint( 1 ) DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " ADD `buy` VARCHAR( 255 ) DEFAULT NULL",
 				'ALTER TABLE ' . $this->table_settings . " ADD `specimen` VARCHAR( 255 ) DEFAULT NULL",
 				'ALTER TABLE ' . $this->table_settings . " ADD `is_default` tinyint(1) unsigned NOT NULL DEFAULT 0",
 
@@ -293,14 +283,17 @@ class FontsamplerDatabase {
 						// NOTE: most important though that single error (i.e. existing column or something) doesn't break
 						// the entire update loop
 						$res = $this->wpdb->query( $sql );
-
-						if ( '0.2.0' === $version ) {
-							$this->migrate_db_0_2_0();
-						}
 					} catch ( Exception $e ) {
 						$this->fontsampler->msg->error( "Problem updating database to version $version. The following sql query failed: " . $sql );
 					}
 				}
+
+
+				// for update to 0.2.0 we need to do a little more transforms:
+				if ( '0.2.0' === $version ) {
+					$this->migrate_db_0_2_0();
+				}
+
 				// bump the version number option in the options database
 				$this->fontsampler->msg->info( "Updated database schema to $version" );
 				update_option( 'fontsampler_db_version', $version );
@@ -320,36 +313,64 @@ class FontsamplerDatabase {
 		return true;
 	}
 
+
 	/**
 	 * For the transition from < 0.2.0 some more additional db transforms are required
 	 */
-
-//COPY all settings from set to settings
-//for all setting rows except "is_default = 1" set font_size_* letter_spacing_* and line_height_* to NULL to use defaults
-//for those sets, that used some "default_features", set the respective fields in settings to NULL to use defaults
-//DELETE all set fields that are no longer used
 	function migrate_db_0_2_0() {
-		$sql = "SELECT * FROM " . $this->table_settings;
+		$sql = "SELECT * FROM " . $this->table_sets;
 		$res = $this->wpdb->get_results( $sql, ARRAY_A );
 
-		foreach ( $res as $row ) {
-			$row['set_id'] = $row['id'];
+		if ( ! empty( $res ) ) {
 
-			if ( $row['default_features'] == 1 ) {
-				unset( $row['size'], $row['letterspacing'], $row['lineheight'], $row['sampletexts'], $row['alignment'],
-					$row['invert'], $row['multiline'], $row['opentype'], $row['fontpicker']);
+			foreach ( $res as $row ) {
+				$row['set_id'] = $row['id'];
+
+				// if default_features were selected, remove those fields from the set so that they will be NULL and
+				// thus get replaced with the is_default values when retrieved later on
+				if ( 1 == $row['default_features'] ) {
+					unset( $row['size'], $row['letterspacing'], $row['lineheight'], $row['sampletexts'], $row['alignment'],
+						$row['invert'], $row['multiline'], $row['opentype'], $row['fontpicker'] );
+				}
+
+				// these fields no longer used or not going to settings table
+				unset( $row['id'], $row['name'], $row['default_features'], $row['initial_font'] );
+
+				// add each previous set's data to the settings table
+				try {
+					$this->wpdb->insert( $this->table_settings, $row );
+				} catch ( Exception $e ) {
+					$this->fontsampler->msg->error( "Problem updating database to version $version. The following sql query failed: " . $sql );
+				}
 			}
 
-			unset( $row['id'], $row['name'], $row['default_features'], $row['default_options'], $row['initial_font'] );
-			$this->wpdb->insert( $this->table_settings, $row);
-
-			$drop = array('size', 'letterspacing', 'lineheight', 'sampletexts', 'alignment', 'invert', 'multiline',
-				'opentype', 'is_ltr', 'fontpicker', 'ui_order', 'ui_columns', 'default_features', 'default_options',
-				'buy', 'specimen');
+			// delete these fields from the sets table
+			$drop = array(
+				'initial',
+				'size',
+				'letterspacing',
+				'lineheight',
+				'sampletexts',
+				'alignment',
+				'invert',
+				'multiline',
+				'opentype',
+				'is_ltr',
+				'fontpicker',
+				'ui_order',
+				'ui_columns',
+				'default_features',
+				'buy',
+				'specimen'
+			);
 
 			foreach ( $drop as $field ) {
-				$sql = "ALTER TABLE " . $this->table_sets . " DROP " . $field;
-				$this->wpdb->query( $sql );
+				try {
+					$sql = "ALTER TABLE " . $this->table_sets . " DROP " . $field;
+					$this->wpdb->query( $sql );
+				} catch ( Exception $e ) {
+					$this->fontsampler->msg->error( "Problem updating database to version $version. The following sql query failed: " . $sql );
+				}
 			}
 		}
 	}
@@ -388,16 +409,72 @@ class FontsamplerDatabase {
 
 	/*
 	 * Read from settings table ( currently only one row with defaults )
+	 * Without params this returns the DEFAULTS
+	 * With $id param supplied returns that settings row (although by itself that is not very useful)
 	 */
-	function get_settings( $id = 1 ) {
-		$sql = 'SELECT * FROM ' . $this->table_settings . ' WHERE `id` = ' . $id;
-		$res = $this->wpdb->get_row( $sql, ARRAY_A );
+	function get_settings( $id = false ) {
+		if ( false === $id ) {
+			return $this->get_default_settings();
+		}
 
-		// remove any empty string settings
-		$res = array_filter( $res, function ( $item ) { return '' !== $item; } );
+		$sql = 'SELECT * FROM ' . $this->table_settings . ' WHERE `id` = ' . $id . ' LIMIT 1';
+		$settings = $this->wpdb->get_row( $sql, ARRAY_A );
+
+		if ( empty( $settings ) ) {
+			return false;
+		}
+
+		if ( 1 === $settings['is_default'] ) {
+			return $settings;
+		}
+
+		return $this->settings_substitute_defaults( $settings );
+	}
+
+
+	/**
+	 * @param $settings - associative array of settings row
+	 *
+	 * @return array - same settings, all NULL values replaced with defaults, if such existed
+	 */
+	function settings_substitute_defaults( $settings ) {
+		// if the passed in settings row happens to be the defaults row just throw it back
+		if ( 1 === $settings['is_default'] ) {
+			return $settings;
+		}
+
+		// replace all NULL values in the retrieved settings with the defaults
+		$defaults = $this->get_default_settings();
+		$merged = [];
+
+		// if no defaults are defined, just do nothing and return as such
+		if ( !$defaults) {
+			return $settings;
+		}
 
 		// return that row but make sure any missing or empty settings fields get substituted from the hardcoded defaults
-		$defaults = array_merge( $this->fontsampler->settings_defaults, $res );
+		foreach ( $settings as $key => $value ) {
+			if ( null === $value ) {
+				if ( null !== $defaults[ $key ] ) {
+					$merged[ $key ] = $defaults[ $key ];
+				}
+			}
+		}
+
+		return $merged;
+	}
+
+
+	/**
+	 * @return bool|array - returns the settings row marked as is_default
+	 */
+	function get_default_settings() {
+		$sql = 'SELECT * FROM ' . $this->table_settings . ' WHERE `is_default` = 1 LIMIT 1';
+		$defaults = $this->wpdb->get_row( $sql, ARRAY_A );
+
+		if ( empty( $defaults ) ) {
+			return false;
+		}
 
 		return $defaults;
 	}
@@ -408,7 +485,9 @@ class FontsamplerDatabase {
 	 */
 	function get_sets( $offset = null, $num_rows = null, $order_by = null ) {
 		// first fetch (a possibly limited amount of) fontsets
-		$sql = 'SELECT * FROM ' . $this->table_sets . ' s';
+		$sql = 'SELECT * FROM ' . $this->table_sets . ' s
+				LEFT JOIN ' . $this->table_settings . ' settings
+				ON s.id = settings.set_id ';
 
 		if ( is_null( $order_by ) ) {
 			$sql .= ' ORDER BY s.id ASC ';
@@ -439,6 +518,8 @@ class FontsamplerDatabase {
 					WHERE j.set_id = ' . intval( $set['id'] ) . '
 					ORDER BY j.`order` ASC';
 
+			echo $sql;
+
 			$set['fonts'] = $this->wpdb->get_results( $sql, ARRAY_A );
 			array_push( $set_with_fonts, $set );
 
@@ -450,6 +531,8 @@ class FontsamplerDatabase {
 
 	function get_set( $id, $including_fonts = true ) {
 		$sql = 'SELECT * FROM ' . $this->table_sets . ' s
+				LEFT JOIN ' . $this->table_settings . ' settings
+				ON s.id = settings.set_id
 				WHERE s.id = ' . $id;
 		$set = $this->wpdb->get_row( $sql, ARRAY_A );
 
@@ -629,7 +712,7 @@ class FontsamplerDatabase {
 		// the current defaults
 		foreach ( $this->get_sets() as $set ) {
 			$data = array(
-				'ui_order' => $this->layout->sanitizeString( $set['ui_order'] , $set)
+				'ui_order' => $this->layout->sanitizeString( $set['ui_order'], $set )
 			);
 			$this->wpdb->update( $this->table_sets, $data, array( 'id' => $set['id'], 'default_features' => '1' ) );
 		}
