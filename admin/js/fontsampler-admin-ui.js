@@ -254,6 +254,33 @@ define(['jquery', 'rangeslider', 'selectric', 'validate'], function ($, r, s, v)
             return false;
         });
 
+
+        $(".fontsampler-toggle-show-hide").on("click", function (e) {
+            e.preventDefault();
+            var $this = $(this),
+                $next = $(this).next(),
+                $show = $this.children('span:first-child'),
+                $hide = $this.children('span:last-child');
+
+            $next.toggleClass("fontsampler-visible");
+
+            if ( !$next.hasClass("fontsampler-visible") ) {
+                $show.show();
+                $hide.hide();
+            } else {
+                $show.hide();
+                $hide.show();
+            }
+        });
+
+
+        $(".fontsampler-options").accordion({
+            active: false,
+            collapsible: true,
+            header: 'h3',
+            heightStyle: 'content'
+        });
+
     }
 
     return main;

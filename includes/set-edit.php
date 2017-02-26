@@ -87,7 +87,9 @@
 	<br>
 	<small>Use the arrow on the left to drag the order of the fonts. Use the minus on the right to remove fonts.</small>
 
+	<?php include( plugin_dir_path(__FILE__) .  'options.php' ); ?>
 
+	<?php /*
 	<h2>Interface options</h2>
 	<h3>Initial text</h3>
 	<div style="overflow: hidden;">
@@ -263,6 +265,8 @@
 
 	</div>
 	<br>
+    */ ?>
+
 	<?php submit_button(); ?>
 </form>
 

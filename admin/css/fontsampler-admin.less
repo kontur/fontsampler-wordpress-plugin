@@ -519,4 +519,81 @@
         }
     }
 
+
+
+    .fontsampler-options-features-details {
+        border: 2px solid red;
+        overflow: auto;
+        display: none;
+
+        .fontsampler-options-features-details-row {
+            clear: both;
+            overflow: auto;
+
+            // every second row with background
+            &:nth-of-type(2n) {
+                background: lightgray;
+            }
+
+            // all children in one row: label, settings, default
+            & > * {
+                box-sizing: border-box;
+                display: inline-block;
+                float: left;
+            }
+
+            & > strong {
+                text-transform: uppercase;
+                width: 20%;
+            }
+
+            & > div {
+
+                &:nth-of-type(1) {
+                    .fontsampler-radio {
+                        display: inline-block;
+                        float: left;
+                        width: 2em;
+                    }
+                }
+
+                border: 1px solid green;
+                width: 39%;
+            }
+        }
+
+    }
+
+
+    label.fontsampler-radio {
+        display: block;
+        input[type=radio] {
+            display: inline-block;
+        }
+        span {
+            display: inline-block;
+        }
+    }
+
+    .fontsampler-toggle-show-hide {
+        span { display: none; }
+        span:first-child { display: block; }
+    }
+
+    .fontsampler-visible {
+        display: block;
+    }
+
+    .fontsampler-button-link {
+        border: 0;
+        outline: 0;
+        display: inline-block;
+    }
+
+    .fontsampler-options {
+        fieldset > div > label {
+            display: inline-block;
+        }
+    }
+
 }

@@ -561,3 +561,59 @@
   border: 1px solid #008ec2;
   color: #006799;
 }
+#fontsampler-admin .fontsampler-options-features-details {
+  border: 2px solid red;
+  overflow: auto;
+  display: none;
+}
+#fontsampler-admin .fontsampler-options-features-details .fontsampler-options-features-details-row {
+  clear: both;
+  overflow: auto;
+}
+#fontsampler-admin .fontsampler-options-features-details .fontsampler-options-features-details-row:nth-of-type(2n) {
+  background: lightgray;
+}
+#fontsampler-admin .fontsampler-options-features-details .fontsampler-options-features-details-row > * {
+  box-sizing: border-box;
+  display: inline-block;
+  float: left;
+}
+#fontsampler-admin .fontsampler-options-features-details .fontsampler-options-features-details-row > strong {
+  text-transform: uppercase;
+  width: 20%;
+}
+#fontsampler-admin .fontsampler-options-features-details .fontsampler-options-features-details-row > div {
+  border: 1px solid green;
+  width: 39%;
+}
+#fontsampler-admin .fontsampler-options-features-details .fontsampler-options-features-details-row > div:nth-of-type(1) .fontsampler-radio {
+  display: inline-block;
+  float: left;
+  width: 2em;
+}
+#fontsampler-admin label.fontsampler-radio {
+  display: block;
+}
+#fontsampler-admin label.fontsampler-radio input[type=radio] {
+  display: inline-block;
+}
+#fontsampler-admin label.fontsampler-radio span {
+  display: inline-block;
+}
+#fontsampler-admin .fontsampler-toggle-show-hide span {
+  display: none;
+}
+#fontsampler-admin .fontsampler-toggle-show-hide span:first-child {
+  display: block;
+}
+#fontsampler-admin .fontsampler-visible {
+  display: block;
+}
+#fontsampler-admin .fontsampler-button-link {
+  border: 0;
+  outline: 0;
+  display: inline-block;
+}
+#fontsampler-admin .fontsampler-options fieldset > div > label {
+  display: inline-block;
+}
