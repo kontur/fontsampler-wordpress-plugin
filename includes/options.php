@@ -1,12 +1,11 @@
 <h2>Options</h2>
 
-<label>
-	<input type="radio"><span>Use default settings</span>
+<label class="fontsampler-radio">
+	<input type="radio" name="use_default_options" value="1" ><span>Use default settings</span>
 </label>
-<label>
-	<input type="radio"><span>Define custom options</span>
+<label class="fontsampler-radio">
+	<input type="radio" name="use_default_options" value="0" checked="checked"><span>Use custom settings</span>
 </label>
-
 
 <div class="fontsampler-options">
 	<h3>Basic</h3>

@@ -76,9 +76,9 @@ class FontsamplerDatabase {
 	function create_table_settings() {
 		$sql = "CREATE TABLE " . $this->table_settings . "(
 			`settings_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-			`size` tinyint(1) unsigned DEFAULT NULL,
-			`letterspacing` tinyint(1) unsigned DEFAULT NULL,
-			`lineheight` tinyint(1) unsigned DEFAULT NULL,
+			`font_size` tinyint(1) unsigned DEFAULT NULL,
+			`letter_spacing` tinyint(1) unsigned DEFAULT NULL,
+			`line_height` tinyint(1) unsigned DEFAULT NULL,
 			`sampletexts` tinyint(1) unsigned DEFAULT NULL,
 			`alignment` tinyint(1) unsigned DEFAULT NULL,
 			`invert` tinyint(1) unsigned DEFAULT NULL,
@@ -262,6 +262,11 @@ class FontsamplerDatabase {
 				'ALTER TABLE ' . $this->table_settings . " CHANGE `css_row_height` `css_row_height` tinytext DEFAULT NULL",
 				'ALTER TABLE ' . $this->table_settings . " CHANGE `css_row_gutter` `css_row_gutter` tinytext DEFAULT NULL",
 
+				// rename those fields so that field and field slider settings have same prefix
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `font_size` tinyint(1) unsigned DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `letter_spacing` tinyint(1) unsigned DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `line_height` tinyint(1) unsigned DEFAULT NULL",
+
 				// currently in the settings table is only the default, so set it that way
 				'UPDATE ' . $this->table_settings . " SET is_default = 1, set_id = NULL",
 			)
@@ -326,10 +331,15 @@ class FontsamplerDatabase {
 			foreach ( $res as $row ) {
 				$row['set_id'] = $row['id'];
 
+				// some field renamings:
+				$row['font_size'] = $row['size'];
+				$row['letter_spacing'] = $row['letter_spacing'];
+				$row['line_height'] = $row['lineheight'];
+
 				// if default_features were selected, remove those fields from the set so that they will be NULL and
 				// thus get replaced with the is_default values when retrieved later on
 				if ( 1 == $row['default_features'] ) {
-					unset( $row['size'], $row['letterspacing'], $row['lineheight'], $row['sampletexts'], $row['alignment'],
+					unset( $row['font_size'], $row['letter_spacing'], $row['line_height'], $row['sampletexts'], $row['alignment'],
 						$row['invert'], $row['multiline'], $row['opentype'], $row['fontpicker'] );
 				}
 
@@ -340,7 +350,7 @@ class FontsamplerDatabase {
 				try {
 					$this->wpdb->insert( $this->table_settings, $row );
 				} catch ( Exception $e ) {
-					$this->fontsampler->msg->error( "Problem updating database to version $version. The following sql query failed: " . $sql );
+					$this->fontsampler->msg->error( "Problem updating database to version 0.2.0. The following sql query failed: " . $sql );
 				}
 			}
 
@@ -369,7 +379,7 @@ class FontsamplerDatabase {
 					$sql = "ALTER TABLE " . $this->table_sets . " DROP " . $field;
 					$this->wpdb->query( $sql );
 				} catch ( Exception $e ) {
-					$this->fontsampler->msg->error( "Problem updating database to version $version. The following sql query failed: " . $sql );
+					$this->fontsampler->msg->error( "Problem updating database to version 0.2.0. The following sql query failed: " . $sql );
 				}
 			}
 		}

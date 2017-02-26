@@ -3,6 +3,23 @@
 @import "admin-sampler.less";
 @import "admin-fontsets.less";
 
+
+@fs_color_white: #FFFFFF;
+@fs_color_light: #F2F2F2;
+
+@fs_color_link: #008EC2;
+@fs_color_spot: #C0402F;
+
+@fs_color_text_medium: #4A4A4A;
+@fs_color_text: #222222;
+@fs_color_disabled: #cccccc;
+
+@fs_color_add: #7ED321;
+@fs_color_add_light: #B8E986;
+
+@fs_color_ok: #008EC2;
+@fs_color_ok_light: #64CAF0;
+
 /*
  * Scope all css to be contained only within the fontsampler wrapper
  */
@@ -520,19 +537,61 @@
     }
 
 
+    .fontsampler-options {
+
+        &.ui-accordion-disabled {
+            h3 {
+                color: @fs_color_disabled !important;
+                cursor: not-allowed;
+            }
+        }
+
+        // accordion header
+        h3 {
+            background: @fs_color_light;
+            color: @fs_color_text_medium;
+            cursor: pointer;
+            height: 1em;
+            padding: 0.5em 1em;
+            outline: none;
+            margin-bottom: 0;
+            margin-top: 10px;
+
+            &:hover,
+            &:focus {
+                color: @fs_color_link;
+            }
+
+            &.ui-accordion-header-active {
+                color: @fs_color_text_medium !important;
+            }
+        }
+
+        // accordion content
+        fieldset {
+            border: 3px solid @fs_color_light;
+            display: none;
+            margin: 0 0 10px;
+
+            & > div {
+                & > label {
+                    margin: 0.5em 0;
+                }
+            }
+        }
+    }
 
     .fontsampler-options-features-details {
-        border: 2px solid red;
         overflow: auto;
-        display: none;
+        //display: none;
 
         .fontsampler-options-features-details-row {
             clear: both;
             overflow: auto;
 
             // every second row with background
-            &:nth-of-type(2n) {
-                background: lightgray;
+            &:nth-of-type(2n + 1) {
+                background: @fs_color_light;
             }
 
             // all children in one row: label, settings, default
@@ -548,25 +607,27 @@
             }
 
             & > div {
+                width: 39%;
 
                 &:nth-of-type(1) {
+                    border-left: 5px solid @fs_color_white;
+                    border-right: 3px solid @fs_color_white;
+
                     .fontsampler-radio {
                         display: inline-block;
                         float: left;
                         width: 2em;
                     }
                 }
-
-                border: 1px solid green;
-                width: 39%;
             }
         }
-
     }
 
 
     label.fontsampler-radio {
         display: block;
+        margin: 0.5em 0;
+
         input[type=radio] {
             display: inline-block;
         }
@@ -584,10 +645,18 @@
         display: block;
     }
 
+    // <button> link that looks just like text link
     .fontsampler-button-link {
+        background: transparent;
         border: 0;
-        outline: 0;
+        color: @fs_color_link;
+        cursor: pointer;
         display: inline-block;
+        font-size: smaller;
+        outline: 0;
+        padding: 0 1em;
+        margin: 0;
+        vertical-align: text-bottom;
     }
 
     .fontsampler-options {

@@ -561,17 +561,44 @@
   border: 1px solid #008ec2;
   color: #006799;
 }
-#fontsampler-admin .fontsampler-options-features-details {
-  border: 2px solid red;
-  overflow: auto;
+#fontsampler-admin .fontsampler-options.ui-accordion-disabled h3 {
+  color: #cccccc !important;
+  cursor: not-allowed;
+}
+#fontsampler-admin .fontsampler-options h3 {
+  background: #f2f2f2;
+  color: #4a4a4a;
+  cursor: pointer;
+  height: 1em;
+  padding: 0.5em 1em;
+  outline: none;
+  margin-bottom: 0;
+  margin-top: 10px;
+}
+#fontsampler-admin .fontsampler-options h3:hover,
+#fontsampler-admin .fontsampler-options h3:focus {
+  color: #008ec2;
+}
+#fontsampler-admin .fontsampler-options h3.ui-accordion-header-active {
+  color: #4a4a4a !important;
+}
+#fontsampler-admin .fontsampler-options fieldset {
+  border: 3px solid #f2f2f2;
   display: none;
+  margin: 0 0 10px;
+}
+#fontsampler-admin .fontsampler-options fieldset > div > label {
+  margin: 0.5em 0;
+}
+#fontsampler-admin .fontsampler-options-features-details {
+  overflow: auto;
 }
 #fontsampler-admin .fontsampler-options-features-details .fontsampler-options-features-details-row {
   clear: both;
   overflow: auto;
 }
-#fontsampler-admin .fontsampler-options-features-details .fontsampler-options-features-details-row:nth-of-type(2n) {
-  background: lightgray;
+#fontsampler-admin .fontsampler-options-features-details .fontsampler-options-features-details-row:nth-of-type(2n + 1) {
+  background: #f2f2f2;
 }
 #fontsampler-admin .fontsampler-options-features-details .fontsampler-options-features-details-row > * {
   box-sizing: border-box;
@@ -583,8 +610,11 @@
   width: 20%;
 }
 #fontsampler-admin .fontsampler-options-features-details .fontsampler-options-features-details-row > div {
-  border: 1px solid green;
   width: 39%;
+}
+#fontsampler-admin .fontsampler-options-features-details .fontsampler-options-features-details-row > div:nth-of-type(1) {
+  border-left: 5px solid #ffffff;
+  border-right: 3px solid #ffffff;
 }
 #fontsampler-admin .fontsampler-options-features-details .fontsampler-options-features-details-row > div:nth-of-type(1) .fontsampler-radio {
   display: inline-block;
@@ -593,6 +623,7 @@
 }
 #fontsampler-admin label.fontsampler-radio {
   display: block;
+  margin: 0.5em 0;
 }
 #fontsampler-admin label.fontsampler-radio input[type=radio] {
   display: inline-block;
@@ -610,9 +641,16 @@
   display: block;
 }
 #fontsampler-admin .fontsampler-button-link {
+  background: transparent;
   border: 0;
-  outline: 0;
+  color: #008ec2;
+  cursor: pointer;
   display: inline-block;
+  font-size: smaller;
+  outline: 0;
+  padding: 0 1em;
+  margin: 0;
+  vertical-align: text-bottom;
 }
 #fontsampler-admin .fontsampler-options fieldset > div > label {
   display: inline-block;

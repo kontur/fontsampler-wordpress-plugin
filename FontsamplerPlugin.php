@@ -341,9 +341,11 @@ class FontsamplerPlugin {
 		$subpage = isset( $_GET['subpage'] ) ? $_GET['subpage'] : '';
 		switch ( $subpage ) {
 			case 'set_create':
-				$default_settings        = $this->db->get_settings();
-				$set                     = array_intersect_key( $default_settings, array_flip( $this->default_features ) );
-				$set['default_features'] = 1; // by default pick the default UI options
+				//$default_settings        = $this->db->get_settings();
+				//$set                     = array_intersect_key( $default_settings, array_flip( $this->default_features ) );
+
+				$defaults = $this->db->get_default_settings();
+				$set = $defaults;
 
 				$formats = $this->font_formats;
 				$fonts   = $this->db->get_fontfile_posts();

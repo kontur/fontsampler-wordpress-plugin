@@ -4,7 +4,7 @@
  */
 define(['jquery', 'rangeslider', 'selectric', 'validate'], function ($, r, s, v) {
 
-    function main () {
+    function main() {
 
         // enable frontend side form validation
         $.validate({
@@ -264,7 +264,7 @@ define(['jquery', 'rangeslider', 'selectric', 'validate'], function ($, r, s, v)
 
             $next.toggleClass("fontsampler-visible");
 
-            if ( !$next.hasClass("fontsampler-visible") ) {
+            if (!$next.hasClass("fontsampler-visible")) {
                 $show.show();
                 $hide.hide();
             } else {
@@ -280,6 +280,23 @@ define(['jquery', 'rangeslider', 'selectric', 'validate'], function ($, r, s, v)
             header: 'h3',
             heightStyle: 'content'
         });
+
+
+        var $use_default_options = $("input[name=use_default_options]");
+        var $options = $(".fontsampler-options");
+        $("input[name=use_default_options]").change(function () {
+            if ($(this).val() == 1) {
+                $options.accordion("disable");
+                $options.accordion("option", "active", false);
+            } else {
+                $options.accordion("enable");
+            }
+        });
+
+        if ($use_default_options.filter(":checked").val() == 1) {
+            $options.accordion("disable");
+            $options.accordion("option", "active", false);
+        }
 
     }
 
