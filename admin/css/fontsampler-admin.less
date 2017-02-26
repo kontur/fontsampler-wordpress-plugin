@@ -583,7 +583,23 @@
 
     .fontsampler-options-features-details {
         overflow: auto;
-        //display: none;
+        display: none;
+        margin-left: 1.7em;
+
+        input[type=range] {
+            width: 100%;
+        }
+
+        input.current-value {
+            width: 3em;
+        }
+
+        label {
+            display: inline-block;
+            margin-top: 0.25em;
+            margin-left: 1em;
+            margin-bottom: 0.25em;
+        }
 
         .fontsampler-options-features-details-row {
             clear: both;
@@ -602,6 +618,7 @@
             }
 
             & > strong {
+                padding: 0.25em 0 0 0.5em;
                 text-transform: uppercase;
                 width: 20%;
             }
@@ -630,6 +647,7 @@
 
         input[type=radio] {
             display: inline-block;
+            margin: -0.1em 0.5em 0em;
         }
         span {
             display: inline-block;

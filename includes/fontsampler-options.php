@@ -27,7 +27,7 @@ function fs_output_slider( $label, $name, $value ) {
 function fs_output_option_feature_label_row( $use_default, $label, $name, $description, $default ) {
 	ob_start() ?>
 	<div class="fontsampler-options-features-details-row">
-		<strong>Label:</strong>
+		<strong>Label</strong>
 		<div>
 			<label class="fontsampler-radio">
 				<input type="radio" name="<?php echo $label; ?>_use_default" value="0"
@@ -51,10 +51,9 @@ function fs_output_option_feature_label_row( $use_default, $label, $name, $descr
 }
 
 function fs_output_option_feature_slider_row( $use_default, $header, $label, $slider_label, $slider_name, $slider_default ) {
-	ob_start();
-	var_dump($use_default);?>
+	ob_start(); ?>
 	<div class="fontsampler-options-features-details-row">
-		<strong><?php echo $header; ?>:</strong>
+		<strong><?php echo $header; ?></strong>
 		<div>
 			<label class="fontsampler-radio">
 				<input type="radio" name="<?php echo $label; ?>_use_default" value="0"
@@ -77,26 +76,26 @@ $features = [
 	'font_size'      => array(
 		'name'                 => 'font_size',
 		'label'                => 'Size control',
-		'slider_label'         => 'Label:',
-		'slider_initial_label' => 'Initial px:',
-		'slider_min_label'     => 'Min px:',
-		'slider_max_label'     => 'Max px:',
+		'slider_label'         => 'Label',
+		'slider_initial_label' => 'Initial px',
+		'slider_min_label'     => 'Min px',
+		'slider_max_label'     => 'Max px',
 	),
 	'letter_spacing' => array(
 		'name'                 => 'letter_spacing',
 		'label'                => 'Letter spacing control',
-		'slider_label'         => 'Label:',
-		'slider_initial_label' => 'Initial px:',
-		'slider_min_label'     => 'Min px:',
-		'slider_max_label'     => 'Max px:',
+		'slider_label'         => 'Label',
+		'slider_initial_label' => 'Initial px',
+		'slider_min_label'     => 'Min px',
+		'slider_max_label'     => 'Max px',
 	),
 	'line_height'    => array(
 		'name'                 => 'line_height',
 		'label'                => 'Line height control',
-		'slider_label'         => 'Label:',
-		'slider_initial_label' => 'Initial px:',
-		'slider_min_label'     => 'Min px:',
-		'slider_max_label'     => 'Max px:',
+		'slider_label'         => 'Label',
+		'slider_initial_label' => 'Initial px',
+		'slider_min_label'     => 'Min px',
+		'slider_max_label'     => 'Max px',
 	)
 ];
 
@@ -129,13 +128,13 @@ foreach ( $features as $label => $f ) {
 			echo fs_output_option_feature_label_row( $use_default, $label, $f['name'], $f['slider_label'],
 				$defaults[ $f['name'] . '_label' ] );
 
-			echo fs_output_option_feature_slider_row( $use_default, 'Minimum:', $label . '_min', $f['slider_min_label'],
+			echo fs_output_option_feature_slider_row( $use_default, 'Minimum', $label . '_min', $f['slider_min_label'],
 				$f['name'] . '_min_value', $defaults[ $f['name'] . '_min' ] );
 
-			echo fs_output_option_feature_slider_row( $use_default, 'Initial:', $label . '_initial', $f['slider_initial_label'],
+			echo fs_output_option_feature_slider_row( $use_default, 'Initial', $label . '_initial', $f['slider_initial_label'],
 				$f['name'] . '_initial_value', $defaults[ $f['name'] . '_initial' ] );
 
-			echo fs_output_option_feature_slider_row( $use_default, 'Maximum:', $label . '_max', $f['slider_max_label'],
+			echo fs_output_option_feature_slider_row( $use_default, 'Maximum', $label . '_max', $f['slider_max_label'],
 				$f['name'] . '_max_value', $defaults[ $f['name'] . '_max' ] );
 			?>
 		</div>

@@ -592,6 +592,20 @@
 }
 #fontsampler-admin .fontsampler-options-features-details {
   overflow: auto;
+  display: none;
+  margin-left: 1.7em;
+}
+#fontsampler-admin .fontsampler-options-features-details input[type=range] {
+  width: 100%;
+}
+#fontsampler-admin .fontsampler-options-features-details input.current-value {
+  width: 3em;
+}
+#fontsampler-admin .fontsampler-options-features-details label {
+  display: inline-block;
+  margin-top: 0.25em;
+  margin-left: 1em;
+  margin-bottom: 0.25em;
 }
 #fontsampler-admin .fontsampler-options-features-details .fontsampler-options-features-details-row {
   clear: both;
@@ -606,6 +620,7 @@
   float: left;
 }
 #fontsampler-admin .fontsampler-options-features-details .fontsampler-options-features-details-row > strong {
+  padding: 0.25em 0 0 0.5em;
   text-transform: uppercase;
   width: 20%;
 }
@@ -627,6 +642,7 @@
 }
 #fontsampler-admin label.fontsampler-radio input[type=radio] {
   display: inline-block;
+  margin: -0.1em 0.5em 0em;
 }
 #fontsampler-admin label.fontsampler-radio span {
   display: inline-block;
