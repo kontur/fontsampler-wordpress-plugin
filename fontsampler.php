@@ -22,9 +22,17 @@ require_once( 'FontsamplerPagination.php' );
 require_once( 'FontsamplerMessages.php' );
 
 require_once( 'vendor/oyejorge/less.php/lessc.inc.php');
+require_once( 'vendor/autoload.php');
+
+
+$loader = new Twig_Loader_Filesystem( __DIR__ . '/includes' );
+$twig = new Twig_Environment( $loader );
+
+//$deprecations = new Twig_Util_DeprecationCollector($twig);
+//print_r($deprecations->collectDir(__DIR__.'/templates'));
 
 global $wpdb;
-$f = new FontsamplerPlugin( $wpdb );
+$f = new FontsamplerPlugin( $wpdb, $twig );
 
 // register the shortcode hook
 add_shortcode( 'fontsampler', array( $f, 'fontsampler_shortcode' ) );

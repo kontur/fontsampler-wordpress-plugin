@@ -1,0 +1,9 @@
+{% if pagination %}
+<nav class="fontsampler-pagination">
+	{% for page in pagination %}
+		<a data-target="fontsampler-admin-tbody-ajax"
+	    {% if page.is_current %} class="fontsampler-pagination-current-page" {% endif %}
+		href="{{ page.url|raw }}">{{ page.label|raw }}</a>
+	{% endfor %}
+</nav>
+{% endif %}

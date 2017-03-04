@@ -1,0 +1,70 @@
+<h1>Font sets &amp;amp; files</h1>
+
+{% if not fonts %}
+
+	<p>Font sets are all the webfont files associated with one font. Any Fontsampler you create can use one or more
+	font sets.</p>
+	<p>Different weights or styles each need their own font set (which can consist of woff2, woff, eot, svg and ttf files).</p>
+
+{% else %}
+
+	<p>Listed here are the fonts and the file formats that are provided for displaying them.</p>
+
+	{% include 'pagination.twig' %}
+
+	<table>
+		<thead>
+		<tr>
+			<th>Font name<br>
+				<small>Equals the displayed name in the fontsampler dropdown <br>(when it has several fonts)</small>
+			</th>
+			<th>Preview</th>
+			<th>Formats<br>
+				<small>A list of all formats provided (and used) for rendering type samplers using this font. <br>
+					You should at the very least provide a <span class="filename">WOFF</span> file.</small>
+			</th>
+			<th>Edit</th>
+			<th>Delete</th>
+		</tr>
+		</thead>
+
+		<tbody id="fontsampler-admin-tbody-ajax">
+		{% for font in fonts %}
+			<tr>
+				<td>{{ font.name }}</td>
+				<td>
+					<div class="fontsampler-preview"
+					     data-font-files='{{ fontfiles_json( font ) }}'>{{ font.name }}</div>
+				</td>
+				<td>
+					<ul>
+						{% for format in formats %}
+							{% if font[format] %}
+								<li>
+									<span class="fileformat filename">{{ format }}</span>
+									<span class="filename">{{ file_from_path(font, format) }}</span>
+								</li>
+							{% endif %}
+						{% endfor %}
+					</ul>
+				</td>
+				<td>
+					<form method="post" action="?page=fontsampler&amp;subpage=font_edit&amp;id={{ font.id }}">
+						{{ get_wp_submit_button('edit') }}
+					</form>
+				</td>
+				<td>
+					<form method="post" action="?page=fontsampler&amp;subpage=font_delete&amp;id={{ font.id }}">
+						{{ get_wp_submit_button('delete', 'secondary') }}
+					</form>
+				</td>
+			</tr>
+		{% endfor %}
+		</tbody>
+	</table>
+
+	{% include 'pagination.twig' %}
+
+{% endif %}
+
+<a class="button button-primary" href="?page=fontsampler&subpage=font_create">Create a new font record</a>

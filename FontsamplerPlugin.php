@@ -14,6 +14,7 @@ class FontsamplerPlugin {
 	public $default_features;
 	public $admin_hide_legacy_formats;
 	public $fontsampler_db_version;
+	public $twig;
 
 	// helper classes
 	public $msg;
@@ -24,12 +25,13 @@ class FontsamplerPlugin {
 	const FONTSAMPLER_OPTION_DB_VERSION = 'fontsampler_db_version';
 	const FONTSAMPLER_OPTION_HIDE_LEGACY_FORMATS = 'fontsampler_hide_legacy_formats';
 
-	function __construct( $wpdb ) {
+	function __construct( $wpdb, $twig ) {
 
 		// instantiate all needed helper subclasses
 		$this->msg     = new FontsamplerMessages();
 		$this->helpers = new FontsamplerHelpers( $this );
 		$this->db      = new FontsamplerDatabase( $wpdb, $this );
+		$this->twig    = $twig;
 
 		// keep track of db versions and migrations via this
 		// simply set this to the current PLUGIN VERSION number when bumping it
@@ -58,6 +60,20 @@ class FontsamplerPlugin {
 		} else {
 			$this->admin_hide_legacy_formats = $option_legacy_formats;
 		}
+
+
+		// mount some helpers to twig
+		$this->twig->addFunction( new Twig_SimpleFunction( 'fontfiles_json', function ($fontset) {
+			return $this->helpers->fontfiles_json( $fontset );
+		}));
+
+		$this->twig->addFunction( new Twig_SimpleFunction( 'file_from_path', function ($font, $format) {
+			return substr( $font[ $format ], strrpos( $font[ $format ], '/' ) + 1 );
+		}));
+
+		$this->twig->addFunction( new Twig_SimpleFunction( 'get_wp_submit_button', function ($label, $class = 'primary') {
+			return submit_button( $label, $class );
+		}));
 
 
 		// TODO combined default_features and boolean options as array of objects
@@ -384,10 +400,12 @@ class FontsamplerPlugin {
 					$pagination = new FontsamplerPagination( $initials, $num_rows, false, $offset );
 				}
 
-				$fonts   = $this->db->get_fontsets( $offset, $num_rows );
-				$formats = $this->font_formats;
-
-				include( 'includes/fontsets.php' );
+				echo $this->twig->render( 'fontsets.twig', array(
+						'fonts' => $this->db->get_fontsets( $offset, $num_rows ),
+						'formats' => $this->font_formats,
+						'pagination' => $pagination->pages('?page=fontsampler&amp;subpage=fonts&amp;offset=###first###&amp;num_rows=###items###')
+					)
+				);
 				break;
 
 			case 'font_create':
@@ -426,7 +444,11 @@ class FontsamplerPlugin {
 				}
 
 				$sets = $this->db->get_sets( $offset, $num_rows );
-				include( 'includes/sets.php' );
+
+
+				echo $this->twig->render( 'sets.twig', $sets );
+				//include( 'includes/sets.php' );
+
 				break;
 		}
 		echo '</main>';

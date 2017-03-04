@@ -1,5 +1,6 @@
 {
   "require": {
-    "oyejorge/less.php": "~1.5"
+    "oyejorge/less.php": "~1.5",
+    "twig/twig": "^1.32"
   }
 }
