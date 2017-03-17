@@ -63,17 +63,30 @@ class FontsamplerPlugin {
 
 
 		// mount some helpers to twig
-		$this->twig->addFunction( new Twig_SimpleFunction( 'fontfiles_json', function ($fontset) {
+		$this->twig->addFunction( new Twig_SimpleFunction( 'fontfiles_json', function ( $fontset ) {
 			return $this->helpers->fontfiles_json( $fontset );
 		}));
 
-		$this->twig->addFunction( new Twig_SimpleFunction( 'file_from_path', function ($font, $format) {
+		$this->twig->addFunction( new Twig_SimpleFunction( 'file_from_path', function ( $font, $format ) {
 			return substr( $font[ $format ], strrpos( $font[ $format ], '/' ) + 1 );
 		}));
 
-		$this->twig->addFunction( new Twig_SimpleFunction( 'get_wp_submit_button', function ($label, $class = 'primary') {
-			return submit_button( $label, $class );
+		$this->twig->addFunction( new Twig_SimpleFunction( 'get_wp_submit_button',
+			function ( $label, $type = 'primary' ) {
+				return submit_button( $label, $type);
+			})
+		);
+
+		$this->twig->addFunction( new Twig_SimpleFunction( 'is_current', function ( $current ) {
+			if ( $current === 'sets' && !isset($_GET['subpage']) ||
+				isset( $_GET['subpage'] ) && $_GET['subpage'] === $current) {
+				return ' class=current ';
+			} else {
+				return '';
+			}
 		}));
+
+		$twig->addGlobal('plugin_dir_url', plugin_dir_url( __FILE__ ) );
 
 
 		// TODO combined default_features and boolean options as array of objects
@@ -294,10 +307,6 @@ class FontsamplerPlugin {
 		<script> var fontsamplerBaseUrl = '<?php echo $script_url; ?>'; </script>
 		<?php
 
-		include( 'includes/header.php' );
-
-		echo '<main>';
-
 		$this->db->check_and_create_tables();
 
 		// check upload folder is writable
@@ -396,9 +405,9 @@ class FontsamplerPlugin {
 				$offset   = isset( $_GET['offset'] ) ? intval( $_GET['offset'] ) : 0;
 				$num_rows = isset( $_GET['num_rows'] ) ? intval( $_GET['num_rows'] ) : 10;
 				$initials = $this->db->get_fontsets_initials();
-				if ( sizeof( $initials ) > 10 ) {
+//				if ( sizeof( $initials ) > 10 ) {
 					$pagination = new FontsamplerPagination( $initials, $num_rows, false, $offset );
-				}
+//				}
 
 				echo $this->twig->render( 'fontsets.twig', array(
 						'fonts' => $this->db->get_fontsets( $offset, $num_rows ),
@@ -439,21 +448,22 @@ class FontsamplerPlugin {
 				$offset   = isset( $_GET['offset'] ) ? intval( $_GET['offset'] ) : 0;
 				$num_rows = isset( $_GET['num_rows'] ) ? intval( $_GET['num_rows'] ) : 10;
 				$initials = $this->db->get_samples_ids();
-				if ( sizeof( $initials ) > 10 ) {
+//				if ( sizeof( $initials ) > 10 ) {
 					$pagination = new FontsamplerPagination( $initials, $num_rows, true, $offset );
-				}
+//				}
 
 				$sets = $this->db->get_sets( $offset, $num_rows );
 
-
-				echo $this->twig->render( 'sets.twig', $sets );
+				echo $this->twig->render( 'sets.twig', array(
+						'sets' => $sets,
+						'pagination' => $pagination->pages('?page=fontsampler&amp;subpage=sets&amp;offset=###first###&amp;num_rows=###items###'),
+					)
+				);
 				//include( 'includes/sets.php' );
 
 				break;
 		}
-		echo '</main>';
 
-		include( 'includes/footer.php' );
 		echo '</section>';
 	}
 

@@ -525,7 +525,7 @@ class FontsamplerDatabase {
 					ON s.id = j.set_id
 					LEFT JOIN ' . $this->table_fonts . ' f
 					ON f.id = j.font_id
-					WHERE j.set_id = ' . intval( $set['id'] ) . '
+					WHERE j.set_id = ' . intval( $set['set_id'] ) . '
 					ORDER BY j.`order` ASC';
 
 			$set['fonts'] = $this->wpdb->get_results( $sql, ARRAY_A );

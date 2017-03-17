@@ -1,24 +1,13 @@
+@import "admin-variables.less";
+
 @import "../../css/fontsampler-custom-rangeslider.less";
 @import "admin-settings.less";
 @import "admin-sampler.less";
 @import "admin-fontsets.less";
+@import "admin-header.less";
+@import "admin-buttons.less";
 
 
-@fs_color_white: #FFFFFF;
-@fs_color_light: #F2F2F2;
-
-@fs_color_link: #008EC2;
-@fs_color_spot: #C0402F;
-
-@fs_color_text_medium: #4A4A4A;
-@fs_color_text: #222222;
-@fs_color_disabled: #cccccc;
-
-@fs_color_add: #7ED321;
-@fs_color_add_light: #B8E986;
-
-@fs_color_ok: #008EC2;
-@fs_color_ok_light: #64CAF0;
 
 /*
  * Scope all css to be contained only within the fontsampler wrapper
@@ -27,7 +16,6 @@
 
     padding-top: 1em;
 
-    header,
     main {
         background: white;
         margin: 0 1.5em 0 0;
@@ -216,51 +204,6 @@
     ul.real-list {
         list-style: disc;
         margin: 0 0 0 2em;
-    }
-
-    #fontsampler-menu {
-        ul {
-            border-bottom: 1px solid #999;
-            margin: 0;
-            padding: 0 1em;
-
-            li {
-                padding: 0;
-                margin: 0;
-                font-size: larger;
-                display: inline-block;
-                border-bottom: 0;
-
-                a {
-                    border: 1px solid #fff;
-                    border-top-left-radius: 3px;
-                    border-top-right-radius: 3px;
-                    border-bottom: 0;
-                    display: inline-block;
-                    padding: 0.5em 1em;
-                    text-decoration: none;
-                    outline: none;
-
-                    &:hover, &:focus {
-                        background: #008ec2;
-                        border: 1px solid #006799;
-                        border-bottom: 0;
-                        color: #fff;
-                    }
-                }
-
-                &.current {
-                    background: #fafafa;
-                    a {
-                        border: 1px solid #999;
-                        border-bottom: 0;
-                        border-top-left-radius: 3px;
-                        border-top-right-radius: 3px;
-                        color: #333;
-                    }
-                }
-            }
-        }
     }
 
     // any sort of hidden placeholder
@@ -682,5 +625,4 @@
             display: inline-block;
         }
     }
-
 }

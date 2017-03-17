@@ -1,3 +1,6 @@
+{% extends 'layout.twig' %}
+
+{% block content %}
 <h1>Font sets &amp;amp; files</h1>
 
 {% if not fonts %}
@@ -50,12 +53,12 @@
 				</td>
 				<td>
 					<form method="post" action="?page=fontsampler&amp;subpage=font_edit&amp;id={{ font.id }}">
-						{{ get_wp_submit_button('edit') }}
+						{{ get_wp_submit_button('Edit') }}
 					</form>
 				</td>
 				<td>
 					<form method="post" action="?page=fontsampler&amp;subpage=font_delete&amp;id={{ font.id }}">
-						{{ get_wp_submit_button('delete', 'secondary') }}
+						{{ get_wp_submit_button('Delete fontset', 'delete') }}
 					</form>
 				</td>
 			</tr>
@@ -68,3 +71,4 @@
 {% endif %}
 
 <a class="button button-primary" href="?page=fontsampler&subpage=font_create">Create a new font record</a>
+{% endblock %}
