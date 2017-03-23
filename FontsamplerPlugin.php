@@ -78,8 +78,9 @@ class FontsamplerPlugin {
 		);
 
 		$this->twig->addFunction( new Twig_SimpleFunction( 'is_current', function ( $current ) {
-			if ( $current === 'sets' && !isset($_GET['subpage']) ||
-				isset( $_GET['subpage'] ) && $_GET['subpage'] === $current) {
+			$subpages = explode( ',', $current );
+			if ( !isset($_GET['subpage']) && in_array( 'index', $subpages) ||
+				isset( $_GET['subpage'] ) && in_array( $_GET['subpage'], $subpages) ) {
 				return ' class=current ';
 			} else {
 				return '';
@@ -368,13 +369,18 @@ class FontsamplerPlugin {
 			case 'set_create':
 				//$default_settings        = $this->db->get_settings();
 				//$set                     = array_intersect_key( $default_settings, array_flip( $this->default_features ) );
+//				$defaults = $this->db->get_default_settings();
+//				$set = $defaults;
+//				$formats = $this->font_formats;
+//				$fonts   = $this->db->get_fontfile_posts();
+//				include( 'includes/set-edit.php' );
 
-				$defaults = $this->db->get_default_settings();
-				$set = $defaults;
+				echo $this->twig->render( 'set-edit.twig', array(
+					'set' => $this->db->get_default_settings(),
+					'formats' => $this->font_formats,
+					'fonts' => $this->db->get_fontfile_posts()
+				));
 
-				$formats = $this->font_formats;
-				$fonts   = $this->db->get_fontfile_posts();
-				include( 'includes/set-edit.php' );
 				break;
 
 			case 'set_edit':
@@ -392,8 +398,17 @@ class FontsamplerPlugin {
 				$fonts_order = implode( ',', array_map( function ( $font ) {
 					return $font['id'];
 				}, $set['fonts'] ) );
-				$formats     = $this->font_formats;
-				include( 'includes/set-edit.php' );
+
+//				$formats     = $this->font_formats;
+//				include( 'includes/set-edit.php' );
+
+				echo $this->twig->render( 'set-edit.twig', array(
+					'set' => $set,
+					'fonts' => $fonts,
+					'fonts_order' => $fonts_order,
+					'formats' => $this->font_formats
+				));
+
 				break;
 
 			case 'set_delete':

@@ -24,10 +24,11 @@
 
                 a {
                     border: 1px solid #fff;
+                    background: @fs_color_light;
                     border-radius: 0;
                     border-bottom: 0;
                     box-shadow: none;
-                    color: @fs_color_text_medium;
+                    color: @fs_color_link;
                     display: inline-block;
                     font-weight: bold;
                     padding: 0.5em 1em;
@@ -38,17 +39,18 @@
                         background: @fs_color_white !important;
                         color: @fs_color_link !important;
                     }
+
                     &:hover, &:focus {
-                        background: @fs_color_link;
-                        border: 1px solid #006799;
+                        background: @fs_color_ok_light;
+                        border: 1px solid @fs_color_ok_light;
                         border-bottom: 0;
                         color: #fff;
                     }
                 }
 
                 &.current {
-                    background: @fs_color_link;
                     a {
+                        background: @fs_color_link;
                         border: 1px solid @fs_color_link;
                         border-bottom: 0;
                         color: @fs_color_white;

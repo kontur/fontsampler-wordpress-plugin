@@ -64,16 +64,18 @@
         }
     }
 
+    table, thead, tbody, tr, th, td {
+        text-align: left;
+        vertical-align: middle;
+    }
+
     table {
         border-collapse: collapse;
         border-spacing: 0;
         width: 100%;
-        margin: 1em auto 2em;
-    }
-
-    table, thead, tbody, tr, th, td {
-        text-align: left;
-        vertical-align: middle;
+        margin: -1em auto 0;
+        border: 4px solid @fs_color_light;
+        padding: 4px;
     }
 
     th, td {
@@ -85,10 +87,16 @@
     }
 
     th {
-        border-bottom: 1px solid #999;
-        font-weight: normal;
+        background: @fs_color_light;
+        //border-bottom: 1px solid #999;
+        font-weight: bold;
         font-size: larger;
+        text-transform: uppercase;
         vertical-align: top;
+        small {
+            font-weight: normal;
+            text-transform: none;
+        }
     }
 
     p {
@@ -451,32 +459,49 @@
 
     // pagination
     .fontsampler-pagination {
-        margin: 1em auto;
+        ul {
+            margin: 0 auto;
+            display: inline-block;
+            background: @fs_color_light;
+            padding: 1em 0.5em;
+
+            li {
+                display: inline-block;
+            }
+        }
 
         a {
-            background: #eee;
-            border: 1px solid #eee;
-            color: #888;
+            background: @fs_color_white;
+            border: 0;
+            color: @fs_color_link;
+            font-weight: bold;
             text-decoration: none;
             text-transform: uppercase;
             margin: 0 0.25em;
             padding: 0.25em 0.75em;
             outline: none;
             box-shadow: none;
-            border-radius: 3px;
+            border-radius: 0;
             letter-spacing: 2px;
 
             &.fontsampler-pagination-current-page {
-                color: #008ec2;
-                background: #eee;
-                border: 1px solid #ccc !important;
+                color: @fs_color_white;
+                background: @fs_color_ok;
             }
 
             &:hover, &:focus {
-                border: 1px solid #008ec2;
-                color: #006799;
+                background: @fs_color_ok_light;
+                color: @fs_color_white;
             }
         }
+    }
+
+    .fontsampler-pagination + table {
+        margin-top: -1em;
+    }
+
+    table + .fontsampler-pagination {
+        margin-bottom: 1em;
     }
 
 

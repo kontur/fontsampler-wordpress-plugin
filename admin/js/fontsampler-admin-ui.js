@@ -248,8 +248,11 @@ define(['jquery', 'rangeslider', 'selectric', 'validate'], function ($, r, s, v)
                 $("html, body").scrollTop(0);
             });
 
-            $("#fontsampler-admin nav.fontsampler-pagination a.fontsampler-pagination-current-page").removeClass("fontsampler-pagination-current-page");
-            $("#fontsampler-admin nav.fontsampler-pagination a:nth-of-type(" + ($this.index() + 1) + ")").addClass("fontsampler-pagination-current-page");
+            $("#fontsampler-admin .fontsampler-pagination-current-page")
+                .removeClass("fontsampler-pagination-current-page");
+
+            $("#fontsampler-admin nav.fontsampler-pagination li:nth-of-type(" + ($this.parent().index() + 1) + ")")
+                .children("a").addClass("fontsampler-pagination-current-page").blur();
 
             return false;
         });
