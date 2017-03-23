@@ -1,22 +1,43 @@
 @import "admin-variables.less";
 
 #fontsampler-admin {
+
+    table .button {
+        margin: 0 auto;
+    }
+
     .button {
         clear: both;
         border: 0;
         border-radius: 0;
         box-shadow: none;
         font-weight: bold;
+        margin: 1em auto;
         text-shadow: none;
+        transition: background 0.15s ease-in-out;
 
         &.button-primary {
             background: @fs_color_ok_light;
             color: @fs_color_white;
+            &:hover {
+                background: @fs_color_ok;
+            }
+        }
+
+        &.add {
+            background: @fs_color_add_light;
+            color: @fs_color_text;
+            &:hover {
+                background: @fs_color_add;
+            }
         }
 
         &.delete {
             background: @fs_color_delete_light;
             color: @fs_color_white;
+            &:hover {
+                background: @fs_color_delete;
+            }
         }
     }
 }

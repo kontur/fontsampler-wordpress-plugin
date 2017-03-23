@@ -88,12 +88,12 @@
 
     th {
         background: @fs_color_light;
-        //border-bottom: 1px solid #999;
         font-weight: bold;
-        font-size: larger;
+        font-size: inherit;
         text-transform: uppercase;
         vertical-align: top;
         small {
+            font-size: smaller;
             font-weight: normal;
             text-transform: none;
         }
@@ -483,6 +483,7 @@
             box-shadow: none;
             border-radius: 0;
             letter-spacing: 2px;
+            transition: background 0.15s ease-in-out;
 
             &.fontsampler-pagination-current-page {
                 color: @fs_color_white;

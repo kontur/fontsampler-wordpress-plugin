@@ -21,7 +21,11 @@ class FontsamplerPagination {
 		$this->current_page          = $current_offset === 0 ? 0 : (int) floor( $current_offset / $items_per_page );
 	}
 
-	function pages( $link ) {
+	function pages( $link, $threshold) {
+		if ( $this->items_per_page >= $threshold) {
+			return null;
+		}
+
 		$pages = array();
 		for ( $i = 0; $i < $this->pages_total; $i ++ ) {
 			$first       = $i * $this->items_per_page;

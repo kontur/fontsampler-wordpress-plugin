@@ -53,12 +53,12 @@
 				</td>
 				<td>
 					<form method="post" action="?page=fontsampler&amp;subpage=font_edit&amp;id={{ font.id }}">
-						{{ get_wp_submit_button('Edit') }}
+						{{ submit_button('Edit') }}
 					</form>
 				</td>
 				<td>
 					<form method="post" action="?page=fontsampler&amp;subpage=font_delete&amp;id={{ font.id }}">
-						{{ get_wp_submit_button('Delete fontset', 'delete') }}
+						{{ submit_button('Delete', 'delete') }}
 					</form>
 				</td>
 			</tr>
@@ -70,5 +70,5 @@
 
 {% endif %}
 
-<a class="button button-primary" href="?page=fontsampler&subpage=font_create">Create a new font record</a>
+<a class="button add" href="?page=fontsampler&subpage=font_create">Create a new font record</a>
 {% endblock %}

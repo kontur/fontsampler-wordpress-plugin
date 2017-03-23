@@ -1,0 +1,103 @@
+{% extends('layout.twig') %}
+
+{% block content %}
+
+
+<h1>Settings</h1>
+<h2>Fontsampler defaults</h2>
+<small>Set the the initial values and ranges for any sliders the users can use (if enabled).</small>
+<form method="post" action="?page=fontsampler&amp;subpage=settings" class="form-settings fontsampler-validate">
+	<input type="hidden" name="action" value="edit_settings">
+	{{ wp_nonce_field( 'fontsampler-action-edit_settings' )|raw }}
+	<input type="hidden" name="id" value="1">
+
+	{% include('fontsampler-options.twig') %}
+
+	<label>
+		<span class="setting-description">Default text alignment:</span>
+	</label>
+
+	<label>
+		<input type="radio" name="alignment_initial" value="left"
+			<?php if ($defaults['alignment_initial'] === "left") : echo ' checked="checked" '; endif; ?>>
+		<img class="fontsampler-admin-alignment-icon"
+		     src="<?php echo plugin_dir_url( __FILE__ ); ?>../icons/align-left.svg">Left
+	</label>
+	<label>
+		<input type="radio" name="alignment_initial" value="center"
+			<?php if ($defaults['alignment_initial'] === "center") : echo ' checked="checked" '; endif; ?>>
+		<img class="fontsampler-admin-alignment-icon"
+		     src="<?php echo plugin_dir_url( __FILE__ ); ?>../icons/align-center.svg">Centered
+	</label>
+	<label>
+		<input type="radio" name="alignment_initial" value="right"
+			<?php if ($defaults['alignment_initial'] === "right") : echo ' checked="checked" '; endif; ?>>
+		<img class="fontsampler-admin-alignment-icon"
+		     src="<?php echo plugin_dir_url( __FILE__ ); ?>../icons/align-right.svg">Right
+	</label>
+
+	<br><br><br>
+
+	<p>The image is used when provided, otherwise the label text is used to create a text link.</p>
+
+	<label>
+		<span class="setting-description">Default label of the "Buy" link (if supplied):</span>
+		<input type="text" name="buy_label" class="fontsampler-admin-slider-label"
+		       value="<?php echo $defaults['buy_label']; ?>"/>
+	</label>
+	<label class="fontsampler-setting-image">
+		<span class="setting-description">Default image of the "Buy" link (if supplied):</span>
+		<?php
+		$image_id   = $defaults['buy_image'];
+		$image_name = 'buy_image';
+		include( "fontsampler-media-upload.php" );
+		?>
+		<br>
+		<small>Recommended size about 200 x 60 pixels</small>
+	</label>
+
+	<label>
+		<span class="setting-description">Default label of the "Specimen" link (if supplied):</span>
+		<input type="text" name="specimen_label" class="fontsampler-admin-slider-label"
+		       value="<?php echo $defaults['specimen_label']; ?>"/>
+	</label>
+	<label class="fontsampler-setting-image">
+		<span class="setting-description">Default image of the "Buy" link (if supplied):</span>
+		<?php
+		$image_id   = $defaults['specimen_image'];
+		$image_name = 'specimen_image';
+		include( "fontsampler-media-upload.php" );
+		?>
+		<br>
+		<small>Recommended size about 200 x 60 pixels</small>
+	</label>
+	<br><br><br>
+
+	<h2>Common features (UI options)</h2>
+	<small>Updating these defaults will automatically update any fontsamplers that use the defaults.</small>
+	<?php
+	$options = $defaults;
+	include( 'fontsampler-options.php' );
+
+	include( 'fontsampler-styles.php' );
+	?>
+
+
+	<h2>Admin interface customizations</h2>
+	<label>
+		<input type="checkbox"
+		       name="admin_hide_legacy_formats"
+		       value="1"
+			<?php if ( $this->admin_hide_legacy_formats ): echo ' checked="checked" '; endif; ?>>
+		<span class="setting-description">Hide legacy webfont formats in admin interface.</span>
+		<small>When activated (recommended) this option hides all but the <span class="filename">WOFF</span> and
+			<span class="filename">WOFF2</span> webfont formats, since those are the formats sufficient for rendering
+			webfonts in modern browsers. Enabling this option de-clutters the interface. Disable only if you explicitly
+			want to upload <span class="filename">EOT</span>, <span class="filename">SVG</span> or
+			<span class="filename">TTF</span> files for the fontsamplers to use.
+		</small>
+	</label>
+	{{ submit_button('Save') }}
+</form>
+
+{% endblock %}

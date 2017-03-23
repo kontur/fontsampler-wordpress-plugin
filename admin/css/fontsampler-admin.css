@@ -161,7 +161,7 @@
   background: #ffffff;
 }
 #fontsampler-admin #fontsampler-menu ul li a {
-  border: 1px solid #fff;
+  border: 0;
   background: #f2f2f2;
   border-radius: 0;
   border-bottom: 0;
@@ -172,6 +172,7 @@
   padding: 0.5em 1em;
   text-decoration: none;
   outline: none;
+  transition: background 0.15s ease-in-out;
 }
 #fontsampler-admin #fontsampler-menu ul li a:active {
   background: #ffffff !important;
@@ -180,15 +181,16 @@
 #fontsampler-admin #fontsampler-menu ul li a:hover,
 #fontsampler-admin #fontsampler-menu ul li a:focus {
   background: #64caf0;
-  border: 1px solid #64caf0;
   border-bottom: 0;
   color: #fff;
 }
 #fontsampler-admin #fontsampler-menu ul li.current a {
   background: #008ec2;
-  border: 1px solid #008ec2;
   border-bottom: 0;
   color: #ffffff;
+}
+#fontsampler-admin table .button {
+  margin: 0 auto;
 }
 #fontsampler-admin .button {
   clear: both;
@@ -196,15 +198,30 @@
   border-radius: 0;
   box-shadow: none;
   font-weight: bold;
+  margin: 1em auto;
   text-shadow: none;
+  transition: background 0.15s ease-in-out;
 }
 #fontsampler-admin .button.button-primary {
   background: #64caf0;
   color: #ffffff;
 }
+#fontsampler-admin .button.button-primary:hover {
+  background: #008ec2;
+}
+#fontsampler-admin .button.add {
+  background: #b8e986;
+  color: #222222;
+}
+#fontsampler-admin .button.add:hover {
+  background: #7ed321;
+}
 #fontsampler-admin .button.delete {
   background: #e5604e;
   color: #ffffff;
+}
+#fontsampler-admin .button.delete:hover {
+  background: #c0402f;
 }
 /*
  * Scope all css to be contained only within the fontsampler wrapper
@@ -278,11 +295,12 @@
 #fontsampler-admin th {
   background: #f2f2f2;
   font-weight: bold;
-  font-size: larger;
+  font-size: inherit;
   text-transform: uppercase;
   vertical-align: top;
 }
 #fontsampler-admin th small {
+  font-size: smaller;
   font-weight: normal;
   text-transform: none;
 }
@@ -588,6 +606,7 @@
   box-shadow: none;
   border-radius: 0;
   letter-spacing: 2px;
+  transition: background 0.15s ease-in-out;
 }
 #fontsampler-admin .fontsampler-pagination a.fontsampler-pagination-current-page {
   color: #ffffff;

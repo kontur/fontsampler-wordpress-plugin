@@ -14,7 +14,7 @@
     <p>You can include your font samplers on any page or post by adding the respective shortcode listed in the table
         below.</p>
 
-    <?php include('pagination.php'); ?>
+    {% include 'pagination.twig' %}
 
     <table>
         <thead>
@@ -59,14 +59,14 @@
                 <td>
                     <form method="post" action="?page=fontsampler&amp;subpage=set_edit&amp;id={{ set.set_id }}"
                           style="display: inline-block;">
-                        {{ get_wp_submit_button('Edit set') }}
+                        {{ submit_button('Edit set') }}
                     </form>
                 </td>
                 <td>
                     <form method="post" action="?page=fontsampler&amp;subpage=set_delete&amp;id={{ set.set_id }}"
                           style="display: inline-block;">
                         <input type="hidden" name="id" value="{{ set.set_id }}">
-                        {{ get_wp_submit_button('Delete set', 'delete') }}
+                        {{ submit_button('Delete set', 'delete') }}
                     </form>
                 </td>
             </tr>
@@ -75,7 +75,7 @@
         </tbody>
     </table>
 
-    <?php include('pagination.php'); ?>
+    {% include 'pagination.twig' %}
 
 {% endif %}
 

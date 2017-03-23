@@ -62,78 +62,6 @@ class FontsamplerPlugin {
 		}
 
 
-		// mount some helpers to twig
-		$this->twig->addFunction( new Twig_SimpleFunction( 'fontfiles_json', function ( $fontset ) {
-			return $this->helpers->fontfiles_json( $fontset );
-		}));
-
-		$this->twig->addFunction( new Twig_SimpleFunction( 'file_from_path', function ( $font, $format ) {
-			return substr( $font[ $format ], strrpos( $font[ $format ], '/' ) + 1 );
-		}));
-
-		$this->twig->addFunction( new Twig_SimpleFunction( 'get_wp_submit_button',
-			function ( $label = 'Submit', $type = 'primary' ) {
-				return submit_button( $label, $type);
-			})
-		);
-
-		$this->twig->addFunction( new Twig_SimpleFunction( 'is_current', function ( $current ) {
-			$subpages = explode( ',', $current );
-			if ( !isset($_GET['subpage']) && in_array( 'index', $subpages) ||
-				isset( $_GET['subpage'] ) && in_array( $_GET['subpage'], $subpages) ) {
-				return ' class=current ';
-			} else {
-				return '';
-			}
-		}));
-
-		$this->twig->addFunction( new Twig_SimpleFunction( 'wp_nonce_field', function ( $field ) {
-			return function_exists( 'wp_nonce_field' ) ? wp_nonce_field( $field ) : false;
-		}));
-
-		$twig->addGlobal('plugin_dir_url', plugin_dir_url( __FILE__ ) );
-
-		$features = [
-			'font_size'      => array(
-				'name'                 => 'font_size',
-				'label'                => 'Size control',
-				'slider_label'         => 'Label',
-				'slider_initial_label' => 'Initial px',
-				'slider_min_label'     => 'Min px',
-				'slider_max_label'     => 'Max px',
-			),
-			'letter_spacing' => array(
-				'name'                 => 'letter_spacing',
-				'label'                => 'Letter spacing control',
-				'slider_label'         => 'Label',
-				'slider_initial_label' => 'Initial px',
-				'slider_min_label'     => 'Min px',
-				'slider_max_label'     => 'Max px',
-			),
-			'line_height'    => array(
-				'name'                 => 'line_height',
-				'label'                => 'Line height control',
-				'slider_label'         => 'Label',
-				'slider_initial_label' => 'Initial px',
-				'slider_min_label'     => 'Min px',
-				'slider_max_label'     => 'Max px',
-			)
-		];
-		$twig->addGlobal('features', $features);
-
-		$additional_features = [
-			'sampletexts' => 'Display dropdown selection for sample texts',
-			'fontpicker'  => 'Display fonts in this Fontsampler as dropdown selection (for several fonts) or label (for a single font)',
-			'alignment'   => 'Alignment controls',
-			'invert'      => 'Allow inverting the text field to display negative text',
-			'opentype'    => 'Display OpenType feature controls (for those fonts where they are available)',
-			'multiline'   => 'Allow line breaks',
-		];
-		$twig->addGlobal('additional_features', $additional_features);
-
-
-
-
 		// TODO combined default_features and boolean options as array of objects
 		// with "isBoolean" attribute
 		$this->default_features = array(
@@ -198,6 +126,8 @@ class FontsamplerPlugin {
 			'specimen_label'            => 'Specimen',
 			'specimen_image'            => '',
 		);
+
+		$this->helpers->extend_twig( $twig );
 	}
 
 
@@ -411,16 +341,16 @@ class FontsamplerPlugin {
 		$subpage = isset( $_GET['subpage'] ) ? $_GET['subpage'] : '';
 		switch ( $subpage ) {
 			case 'set_create':
+				$defaults = $this->db->get_default_settings();
 				echo $this->twig->render( 'set-edit.twig', array(
-					'set' => $this->db->get_default_settings(),
-					'formats' => $this->font_formats,
-					'fonts' => $this->db->get_fontfile_posts()
+					'defaults' => $defaults,
+					'fonts'    => $this->db->get_fontfile_posts()
 				));
 				break;
 
 			case 'set_edit':
-				$default_settings = $this->db->get_settings();
-				$set              = $this->db->get_set( intval( $_GET['id'] ) );
+				$defaults = $this->db->get_settings();
+				$set = $this->db->get_set( intval( $_GET['id'] ) );
 				if ( sizeof( $set['fonts'] ) > 1 ) {
 					$set['fontpicker'] = 1;
 				}
@@ -434,16 +364,12 @@ class FontsamplerPlugin {
 					return $font['id'];
 				}, $set['fonts'] ) );
 
-//				$formats     = $this->font_formats;
-//				include( 'includes/set-edit.php' );
-
 				echo $this->twig->render( 'set-edit.twig', array(
-					'set' => $set,
-					'fonts' => $fonts,
-					'fonts_order' => $fonts_order,
-					'formats' => $this->font_formats
+					'set'         => $set,
+					'defaults'    => $defaults,
+					'fonts'       => $fonts,
+					'fonts_order' => $fonts_order
 				));
-
 				break;
 
 			case 'set_delete':
@@ -452,31 +378,26 @@ class FontsamplerPlugin {
 				break;
 
 			case 'fonts':
-				$offset   = isset( $_GET['offset'] ) ? intval( $_GET['offset'] ) : 0;
-				$num_rows = isset( $_GET['num_rows'] ) ? intval( $_GET['num_rows'] ) : 10;
-				$initials = $this->db->get_fontsets_initials();
-//				if ( sizeof( $initials ) > 10 ) {
-					$pagination = new FontsamplerPagination( $initials, $num_rows, false, $offset );
-//				}
+				$offset     = isset( $_GET['offset'] ) ? intval( $_GET['offset'] ) : 0;
+				$num_rows   = isset( $_GET['num_rows'] ) ? intval( $_GET['num_rows'] ) : 10;
+				$initials   = $this->db->get_fontsets_initials();
+				$pagination = new FontsamplerPagination( $initials, $num_rows, false, $offset );
 
 				echo $this->twig->render( 'fontsets.twig', array(
-						'fonts' => $this->db->get_fontsets( $offset, $num_rows ),
-						'formats' => $this->font_formats,
-						'pagination' => $pagination->pages('?page=fontsampler&amp;subpage=fonts&amp;offset=###first###&amp;num_rows=###items###')
+						'fonts'      => $this->db->get_fontsets( $offset, $num_rows ),
+						'pagination' => $pagination->pages('?page=fontsampler&amp;subpage=fonts&amp;offset=###first###&amp;num_rows=###items###', sizeof( $initials )),
 					)
 				);
 				break;
 
 			case 'font_create':
-				$font    = null;
-				$formats = $this->font_formats;
-				include( 'includes/fontset-edit.php' );
+				echo $this->twig->render( 'fontset-edit.twig' );
 				break;
 
 			case 'font_edit':
-				$font    = $this->db->get_fontset( intval( $_GET['id'] ) );
-				$formats = $this->font_formats;
-				include( 'includes/fontset-edit.php' );
+				echo $this->twig->render( 'fontset-edit.twig', array(
+					'font' => $this->db->get_fontset( intval( $_GET['id'] ) )
+				));
 				break;
 
 			case 'font_delete':
@@ -485,32 +406,29 @@ class FontsamplerPlugin {
 				break;
 
 			case 'settings':
-				$defaults = $this->db->get_settings();
 				$this->helpers->check_is_writeable( plugin_dir_path( __FILE__ ) . 'css/fontsampler-css.css', true );
-				include( 'includes/settings.php' );
+				echo $this->twig->render( 'settings.twig', array(
+					'defaults' => $this->db->get_default_settings()
+				));
 				break;
 
 			case 'about':
-				include( 'includes/about.php' );
+				echo $this->twig->render( 'about.twig' );
 				break;
 
 			default:
 				$offset   = isset( $_GET['offset'] ) ? intval( $_GET['offset'] ) : 0;
 				$num_rows = isset( $_GET['num_rows'] ) ? intval( $_GET['num_rows'] ) : 10;
 				$initials = $this->db->get_samples_ids();
-//				if ( sizeof( $initials ) > 10 ) {
-					$pagination = new FontsamplerPagination( $initials, $num_rows, true, $offset );
-//				}
+				$pagination = new FontsamplerPagination( $initials, $num_rows, true, $offset );
 
 				$sets = $this->db->get_sets( $offset, $num_rows );
 
 				echo $this->twig->render( 'sets.twig', array(
 						'sets' => $sets,
-						'pagination' => $pagination->pages('?page=fontsampler&amp;subpage=sets&amp;offset=###first###&amp;num_rows=###items###'),
+						'pagination' => $pagination->pages('?page=fontsampler&amp;subpage=sets&amp;offset=###first###&amp;num_rows=###items###', sizeof($initials)),
 					)
 				);
-				//include( 'includes/sets.php' );
-
 				break;
 		}
 

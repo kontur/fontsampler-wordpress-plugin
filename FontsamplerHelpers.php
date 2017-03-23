@@ -144,4 +144,79 @@ class FontsamplerHelpers {
 		return sizeof( $fontsFiltered ) > 0 ? $fontsFiltered : false;
 	}
 
+	
+	function extend_twig( $twig ) {
+
+		// mount some helpers to twig
+		$twig->addFunction( new Twig_SimpleFunction( 'fontfiles_json', function ( $fontset ) {
+			return $this->fontfiles_json( $fontset );
+		}));
+
+		$twig->addFunction( new Twig_SimpleFunction( 'file_from_path', function ( $font, $format ) {
+			return substr( $font[ $format ], strrpos( $font[ $format ], '/' ) + 1 );
+		}));
+
+		$twig->addFunction( new Twig_SimpleFunction( 'submit_button',
+				function ( $label = 'Submit', $type = 'primary' ) {
+					return submit_button( $label, $type);
+				})
+		);
+
+		$twig->addFunction( new Twig_SimpleFunction( 'is_current', function ( $current ) {
+			$subpages = explode( ',', $current );
+			if ( !isset($_GET['subpage']) && in_array( 'index', $subpages) ||
+			     isset( $_GET['subpage'] ) && in_array( $_GET['subpage'], $subpages) ) {
+				return ' class=current ';
+			} else {
+				return '';
+			}
+		}));
+
+		$twig->addFunction( new Twig_SimpleFunction( 'wp_nonce_field', function ( $field ) {
+			return function_exists( 'wp_nonce_field' ) ? wp_nonce_field( $field ) : false;
+		}));
+
+		$twig->addGlobal('plugin_dir_url', plugin_dir_url( __FILE__ ) );
+
+		$features = [
+			'font_size'      => array(
+				'name'                 => 'font_size',
+				'label'                => 'Size control',
+				'slider_label'         => 'Label',
+				'slider_initial_label' => 'Initial px',
+				'slider_min_label'     => 'Min px',
+				'slider_max_label'     => 'Max px',
+			),
+			'letter_spacing' => array(
+				'name'                 => 'letter_spacing',
+				'label'                => 'Letter spacing control',
+				'slider_label'         => 'Label',
+				'slider_initial_label' => 'Initial px',
+				'slider_min_label'     => 'Min px',
+				'slider_max_label'     => 'Max px',
+			),
+			'line_height'    => array(
+				'name'                 => 'line_height',
+				'label'                => 'Line height control',
+				'slider_label'         => 'Label',
+				'slider_initial_label' => 'Initial px',
+				'slider_min_label'     => 'Min px',
+				'slider_max_label'     => 'Max px',
+			)
+		];
+		$twig->addGlobal('features', $features);
+
+		$additional_features = [
+			'sampletexts' => 'Display dropdown selection for sample texts',
+			'fontpicker'  => 'Display fonts in this Fontsampler as dropdown selection (for several fonts) or label (for a single font)',
+			'alignment'   => 'Alignment controls',
+			'invert'      => 'Allow inverting the text field to display negative text',
+			'opentype'    => 'Display OpenType feature controls (for those fonts where they are available)',
+			'multiline'   => 'Allow line breaks',
+		];
+		$twig->addGlobal('additional_features', $additional_features);
+
+		$twig->addGlobal('formats', $this->fontsampler->font_formats);
+	}
+
 }
