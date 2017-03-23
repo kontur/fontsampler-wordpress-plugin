@@ -72,7 +72,7 @@ class FontsamplerPlugin {
 		}));
 
 		$this->twig->addFunction( new Twig_SimpleFunction( 'get_wp_submit_button',
-			function ( $label, $type = 'primary' ) {
+			function ( $label = 'Submit', $type = 'primary' ) {
 				return submit_button( $label, $type);
 			})
 		);
@@ -87,7 +87,51 @@ class FontsamplerPlugin {
 			}
 		}));
 
+		$this->twig->addFunction( new Twig_SimpleFunction( 'wp_nonce_field', function ( $field ) {
+			return function_exists( 'wp_nonce_field' ) ? wp_nonce_field( $field ) : false;
+		}));
+
 		$twig->addGlobal('plugin_dir_url', plugin_dir_url( __FILE__ ) );
+
+		$features = [
+			'font_size'      => array(
+				'name'                 => 'font_size',
+				'label'                => 'Size control',
+				'slider_label'         => 'Label',
+				'slider_initial_label' => 'Initial px',
+				'slider_min_label'     => 'Min px',
+				'slider_max_label'     => 'Max px',
+			),
+			'letter_spacing' => array(
+				'name'                 => 'letter_spacing',
+				'label'                => 'Letter spacing control',
+				'slider_label'         => 'Label',
+				'slider_initial_label' => 'Initial px',
+				'slider_min_label'     => 'Min px',
+				'slider_max_label'     => 'Max px',
+			),
+			'line_height'    => array(
+				'name'                 => 'line_height',
+				'label'                => 'Line height control',
+				'slider_label'         => 'Label',
+				'slider_initial_label' => 'Initial px',
+				'slider_min_label'     => 'Min px',
+				'slider_max_label'     => 'Max px',
+			)
+		];
+		$twig->addGlobal('features', $features);
+
+		$additional_features = [
+			'sampletexts' => 'Display dropdown selection for sample texts',
+			'fontpicker'  => 'Display fonts in this Fontsampler as dropdown selection (for several fonts) or label (for a single font)',
+			'alignment'   => 'Alignment controls',
+			'invert'      => 'Allow inverting the text field to display negative text',
+			'opentype'    => 'Display OpenType feature controls (for those fonts where they are available)',
+			'multiline'   => 'Allow line breaks',
+		];
+		$twig->addGlobal('additional_features', $additional_features);
+
+
 
 
 		// TODO combined default_features and boolean options as array of objects
@@ -367,20 +411,11 @@ class FontsamplerPlugin {
 		$subpage = isset( $_GET['subpage'] ) ? $_GET['subpage'] : '';
 		switch ( $subpage ) {
 			case 'set_create':
-				//$default_settings        = $this->db->get_settings();
-				//$set                     = array_intersect_key( $default_settings, array_flip( $this->default_features ) );
-//				$defaults = $this->db->get_default_settings();
-//				$set = $defaults;
-//				$formats = $this->font_formats;
-//				$fonts   = $this->db->get_fontfile_posts();
-//				include( 'includes/set-edit.php' );
-
 				echo $this->twig->render( 'set-edit.twig', array(
 					'set' => $this->db->get_default_settings(),
 					'formats' => $this->font_formats,
 					'fonts' => $this->db->get_fontfile_posts()
 				));
-
 				break;
 
 			case 'set_edit':

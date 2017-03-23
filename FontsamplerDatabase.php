@@ -486,6 +486,8 @@ class FontsamplerDatabase {
 			return false;
 		}
 
+		unset($defaults['id']);
+
 		return $defaults;
 	}
 
