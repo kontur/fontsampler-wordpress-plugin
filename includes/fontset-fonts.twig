@@ -1,8 +1,3 @@
-<?php
-if ( ! isset( $loop_i) ) {
-	$loop_i = 0;
-}
-?>
 <label>Font name (mandatory)<br>
 	<input name="fontname[]" data-validation="length" data-validation-length="3-50"
 	       {% if font.name is empty %} placeholder="e.g. MyFont Regular Italic"
@@ -22,7 +17,7 @@ if ( ! isset( $loop_i) ) {
 	</thead>
 	<tbody>
 	{% for format in formats %}
-		<tr class="<?php echo $this->helpers->is_legacy_format( $format ) ? 'fontsampler-admin-legacy-format' : 'fontsampler-admin-format'; ?>">
+		<tr class="{{ is_legacy_format(format) ? 'fontsampler-admin-legacy-format' : 'fontsampler-admin-format' }}">
 			<td><code class="fileformat">{{ format }}</code></td>
 			{% if font.id is not empty %}
 				<td class="fontsampler-fontset-current-file">
@@ -34,7 +29,8 @@ if ( ! isset( $loop_i) ) {
 				</td>
 			{% endif %}
 			<td>
-				<input type="file" name="<?php echo $format; ?>_<?php echo $loop_i; ?>" data-validation="mime" data-validation-allowing="<?php echo $format; ?>">
+				<input type="file" name="{{ format }}_0"
+					   data-validation="mime" data-validation-allowing="{{ format }}">
 			</td>
 			<td>
 				{% if font[format] is not empty %}<button class="button delete fontsampler-fontset-remove-font">&times;</button>{% endif %}
@@ -43,6 +39,3 @@ if ( ! isset( $loop_i) ) {
 	{% endfor %}
 	</tbody>
 </table>
-<?php
-$loop_i++;
-?>

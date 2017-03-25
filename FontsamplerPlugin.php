@@ -342,8 +342,9 @@ class FontsamplerPlugin {
 		switch ( $subpage ) {
 			case 'set_create':
 				$defaults = $this->db->get_default_settings();
+				$defaults['use_defaults'] = 1;
 				echo $this->twig->render( 'set-edit.twig', array(
-					'defaults' => $defaults,
+					'set' => $defaults,
 					'fonts'    => $this->db->get_fontfile_posts()
 				));
 				break;
@@ -351,9 +352,6 @@ class FontsamplerPlugin {
 			case 'set_edit':
 				$defaults = $this->db->get_settings();
 				$set = $this->db->get_set( intval( $_GET['id'] ) );
-				if ( sizeof( $set['fonts'] ) > 1 ) {
-					$set['fontpicker'] = 1;
-				}
 
 				$layout = new FontsamplerLayout();
 				$str = $layout->sanitizeString($set['ui_order'], $set);
@@ -363,6 +361,10 @@ class FontsamplerPlugin {
 				$fonts_order = implode( ',', array_map( function ( $font ) {
 					return $font['id'];
 				}, $set['fonts'] ) );
+
+				if ( empty($set) ){
+					$this->msg->error('No set selected');
+				}
 
 				echo $this->twig->render( 'set-edit.twig', array(
 					'set'         => $set,
@@ -374,7 +376,7 @@ class FontsamplerPlugin {
 
 			case 'set_delete':
 				$set = $this->db->get_set( intval( $_GET['id'] ) );
-				include( 'includes/set-delete.php' );
+				echo $this->twig->render( 'set-delete.twig', array( 'set' => $set ));
 				break;
 
 			case 'fonts':
@@ -402,7 +404,7 @@ class FontsamplerPlugin {
 
 			case 'font_delete':
 				$font = $this->db->get_fontset( intval( $_GET['id'] ) );
-				include( 'includes/fontset-delete.php' );
+				echo $this->twig->render( 'fontset-delete.twig', array( 'font' => $font ) );
 				break;
 
 			case 'settings':

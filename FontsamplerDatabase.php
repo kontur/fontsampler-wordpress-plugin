@@ -20,6 +20,7 @@ class FontsamplerDatabase {
 	private $fontsampler;
 	private $helpers;
 	private $layout;
+	private $settings_data_cols;
 
 	function __construct( $wpdb, $fontsampler ) {
 		$this->wpdb = $wpdb;
@@ -42,6 +43,7 @@ class FontsamplerDatabase {
                 `id` int( 11 ) unsigned NOT NULL AUTO_INCREMENT,
                 `name` varchar( 255 ) NOT NULL DEFAULT '',
                 `initial_font` int( 10 ) unsigned DEFAULT NULL,
+                `use_defaults` tinyint(1) unsigned DEFAULT 0,
 			  PRIMARY KEY ( `id` )
 			) DEFAULT CHARSET=utf8";
 
@@ -90,7 +92,7 @@ class FontsamplerDatabase {
 			`specimen_label` VARCHAR(255) DEFAULT NULL,
 			`specimen_image` int( 11 ) unsigned DEFAULT NULL,
             `initial` text DEFAULT NULL,
-            `is_ltr` tinyint( 1 ) DEFAULT NULL,
+            `is_ltr` tinyint( 1 ) DEFAULT 1,
             `ui_order` VARCHAR( 255 ) DEFAULT NULL,
             `ui_columns` tinyint( 1 ) DEFAULT NULL,
             `buy` VARCHAR( 255 ) DEFAULT NULL,
@@ -126,7 +128,7 @@ class FontsamplerDatabase {
 			`css_column_gutter` tinytext DEFAULT NULL,
 			`css_row_height` tinytext DEFAULT NULL,
 			`css_row_gutter` tinytext DEFAULT NULL,
-			`is_default` tinyint(1) unsigned NOT NULL DEFAULT 0,
+			`is_default` tinyint(1) unsigned DEFAULT 0,
 			PRIMARY KEY (`id`)
 			) DEFAULT CHARSET=utf8";
 		$this->wpdb->query( $sql );
@@ -216,20 +218,24 @@ class FontsamplerDatabase {
 				// remove this leftover
 				'ALTER TABLE ' . $this->table_sets . " DROP `default_options`",
 
+				// this added instead
+				'ALTER TABLE ' . $this->table_sets . " ADD `use_defaults` tinyint(1) unsigned DEFAULT 0",
+
 				// change the id field name to not interfere with the now more common joins
 				'ALTER TABLE ' . $this->table_settings . " CHANGE `id` `settings_id` int(11) unsigned NOT NULL AUTO_INCREMENT,",
 
 				// add these fields from sets to settings
 				'ALTER TABLE ' . $this->table_settings . " ADD `set_id` tinyint(1) unsigned DEFAULT NULL",
 				'ALTER TABLE ' . $this->table_settings . " ADD `initial` text DEFAULT NULL",
-				'ALTER TABLE ' . $this->table_settings . " ADD `is_ltr` tinyint( 1 ) DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " ADD `is_ltr` tinyint( 1 ) DEFAULT 1",
 				'ALTER TABLE ' . $this->table_settings . " ADD `ui_order` VARCHAR( 255 ) DEFAULT NULL",
 				'ALTER TABLE ' . $this->table_settings . " ADD `ui_columns` tinyint( 1 ) DEFAULT NULL",
 				'ALTER TABLE ' . $this->table_settings . " ADD `buy` VARCHAR( 255 ) DEFAULT NULL",
 				'ALTER TABLE ' . $this->table_settings . " ADD `specimen` VARCHAR( 255 ) DEFAULT NULL",
-				'ALTER TABLE ' . $this->table_settings . " ADD `is_default` tinyint(1) unsigned NOT NULL DEFAULT 0",
+				'ALTER TABLE ' . $this->table_settings . " ADD `is_default` tinyint(1) unsigned DEFAULT 0",
 
 				// change the defaults to allow NULL for existing settings fields
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `id` `settings_id` int(11) unsigned NOT NULL AUTO_INCREMENT",
 				'ALTER TABLE ' . $this->table_settings . " CHANGE `font_size_label` `font_size_label` varchar(50) NULL DEFAULT NULL",
 				'ALTER TABLE ' . $this->table_settings . " CHANGE `font_size_initial` `font_size_initial` smallint(5) unsigned DEFAULT NULL",
 				'ALTER TABLE ' . $this->table_settings . " CHANGE `font_size_min` `font_size_min` smallint(5) unsigned DEFAULT NULL",
@@ -263,9 +269,9 @@ class FontsamplerDatabase {
 				'ALTER TABLE ' . $this->table_settings . " CHANGE `css_row_gutter` `css_row_gutter` tinytext DEFAULT NULL",
 
 				// rename those fields so that field and field slider settings have same prefix
-				'ALTER TABLE ' . $this->table_settings . " CHANGE `font_size` tinyint(1) unsigned DEFAULT NULL",
-				'ALTER TABLE ' . $this->table_settings . " CHANGE `letter_spacing` tinyint(1) unsigned DEFAULT NULL",
-				'ALTER TABLE ' . $this->table_settings . " CHANGE `line_height` tinyint(1) unsigned DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `size` `font_size` tinyint(1) unsigned DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `letterspacing` `letter_spacing` tinyint(1) unsigned DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `lineheight` `line_height` tinyint(1) unsigned DEFAULT NULL",
 
 				// currently in the settings table is only the default, so set it that way
 				'UPDATE ' . $this->table_settings . " SET is_default = 1, set_id = NULL",
@@ -427,7 +433,7 @@ class FontsamplerDatabase {
 			return $this->get_default_settings();
 		}
 
-		$sql = 'SELECT * FROM ' . $this->table_settings . ' WHERE `id` = ' . $id . ' LIMIT 1';
+		$sql = 'SELECT * FROM ' . $this->table_settings . ' WHERE `settings_id` = ' . $id . ' LIMIT 1';
 		$settings = $this->wpdb->get_row( $sql, ARRAY_A );
 
 		if ( empty( $settings ) ) {
@@ -486,7 +492,10 @@ class FontsamplerDatabase {
 			return false;
 		}
 
-		unset($defaults['id']);
+		// when we get the defaults, we don't want to manipulate the db row, but use only the values
+		// remove db "references"
+		unset($defaults['settings_id']);
+		unset($defaults['set_id']);
 
 		return $defaults;
 	}
@@ -516,6 +525,13 @@ class FontsamplerDatabase {
 		// now sort all the fonts attachments of each sampler to the array
 		$set_with_fonts = array();
 		foreach ( $sets as $set ) {
+
+			// if this set uses default features, the join clause returned a bunch of NULL values
+			// supplement those with the actual defaults, so they are available
+			if ( intval( $set[ 'use_defaults' ] ) === 1 ) {
+				$set = array_merge( $set, $this->get_default_settings() );
+			}
+
 			$sql = 'SELECT f.name, f.id, ';
 			foreach ( $this->fontsampler->font_formats as $format ) {
 				$sql .= ' ( SELECT guid FROM ' . $this->wpdb->prefix . 'posts p 
@@ -527,7 +543,7 @@ class FontsamplerDatabase {
 					ON s.id = j.set_id
 					LEFT JOIN ' . $this->table_fonts . ' f
 					ON f.id = j.font_id
-					WHERE j.set_id = ' . intval( $set['set_id'] ) . '
+					WHERE j.set_id = ' . intval( $set['id'] ) . '
 					ORDER BY j.`order` ASC';
 
 			$set['fonts'] = $this->wpdb->get_results( $sql, ARRAY_A );
@@ -548,6 +564,12 @@ class FontsamplerDatabase {
 
 		if ( 0 == $this->wpdb->num_rows ) {
 			return false;
+		}
+
+		// if this set uses default features, the join clause returned a bunch of NULL values
+		// supplement those with the actual defaults, so they are available
+		if ( intval($set['use_defaults']) === 1 ) {
+			$set = array_merge( $set, $this->get_default_settings() );
 		}
 
 		if ( ! $including_fonts ) {
@@ -575,6 +597,10 @@ class FontsamplerDatabase {
 				ORDER BY j.`order` ASC';
 
 		$set['fonts'] = $this->wpdb->get_results( $sql, ARRAY_A );
+
+		if ( sizeof( $set['fonts'] ) > 1 ) {
+			$set['fontpicker'] = 1;
+		}
 
 		return $set;
 	}
@@ -731,16 +757,45 @@ class FontsamplerDatabase {
 	}
 
 
-	function update_settings( $data, $set_id = false ) {
+	function insert_settings( $data ) {
+		$res = $this->wpdb->insert( $this->table_settings, $data );
+
+		return $res !== false ? true : false;
+	}
+
+
+	function update_settings( $data, $id = false ) {
 		$where = [];
-		if ( false === $set_id ) {
+		if ( false === $id ) {
 			$where['is_default'] = '1';
 		} else {
-			$where['set_id'] = $set_id;
+			$where['set_id'] = $id;
 		}
 		$res = $this->wpdb->update( $this->table_settings, $data, $where );
 
 		return $res !== false ? true : false;
+	}
+
+
+	function save_settings_for_set( $data, $set_id ) {
+		// check if this set has a settings row, if so update, if not, insert
+		$count = $this->wpdb->get_var("SELECT COUNT(*) FROM " . $this->table_settings . " WHERE set_id = $set_id");
+		if ( intval( $count ) !== 0 ) {
+			$where = array( 'set_id' => $set_id );
+			$res = $this->wpdb->update( $this->table_settings, $data, $where);
+			var_dump("update settings", $res);
+		} else {
+			$data['set_id'] = $set_id;
+			$res = $this->wpdb->insert( $this->table_settings, $data );
+			var_dump("update settings, inserted", $res );
+		}
+	}
+
+
+	function delete_settings_for_set( $set_id ) {
+		$this->wpdb->delete( $this->table_settings, array( 'set_id' => $set_id ) );
+
+		return true;
 	}
 
 

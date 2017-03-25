@@ -176,6 +176,10 @@ class FontsamplerHelpers {
 			return function_exists( 'wp_nonce_field' ) ? wp_nonce_field( $field ) : false;
 		}));
 
+		$twig->addFunction( new Twig_SimpleFunction( 'is_legacy_format', function ( $format ) {
+			return $this->is_legacy_format( $format );
+		}));
+
 		$twig->addGlobal('plugin_dir_url', plugin_dir_url( __FILE__ ) );
 
 		$features = [

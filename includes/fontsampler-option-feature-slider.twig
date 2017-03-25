@@ -3,13 +3,13 @@
     <div>
         <label class="fontsampler-radio">
             <input type="radio" name="{{ label }}_use_default" value="0"
-                   {% if use_default == 0 %} checked="checked" {% endif %}
+                   {% if use_default %} checked="checked" {% endif %}
         </label>
         {{ include ('fontsampler-option-slider.twig', { label: slider_label, name: slider_name, value: slider_default }) }}
     </div>
     <div>
         <label class="fontsampler-radio">
-            <input type="radio" name="<?php echo $label; ?>_use_default" value="1"
+            <input type="radio" name="{{ label }}_use_default" value="1"
                     {% if use_default %} checked="checked" {% endif %}>
             <span>Use Default: {{ slider_default }}</span>
         </label>

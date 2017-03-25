@@ -47,25 +47,25 @@
                 </td>
                 <td>
                     <ul>
-                        <?php foreach ( $set['fonts'] as $font ) : ?>
+                        {% for font in set.fonts %}
                         <li>
                             <div class="fontsampler-preview"
-                                 data-font-files='<?php echo $this->helpers->fontfiles_JSON( $font ); ?>'><?php echo $font['name']; ?></div>
+                                 data-font-files='{{ fontfiles_json(font) }}'>{{ font.name }}</div>
                         </li>
-                        <?php endforeach; ?>
+                        {% endfor %}
                     </ul>
                 </td>
-                <td><code>[fontsampler id={{ set.set_id }}]</code></td>
+                <td><code>[fontsampler id={{ set.id }}]</code></td>
                 <td>
-                    <form method="post" action="?page=fontsampler&amp;subpage=set_edit&amp;id={{ set.set_id }}"
+                    <form method="post" action="?page=fontsampler&amp;subpage=set_edit&amp;id={{ set.id }}"
                           style="display: inline-block;">
                         {{ submit_button('Edit set') }}
                     </form>
                 </td>
                 <td>
-                    <form method="post" action="?page=fontsampler&amp;subpage=set_delete&amp;id={{ set.set_id }}"
+                    <form method="post" action="?page=fontsampler&amp;subpage=set_delete&amp;id={{ set.id }}"
                           style="display: inline-block;">
-                        <input type="hidden" name="id" value="{{ set.set_id }}">
+                        <input type="hidden" name="id" value="{{ set.id }}">
                         {{ submit_button('Delete set', 'delete') }}
                     </form>
                 </td>
