@@ -56,7 +56,7 @@
 
     fieldset {
         border: 1px solid #ccc;
-        padding: 1em 2em;
+        padding: 1em;
 
         legend {
             font-weight: bold;
@@ -550,6 +550,46 @@
         }
     }
 
+
+    // unified look for a options row that contains from left to right:
+    // a label, custom options with radio, default options with radio
+    .fontsampler-options-row {
+        clear: both;
+        overflow: auto;
+
+        // every second row with background
+        &:nth-of-type(2n + 1) {
+            background: @fs_color_light;
+        }
+
+        // all children in one row: label, settings, default
+        & > * {
+            box-sizing: border-box;
+            display: inline-block;
+            float: left;
+        }
+
+        & > strong {
+            padding: 0.25em 0 0 0.5em;
+            text-transform: uppercase;
+            width: 20%;
+            small {
+                text-transform: none;
+                display: block;
+                font-weight: normal;
+            }
+        }
+
+        & > div {
+            width: 39%;
+
+            &:nth-of-type(1) {
+                border-left: 5px solid @fs_color_white;
+                border-right: 3px solid @fs_color_white;
+            }
+        }
+    }
+
     .fontsampler-options-features-details {
         overflow: auto;
         display: none;
@@ -568,44 +608,6 @@
             margin-top: 0.25em;
             margin-left: 1em;
             margin-bottom: 0.25em;
-        }
-
-        .fontsampler-options-features-details-row {
-            clear: both;
-            overflow: auto;
-
-            // every second row with background
-            &:nth-of-type(2n + 1) {
-                background: @fs_color_light;
-            }
-
-            // all children in one row: label, settings, default
-            & > * {
-                box-sizing: border-box;
-                display: inline-block;
-                float: left;
-            }
-
-            & > strong {
-                padding: 0.25em 0 0 0.5em;
-                text-transform: uppercase;
-                width: 20%;
-            }
-
-            & > div {
-                width: 39%;
-
-                &:nth-of-type(1) {
-                    border-left: 5px solid @fs_color_white;
-                    border-right: 3px solid @fs_color_white;
-
-                    .fontsampler-radio {
-                        display: inline-block;
-                        float: left;
-                        width: 2em;
-                    }
-                }
-            }
         }
     }
 
@@ -650,5 +652,26 @@
         fieldset > div > label {
             display: inline-block;
         }
+    }
+
+    .fontsampler-css-color-block {
+        border: 1px solid @fs_color_text;
+        border-radius: 0.25em;
+        display: inline-block;
+        height: 1em;
+        width: 1em;
+        top: 0.25em;
+        position: relative;
+        margin: 0 0.5em;
+    }
+
+    .fontsampler-color-picker {
+        display: block;
+        margin: 1em 0 1em 2.5em;
+    }
+
+    .fontsampler-sample_texts {
+        min-height: 5em;
+        width: 100%;
     }
 }

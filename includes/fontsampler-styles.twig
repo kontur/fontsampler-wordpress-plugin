@@ -1,104 +1,89 @@
-<?php
-$settings_defaults = $this->settings_defaults;
+	{#Color pickers for basic colors#}
+	{{  include( 'styles-color-field.twig', {
+		label: 'Text color',
+		name: 'css_color_text',
+		description: 'Color of the fontsampler text',
+		value: set['css_color_text'],
+		default: defaults['css_color_text']
+	}) }}
+	{{  include( 'styles-color-field.twig', {
+		label: 'Background color',
+		name: 'css_color_background',
+		description: 'Color of the fontsampler background',
+		value: set['css_color_background'],
+		default: defaults['css_color_background']
+	}) }}
+	{{  include( 'styles-color-field.twig', {
+		label: 'Label text color',
+		name: 'css_color_label',
+		description: 'Text color of the UI labels',
+		value: set['css_color_label'],
+		default: defaults['css_color_label']
+	}) }}
 
-function fs_output_color_field( $field, $description ) {
-	global $defaults, $settings_defaults;
-	ob_start(); ?>
-	<label>
-		<span class="setting-description styling-description"><?php echo $description; ?></span>
-		<div class="picker">
-			<input type="text" name="<?php echo $field; ?>"
-			       id="?php echo $field; ?>" class="color-picker"
-			       value="<?php echo $defaults[ $field ]; ?>"
-			       data-default-color="<?php echo $settings_defaults[ $field ]; ?>"/>
-		</div>
-	</label>
-	<?php return ob_get_clean();
-}
+	{#CSS value fields (font size, etc)#}
+	{{	include( 'styles-css-field.twig', {
+		name: 'css_size_label',
+		description: 'Font size of the UI labels:',
+		additional: "You can use any valid <code>font-size</code> CSS declaration (Use 'inherit' for default look).",
+		default: defaults['css_size_label']
+	}) }}
+	{{ 	include( 'styles-css-field.twig', {
+		name: 'css_fontfamily_label',
+		description: 'Font family of the UI labels:',
+		additional: "You can use any valid <code>font-family</code> CSS declaration (Use 'inherit' for default look).",
+		default: defaults['css_fontfamily_label']
+	}) }}
 
-function fs_output_color_fields( $fields ) {
-	ob_start();
-	foreach ( $fields as $field ) {
-		echo fs_output_color_field( $field[0], $field[1] );
-	}
+	{#Color pickers for various aspects#}
+	{{  include( 'styles-color-field.twig', {
+		label: 'Highlight color',
+		name: 'css_color_highlight',
+		description: 'Background color of the dropdown items',
+		value: set['css_color_highlight'],
+		default: defaults['css_color_highlight']
+	}) }}
+	{{  include( 'styles-color-field.twig', {
+		label: 'Highlight color (hover)',
+		name: 'css_color_highlight_hover',
+		description: 'Background color of the dropdown items when hovered',
+		value: set['css_color_highlight_hover'],
+		default: defaults['css_color_highlight_hover']
+	}) }}
+	{{  include( 'styles-color-field.twig', {
+		label: 'Line color',
+		name: 'css_color_line',
+		description: 'Color of the slider and dropdown line',
+		value: set['css_color_line'],
+		default: defaults['css_color_line']
+	}) }}
+	{{  include( 'styles-color-field.twig', {
+		label: 'Slider handle color',
+		name: 'css_color_handle',
+		description: 'Color of the slider handle',
+		value: set['css_color_handle'],
+		default: defaults['css_color_handle']
+	}) }}
 
-	return ob_get_clean();
-}
-
-function fs_output_css_field( $field, $description, $additional ) {
-	global $defaults;
-	ob_start(); ?>
-	<label>
-			<span class="setting-description styling-description"><?php echo $description; ?><br>
-			<small><?php echo $additional; ?></small></span>
-		<input type="text" name="<?php echo $field; ?>" value="<?php echo $defaults[ $field ]; ?>"/>
-	</label>
-	<?php return ob_get_clean();
-}
-
-function fs_output_css_fields( $fields ) {
-	ob_start();
-	foreach ( $fields as $field ) {
-		echo fs_output_css_field( $field[0], $field[1], $field[2] );
-	}
-
-	return ob_get_clean();
-}
-?>
-
-<label>
-		<span class="setting-description styling-description">Sample texts
-		<small>(use simple line breaks for each option to be displayed in the dropdown)</small></span>
-	<textarea name="sample_texts" cols="60" rows="10"><?php echo $defaults['sample_texts']; ?></textarea>
-</label>
-
-<div class="fontsampler-admin-settings-styling">
-	<h2>Styling options</h2>
-	<small>Adjust the color scheme of all fontsamplers you embed.</small>
-
-	<?php
-	echo fs_output_color_fields( array(
-		array( 'css_color_text', 'Color of the fontsampler text:' ),
-		array( 'css_color_background', 'Color of the fontsampler background:' ),
-		array( 'css_color_label', 'Text color of the UI labels:' ),
-	) );
-
-	echo fs_output_css_fields( array(
-		array(
-			'css_size_label',
-			'Font size of the UI labels:',
-			"You can use any valid <code>font-size</code> CSS declaration (Use 'inherit' for default look)."
-		),
-		array(
-			'css_fontfamily_label',
-			'Font family of the UI labels:',
-			"You can use any valid <code>font-family</code> CSS declaration (Use 'inherit' for default look)."
-		),
-	) );
-
-	echo fs_output_color_fields( array(
-		array( 'css_color_highlight', 'Background color of the dropdown items:' ),
-		array( 'css_color_highlight_hover', 'Background color of the dropdown items when hovered:' ),
-		array( 'css_color_line', 'Color of the slider and dropdown line:' ),
-		array( 'css_color_handle', 'Color of the slider handle:' ),
-	) );
-
-	echo fs_output_css_fields( array(
-		array(
-			'css_column_gutter',
-			'UI columns gutter:',
-			"You can use any valid <code>size</code> CSS declaration (Default: 10px)."
-		),
-		array(
-			'css_row_gutter',
-			'UI rows gutter:',
-			"You can use any valid <code>size</code> CSS declaration (Default: 10px)."
-		),
-		array(
-			'css_row_height',
-			'UI rows height:',
-			"You can use any valid <code>size</code> CSS declaration (Default: 30px)."
-		),
-	) );
-	?>
-</div>
+	{#Css value fields#}
+	{{ 	include( 'styles-css-field.twig', {
+		label: 'Column gutter',
+		name: 'css_column_gutter',
+		description: 'UI columns gutter',
+		additional: "You can use any valid <code>size</code> CSS declaration (Default: 10px).",
+		default: defaults['css_column_gutter']
+	}) }}
+	{{ 	include( 'styles-css-field.twig', {
+		label: 'Row gutter',
+		name: 'css_row_gutter',
+		description: 'UI rows gutter',
+		additional: "You can use any valid <code>size</code> CSS declaration (Default: 10px).",
+		default: defaults['css_row_gutter']
+	}) }}
+	{{ 	include( 'styles-css-field.twig', {
+		label: 'Row height',
+		name: 'css_row_height',
+		description: 'UI rows height:',
+		additional: "You can use any valid <code>size</code> CSS declaration (Default: 30px).",
+		default: defaults['css_row_height']
+	}) }}

@@ -3,7 +3,7 @@
 {% block content %}
 <h1>{% if set.id is empty %}New fontsampler{% else %}Edit fontsampler {{ set.id }}{% endif %}</h1>
 
-<p>Once you create the fontsampler, it will be saved with an ID you use to embed it on your wordpress pages</p>
+<p>Once you save the fontsampler, it will be saved with an ID you use to embed it on your wordpress pages</p>
 <form method="post" enctype="multipart/form-data" action="?page=fontsampler" id="fontsampler-edit-sample">
 	<input type="hidden" name="action" value="edit_set">
 	{{ wp_nonce_field( 'fontsampler-action-edit_set' )|raw }}
@@ -28,7 +28,11 @@
 							</option>
 						{% endfor %}
 					</select>
-					<button class="btn btn-small fontsampler-fontset-remove">&minus;</button>
+					<button class="button delete fontsampler-fontset-remove"
+							title="Remove this fontset from sampler">
+						<i class="icon">&minus;</i>
+						<span>Remove fontset</span>
+					</button>
 					<div class="fontsampler-initial-font-selection">
 						<input type="radio" name="initial_font" value="{{ setfont.id }}"
 						{% if set.initial_font is not empty or set.initial_font == setfont.id %}
@@ -52,8 +56,11 @@
 						<option value="{{ font.id }}">{{ font.name }}</option>
 					{% endfor %}
 				</select>
-				<button class="btn btn-small fontsampler-fontset-remove"
-				        title="Remove this fontset from sampler">&minus;</button>
+				<button class="button delete fontsampler-fontset-remove"
+				        title="Remove this fontset from sampler">
+					<i class="icon">&minus;</i>
+					<span>Remove fontset</span>
+				</button>
 
 				<div class="fontsampler-initial-font-selection">
 					<input type="radio" name="initial_font" value="" checked="checked">
@@ -66,17 +73,20 @@
 		{% endif %}
 	</ul>
 
+	<div>
 	{% if fonts is not empty %}
-		<p>
-			<button class="btn btn-small fontsampler-fontset-add">+</button>
+		<button class="button add fontsampler-fontset-add">
+			<i class="icon">+</i>
 			<span>Add existing fontset</span>
-		</p>
+		</button>
 	{% endif %}
-
-	<p>
-		<button class="btn btn-small fontsampler-fontset-create-inline">+</button>
-		<span>Add new fontset and upload fonts</span>
-	</p>
+	</div>
+	<div>
+	<button class="button add fontsampler-fontset-create-inline">
+		<i class="icon">&#8679;</i>
+		<span>Upload new fontset</span>
+	</button>
+	</div>
 
 	<small>Picking multiple font set will enable the select field for switching between fonts used in the
 		Fontsampler.
@@ -283,9 +293,11 @@
 					<option value="{{ font.id }}">{{ font.name }}</option>
 				{% endfor %}
 			</select>
-			<button class="btn btn-small fontsampler-fontset-remove"
-			        title="Remove this fontset from sampler">&minus;</button>
-
+			<button class="button delete fontsampler-fontset-remove"
+					title="Remove this fontset from sampler">
+				<i class="icon">&minus;</i>
+				<span>Remove fontset</span>
+			</button>
 			<div class="fontsampler-initial-font-selection">
 				<input type="radio" name="initial_font" value="">
 				<span class="fontsampler-initial-font">
@@ -305,8 +317,11 @@
 					<a href="?page=fontsampler&subpage=fonts">Fonts &amp; Files</a> tab.
 				</small>
 			</div>
-			<button class="btn btn-small fontsampler-fontset-remove"
-			        title="Remove this fontset from sampler">&minus;</button>
+			<button class="button delete fontsampler-fontset-remove"
+					title="Remove this fontset from sampler">
+				<i class="icon">&minus;</i>
+				<span>Remove fontset</span>
+			</button>
 
 			<div class="fontsampler-initial-font-selection">
 				<input type="radio" name="initial_font" value="">

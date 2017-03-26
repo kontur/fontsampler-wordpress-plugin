@@ -1,0 +1,21 @@
+{% extends 'options-row.twig' %}
+
+{% block label %}Sample texts{% endblock %}
+
+{% block custom %}
+    <label class="fontsampler-radio">
+        <input type="radio" name="sampletexts_use_default" value="0"
+            {% if set['sample_texts'] is not empty %} checked="checked" {% endif %}>
+        <span class="setting-description">Sample texts
+        <small>(use simple line breaks for each option to be displayed in the dropdown)</small></span>
+        <textarea name="sample_texts" class="fontsampler-sample_texts">{{ set['sample_texts'] }}</textarea>
+    </label>
+{% endblock %}
+
+{% block default %}
+    <label class="fontsampler-radio">
+        <input type="radio" name="sampletexts_use_default" value="1"
+            {% if set['sample_texts'] is empty %} checked="checked" {% endif %}>
+        <span>Use default: <textarea disabled class="fontsampler-sample_texts">{{ defaults['sample_texts'] }}</textarea></span>
+    </label>
+{% endblock %}

@@ -1,66 +1,133 @@
-
 {% for label, f in features %}
-	<div>
-		<label>
-			<input type="checkbox" name="{{ label }}"
-			    data-default="{{ defaults[label] }}"
-			    data-set="{{ set[label] }}"
-				{% if set[label] == 1 %} checked="checked" {% endif %}>
-			<span>{{ f.label }}</span>
-		</label>
-		<button class="fontsampler-toggle-show-hide fontsampler-button-link">
-			<span>Show details</span>
-			<span>Hide details</span>
-		</button>
-		<div class="fontsampler-options-features-details {#fontsampler-visible#}">
+    <div>
+        <label>
+            <input type="checkbox" name="{{ label }}"
+                   data-default="{{ defaults[label] }}"
+                   data-set="{{ set[label] }}"
+                    {% if set[label] == 1 %} checked="checked" {% endif %}>
+            <span>{{ f.label }}</span>
+        </label>
+        {% include 'partials/button-details.twig' %}
+        <div class="fontsampler-options-features-details {#fontsampler-visible#}">
 
-			{{ include('fontsampler-option-feature-label.twig', {
-				use_default: set[f.name ~ '_label'] is empty,
-				label: label,
-				name: f.name,
-				description: f.slider_label,
-				default: (defaults[f.name ~ '_label']),
-				value: set[label ~ '_label']
-			}) }}
+            {{ include('fontsampler-option-feature-label.twig', {
+                use_default: set[f.name ~ '_label'] is empty,
+                label: label,
+                name: f.name,
+                description: f.slider_label,
+                default: (defaults[f.name ~ '_label']),
+                value: set[label ~ '_label']
+            }) }}
 
-			{{ include('fontsampler-option-feature-slider.twig', {
-				use_default: set[f.name ~ '_min'] is empty,
-				header: 'Minimum',
-				label: (label ~ '_min'),
-				slider_label: f.slider_min_label,
-				slider_name: (f.name ~ '_min_value'),
-				slider_default: (defaults[f.name ~ '_min'])
-			}) }}
+            {{ include('fontsampler-option-feature-slider.twig', {
+                use_default: set[f.name ~ '_min'] is empty,
+                header: 'Minimum',
+                label: (label ~ '_min'),
+                slider_label: f.slider_min_label,
+                slider_name: (f.name ~ '_min_value'),
+                slider_default: (defaults[f.name ~ '_min'])
+            }) }}
 
-			{{ include('fontsampler-option-feature-slider.twig', {
-				use_default: set[f.name ~ '_initial'] is empty,
-				header: 'Initial',
-				label: (label ~ '_initial'),
-				slider_label: f.slider_initial_label,
-				slider_name: (f.name ~ '_initial_value'),
-				slider_default: (defaults[f.name ~ '_initial'])
-			}) }}
+            {{ include('fontsampler-option-feature-slider.twig', {
+                use_default: set[f.name ~ '_initial'] is empty,
+                header: 'Initial',
+                label: (label ~ '_initial'),
+                slider_label: f.slider_initial_label,
+                slider_name: (f.name ~ '_initial_value'),
+                slider_default: (defaults[f.name ~ '_initial'])
+            }) }}
 
-			{{ include('fontsampler-option-feature-slider.twig', {
-				use_default: set[f.name ~ '_max'] is empty,
-				header: 'Maximum',
-				label: (label ~ '_max'),
-				slider_label: f.slider_max_label,
-				slider_name: (f.name ~ '_max_value'),
-				slider_default: (defaults[f.name ~ '_max'])
-			}) }}
-		</div>
-	</div>
+            {{ include('fontsampler-option-feature-slider.twig', {
+                use_default: set[f.name ~ '_max'] is empty,
+                header: 'Maximum',
+                label: (label ~ '_max'),
+                slider_label: f.slider_max_label,
+                slider_name: (f.name ~ '_max_value'),
+                slider_default: (defaults[f.name ~ '_max'])
+            }) }}
+        </div>
+    </div>
 {% endfor %}
 
 {% for label, description in additional_features %}
-	<div>
-		<label>
-			<input type="checkbox" name="{{ label }}"
-			       data-default="{{ defaults[label] }}"
-			       data-set="{{ set[label] }}"
-				   {% if set[label] is not empty %} checked="checked" {% endif %}>
-			<span>{{ description }}</span>
-		</label>
-	</div>
+    <div>
+        <label>
+            <input type="checkbox" name="{{ label }}"
+                   data-default="{{ defaults[label] }}"
+                   data-set="{{ set[label] }}"
+                    {% if set[label] is not empty %} checked="checked" {% endif %}>
+            <span>{{ description }}</span>
+        </label>
+
+        {% if label == 'sampletexts' %}
+            {% include 'partials/button-details.twig' %}
+            <div class="fontsampler-options-features-details">
+                {{ include( 'fontsampler-option-feature-sampletexts.twig') }}
+            </div>
+        {% endif %}
+
+        {% if label == 'alignment' %}
+            {% include 'partials/button-details.twig' %}
+            <div class="fontsampler-options-features-details">
+                TODO Default alignment...
+            </div>
+        {% endif %}
+    </div>
 {% endfor %}
+
+<div>
+    <label>
+        <input type="checkbox" name="">
+        <span>Buy link</span>
+    </label>
+    {% include 'partials/button-details.twig' %}
+    <div class="fontsampler-options-features-details">
+        <label>
+            <span>Url for the buy link</span>
+            <input type="text" name="buy" value="">
+        </label>
+
+        <label>
+            <input type="radio" name="buy_link_use" value="text">
+            <span class="setting-description">Use text label for "Buy" link:</span>
+            <input type="text" name="buy_label" class="fontsampler-admin-slider-label"
+                   value="{{ defaults['buy_label'] }}"/>
+        </label>
+        <label class="fontsampler-setting-image">
+            <input type="radio" name="buy_link_use" value="image">
+            <span class="setting-description">Use image for the "Buy" link:</span>
+            <?php
+            $image_id   = $defaults['buy_image'];
+            $image_name = 'buy_image';
+            include( "fontsampler-media-upload.php" );
+            ?>
+            <br>
+            <small>Recommended size about 200 x 60 pixels</small>
+        </label>
+    </div>
+</div>
+
+<div>
+    <label>
+        <input type="checkbox" name="">
+        <span>Specimen link</span>
+    </label>
+    {% include 'partials/button-details.twig' %}
+    <div class="fontsampler-options-features-details">
+        <label>
+            <span class="setting-description">Default label of the "Specimen" link (if supplied):</span>
+            <input type="text" name="specimen_label" class="fontsampler-admin-slider-label"
+                   value="<?php echo $defaults['specimen_label']; ?>"/>
+        </label>
+        <label class="fontsampler-setting-image">
+            <span class="setting-description">Default image of the "Buy" link (if supplied):</span>
+            <?php
+		$image_id   = $defaults['specimen_image'];
+		$image_name = 'specimen_image';
+		include( "fontsampler-media-upload.php" );
+		?>
+            <br>
+            <small>Recommended size about 200 x 60 pixels</small>
+        </label>
+    </div>
+</div>

@@ -12,9 +12,22 @@
         border-radius: 0;
         box-shadow: none;
         font-weight: bold;
-        margin: 1em auto;
+        margin: 0 auto;
         text-shadow: none;
         transition: background 0.15s ease-in-out;
+        position: relative;
+
+        i.icon {
+            font-style: normal;
+            display: inline-block;
+            height: 100%;
+            width: 2em;
+            left: 0;
+            position: absolute;
+        }
+        span {
+            padding-left: 2em;
+        }
 
         &.button-primary {
             background: @fs_color_ok_light;
@@ -30,12 +43,20 @@
             &:hover {
                 background: @fs_color_add;
             }
+
+            i.icon {
+                background: @fs_color_add;
+            }
         }
 
         &.delete {
             background: @fs_color_delete_light;
             color: @fs_color_white;
             &:hover {
+                background: @fs_color_delete;
+            }
+
+            i.icon {
                 background: @fs_color_delete;
             }
         }

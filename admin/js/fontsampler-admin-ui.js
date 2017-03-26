@@ -278,7 +278,7 @@ define(['jquery', 'rangeslider', 'selectric', 'validate'], function ($, r, s, v)
 
 
         $(".fontsampler-options").accordion({
-            active: false,
+            active: 2,//false,
             collapsible: true,
             header: 'h3',
             heightStyle: 'content'

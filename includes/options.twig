@@ -1,26 +1,28 @@
 <h2>Options</h2>
 <label class="fontsampler-radio">
-	<input type="radio" name="use_default_options" value="1" {% if set.use_defaults == 1 %} checked="checked" {% endif %}>
-	<span>Use default settings</span>
+    <input type="radio" name="use_default_options"
+           value="1" {% if set.use_defaults == 1 %} checked="checked" {% endif %}>
+    <span>Use default settings</span>
 </label>
 <label class="fontsampler-radio">
-	<input type="radio" name="use_default_options" value="0" {% if set.use_defaults == 0 %} checked="checked" {% endif %}>
-	<span>Use custom settings</span>
+    <input type="radio" name="use_default_options"
+           value="0" {% if set.use_defaults == 0 %} checked="checked" {% endif %}>
+    <span>Use custom settings</span>
 </label>
 
 <div class="fontsampler-options">
-	<h3>Basic</h3>
-	<fieldset>
-		{% include 'fontsampler-basic.twig' %}
-	</fieldset>
+    <h3>Basic</h3>
+    <fieldset>
+        {% include 'fontsampler-basic.twig' %}
+    </fieldset>
 
-	<h3>Features</h3>
-	<fieldset>
-		{% include 'fontsampler-options.twig' %}
-	</fieldset>
+    <h3>Features</h3>
+    <fieldset>
+        {% include 'fontsampler-options.twig' %}
+    </fieldset>
 
-	<h3>Styling</h3>
-	<fieldset>
-		{% include 'fontsampler-styles.twig' %}
-	</fieldset>
+    <h3>Styling</h3>
+    <fieldset>
+        {% include 'fontsampler-styles.twig' %}
+    </fieldset>
 </div>

@@ -91,10 +91,15 @@ class FontsamplerFormhandler {
 		// if this fontsampler uses custom settings, insert them
 		if ( !$use_defaults ) {
 
+			var_dump($this->post);
+
+			// set these basic submitted infos
 			$settings['set_id'] = $id;
 			$settings['is_ltr'] = $this->post['is_ltr'];
 			$settings['initial'] = $this->post['initial'];
 
+			// loop through the first 3 options that have more detailed sliders associated with them
+			// which in turn can rely on using defaults or adapt a custom setting as well
 			$sliders = array('font_size', 'letter_spacing', 'line_height');
 			foreach ( $sliders as $slider ) {
 				if ( isset( $this->post[ $slider ] ) ) {
@@ -110,14 +115,29 @@ class FontsamplerFormhandler {
 				}
 			}
 
-			var_dump($this->post);
-
+			// loop through all simple checkbox features
 			$checkboxes = array('sampletexts', 'fontpicker', 'alignment', 'invert', 'opentype', 'multiline');
 			foreach ( $checkboxes as $checkbox ) {
 				if ( isset( $this->post[ $checkbox ] ) ) {
 					$settings[ $checkbox ] = 1;
 				}
+
+				// exception here: sampletexts has a further subsection about using defaults or custom
+				if ( $checkbox === 'sampletexts' && intval( $this->post['sampletexts_use_default'] ) === 1 ) {
+					$settings['sample_texts'] = null;
+				} else {
+					$settings['sample_texts'] = $this->post['sample_texts'];
+				}
 			}
+
+			// loop through css colors
+			// these can be gotten from default settings, all color fields start with 'css_color...'
+
+			// loop through css fields
+			// these can be gotten from default settings, all css fields other than colors start with 'css_value...'
+			// TODO css_value... for all but colors
+
+
 			var_dump($settings);
 		}
 
