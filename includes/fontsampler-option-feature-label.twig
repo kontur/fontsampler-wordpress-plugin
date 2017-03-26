@@ -3,18 +3,18 @@
     <div>
         <label class="fontsampler-radio">
             <input type="radio" name="{{ label }}_use_default" value="0"
-            {% if not use_default %} checked="checked" {% endif %}>
+            {% if use_default %} checked="checked" {% endif %}>
         </label>
         <label>
             <span class="setting-description">{{ description }}</span>
             <input type="text" name="{{ name }}_label" class="fontsampler-admin-slider-label"
-                   value="{{ default }}"/>
+                   value="{{ use_default ? default : value }}"/>
         </label>
     </div>
     <div>
         <label class="fontsampler-radio">
             <input type="radio" name="{{ label }}_use_default" value="1"
-                {% if use_default %} checked="checked" {% endif %}>
+                {% if not use_default %} checked="checked" {% endif %}>
             <span>Use default: {{ default }}</span>
         </label>
     </div>

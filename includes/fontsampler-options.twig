@@ -19,7 +19,8 @@
 				label: label,
 				name: f.name,
 				description: f.slider_label,
-				default: (defaults[f.name ~ '_label'])
+				default: (defaults[f.name ~ '_label']),
+				value: set[label ~ '_label']
 			}) }}
 
 			{{ include('fontsampler-option-feature-slider.twig', {

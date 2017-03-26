@@ -10,7 +10,7 @@
     <div>
         <label class="fontsampler-radio">
             <input type="radio" name="{{ label }}_use_default" value="1"
-                    {% if use_default %} checked="checked" {% endif %}>
+                    {% if not use_default %} checked="checked" {% endif %}>
             <span>Use Default: {{ slider_default }}</span>
         </label>
     </div>

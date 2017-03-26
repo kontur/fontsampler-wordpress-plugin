@@ -81,16 +81,15 @@ class FontsamplerFormhandler {
 	function handle_set_edit( $id = null ) {
 		check_admin_referer( 'fontsampler-action-edit_set' );
 
-		$settings = array();
+		// for the settings to be inserted, create a copy of the defaults with "null" values,
+		// then fill from $post
+		$settings = array_map(function () {
+			return null;
+		}, $this->fontsampler->db->get_settings());
 		$use_defaults = intval( $this->post['use_default_options'] ) === 1;
 
 		// if this fontsampler uses custom settings, insert them
 		if ( !$use_defaults ) {
-			// for the settings to be inserted, create a copy of the defaults with "null" values,
-			// then fill from $post
-			$settings = array_map(function () {
-				return null;
-			}, $this->fontsampler->db->get_settings());
 
 			$settings['set_id'] = $id;
 			$settings['is_ltr'] = $this->post['is_ltr'];
@@ -133,10 +132,7 @@ class FontsamplerFormhandler {
 			$id = $this->fontsampler->db->insert_set($set);
 
 			if ( $id ) {
-				if ( !empty( $settings ) && $use_defaults ) {
-					$this->fontsampler->db->save_settings_for_set( $settings, $id );
-				}
-
+				$this->fontsampler->db->save_settings_for_set( $settings, $id );
 				$this->fontsampler->msg->info( 'Created fontsampler with id ' . $id
 				                               . '. You can now embed it in your posts or pages by adding [fontsampler id='
 				                               . $id . '].' );
@@ -146,7 +142,7 @@ class FontsamplerFormhandler {
 			}
 		} else {
 			// update existing
-			if ( !empty( $settings ) && !$use_defaults ) {
+			if ( !$use_defaults ) {
 				$this->fontsampler->db->save_settings_for_set( $settings, $id );
 			} else {
 				// if updating an existing set that now uses default settings but used to have
