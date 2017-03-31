@@ -356,6 +356,11 @@ class FontsamplerPlugin {
 				$layout = new FontsamplerLayout();
 				$str = $layout->sanitizeString($set['ui_order'], $set);
 				$layout->stringToArray($str);
+				$ui_order = !empty( $set['ui_order'] )
+					? $layout->sanitizeString( $set['ui_order'], $set )
+					: $layout->arrayToString( $layout->getDefaultBlocks(), $set );
+
+				$blocks = array_merge( $layout->getDefaultBlocks(), $layout->stringToArray( $set['ui_order'], $set ) );
 
 				$fonts       = $this->db->get_fontfile_posts();
 				$fonts_order = implode( ',', array_map( function ( $font ) {
@@ -370,7 +375,9 @@ class FontsamplerPlugin {
 					'set'         => $set,
 					'defaults'    => $defaults,
 					'fonts'       => $fonts,
-					'fonts_order' => $fonts_order
+					'fonts_order' => $fonts_order,
+					'ui_order'    => $ui_order,
+					'blocks'      => $blocks
 				));
 				break;
 

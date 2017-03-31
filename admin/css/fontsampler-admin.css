@@ -477,6 +477,123 @@
   height: 12px;
   width: 12px;
 }
+#fontsampler-admin #fontsampler-admin-ui-wrapper {
+  position: relative;
+}
+#fontsampler-admin #fontsampler-admin-ui-wrapper:hover .fontsampler-ui-block,
+#fontsampler-admin #fontsampler-admin-ui-wrapper:hover .fontsampler-interface-row-break {
+  outline: 2px solid #64CAF0;
+}
+#fontsampler-admin #fontsampler-admin-ui-wrapper #fontsampler-ui-blocks-list {
+  display: none;
+}
+#fontsampler-admin #fontsampler-admin-ui-wrapper #fontsampler-ui-layout-preview {
+  border: 4px dotted #F2F2F2;
+  padding: 10px;
+}
+#fontsampler-admin #fontsampler-admin-ui-wrapper #fontsampler-ui-layout-preview .fontsampler-interface {
+  position: relative;
+}
+#fontsampler-admin #fontsampler-admin-ui-wrapper #fontsampler-ui-layout-preview .fontsampler-interface .fontsampler-interface-row-break {
+  cursor: move;
+  height: 1.5em;
+  background: #F2F2F2;
+  font-style: italic;
+  text-align: center;
+  margin-bottom: 10px;
+  position: relative;
+}
+#fontsampler-admin #fontsampler-admin-ui-wrapper #fontsampler-ui-layout-preview .fontsampler-interface .fontsampler-interface-row-break:before {
+  content: "ROW BREAK";
+}
+#fontsampler-admin #fontsampler-admin-ui-wrapper #fontsampler-ui-layout-preview .fontsampler-interface .fontsampler-interface-row-break:hover {
+  outline: 2px solid #008EC2;
+  background: #64CAF0;
+}
+#fontsampler-admin #fontsampler-admin-ui-wrapper #fontsampler-ui-layout-preview .fontsampler-interface .fontsampler-interface-row-break .fontsampler-delete-row-break {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  line-height: 1;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-weight: bold;
+}
+#fontsampler-admin #fontsampler-admin-ui-wrapper #fontsampler-ui-layout-preview .fontsampler-interface .fontsampler-ui-block {
+  position: relative;
+}
+#fontsampler-admin #fontsampler-admin-ui-wrapper #fontsampler-ui-layout-preview .fontsampler-interface .fontsampler-ui-block:hover .fontsampler-ui-block-overlay,
+#fontsampler-admin #fontsampler-admin-ui-wrapper #fontsampler-ui-layout-preview .fontsampler-interface .fontsampler-ui-block.fontsampler-ui-block-menu-open .fontsampler-ui-block-overlay {
+  display: block;
+  outline: 2px solid #008EC2;
+}
+#fontsampler-admin #fontsampler-admin-ui-wrapper #fontsampler-ui-layout-preview .fontsampler-interface .fontsampler-ui-block.fontsampler-ui-block-menu-open .fontsampler-ui-block-overlay .fontsampler-ui-block-options {
+  display: block;
+}
+#fontsampler-admin #fontsampler-admin-ui-wrapper #fontsampler-ui-layout-preview .fontsampler-interface .fontsampler-ui-block .fontsampler-ui-block-overlay {
+  background: rgba(100, 200, 240, 0.9);
+  box-sizing: border-box;
+  cursor: move !important;
+  display: none;
+  height: 100%;
+  left: 0;
+  outline: 2px solid #64CAF0;
+  opacity: 1;
+  padding: 10px;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 19;
+}
+#fontsampler-admin #fontsampler-admin-ui-wrapper #fontsampler-ui-layout-preview .fontsampler-interface .fontsampler-ui-block .fontsampler-ui-block-overlay .fontsampler-ui-block-settings {
+  box-sizing: border-box;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  display: block;
+  height: 100%;
+  outline: none;
+  padding: 5px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 30px;
+}
+#fontsampler-admin #fontsampler-admin-ui-wrapper #fontsampler-ui-layout-preview .fontsampler-interface .fontsampler-ui-block .fontsampler-ui-block-overlay .fontsampler-ui-block-settings img {
+  display: block;
+  height: 20px;
+  width: 20px;
+}
+#fontsampler-admin #fontsampler-admin-ui-wrapper #fontsampler-ui-layout-preview .fontsampler-interface .fontsampler-ui-block .fontsampler-ui-block-overlay .fontsampler-ui-block-options {
+  border: 2px solid #008EC2;
+  display: none;
+  padding: 10px;
+  position: absolute;
+  right: -1px;
+  top: 100%;
+  background: rgba(255, 200, 50, 0.9);
+  min-width: 15em;
+  width: auto;
+}
+#fontsampler-admin #fontsampler-admin-ui-wrapper #fontsampler-ui-layout-preview .fontsampler-interface .fontsampler-ui-block .fontsampler-ui-block-overlay .fontsampler-ui-block-options .fontsampler-ui-block-add-break {
+  margin-bottom: 1em;
+}
+#fontsampler-admin #fontsampler-admin-ui-wrapper #fontsampler-ui-layout-preview .fontsampler-interface .fontsampler-ui-block .fontsampler-ui-block-overlay .fontsampler-ui-block-options .fontsampler-ui-block-layout-classes label {
+  display: block;
+  margin: 0.5em 0;
+}
+#fontsampler-admin #fontsampler-admin-ui-wrapper #fontsampler-ui-layout-preview-options {
+  clear: both;
+  display: block;
+}
+#fontsampler-admin #fontsampler-admin-ui-wrapper .type-tester__slider {
+  margin-top: 4px;
+}
+#fontsampler-admin ul.fontsampler-ui-preview-placeholder li {
+  display: none;
+}
 #fontsampler-admin header {
   background: white;
   margin: 0 1.5em 0 0;
@@ -752,122 +869,6 @@
   float: left;
   margin-right: 5%;
   width: 45%;
-}
-#fontsampler-admin #fontsampler-admin-ui-wrapper {
-  position: relative;
-}
-#fontsampler-admin #fontsampler-admin-ui-wrapper:hover .fontsampler-ui-block,
-#fontsampler-admin #fontsampler-admin-ui-wrapper:hover .fontsampler-interface-row-break {
-  outline: 1px dotted orange;
-}
-#fontsampler-admin #fontsampler-admin-ui-wrapper #fontsampler-ui-blocks-list {
-  display: none;
-}
-#fontsampler-admin #fontsampler-admin-ui-wrapper #fontsampler-ui-layout-preview {
-  border: 1px dotted grey;
-  padding: 10px;
-}
-#fontsampler-admin #fontsampler-admin-ui-wrapper #fontsampler-ui-layout-preview .fontsampler-interface {
-  position: relative;
-}
-#fontsampler-admin #fontsampler-admin-ui-wrapper #fontsampler-ui-layout-preview .fontsampler-interface .fontsampler-interface-row-break {
-  cursor: move;
-  height: 1.5em;
-  background: #ccc;
-  font-style: italic;
-  text-align: center;
-  margin-bottom: 10px;
-  position: relative;
-}
-#fontsampler-admin #fontsampler-admin-ui-wrapper #fontsampler-ui-layout-preview .fontsampler-interface .fontsampler-interface-row-break:before {
-  content: "ROW BREAK";
-}
-#fontsampler-admin #fontsampler-admin-ui-wrapper #fontsampler-ui-layout-preview .fontsampler-interface .fontsampler-interface-row-break:hover {
-  outline: 1px solid orange;
-}
-#fontsampler-admin #fontsampler-admin-ui-wrapper #fontsampler-ui-layout-preview .fontsampler-interface .fontsampler-interface-row-break .fontsampler-delete-row-break {
-  position: absolute;
-  right: 0;
-  top: 0;
-  height: 100%;
-  line-height: 1;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  font-weight: bold;
-}
-#fontsampler-admin #fontsampler-admin-ui-wrapper #fontsampler-ui-layout-preview .fontsampler-interface .fontsampler-ui-block {
-  position: relative;
-}
-#fontsampler-admin #fontsampler-admin-ui-wrapper #fontsampler-ui-layout-preview .fontsampler-interface .fontsampler-ui-block:hover .fontsampler-ui-block-overlay,
-#fontsampler-admin #fontsampler-admin-ui-wrapper #fontsampler-ui-layout-preview .fontsampler-interface .fontsampler-ui-block.fontsampler-ui-block-menu-open .fontsampler-ui-block-overlay {
-  display: block;
-  outline: 1px solid orange;
-}
-#fontsampler-admin #fontsampler-admin-ui-wrapper #fontsampler-ui-layout-preview .fontsampler-interface .fontsampler-ui-block.fontsampler-ui-block-menu-open .fontsampler-ui-block-overlay .fontsampler-ui-block-options {
-  display: block;
-}
-#fontsampler-admin #fontsampler-admin-ui-wrapper #fontsampler-ui-layout-preview .fontsampler-interface .fontsampler-ui-block .fontsampler-ui-block-overlay {
-  background: rgba(255, 155, 0, 0.9);
-  box-sizing: border-box;
-  cursor: move !important;
-  display: none;
-  height: 100%;
-  left: 0;
-  outline: 1px dotted orange;
-  opacity: 1;
-  padding: 10px;
-  position: absolute;
-  top: 0;
-  width: 100%;
-  z-index: 19;
-}
-#fontsampler-admin #fontsampler-admin-ui-wrapper #fontsampler-ui-layout-preview .fontsampler-interface .fontsampler-ui-block .fontsampler-ui-block-overlay .fontsampler-ui-block-settings {
-  box-sizing: border-box;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  display: block;
-  height: 100%;
-  outline: none;
-  padding: 5px;
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: 30px;
-}
-#fontsampler-admin #fontsampler-admin-ui-wrapper #fontsampler-ui-layout-preview .fontsampler-interface .fontsampler-ui-block .fontsampler-ui-block-overlay .fontsampler-ui-block-settings img {
-  display: block;
-  height: 20px;
-  width: 20px;
-}
-#fontsampler-admin #fontsampler-admin-ui-wrapper #fontsampler-ui-layout-preview .fontsampler-interface .fontsampler-ui-block .fontsampler-ui-block-overlay .fontsampler-ui-block-options {
-  border: 2px solid orange;
-  display: none;
-  padding: 10px;
-  position: absolute;
-  right: -1px;
-  top: 100%;
-  background: rgba(255, 200, 50, 0.9);
-  min-width: 15em;
-  width: auto;
-}
-#fontsampler-admin #fontsampler-admin-ui-wrapper #fontsampler-ui-layout-preview .fontsampler-interface .fontsampler-ui-block .fontsampler-ui-block-overlay .fontsampler-ui-block-options .fontsampler-ui-block-add-break {
-  margin-bottom: 1em;
-}
-#fontsampler-admin #fontsampler-admin-ui-wrapper #fontsampler-ui-layout-preview .fontsampler-interface .fontsampler-ui-block .fontsampler-ui-block-overlay .fontsampler-ui-block-options .fontsampler-ui-block-layout-classes label {
-  display: block;
-  margin: 0.5em 0;
-}
-#fontsampler-admin #fontsampler-admin-ui-wrapper #fontsampler-ui-layout-preview-options {
-  clear: both;
-  display: block;
-}
-#fontsampler-admin #fontsampler-admin-ui-wrapper .type-tester__slider {
-  margin-top: 4px;
-}
-#fontsampler-admin ul.fontsampler-ui-preview-placeholder li {
-  display: none;
 }
 #fontsampler-admin .selectric .button {
   border: none;
