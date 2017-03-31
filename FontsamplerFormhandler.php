@@ -10,24 +10,11 @@ class FontsamplerFormhandler {
 	private $fontsampler;
 	private $post;
 	private $files;
-	private $boolean_options;
 
 	function __construct( $fontsampler, $post, $files ) {
 		$this->fontsampler = $fontsampler;
 		$this->post        = $post;
 		$this->files       = $files;
-
-		$this->boolean_options = array(
-			'size',
-			'letterspacing',
-			'lineheight',
-			'sampletexts',
-			'alignment',
-			'invert',
-			'opentype',
-			'multiline',
-			'fontpicker',
-		);
 	}
 
 
@@ -107,11 +94,11 @@ class FontsamplerFormhandler {
 					$settings[ $slider . '_label' ] = intval( $this->post[ $slider . '_use_default' ] ) === 1 ?
 						null : $this->post[ $slider . '_label' ];
 					$settings[ $slider . '_min' ] = intval( $this->post[ $slider . '_min_use_default' ] ) === 1 ?
-						null : $this->post[ $slider . '_min_value'];
+						null : $this->post[ $slider . '_min'];
 					$settings[ $slider . '_initial' ] = intval( $this->post[ $slider . '_initial_use_default' ] ) === 1 ?
-						null : $this->post[ $slider . '_initial_value'];
+						null : $this->post[ $slider . '_initial'];
 					$settings[ $slider . '_max' ] = intval( $this->post[ $slider . '_max_use_default' ] ) === 1 ?
-						null : $this->post[ $slider . '_max_value'];
+						null : $this->post[ $slider . '_max'];
 				}
 			}
 
@@ -368,42 +355,43 @@ class FontsamplerFormhandler {
 
 
 	function handle_settings_edit() {
-		// no settings ID's for now, just one default row
-		if ( isset( $this->post['id'] ) ) {
-			$id = (int) ( $this->post['id'] );
-			if ( 'edit_settings' == $this->post['action'] && isset( $id ) && is_int( $id ) && $id > 0 ) {
-				// update the wp_option field for hiding legacy font formats
-				if ( isset( $this->post['admin_hide_legacy_formats'] ) ) {
-					$val = intval( $this->post['admin_hide_legacy_formats'] );
-					update_option( constant( get_class( $this->fontsampler ) . "::FONTSAMPLER_OPTION_HIDE_LEGACY_FORMATS" ), $val );
-					$this->fontsampler->admin_hide_legacy_formats = $val;
+		if ( 'edit_settings' == $this->post['action'] ) {
+			$data = array();
+
+			// update the wp_option field for hiding legacy font formats
+			if ( isset( $this->post['admin_hide_legacy_formats'] ) ) {
+				$val = intval( $this->post['admin_hide_legacy_formats'] );
+				update_option( constant( get_class( $this->fontsampler ) . "::FONTSAMPLER_OPTION_HIDE_LEGACY_FORMATS" ), $val );
+				$this->fontsampler->admin_hide_legacy_formats = $val;
+			} else {
+				update_option( constant( get_class( $this->fontsampler ) . "::FONTSAMPLER_OPTION_HIDE_LEGACY_FORMATS" ), 0 );
+				$this->fontsampler->admin_hide_legacy_formats = 0;
+			}
+
+			$settings_fields = array_keys($this->fontsampler->db->get_default_settings());
+			$checkbox_features = $this->fontsampler->helpers->get_checkbox_features();
+
+			foreach ( $settings_fields as $field ) {
+				if ( in_array( $field, $checkbox_features ) ) {
+					$data[ $field ] = (isset( $this->post[ $field ]) && $this->post[ $field ] == 1) ? 1 : 0;
 				} else {
-					update_option( constant( get_class( $this->fontsampler ) . "::FONTSAMPLER_OPTION_HIDE_LEGACY_FORMATS" ), 0 );
-					$this->fontsampler->admin_hide_legacy_formats = 0;
-				}
-
-				$settings_fields = array_keys( $this->fontsampler->settings_defaults );
-
-				$data = array();
-				foreach ( $settings_fields as $field ) {
-					if ( in_array( $field, $this->fontsampler->default_features ) ) {
-						$data[ $field ] = isset( $this->post[ $field ] ) ? 1 : 0;
-					} else {
-						if ( isset( $this->post[ $field ] ) ) {
-							$data[ $field ] = trim( $this->post[ $field ] );
-						}
+//					var_dump( $field, isset($this->post[$field]), $this->post[$field]);
+//					echo '<br>';
+					if ( isset( $this->post[ $field ] ) ) {
+						$data[ $field ] = trim( $this->post[ $field ] );
 					}
 				}
-
-				// atm no inserts, only updating the defaults
-				$this->fontsampler->db->update_settings( $data );
-
-				// rewrite any fontsampler sets that use the defaults
-				$this->fontsampler->db->update_defaults( $data );
-
-				// further generate a new settings css file
-				$this->fontsampler->helpers->write_css_from_settings( $data );
 			}
+
+			// atm no inserts, only updating the defaults
+			$this->fontsampler->db->update_settings( $data );
+
+			// rewrite any fontsampler sets that use the defaults
+			$this->fontsampler->db->update_defaults( $data );
+
+			// further generate a new settings css file
+			$this->fontsampler->helpers->write_css_from_settings( $data );
 		}
+
 	}
 }

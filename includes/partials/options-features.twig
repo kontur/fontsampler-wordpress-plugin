@@ -1,0 +1,117 @@
+{% for label, f in features %}
+    <div>
+        <label>
+            <input type="checkbox" name="{{ label }}"
+                   data-default="{{ defaults[label] }}"
+                   data-set="{{ set[label] }}"
+                   value="1"
+                    {% if set[label] == 1 %} checked="checked" {% endif %}>
+            <span>{{ f.label }}</span>
+        </label>
+        {% include 'partials/button-details.twig' %}
+        <div class="fontsampler-options-features-details {#fontsampler-visible#}">
+
+            {{ include('partials/options-features-label.twig', {
+                use_default: set[f.name ~ '_label'] is empty,
+                label: label,
+                name: f.name,
+                description: f.slider_label,
+                default: (defaults[f.name ~ '_label']),
+                value: set[label ~ '_label']
+            }) }}
+
+            {{ include('partials/options-features-slider.twig', {
+                use_default: set[f.name ~ '_min'] is empty,
+                header: 'Minimum',
+                label: (label ~ '_min'),
+                slider_label: f.slider_min_label,
+                slider_name: (f.name ~ '_min'),
+                slider_default: (defaults[f.name ~ '_min'])
+            }) }}
+
+            {{ include('partials/options-features-slider.twig', {
+                use_default: set[f.name ~ '_initial'] is empty,
+                header: 'Initial',
+                label: (label ~ '_initial'),
+                slider_label: f.slider_initial_label,
+                slider_name: (f.name ~ '_initial'),
+                slider_default: (defaults[f.name ~ '_initial'])
+            }) }}
+
+            {{ include('partials/options-features-slider.twig', {
+                use_default: set[f.name ~ '_max'] is empty,
+                header: 'Maximum',
+                label: (label ~ '_max'),
+                slider_label: f.slider_max_label,
+                slider_name: (f.name ~ '_max'),
+                slider_default: (defaults[f.name ~ '_max'])
+            }) }}
+        </div>
+    </div>
+{% endfor %}
+
+{% for label, description in additional_features %}
+    <div>
+        <label>
+            <input type="checkbox" name="{{ label }}"
+                   data-default="{{ defaults[label] }}"
+                   data-set="{{ set[label] }}"
+                   value="1"
+                    {% if set[label] == 1 %} checked="checked" {% endif %}>
+            <span>{{ description }}</span>
+        </label>
+
+        {% if label == 'sampletexts' %}
+            {% include 'partials/button-details.twig' %}
+            <div class="fontsampler-options-features-details">
+                {{ include( 'partials/options-features-sampletexts.twig') }}
+            </div>
+        {% endif %}
+
+        {% if label == 'buy' %}
+            {% include 'partials/button-details.twig' %}
+            <div class="fontsampler-options-features-details">
+                <div class="fontsampler-options-row">
+                    <strong>Buy link</strong>
+                    <div>
+                        <label>
+                            <span>Url for the buy link</span>
+                            <input type="text" name="buy" value="{{ set.buy }}_url">
+                        </label>
+                    </div>
+                </div>
+                {{ include ('partials/options-features-link.twig', {
+                    'name': 'buy',
+                    'header': 'Buy link UI',
+                    'label': set.buy_label,
+                    'image': set.buy_image,
+                    'default_label': default.buy_label,
+                    'default_image': defaults.buy_image,
+                }) }}
+            </div>
+        {% endif %}
+
+        {% if label == 'specimen' %}
+            {% include 'partials/button-details.twig' %}
+            <div class="fontsampler-options-features-details">
+                <div class="fontsampler-options-row">
+                    <strong>Specimen link</strong>
+                    <div>
+                        <label>
+                            <span>Url for the specimen link</span>
+                            <input type="text" name="specimen" value="{{ set.specimen }}_url">
+                        </label>
+                    </div>
+                </div>
+                {{ include ('partials/options-features-link.twig', {
+                    'name': 'specimen',
+                    'header': 'Specimen link UI',
+                    'label': set.specimen_label,
+                    'image': set.specimen_image,
+                    'default_label': default.specimen_label,
+                    'default_image': defaults.specimen_image,
+                }) }}
+            </div>
+        {% endif %}
+    </div>
+{% endfor %}

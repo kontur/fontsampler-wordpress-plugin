@@ -1,0 +1,50 @@
+<strong>Fontsampler script direction is:</strong>
+<label>
+    <input type="radio" name="is_ltr" value="1"
+            {% if set.is_ltr == 1 %} checked="checked" {% endif %}>
+    <span>Left to Right</span>
+</label>
+<label>
+    <input type="radio" name="is_ltr" value="0"
+            {% if set.is_ltr == 0 %} checked="checked" {% endif %}>
+    <span>Right to Left</span>
+</label>
+
+<label>
+    <span>The initial text displayed in the font sampler, for example the font name or pangram. You can use multi-line text here as well.</span><br>
+    <textarea name="initial" rows="5"
+              dir="{% if set.is_ltr == 1 %}ltr{% else %}rtl{% endif %}"
+              style="text-align: {{ set.alignment_initial }};"
+    >{% if set.initial is not empty %} {{ set.initial }} {% endif %}</textarea>
+</label>
+
+
+<div class="fontsampler-options default-text-alignment">
+    <strong>Default text alignment:</strong>
+    <div>
+        <label>
+            <div class="fontsampler-image-radio {% if set.alignment_initial == 'left' %} active {% endif %}">
+                <input type="radio" name="alignment_initial" value="left"
+                        {% if set.alignment_initial == 'left' %} checked="checked" {% endif %}>
+                <img class="fontsampler-admin-alignment-icon"
+                     src="{{ image('icons/align-left.svg') }}">Left
+            </div>
+        </label>
+        <label>
+            <div class="fontsampler-image-radio {% if set.alignment_initial == 'center' %} active {% endif %}">
+                <input type="radio" name="alignment_initial" value="center"
+                        {% if set.alignment_initial == 'center' %} checked="checked" {% endif %}>
+                <img class="fontsampler-admin-alignment-icon"
+                     src="{{ image('icons/align-center.svg') }}">Centered
+            </div>
+        </label>
+        <label>
+            <div class="fontsampler-image-radio {% if set.alignment_initial == 'right' %} active {% endif %}">
+                <input type="radio" name="alignment_initial" value="right"
+                        {% if set.alignment_initial == 'right' %} checked="checked" {% endif %}>
+                <img class="fontsampler-admin-alignment-icon"
+                     src="{{ image('icons/align-right.svg') }}">Right
+            </div>
+        </label>
+    </div>
+</div>

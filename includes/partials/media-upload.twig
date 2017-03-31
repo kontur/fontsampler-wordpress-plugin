@@ -1,0 +1,21 @@
+<div class="fontsampler-upload-wrapper">
+
+	<!-- Your image container, which can be manipulated with js -->
+	<div class="custom-img-container">
+		{% if image_src(image_id) %}
+			<img src="{{ image_src(image_id) }}" alt="" style="max-width:100%;"/>
+		{% endif %}
+	</div>
+
+	<!-- Your add & remove image links -->
+	<p class="hide-if-no-js">
+		<a class="upload-custom-img {% if image_src(image_id) %} hidden {% endif %}"
+		   href="{{ upload_link }}">Set custom image</a>
+
+		<a class="delete-custom-img {% if not image_src(image_id) %} hidden {% endif %}"
+		   href="#">Remove this image</a>
+	</p>
+
+	<input class="custom-img-id" name="{{ image_name }}" type="hidden"
+	       value="{{ image_id }}"/>
+</div>

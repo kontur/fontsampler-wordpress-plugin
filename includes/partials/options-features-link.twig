@@ -1,0 +1,47 @@
+{% extends 'partials/options-row.twig' %}
+
+{% block label %}{{ header }}{% endblock %}
+
+{% block custom %}
+    <label>
+        <input type="radio" name="{{ name }}_link_use" value="text">
+        <span class="settings-description">Use text label for "{{ name }}" link:</span>
+        <input type="text" name="{{ name }}_label" value="{{ label }}"/>
+    </label>
+    <label class="fontsampler-setting-image">
+        <input type="radio" name="{{ name }}_link_use" value="image">
+        <span class="settings-description">Use image for the "Buy" link:</span>
+        {{ include ('partials/media-upload.twig', {
+            'image_id' : image,
+            'image_name' : name ~ '_image'
+        }) }}
+        <br>
+        <small>Recommended size about 200 x 60 pixels</small>
+    </label>
+{% endblock %}
+
+{% block default %}
+    {% if not settings %}
+        <label>
+            <input type="radio" name="{{ name }}_link_use" value="text">
+            <span class="settings-description">Use default label for "{{ name }}" link:</span>
+            <input type="text" name="{{ name }}_label" class="fontsampler-admin-slider-label"
+                   value="{{ defaults_label }}"/>
+        </label>
+
+        {% if default_image %}
+            <label class="fontsampler-setting-image">
+                <input type="radio" name="{{ name }}_link_use" value="image">
+                <span class="settings-description">Use default image for the "{{ name }}" link:</span>
+                <img src="">{{ default_image }}
+                <br>
+                <small>Recommended size about 200 x 60 pixels</small>
+            </label>
+        {% else %}
+            <label class="fontsampler-setting-image fontsampler-label-disabled">
+                <input type="radio" disabled="disabled">
+                <span class="settings-description">No default image available in settings</span>
+            </label>
+        {% endif %}
+    {% endif %}
+{% endblock %}

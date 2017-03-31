@@ -9,11 +9,58 @@ class FontsamplerHelpers {
 
 	private $fontsampler;
 	private $less;
+	private $features;
+	private $addition_features;
 
 	function __construct( $fontsampler ) {
-		$this->fontsampler = $fontsampler;
-		$this->less        = new Less_Parser( array( 'compress' => true ) );
+		$this->fontsampler         = $fontsampler;
+		$this->less                = new Less_Parser( array( 'compress' => true ) );
+		$this->features            = [
+			'font_size'      => array(
+				'name'                 => 'font_size',
+				'label'                => 'Size control',
+				'slider_label'         => 'Label',
+				'slider_initial_label' => 'Initial px',
+				'slider_min_label'     => 'Min px',
+				'slider_max_label'     => 'Max px',
+			),
+			'letter_spacing' => array(
+				'name'                 => 'letter_spacing',
+				'label'                => 'Letter spacing control',
+				'slider_label'         => 'Label',
+				'slider_initial_label' => 'Initial px',
+				'slider_min_label'     => 'Min px',
+				'slider_max_label'     => 'Max px',
+			),
+			'line_height'    => array(
+				'name'                 => 'line_height',
+				'label'                => 'Line height control',
+				'slider_label'         => 'Label',
+				'slider_initial_label' => 'Initial px',
+				'slider_min_label'     => 'Min px',
+				'slider_max_label'     => 'Max px',
+			)
+		];
+		$this->additional_features = [
+			'sampletexts' => 'Display dropdown selection for sample texts',
+			'fontpicker'  => 'Display fontsname(s) as dropdown selection (for several fonts) or label (for a single font)',
+			'alignment'   => 'Alignment controls',
+			'invert'      => 'Allow inverting the text field to display negative text',
+			'opentype'    => 'Display OpenType feature controls (automatic detection)',
+			'multiline'   => 'Allow line breaks',
+			'buy'         => 'Display a link to buy these fonts',
+			'specimen'    => 'Display a link to a specimen',
+		];
 	}
+
+
+	/**
+	 * @return array of keys of features that are boolean in fontsampler-edit and settings
+	 */
+	function get_checkbox_features() {
+		return array_merge( array_keys( $this->features ), array_keys( $this->additional_features ) );
+	}
+
 
 	/**
 	 * @return string path to include styles css file
@@ -62,12 +109,14 @@ class FontsamplerHelpers {
 				$css = $this->less->getCss();
 			} catch ( Exception $e ) {
 				$m->error( $e->getMessage() );
+
 				return false;
 			}
 
 			// concat the base styles and the replaced template into the default css file
-			if ( false === $this->check_is_writeable( $output )) {
-				$m->error( 'Error: Permission to write to ' . $output . ' denied. Failed to update styles');
+			if ( false === $this->check_is_writeable( $output ) ) {
+				$m->error( 'Error: Permission to write to ' . $output . ' denied. Failed to update styles' );
+
 				return false;
 			}
 			if ( false !== file_put_contents( $output, $css ) ) {
@@ -86,12 +135,14 @@ class FontsamplerHelpers {
 			if ( $output_wrapper ) {
 				echo '<div class="notice">';
 			}
-			$m->notice( 'Warning: ' . $handle . ' not writable by the server, update the folder/file permissions.');
+			$m->notice( 'Warning: ' . $handle . ' not writable by the server, update the folder/file permissions.' );
 			if ( $output_wrapper ) {
 				echo '</div>';
 			}
+
 			return false;
 		}
+
 		return true;
 	}
 
@@ -144,83 +195,66 @@ class FontsamplerHelpers {
 		return sizeof( $fontsFiltered ) > 0 ? $fontsFiltered : false;
 	}
 
-	
+
 	function extend_twig( $twig ) {
 
 		// mount some helpers to twig
 		$twig->addFunction( new Twig_SimpleFunction( 'fontfiles_json', function ( $fontset ) {
 			return $this->fontfiles_json( $fontset );
-		}));
+		} ) );
 
 		$twig->addFunction( new Twig_SimpleFunction( 'file_from_path', function ( $font, $format ) {
 			return substr( $font[ $format ], strrpos( $font[ $format ], '/' ) + 1 );
-		}));
+		} ) );
 
 		$twig->addFunction( new Twig_SimpleFunction( 'submit_button',
 				function ( $label = 'Submit', $type = 'primary' ) {
-					return submit_button( $label, $type);
-				})
+					return submit_button( $label, $type );
+				} )
 		);
 
 		$twig->addFunction( new Twig_SimpleFunction( 'is_current', function ( $current ) {
 			$subpages = explode( ',', $current );
-			if ( !isset($_GET['subpage']) && in_array( 'index', $subpages) ||
-			     isset( $_GET['subpage'] ) && in_array( $_GET['subpage'], $subpages) ) {
+			if ( ! isset( $_GET['subpage'] ) && in_array( 'index', $subpages ) ||
+			     isset( $_GET['subpage'] ) && in_array( $_GET['subpage'], $subpages )
+			) {
 				return ' class=current ';
 			} else {
 				return '';
 			}
-		}));
+		} ) );
 
 		$twig->addFunction( new Twig_SimpleFunction( 'wp_nonce_field', function ( $field ) {
 			return function_exists( 'wp_nonce_field' ) ? wp_nonce_field( $field ) : false;
-		}));
+		} ) );
 
 		$twig->addFunction( new Twig_SimpleFunction( 'is_legacy_format', function ( $format ) {
 			return $this->is_legacy_format( $format );
-		}));
+		} ) );
 
-		$twig->addGlobal('plugin_dir_url', plugin_dir_url( __FILE__ ) );
+		$twig->addFunction( new Twig_SimpleFunction( 'upload_link', function () {
+			return esc_url( get_upload_iframe_src( 'image' ) );
+		} ) );
 
-		$features = [
-			'font_size'      => array(
-				'name'                 => 'font_size',
-				'label'                => 'Size control',
-				'slider_label'         => 'Label',
-				'slider_initial_label' => 'Initial px',
-				'slider_min_label'     => 'Min px',
-				'slider_max_label'     => 'Max px',
-			),
-			'letter_spacing' => array(
-				'name'                 => 'letter_spacing',
-				'label'                => 'Letter spacing control',
-				'slider_label'         => 'Label',
-				'slider_initial_label' => 'Initial px',
-				'slider_min_label'     => 'Min px',
-				'slider_max_label'     => 'Max px',
-			),
-			'line_height'    => array(
-				'name'                 => 'line_height',
-				'label'                => 'Line height control',
-				'slider_label'         => 'Label',
-				'slider_initial_label' => 'Initial px',
-				'slider_min_label'     => 'Min px',
-				'slider_max_label'     => 'Max px',
-			)
-		];
-		$twig->addGlobal('features', $features);
+		$twig->addFunction( new Twig_SimpleFunction( 'image_src', function ( $image_id ) {
+			return wp_get_attachment_image_src( $image_id, 'full' )[0];
+		} ) );
 
-		$additional_features = [
-			'sampletexts' => 'Display dropdown selection for sample texts',
-			'fontpicker'  => 'Display fonts in this Fontsampler as dropdown selection (for several fonts) or label (for a single font)',
-			'alignment'   => 'Alignment controls',
-			'invert'      => 'Allow inverting the text field to display negative text',
-			'opentype'    => 'Display OpenType feature controls (for those fonts where they are available)',
-			'multiline'   => 'Allow line breaks',
-		];
-		$twig->addGlobal('additional_features', $additional_features);
+		$twig->addFunction( new Twig_SimpleFunction( 'admin_hide_legacy_formats', function () {
+			return $this->fontsampler->admin_hide_legacy_formats;
+		} ) );
 
-		$twig->addGlobal('formats', $this->fontsampler->font_formats);
+		$twig->addFunction( new Twig_SimpleFunction( 'image', function ( $src ) {
+			return plugin_dir_url( __FILE__ ) . $src;
+		} ) );
+
+		$twig->addGlobal( 'plugin_dir_url', plugin_dir_url( __FILE__ ) );
+
+		$twig->addGlobal( 'features', $this->features );
+
+		$twig->addGlobal( 'additional_features', $this->additional_features );
+
+		$twig->addGlobal( 'formats', $this->fontsampler->font_formats );
 	}
 
 }

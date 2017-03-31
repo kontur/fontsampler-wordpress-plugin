@@ -112,9 +112,9 @@ class FontsamplerPlugin {
 			'css_column_gutter'         => '10px',
 			'css_row_height'            => '30px',
 			'css_row_gutter'            => '10px',
-			'size'                      => 1,
-			'letterspacing'             => 1,
-			'lineheight'                => 1,
+			'font_size'                 => 1,
+			'letter_spacing'            => 1,
+			'line_height'               => 1,
 			'sampletexts'               => 0,
 			'alignment'                 => 0,
 			'invert'                    => 0,
@@ -409,8 +409,10 @@ class FontsamplerPlugin {
 
 			case 'settings':
 				$this->helpers->check_is_writeable( plugin_dir_path( __FILE__ ) . 'css/fontsampler-css.css', true );
+				$settings = $this->db->get_default_settings();
 				echo $this->twig->render( 'settings.twig', array(
-					'defaults' => $this->db->get_default_settings()
+					'set' => $settings,
+					'defaults' => $settings // for the most part use 'set', but some sliders read the "default" value
 				));
 				break;
 

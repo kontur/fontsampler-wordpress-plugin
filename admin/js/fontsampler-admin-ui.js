@@ -278,7 +278,7 @@ define(['jquery', 'rangeslider', 'selectric', 'validate'], function ($, r, s, v)
 
 
         $(".fontsampler-options").accordion({
-            active: 2,//false,
+            active: 0,//false,
             collapsible: true,
             header: 'h3',
             heightStyle: 'content'
@@ -300,6 +300,26 @@ define(['jquery', 'rangeslider', 'selectric', 'validate'], function ($, r, s, v)
             $options.accordion("disable");
             $options.accordion("option", "active", false);
         }
+
+
+        $(".fontsampler-image-radio").on("click", function () {
+            var $this = $(this),
+                name = $this.find('input').attr('name'),
+                $all = $('.fontsampler-image-radio').has('input[name="' + name + '"]');
+
+            $all.removeClass("active").find("input:checked").removeAttr("checked");
+            $this.addClass("active").find('input').attr('checked', 'checked').trigger('change');
+        });
+
+
+        // fontsampler & settings direction options
+        $initial = $("textarea[name='initial']");
+        $("[name='is_ltr']").on("change", function () {
+            $initial.attr('dir', $(this).val() == 1 ? 'ltr' : 'rtl');
+        });
+        $("[name='alignment_initial']").on("change", function () {
+            $initial.css('text-align', $(this).val());
+        });
 
     }
 

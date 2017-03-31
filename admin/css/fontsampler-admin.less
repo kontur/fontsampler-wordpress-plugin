@@ -1,13 +1,10 @@
 @import "admin-variables.less";
-
 @import "../../css/fontsampler-custom-rangeslider.less";
 @import "admin-settings.less";
 @import "admin-sampler.less";
 @import "admin-fontsets.less";
 @import "admin-header.less";
 @import "admin-buttons.less";
-
-
 
 /*
  * Scope all css to be contained only within the fontsampler wrapper
@@ -505,7 +502,6 @@
         margin-bottom: 1em;
     }
 
-
     .fontsampler-options {
 
         &.ui-accordion-disabled {
@@ -550,7 +546,6 @@
         }
     }
 
-
     // unified look for a options row that contains from left to right:
     // a label, custom options with radio, default options with radio
     .fontsampler-options-row {
@@ -571,10 +566,8 @@
 
         & > strong {
             padding: 0.25em 0 0 0.5em;
-            text-transform: uppercase;
             width: 20%;
             small {
-                text-transform: none;
                 display: block;
                 font-weight: normal;
             }
@@ -587,7 +580,20 @@
                 border-left: 5px solid @fs_color_white;
                 border-right: 3px solid @fs_color_white;
             }
+
+            .settings-description + input[type=text] {
+                margin-left: 1.75em;
+                margin-bottom: 0.5em;
+            }
+
+            .upload-custom-img {
+                .button-add();
+            }
         }
+    }
+
+    .fontsampler-options-settings .fontsampler-options-row > div:nth-of-type(1) {
+        border-right: 0;
     }
 
     .fontsampler-options-features-details {
@@ -606,14 +612,18 @@
         label {
             display: inline-block;
             margin-top: 0.25em;
-            margin-left: 1em;
             margin-bottom: 0.25em;
         }
     }
 
+    label.fontsampler-label-disabled {
+        .settings-description {
+            color: @fs_color_disabled;
+        }
+    }
 
     label.fontsampler-radio {
-        display: block;
+        display: inline-block;
         margin: 0.5em 0;
 
         input[type=radio] {
@@ -626,8 +636,12 @@
     }
 
     .fontsampler-toggle-show-hide {
-        span { display: none; }
-        span:first-child { display: block; }
+        span {
+            display: none;
+        }
+        span:first-child {
+            display: block;
+        }
     }
 
     .fontsampler-visible {
@@ -673,5 +687,38 @@
     .fontsampler-sample_texts {
         min-height: 5em;
         width: 100%;
+    }
+
+    .fontsampler-options.default-text-alignment {
+        & > div {
+            clear: both;
+            label {
+                display: inline-block;
+                margin-right: 2em;
+            }
+        }
+    }
+
+    .fontsampler-image-radio {
+        background: @fs_color_white;
+        position: relative;
+
+        &:hover img {
+            background: @fs_color_ok;
+        }
+
+        &.active {
+            img {
+                background: @fs_color_ok_light;
+            }
+        }
+        input[type="radio"] {
+            display: block;
+            visibility: hidden;
+            width: 1em;
+            position: absolute;
+            left: -1em;
+            top: 0;
+        }
     }
 }

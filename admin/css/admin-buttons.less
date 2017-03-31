@@ -1,5 +1,73 @@
 @import "admin-variables.less";
 
+.button() {
+    clear: both;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    display: inline-block;
+    font-weight: bold;
+    font-size: 1em;
+    line-height: 1.75em;
+    margin: 0 auto;
+    padding: 0.25em 0.5em;
+    position: relative;
+    text-shadow: none;
+    text-decoration: none;
+    transition: background 0.15s ease-in-out;
+
+    i.icon {
+        display: inline-block;
+        font-style: normal;
+        height: 100%;
+        left: 0;
+        position: absolute;
+        top: 0;
+        width: 2em;
+    }
+    span {
+        padding-left: 2em;
+    }
+}
+
+.button-primary() {
+    .button();
+
+    background: @fs_color_ok_light;
+    color: @fs_color_white;
+    &:hover {
+        background: @fs_color_ok;
+    }
+}
+
+.button-add() {
+    .button();
+
+    background: @fs_color_add_light;
+    color: @fs_color_text;
+    &:hover {
+        background: @fs_color_add;
+    }
+
+    i.icon {
+        background: @fs_color_add;
+    }
+}
+
+.button-delete() {
+    .button();
+
+    background: @fs_color_delete_light;
+    color: @fs_color_white;
+    &:hover {
+        background: @fs_color_delete;
+    }
+
+    i.icon {
+        background: @fs_color_delete;
+    }
+}
+
 #fontsampler-admin {
 
     table .button {
@@ -7,58 +75,18 @@
     }
 
     .button {
-        clear: both;
-        border: 0;
-        border-radius: 0;
-        box-shadow: none;
-        font-weight: bold;
-        margin: 0 auto;
-        text-shadow: none;
-        transition: background 0.15s ease-in-out;
-        position: relative;
-
-        i.icon {
-            font-style: normal;
-            display: inline-block;
-            height: 100%;
-            width: 2em;
-            left: 0;
-            position: absolute;
-        }
-        span {
-            padding-left: 2em;
-        }
+        .button();
 
         &.button-primary {
-            background: @fs_color_ok_light;
-            color: @fs_color_white;
-            &:hover {
-                background: @fs_color_ok;
-            }
+            .button-primary();
         }
 
         &.add {
-            background: @fs_color_add_light;
-            color: @fs_color_text;
-            &:hover {
-                background: @fs_color_add;
-            }
-
-            i.icon {
-                background: @fs_color_add;
-            }
+            .button-add();
         }
 
         &.delete {
-            background: @fs_color_delete_light;
-            color: @fs_color_white;
-            &:hover {
-                background: @fs_color_delete;
-            }
-
-            i.icon {
-                background: @fs_color_delete;
-            }
+            .button-delete();
         }
     }
 }

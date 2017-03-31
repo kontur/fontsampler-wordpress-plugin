@@ -1,4 +1,4 @@
-{% extends 'options-row.twig' %}
+{% extends 'partials/options-row.twig' %}
 
 {% block label %}{{ description }}{% endblock %}
 
@@ -13,9 +13,11 @@
 {% endblock %}
 
 {% block default %}
-    <label class="fontsampler-radio">
-        <input type="radio" name="{{ name }}_use_default" value="1"
-                {% if value is empty %} checked="checked" {% endif %}>
-        <span>Use default: {{ default }}</span>
-    </label>
+    {% if not settings %}
+        <label class="fontsampler-radio">
+            <input type="radio" name="{{ name }}_use_default" value="1"
+                    {% if value is empty %} checked="checked" {% endif %}>
+            <span>Use default: {{ default }}</span>
+        </label>
+    {% endif %}
 {% endblock %}
