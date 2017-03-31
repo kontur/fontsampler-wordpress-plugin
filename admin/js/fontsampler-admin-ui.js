@@ -144,7 +144,7 @@ define(['jquery', 'rangeslider', 'selectric', 'validate'], function ($, r, s, v)
 
 
         // setting sliders
-        $('#fontsampler-admin .form-settings input[type="range"]').rangeslider({
+        $('#fontsampler-admin input[type="range"]').rangeslider({
             // Feature detection the default is `true`.
             // Set this to `false` if you want to use
             // the polyfill also in Browsers which support
@@ -278,7 +278,7 @@ define(['jquery', 'rangeslider', 'selectric', 'validate'], function ($, r, s, v)
 
 
         $(".fontsampler-options").accordion({
-            active: 0,//false,
+            active: 1,//false,
             collapsible: true,
             header: 'h3',
             heightStyle: 'content'

@@ -1,16 +1,14 @@
-<header id="fontsampler-menu">
-	<ul>
-		<li {{ is_current('index,set_edit,set_delete,set_create') }}>
-			<a href="?page=fontsampler">Font samplers</a>
-		</li>
-		<li {{ is_current('fonts,font_edit,font_delete,font_create') }}>
-			<a href="?page=fontsampler&amp;subpage=fonts">Fonts &amp; files</a>
-		</li>
-		<li {{ is_current('settings') }}>
-			<a href="?page=fontsampler&amp;subpage=settings">Settings</a>
-		</li>
-		<li {{ is_current('about') }}>
-			<a href="?page=fontsampler&amp;subpage=about">About</a>
-		</li>
-	</ul>
-</header>
+<ul>
+	<li {{ is_current('index,set_edit,set_delete,set_create') }}>
+		<a href="?page=fontsampler">Fontsamplers</a>
+	</li>
+	<li {{ is_current('fonts,font_edit,font_delete,font_create') }}>
+		<a href="?page=fontsampler&amp;subpage=fonts">Fontsets &amp; files</a>
+	</li>
+	<li {{ is_current('settings') }}>
+		<a href="?page=fontsampler&amp;subpage=settings">Settings</a>
+	</li>
+	<li {{ is_current('about') }}>
+		<a href="?page=fontsampler&amp;subpage=about">About</a>
+	</li>
+</ul>

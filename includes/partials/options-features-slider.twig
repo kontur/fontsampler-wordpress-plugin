@@ -6,14 +6,16 @@
     {% if not settings %}
         <label class="fontsampler-radio">
             <input type="radio" name="{{ label }}_use_default" value="0"
-                   {% if use_default %} checked="checked" {% endif %}
+                   {% if use_default %} checked="checked" {% endif %}>
         </label>
     {% endif %}
-    {{ include ('partials/slider.twig', {
-        label: slider_label,
-        name: slider_name,
-        value: slider_default
-    }) }}
+    <div class="fontsampler-options-row-values">
+        {{ include ('partials/slider.twig', {
+            label: slider_label,
+            name: slider_name,
+            value: slider_default
+        }) }}
+    </div>
 {% endblock %}
 
 {% block default %}
@@ -21,7 +23,7 @@
         <label class="fontsampler-radio">
             <input type="radio" name="{{ label }}_use_default" value="1"
                     {% if not use_default %} checked="checked" {% endif %}>
-            <span>Use Default: {{ slider_default }}</span>
+            <span class="settings-description">Use Default: <span class="fontsampler-default-value">{{ slider_default }}</span></span>
         </label>
     {% endif %}
 {% endblock %}

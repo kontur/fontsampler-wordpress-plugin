@@ -1,11 +1,11 @@
 <h2>Options</h2>
 {% if not settings %}
-<label class="fontsampler-radio">
+<label class="fontsampler-radio block">
     <input type="radio" name="use_default_options"
            value="1" {% if set.use_defaults == 1 %} checked="checked" {% endif %}>
     <span>Use default settings</span>
 </label>
-<label class="fontsampler-radio">
+<label class="fontsampler-radio block">
     <input type="radio" name="use_default_options"
            value="0" {% if set.use_defaults == 0 %} checked="checked" {% endif %}>
     <span>Use custom settings</span>
@@ -24,7 +24,7 @@
     </fieldset>
 
     <h3>Styling</h3>
-    <fieldset>
+    <fieldset class="no-padding">
         {% include 'partials/options-styles.twig' %}
     </fieldset>
 </div>

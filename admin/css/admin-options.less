@@ -1,0 +1,221 @@
+@import "admin-variables.less";
+@import "admin-buttons.less";
+
+#fontsampler-admin {
+    .fontsampler-options {
+        fieldset > div > label {
+            display: inline-block;
+        }
+    }
+
+    // Options - Styling - Little square showing the current default color
+    .fontsampler-css-color-block {
+        border: 1px solid @fs_color_text;
+        border-radius: 0.25em;
+        display: inline-block;
+        height: 1em;
+        width: 1em;
+        top: 0.25em;
+        position: relative;
+        margin: 0 0.5em;
+    }
+
+    .fontsampler-admin-slider-label {
+        width: 100%;
+        input[type=range] {
+            margin: 1em 0;
+            width: 100%;
+        }
+    }
+
+    .fontsampler-default-value {
+        background: @fs_color_light;
+        border: 1px solid @fs_color_medium;
+        border-radius: 0.25em;
+        color: @fs_color_text;
+        display: inline-block;
+        padding: 0.25em 0.5em;
+    }
+
+    .fontsampler-options-settings {
+        .fontsampler-color-picker {
+            margin-left: 0.5em;
+        }
+        .fontsampler-options-row > div {
+            width: auto;
+        }
+    }
+
+    .fontsampler-sample_texts {
+        min-height: 10em;
+        width: 100%;
+    }
+
+    .fontsampler-options.default-text-alignment {
+        & > div {
+            clear: both;
+            label {
+                display: inline-block;
+                margin-right: 2em;
+            }
+        }
+    }
+
+
+    textarea[name=initial] {
+        min-height: 10em;
+        width: 30em;
+    }
+
+
+
+    .fontsampler-options {
+
+        &.ui-accordion-disabled {
+            h3 {
+                color: @fs_color_disabled !important;
+                cursor: not-allowed;
+            }
+        }
+
+        // accordion header
+        h3 {
+            background: @fs_color_light;
+            color: @fs_color_text_medium;
+            cursor: pointer;
+            height: 1em;
+            padding: 0.5em 1em;
+            outline: none;
+            margin-bottom: 0;
+            margin-top: 10px;
+
+            &:hover,
+            &:focus {
+                color: @fs_color_link;
+            }
+
+            &.ui-accordion-header-active {
+                color: @fs_color_text_medium !important;
+            }
+        }
+
+        // accordion content
+        fieldset {
+            border: 3px solid @fs_color_light;
+            display: none;
+            margin: 0 0 10px;
+
+            & > div {
+                & > label {
+                    margin: 0.5em 0;
+                }
+            }
+        }
+    }
+
+    // unified look for a options row that contains from left to right:
+    // a label, custom options with radio, default options with radio
+    .fontsampler-options-row {
+        clear: both;
+        overflow: auto;
+
+        // every second row with background
+        &:nth-of-type(2n + 1) {
+            background: @fs_color_light;
+        }
+
+        // all children in one row: label, settings, default
+        & > * {
+            box-sizing: border-box;
+            display: inline-block;
+            float: left;
+        }
+
+        small {
+            display: block;
+            font-weight: normal;
+        }
+
+        & > strong {
+            padding: 0.75em 1em;
+            width: 20%;
+        }
+
+        & > div {
+            box-sizing: border-box;
+            padding: 0.5em;
+            width: 39%;
+
+            &:nth-of-type(1) {
+                border-left: 5px solid @fs_color_white;
+                border-right: 3px solid @fs_color_white;
+            }
+
+            .settings-description + input[type=text] {
+                margin-left: 1.75em;
+                margin-bottom: 0.5em;
+            }
+
+            .upload-custom-img {
+                .button-add();
+            }
+        }
+        .fontsampler-options-row-values {
+            display: block;
+            padding: 0 0 0 1.75em;
+        }
+    }
+
+    // options specific to the settings page (which hides a few things)
+    .fontsampler-options-settings {
+        .fontsampler-options-row-values {
+            padding: 0 0.5em;
+        }
+        .fontsampler-options-row > div:nth-of-type(1) {
+            border-right: 0;
+        }
+    }
+
+    .fontsampler-options-features-details {
+        overflow: auto;
+        display: none;
+        margin-left: 1.7em;
+
+        &.fontsampler-visible {
+            border: 2px solid @fs_color_light;
+        }
+
+        input[type=range] {
+            width: 100%;
+        }
+
+        input.current-value {
+            width: 3em;
+        }
+
+        label {
+            display: inline-block;
+            margin-top: 0.25em;
+            margin-bottom: 0.25em;
+        }
+    }
+
+    .slider {
+        margin: 0.5em 0;
+    }
+    .rangeslider--horizontal {
+        background: @fs_color_ok_light;
+        height: 4px;
+        width: 100%;
+        clear: both;
+
+        .rangeslider__fill {
+            background: @fs_color_ok;
+        }
+
+        .rangeslider__handle {
+            height: 12px;
+            width: 12px;
+        }
+    }
+}

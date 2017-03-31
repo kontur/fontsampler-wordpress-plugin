@@ -1,3 +1,157 @@
+#fontsampler-admin table .button {
+  margin: 0 auto;
+}
+#fontsampler-admin .button {
+  clear: both;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  display: inline-block;
+  font-weight: bold;
+  font-size: 1em;
+  line-height: 1.75em;
+  margin: 0 auto;
+  padding: 0.25em 0.5em;
+  position: relative;
+  text-shadow: none;
+  text-decoration: none;
+  transition: background 0.15s ease-in-out;
+}
+#fontsampler-admin .button i.icon {
+  display: inline-block;
+  font-style: normal;
+  height: 100%;
+  left: 0;
+  line-height: 2em;
+  position: absolute;
+  text-align: center;
+  top: 0;
+  width: 2em;
+}
+#fontsampler-admin .button span {
+  padding-left: 2em;
+}
+#fontsampler-admin .button.button-primary {
+  clear: both;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  display: inline-block;
+  font-weight: bold;
+  font-size: 1em;
+  line-height: 1.75em;
+  margin: 0 auto;
+  padding: 0.25em 0.5em;
+  position: relative;
+  text-shadow: none;
+  text-decoration: none;
+  transition: background 0.15s ease-in-out;
+  background: #64CAF0;
+  color: #FFFFFF;
+}
+#fontsampler-admin .button.button-primary i.icon {
+  display: inline-block;
+  font-style: normal;
+  height: 100%;
+  left: 0;
+  line-height: 2em;
+  position: absolute;
+  text-align: center;
+  top: 0;
+  width: 2em;
+}
+#fontsampler-admin .button.button-primary span {
+  padding-left: 2em;
+}
+#fontsampler-admin .button.button-primary:hover {
+  background: #008EC2;
+}
+#fontsampler-admin .button.add {
+  clear: both;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  display: inline-block;
+  font-weight: bold;
+  font-size: 1em;
+  line-height: 1.75em;
+  margin: 0 auto;
+  padding: 0.25em 0.5em;
+  position: relative;
+  text-shadow: none;
+  text-decoration: none;
+  transition: background 0.15s ease-in-out;
+  background: #B8E986;
+  color: #222222;
+}
+#fontsampler-admin .button.add i.icon {
+  display: inline-block;
+  font-style: normal;
+  height: 100%;
+  left: 0;
+  line-height: 2em;
+  position: absolute;
+  text-align: center;
+  top: 0;
+  width: 2em;
+}
+#fontsampler-admin .button.add span {
+  padding-left: 2em;
+}
+#fontsampler-admin .button.add:hover {
+  background: #7ED321;
+}
+#fontsampler-admin .button.add i.icon {
+  background: #7ED321;
+}
+#fontsampler-admin .button.delete {
+  clear: both;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  display: inline-block;
+  font-weight: bold;
+  font-size: 1em;
+  line-height: 1.75em;
+  margin: 0 auto;
+  padding: 0.25em 0.5em;
+  position: relative;
+  text-shadow: none;
+  text-decoration: none;
+  transition: background 0.15s ease-in-out;
+  background: #E5604E;
+  color: #FFFFFF;
+}
+#fontsampler-admin .button.delete i.icon {
+  display: inline-block;
+  font-style: normal;
+  height: 100%;
+  left: 0;
+  line-height: 2em;
+  position: absolute;
+  text-align: center;
+  top: 0;
+  width: 2em;
+}
+#fontsampler-admin .button.delete span {
+  padding-left: 2em;
+}
+#fontsampler-admin .button.delete:hover {
+  background: #C0402F;
+}
+#fontsampler-admin .button.delete i.icon {
+  background: #C0402F;
+}
+#fontsampler-admin table + .button {
+  margin-top: 1em !important;
+}
+#fontsampler-admin .wp-picker-default {
+  background: lightgrey;
+  top: -0.1em;
+  position: relative;
+  height: 2em;
+  line-height: 1em !important;
+}
 .rangeslider,
 .rangeslider__fill {
   display: block;
@@ -129,13 +283,207 @@
   display: inline-block;
   width: 24em;
 }
+#fontsampler-admin .fontsampler-options fieldset > div > label {
+  display: inline-block;
+}
+#fontsampler-admin .fontsampler-css-color-block {
+  border: 1px solid #222222;
+  border-radius: 0.25em;
+  display: inline-block;
+  height: 1em;
+  width: 1em;
+  top: 0.25em;
+  position: relative;
+  margin: 0 0.5em;
+}
+#fontsampler-admin .fontsampler-admin-slider-label {
+  width: 100%;
+}
+#fontsampler-admin .fontsampler-admin-slider-label input[type=range] {
+  margin: 1em 0;
+  width: 100%;
+}
+#fontsampler-admin .fontsampler-default-value {
+  background: #F2F2F2;
+  border: 1px solid #CBCBCB;
+  border-radius: 0.25em;
+  color: #222222;
+  display: inline-block;
+  padding: 0.25em 0.5em;
+}
+#fontsampler-admin .fontsampler-options-settings .fontsampler-color-picker {
+  margin-left: 0.5em;
+}
+#fontsampler-admin .fontsampler-options-settings .fontsampler-options-row > div {
+  width: auto;
+}
+#fontsampler-admin .fontsampler-sample_texts {
+  min-height: 10em;
+  width: 100%;
+}
+#fontsampler-admin .fontsampler-options.default-text-alignment > div {
+  clear: both;
+}
+#fontsampler-admin .fontsampler-options.default-text-alignment > div label {
+  display: inline-block;
+  margin-right: 2em;
+}
+#fontsampler-admin textarea[name=initial] {
+  min-height: 10em;
+  width: 30em;
+}
+#fontsampler-admin .fontsampler-options.ui-accordion-disabled h3 {
+  color: #cccccc !important;
+  cursor: not-allowed;
+}
+#fontsampler-admin .fontsampler-options h3 {
+  background: #F2F2F2;
+  color: #4A4A4A;
+  cursor: pointer;
+  height: 1em;
+  padding: 0.5em 1em;
+  outline: none;
+  margin-bottom: 0;
+  margin-top: 10px;
+}
+#fontsampler-admin .fontsampler-options h3:hover,
+#fontsampler-admin .fontsampler-options h3:focus {
+  color: #008EC2;
+}
+#fontsampler-admin .fontsampler-options h3.ui-accordion-header-active {
+  color: #4A4A4A !important;
+}
+#fontsampler-admin .fontsampler-options fieldset {
+  border: 3px solid #F2F2F2;
+  display: none;
+  margin: 0 0 10px;
+}
+#fontsampler-admin .fontsampler-options fieldset > div > label {
+  margin: 0.5em 0;
+}
+#fontsampler-admin .fontsampler-options-row {
+  clear: both;
+  overflow: auto;
+}
+#fontsampler-admin .fontsampler-options-row:nth-of-type(2n + 1) {
+  background: #F2F2F2;
+}
+#fontsampler-admin .fontsampler-options-row > * {
+  box-sizing: border-box;
+  display: inline-block;
+  float: left;
+}
+#fontsampler-admin .fontsampler-options-row small {
+  display: block;
+  font-weight: normal;
+}
+#fontsampler-admin .fontsampler-options-row > strong {
+  padding: 0.75em 1em;
+  width: 20%;
+}
+#fontsampler-admin .fontsampler-options-row > div {
+  box-sizing: border-box;
+  padding: 0.5em;
+  width: 39%;
+}
+#fontsampler-admin .fontsampler-options-row > div:nth-of-type(1) {
+  border-left: 5px solid #FFFFFF;
+  border-right: 3px solid #FFFFFF;
+}
+#fontsampler-admin .fontsampler-options-row > div .settings-description + input[type=text] {
+  margin-left: 1.75em;
+  margin-bottom: 0.5em;
+}
+#fontsampler-admin .fontsampler-options-row > div .upload-custom-img {
+  clear: both;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  display: inline-block;
+  font-weight: bold;
+  font-size: 1em;
+  line-height: 1.75em;
+  margin: 0 auto;
+  padding: 0.25em 0.5em;
+  position: relative;
+  text-shadow: none;
+  text-decoration: none;
+  transition: background 0.15s ease-in-out;
+  background: #B8E986;
+  color: #222222;
+}
+#fontsampler-admin .fontsampler-options-row > div .upload-custom-img i.icon {
+  display: inline-block;
+  font-style: normal;
+  height: 100%;
+  left: 0;
+  line-height: 2em;
+  position: absolute;
+  text-align: center;
+  top: 0;
+  width: 2em;
+}
+#fontsampler-admin .fontsampler-options-row > div .upload-custom-img span {
+  padding-left: 2em;
+}
+#fontsampler-admin .fontsampler-options-row > div .upload-custom-img:hover {
+  background: #7ED321;
+}
+#fontsampler-admin .fontsampler-options-row > div .upload-custom-img i.icon {
+  background: #7ED321;
+}
+#fontsampler-admin .fontsampler-options-row .fontsampler-options-row-values {
+  display: block;
+  padding: 0 0 0 1.75em;
+}
+#fontsampler-admin .fontsampler-options-settings .fontsampler-options-row-values {
+  padding: 0 0.5em;
+}
+#fontsampler-admin .fontsampler-options-settings .fontsampler-options-row > div:nth-of-type(1) {
+  border-right: 0;
+}
+#fontsampler-admin .fontsampler-options-features-details {
+  overflow: auto;
+  display: none;
+  margin-left: 1.7em;
+}
+#fontsampler-admin .fontsampler-options-features-details.fontsampler-visible {
+  border: 2px solid #F2F2F2;
+}
+#fontsampler-admin .fontsampler-options-features-details input[type=range] {
+  width: 100%;
+}
+#fontsampler-admin .fontsampler-options-features-details input.current-value {
+  width: 3em;
+}
+#fontsampler-admin .fontsampler-options-features-details label {
+  display: inline-block;
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+#fontsampler-admin .slider {
+  margin: 0.5em 0;
+}
+#fontsampler-admin .rangeslider--horizontal {
+  background: #64CAF0;
+  height: 4px;
+  width: 100%;
+  clear: both;
+}
+#fontsampler-admin .rangeslider--horizontal .rangeslider__fill {
+  background: #008EC2;
+}
+#fontsampler-admin .rangeslider--horizontal .rangeslider__handle {
+  height: 12px;
+  width: 12px;
+}
 #fontsampler-admin header {
   background: white;
   margin: 0 1.5em 0 0;
   padding: 1em 1em;
 }
 #fontsampler-admin #fontsampler-menu ul {
-  border-bottom: 1px solid #222222;
+  border-bottom: 4px solid #008EC2;
   margin: 0;
   padding: 0 1em;
 }
@@ -176,141 +524,42 @@
   border-bottom: 0;
   color: #FFFFFF;
 }
-#fontsampler-admin table .button {
-  margin: 0 auto;
+#fontsampler-admin footer {
+  margin: 1.5em 1.5em 0 0;
+  padding: 1em 2em 0.5em;
+  background: white;
 }
-#fontsampler-admin .button {
-  clear: both;
-  border: 0;
-  border-radius: 0;
-  box-shadow: none;
+#fontsampler-admin footer ul {
+  overflow: auto;
+}
+#fontsampler-admin footer li {
+  box-sizing: border-box;
   display: inline-block;
-  font-weight: bold;
-  font-size: 1em;
-  line-height: 1.75em;
-  margin: 0 auto;
-  padding: 0.25em 0.5em;
+  float: left;
+  padding-right: 1em;
+  width: 20%;
+  max-width: 120px;
+}
+#fontsampler-admin footer li > a {
+  display: block;
+  height: 0;
+  padding-top: 62.5%;
   position: relative;
-  text-shadow: none;
-  text-decoration: none;
-  transition: background 0.15s ease-in-out;
+  text-align: center;
+  width: 100%;
 }
-#fontsampler-admin .button i.icon {
-  display: inline-block;
-  font-style: normal;
+#fontsampler-admin footer li > a img {
+  display: block;
   height: 100%;
-  left: 0;
-  position: absolute;
   top: 0;
-  width: 2em;
-}
-#fontsampler-admin .button span {
-  padding-left: 2em;
-}
-#fontsampler-admin .button.button-primary {
-  clear: both;
-  border: 0;
-  border-radius: 0;
-  box-shadow: none;
-  display: inline-block;
-  font-weight: bold;
-  font-size: 1em;
-  line-height: 1.75em;
-  margin: 0 auto;
-  padding: 0.25em 0.5em;
-  position: relative;
-  text-shadow: none;
-  text-decoration: none;
-  transition: background 0.15s ease-in-out;
-  background: #64CAF0;
-  color: #FFFFFF;
-}
-#fontsampler-admin .button.button-primary i.icon {
-  display: inline-block;
-  font-style: normal;
-  height: 100%;
   left: 0;
+  right: 0;
   position: absolute;
-  top: 0;
-  width: 2em;
 }
-#fontsampler-admin .button.button-primary span {
-  padding-left: 2em;
-}
-#fontsampler-admin .button.button-primary:hover {
-  background: #008EC2;
-}
-#fontsampler-admin .button.add {
-  clear: both;
-  border: 0;
-  border-radius: 0;
-  box-shadow: none;
-  display: inline-block;
-  font-weight: bold;
-  font-size: 1em;
-  line-height: 1.75em;
-  margin: 0 auto;
-  padding: 0.25em 0.5em;
-  position: relative;
-  text-shadow: none;
-  text-decoration: none;
-  transition: background 0.15s ease-in-out;
-  background: #B8E986;
-  color: #222222;
-}
-#fontsampler-admin .button.add i.icon {
-  display: inline-block;
-  font-style: normal;
-  height: 100%;
-  left: 0;
-  position: absolute;
-  top: 0;
-  width: 2em;
-}
-#fontsampler-admin .button.add span {
-  padding-left: 2em;
-}
-#fontsampler-admin .button.add:hover {
-  background: #7ED321;
-}
-#fontsampler-admin .button.add i.icon {
-  background: #7ED321;
-}
-#fontsampler-admin .button.delete {
-  clear: both;
-  border: 0;
-  border-radius: 0;
-  box-shadow: none;
-  display: inline-block;
-  font-weight: bold;
-  font-size: 1em;
-  line-height: 1.75em;
-  margin: 0 auto;
-  padding: 0.25em 0.5em;
-  position: relative;
-  text-shadow: none;
-  text-decoration: none;
-  transition: background 0.15s ease-in-out;
-  background: #E5604E;
-  color: #FFFFFF;
-}
-#fontsampler-admin .button.delete i.icon {
-  display: inline-block;
-  font-style: normal;
-  height: 100%;
-  left: 0;
-  position: absolute;
-  top: 0;
-  width: 2em;
-}
-#fontsampler-admin .button.delete span {
-  padding-left: 2em;
-}
-#fontsampler-admin .button.delete:hover {
-  background: #C0402F;
-}
-#fontsampler-admin .button.delete i.icon {
-  background: #C0402F;
+#fontsampler-admin footer li > img {
+  display: block;
+  height: 12.5%;
+  width: 100%;
 }
 /*
  * Scope all css to be contained only within the fontsampler wrapper
@@ -326,8 +575,8 @@
 #fontsampler-admin fieldset label,
 #fontsampler-admin label.fontsampler-admin-label-block {
   display: block;
-  color: #666;
-  margin: 1em 0;
+  color: #4A4A4A;
+  margin: 0.5em 0;
 }
 #fontsampler-admin .submit {
   padding: 0;
@@ -349,9 +598,23 @@
 #fontsampler-admin input[type=file]:focus {
   border: 0;
 }
+#fontsampler-admin input[type=text],
+#fontsampler-admin textarea {
+  border: 2px solid #CBCBCB;
+}
+#fontsampler-admin input[type=text]:hover,
+#fontsampler-admin textarea:hover,
+#fontsampler-admin input[type=text]:focus,
+#fontsampler-admin textarea:focus {
+  box-shadow: none;
+  border: 2px solid #64CAF0;
+}
 #fontsampler-admin fieldset {
   border: 1px solid #ccc;
   padding: 1em;
+}
+#fontsampler-admin fieldset.no-padding {
+  padding: 0;
 }
 #fontsampler-admin fieldset legend {
   font-weight: bold;
@@ -415,7 +678,7 @@
 }
 #fontsampler-admin small {
   color: #AAA;
-  font-size: small;
+  font-size: smaller;
   font-family: sans-serif;
   line-height: 1em;
   margin-top: 0.5em;
@@ -442,43 +705,6 @@
 #fontsampler-admin td .fileformat {
   display: inline-block;
   width: 4em;
-}
-#fontsampler-admin footer {
-  margin: 1.5em 1.5em 0 0;
-  padding: 1em 2em 0.5em;
-  background: white;
-}
-#fontsampler-admin footer ul {
-  overflow: auto;
-}
-#fontsampler-admin footer li {
-  box-sizing: border-box;
-  display: inline-block;
-  float: left;
-  padding-right: 1em;
-  width: 20%;
-  max-width: 120px;
-}
-#fontsampler-admin footer li > a {
-  display: block;
-  height: 0;
-  padding-top: 62.5%;
-  position: relative;
-  text-align: center;
-  width: 100%;
-}
-#fontsampler-admin footer li > a img {
-  display: block;
-  height: 100%;
-  top: 0;
-  left: 0;
-  right: 0;
-  position: absolute;
-}
-#fontsampler-admin footer li > img {
-  display: block;
-  height: 12.5%;
-  width: 100%;
 }
 #fontsampler-admin .info,
 #fontsampler-admin .note,
@@ -712,121 +938,6 @@
 #fontsampler-admin table + .fontsampler-pagination {
   margin-bottom: 1em;
 }
-#fontsampler-admin .fontsampler-options.ui-accordion-disabled h3 {
-  color: #cccccc !important;
-  cursor: not-allowed;
-}
-#fontsampler-admin .fontsampler-options h3 {
-  background: #F2F2F2;
-  color: #4A4A4A;
-  cursor: pointer;
-  height: 1em;
-  padding: 0.5em 1em;
-  outline: none;
-  margin-bottom: 0;
-  margin-top: 10px;
-}
-#fontsampler-admin .fontsampler-options h3:hover,
-#fontsampler-admin .fontsampler-options h3:focus {
-  color: #008EC2;
-}
-#fontsampler-admin .fontsampler-options h3.ui-accordion-header-active {
-  color: #4A4A4A !important;
-}
-#fontsampler-admin .fontsampler-options fieldset {
-  border: 3px solid #F2F2F2;
-  display: none;
-  margin: 0 0 10px;
-}
-#fontsampler-admin .fontsampler-options fieldset > div > label {
-  margin: 0.5em 0;
-}
-#fontsampler-admin .fontsampler-options-row {
-  clear: both;
-  overflow: auto;
-}
-#fontsampler-admin .fontsampler-options-row:nth-of-type(2n + 1) {
-  background: #F2F2F2;
-}
-#fontsampler-admin .fontsampler-options-row > * {
-  box-sizing: border-box;
-  display: inline-block;
-  float: left;
-}
-#fontsampler-admin .fontsampler-options-row > strong {
-  padding: 0.25em 0 0 0.5em;
-  width: 20%;
-}
-#fontsampler-admin .fontsampler-options-row > strong small {
-  display: block;
-  font-weight: normal;
-}
-#fontsampler-admin .fontsampler-options-row > div {
-  width: 39%;
-}
-#fontsampler-admin .fontsampler-options-row > div:nth-of-type(1) {
-  border-left: 5px solid #FFFFFF;
-  border-right: 3px solid #FFFFFF;
-}
-#fontsampler-admin .fontsampler-options-row > div .settings-description + input[type=text] {
-  margin-left: 1.75em;
-  margin-bottom: 0.5em;
-}
-#fontsampler-admin .fontsampler-options-row > div .upload-custom-img {
-  clear: both;
-  border: 0;
-  border-radius: 0;
-  box-shadow: none;
-  display: inline-block;
-  font-weight: bold;
-  font-size: 1em;
-  line-height: 1.75em;
-  margin: 0 auto;
-  padding: 0.25em 0.5em;
-  position: relative;
-  text-shadow: none;
-  text-decoration: none;
-  transition: background 0.15s ease-in-out;
-  background: #B8E986;
-  color: #222222;
-}
-#fontsampler-admin .fontsampler-options-row > div .upload-custom-img i.icon {
-  display: inline-block;
-  font-style: normal;
-  height: 100%;
-  left: 0;
-  position: absolute;
-  top: 0;
-  width: 2em;
-}
-#fontsampler-admin .fontsampler-options-row > div .upload-custom-img span {
-  padding-left: 2em;
-}
-#fontsampler-admin .fontsampler-options-row > div .upload-custom-img:hover {
-  background: #7ED321;
-}
-#fontsampler-admin .fontsampler-options-row > div .upload-custom-img i.icon {
-  background: #7ED321;
-}
-#fontsampler-admin .fontsampler-options-settings .fontsampler-options-row > div:nth-of-type(1) {
-  border-right: 0;
-}
-#fontsampler-admin .fontsampler-options-features-details {
-  overflow: auto;
-  display: none;
-  margin-left: 1.7em;
-}
-#fontsampler-admin .fontsampler-options-features-details input[type=range] {
-  width: 100%;
-}
-#fontsampler-admin .fontsampler-options-features-details input.current-value {
-  width: 3em;
-}
-#fontsampler-admin .fontsampler-options-features-details label {
-  display: inline-block;
-  margin-top: 0.25em;
-  margin-bottom: 0.25em;
-}
 #fontsampler-admin label.fontsampler-label-disabled .settings-description {
   color: #cccccc;
 }
@@ -834,9 +945,13 @@
   display: inline-block;
   margin: 0.5em 0;
 }
+#fontsampler-admin label.fontsampler-radio.block {
+  display: block;
+}
 #fontsampler-admin label.fontsampler-radio input[type=radio] {
   display: inline-block;
-  margin: -0.1em 0.5em 0em;
+  margin: 0.1em 0.5em 0em;
+  vertical-align: top;
 }
 #fontsampler-admin label.fontsampler-radio span {
   display: inline-block;
@@ -861,34 +976,6 @@
   padding: 0 1em;
   margin: 0;
   vertical-align: text-bottom;
-}
-#fontsampler-admin .fontsampler-options fieldset > div > label {
-  display: inline-block;
-}
-#fontsampler-admin .fontsampler-css-color-block {
-  border: 1px solid #222222;
-  border-radius: 0.25em;
-  display: inline-block;
-  height: 1em;
-  width: 1em;
-  top: 0.25em;
-  position: relative;
-  margin: 0 0.5em;
-}
-#fontsampler-admin .fontsampler-color-picker {
-  display: block;
-  margin: 1em 0 1em 2.5em;
-}
-#fontsampler-admin .fontsampler-sample_texts {
-  min-height: 5em;
-  width: 100%;
-}
-#fontsampler-admin .fontsampler-options.default-text-alignment > div {
-  clear: both;
-}
-#fontsampler-admin .fontsampler-options.default-text-alignment > div label {
-  display: inline-block;
-  margin-right: 2em;
 }
 #fontsampler-admin .fontsampler-image-radio {
   background: #FFFFFF;

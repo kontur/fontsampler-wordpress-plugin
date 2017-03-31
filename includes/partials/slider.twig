@@ -1,14 +1,13 @@
-<label>
+<label class="fontsampler-admin-slider-label">
 		<span class="setting-description">{{ label }}
             <input data-name="{{ name }}"
                    class="current-value"
                    value="{{ value }}"
+                   type="text"
                    {#data-validation="number"#}
                    {#data-validation-allowing="range[1;256]"#}>
 		</span>
     <div class="slider">
-        <input type="range" name="{{ name }}"
-               value="{{ value }}"
-               {#min="1" max="255"#}>
+        <input type="range" name="{{ name }}" value="{{ value }}" {#min="1" max="255"#}>
     </div>
 </label>

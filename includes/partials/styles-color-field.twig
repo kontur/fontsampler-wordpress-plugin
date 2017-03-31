@@ -3,17 +3,21 @@
 {% block label %}{{ label }}<small>{{ description }}</small>{% endblock %}
 
 {% block custom %}
-<label class="fontsampler-radio">
-    <input type="radio" name="{{ name }}_use_default" value="0"
-            {% if value is not empty %} checked="checked" {% endif %}>
-    <span class="setting-description">Use custom color</span>
-    <div class="fontsampler-color-picker">
-        <input type="text" name="{{ name }}"
-               id="{{ name }}" class="color-picker"
-               value="{{ value }}"
-               data-default-color="{{ default }}"/>
+    {% if not settings %}
+        <label class="fontsampler-radio">
+            <input type="radio" name="{{ name }}_use_default" value="0"
+                {% if value is not empty %} checked="checked" {% endif %}>
+            <span class="settings-description">Use custom color</span>
+        </label>
+    {% endif %}
+    <div class="fontsampler-options-row-values">
+        <div class="fontsampler-color-picker">
+            <input type="text" name="{{ name }}"
+                   id="{{ name }}" class="color-picker"
+                   value="{{ value }}"
+                   data-default-color="{{ default }}"/>
+        </div>
     </div>
-</label>
 {% endblock %}
 
 {% block default %}

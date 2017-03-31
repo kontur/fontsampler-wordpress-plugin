@@ -11,7 +11,7 @@
 	{% if set.id is not empty %}<input type="hidden" name="id" value="{{ set.id }}">{% endif %}
 
 	<h2>Fonts</h2>
-	{% if fonts is not empty %}<p>Pick which font sets to use, or upload your fontsampler's fonts now:</p>{% endif %}
+	{% if fonts is not empty %}<p>Pick which fontsets to use, or upload your fontsampler's fonts now:</p>{% endif %}
 
 	<input type="hidden" name="fonts_order" value="{% if fonts_order is not empty %}{{ fonts_order }}{% endif %}">
 	<ul id="fontsampler-fontset-list">
@@ -74,25 +74,24 @@
 	</ul>
 
 	<div>
-	{% if fonts is not empty %}
-		<button class="button add fontsampler-fontset-add">
-			<i class="icon">+</i>
-			<span>Add existing fontset</span>
+		{% if fonts is not empty %}
+			<button class="button add fontsampler-fontset-add" style="margin-bottom: 0.5em;">
+				<i class="icon">+</i>
+				<span>Add existing fontset</span>
+			</button>
+			<br>
+		{% endif %}
+		<button class="button add fontsampler-fontset-create-inline">
+			<i class="icon">&#8679;</i>
+			<span>Upload new fontset</span>
 		</button>
-	{% endif %}
 	</div>
-	<div>
-	<button class="button add fontsampler-fontset-create-inline">
-		<i class="icon">&#8679;</i>
-		<span>Upload new fontset</span>
-	</button>
-	</div>
-
-	<small>Picking multiple font set will enable the select field for switching between fonts used in the
+	<br>
+	<small>Picking multiple fontsets will enable the select field for switching between fonts used in the
 		Fontsampler.
 	</small>
 	<br>
-	<small>Use the arrow on the left to drag the order of the fonts. Use the minus on the right to remove fonts.</small>
+	<small>Use the <span class="fontsampler-fontset-sort-handle">&varr;</span> -arrow on the left to drag the order of the fonts. Use the minus on the right to remove fonts.</small>
 
 	{% include 'options.twig' %}
 

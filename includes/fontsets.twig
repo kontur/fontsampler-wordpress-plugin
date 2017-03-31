@@ -1,11 +1,11 @@
 {% extends 'layout.twig' %}
 
 {% block content %}
-<h1>Font sets & files</h1>
+<h1>Fontsets & files</h1>
 
 {% if not fonts %}
 
-	<p>Font sets are all the webfont files associated with one font. Any Fontsampler you create can use one or more
+	<p>Fontsets are all the webfont files associated with one font. Any Fontsampler you create can use one or more
 	font sets.</p>
 	<p>Different weights or styles each need their own font set (which can consist of woff2, woff, eot, svg and ttf files).</p>
 
@@ -70,5 +70,8 @@
 
 {% endif %}
 
-<a class="button add" href="?page=fontsampler&subpage=font_create">Create a new font record</a>
+<a class="button add" href="?page=fontsampler&subpage=font_create">
+	<i class="icon">+</i>
+	<span>Create a new font record</span>
+</a>
 {% endblock %}

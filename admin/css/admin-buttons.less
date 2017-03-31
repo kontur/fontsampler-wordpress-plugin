@@ -21,7 +21,9 @@
         font-style: normal;
         height: 100%;
         left: 0;
+        line-height: 2em;
         position: absolute;
+        text-align: center;
         top: 0;
         width: 2em;
     }
@@ -88,5 +90,17 @@
         &.delete {
             .button-delete();
         }
+    }
+
+    table + .button {
+        margin-top: 1em !important;
+    }
+
+    .wp-picker-default {
+        background: lightgrey;
+        top: -0.1em;
+        position: relative;
+        height: 2em;
+        line-height: 1em !important;
     }
 }
