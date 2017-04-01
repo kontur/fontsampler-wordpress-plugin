@@ -70,63 +70,75 @@ class FontsamplerFormhandler {
 
 		// for the settings to be inserted, create a copy of the defaults with "null" values,
 		// then fill from $post
-		$settings = array_map(function () {
+		$settings     = array_map( function () {
 			return null;
-		}, $this->fontsampler->db->get_settings());
+		}, $this->fontsampler->db->get_settings() );
 		$use_defaults = intval( $this->post['use_default_options'] ) === 1;
 
 		// if this fontsampler uses custom settings, insert them
-		if ( !$use_defaults ) {
+		if ( ! $use_defaults ) {
 
 			// set these basic submitted infos
-			$settings['set_id'] = $id;
-			$settings['is_ltr'] = $this->post['is_ltr'];
-			$settings['initial'] = $this->post['initial'];
-			$settings['ui_order'] = $this->post['ui_order'];
+			$settings['set_id']     = $id;
+			$settings['is_ltr']     = $this->post['is_ltr'];
+			$settings['initial']    = $this->post['initial'];
+			$settings['ui_order']   = $this->post['ui_order'];
 			$settings['ui_columns'] = $this->post['ui_columns'] == 'default'
-				? null : intval($this->post['ui_columns']);
+				? null : intval( $this->post['ui_columns'] );
 
 			// loop through the first 3 options that have more detailed sliders associated with them
 			// which in turn can rely on using defaults or adapt a custom setting as well
-			$sliders = array('font_size', 'letter_spacing', 'line_height');
+			$sliders = array( 'font_size', 'letter_spacing', 'line_height' );
 			foreach ( $sliders as $slider ) {
-				if ( isset( $this->post[ $slider ] ) ) {
-					$settings[ $slider ] = 1;
-					$settings[ $slider . '_label' ] = intval( $this->post[ $slider . '_use_default' ] ) === 1 ?
+				if ( isset( $this->post[ $slider ] ) && intval( $this->post[ $slider ] ) === 1 ) {
+					$settings[ $slider ]              = 1;
+					$settings[ $slider . '_label' ]   = intval( $this->post[ $slider . '_use_default' ] ) === 1 ?
 						null : $this->post[ $slider . '_label' ];
-					$settings[ $slider . '_min' ] = intval( $this->post[ $slider . '_min_use_default' ] ) === 1 ?
-						null : $this->post[ $slider . '_min'];
+					$settings[ $slider . '_min' ]     = intval( $this->post[ $slider . '_min_use_default' ] ) === 1 ?
+						null : $this->post[ $slider . '_min' ];
 					$settings[ $slider . '_initial' ] = intval( $this->post[ $slider . '_initial_use_default' ] ) === 1 ?
-						null : $this->post[ $slider . '_initial'];
-					$settings[ $slider . '_max' ] = intval( $this->post[ $slider . '_max_use_default' ] ) === 1 ?
-						null : $this->post[ $slider . '_max'];
+						null : $this->post[ $slider . '_initial' ];
+					$settings[ $slider . '_max' ]     = intval( $this->post[ $slider . '_max_use_default' ] ) === 1 ?
+						null : $this->post[ $slider . '_max' ];
 				}
 			}
 
 			// loop through all simple checkbox features
-			$checkboxes = array('sampletexts', 'fontpicker', 'alignment', 'invert', 'opentype', 'multiline');
+			$checkboxes = array( 'sampletexts', 'fontpicker', 'alignment', 'invert', 'opentype', 'multiline' );
 			foreach ( $checkboxes as $checkbox ) {
 				if ( isset( $this->post[ $checkbox ] ) ) {
 					$settings[ $checkbox ] = 1;
 				}
 
 				// exception here: sampletexts has a further subsection about using defaults or custom
-				if ( $checkbox === 'sampletexts' && intval( $this->post['sampletexts_use_default'] ) === 1 ) {
-					$settings['sample_texts'] = null;
-				} else {
-					$settings['sample_texts'] = $this->post['sample_texts'];
+				if ( $checkbox === 'sampletexts') {
+					if ( intval( $this->post['sampletexts_use_default'] ) === 1 ) {
+						$settings['sample_texts'] = null;
+					} else {
+						$settings['sample_texts'] = $this->post['sample_texts'];
+					}
 				}
 			}
 
 			// loop through css colors
-			// these can be gotten from default settings, all color fields start with 'css_color...'
+			// these can be gotten from default settings, all color fields start with 'css_color_...'
+			$css_colors = array_filter( array_keys( $settings ), function ( $item ) {
+				return substr( $item, 0, 10 ) === 'css_color_';
+			} );
+			foreach ( $css_colors as $key ) {
+				$settings[ $key ] = $this->post[ $key . '_use_default' ] == 1
+					? null : $this->post[ $key ];
+			}
 
 			// loop through css fields
-			// these can be gotten from default settings, all css fields other than colors start with 'css_value...'
-			// TODO css_value... for all but colors
-
-
-			var_dump($settings);
+			// these can be gotten from default settings, all css fields other than colors start with 'css_value_...'
+			$css_colors = array_filter( array_keys( $settings ), function ( $item ) {
+				return substr( $item, 0, 10 ) === 'css_value_';
+			} );
+			foreach ( $css_colors as $key ) {
+				$settings[ $key ] = $this->post[ $key . '_use_default' ] == 1
+					? null : $this->post[ $key ];
+			}
 		}
 
 		// save the fontsampler set to the DB
@@ -137,7 +149,7 @@ class FontsamplerFormhandler {
 				'initial_font' => isset( $this->post['initial_font'] ) ? $this->post['initial_font'] : null,
 				'use_defaults' => $use_defaults ? 1 : 0
 			);
-			$id = $this->fontsampler->db->insert_set($set);
+			$id  = $this->fontsampler->db->insert_set( $set );
 
 			if ( $id ) {
 				$this->fontsampler->db->save_settings_for_set( $settings, $id );
@@ -146,11 +158,12 @@ class FontsamplerFormhandler {
 				                               . $id . '].' );
 			} else {
 				$this->fontsampler->msg->error( 'Error: Failed to create new fontsampler.' );
+
 				return false;
 			}
 		} else {
 			// update existing
-			if ( !$use_defaults ) {
+			if ( ! $use_defaults ) {
 				$this->fontsampler->db->save_settings_for_set( $settings, $id );
 			} else {
 				// if updating an existing set that now uses default settings but used to have
@@ -158,7 +171,7 @@ class FontsamplerFormhandler {
 				$this->fontsampler->db->delete_settings_for_set( $id );
 			}
 			$this->fontsampler->db->update_set( array( 'use_defaults' => $use_defaults ? 1 : 0 ), $id );
-			$this->fontsampler->msg->info('Fontsampler ' . $id . ' successfully updated.');
+			$this->fontsampler->msg->info( 'Fontsampler ' . $id . ' successfully updated.' );
 		}
 
 		// wipe join table for this fontsampler, then add whatever now was instructed to be saved
@@ -307,11 +320,11 @@ class FontsamplerFormhandler {
 			$file = $this->files[ $label . '_' . $file_suffix ];
 
 			if ( ! empty( $file ) && $file['size'] > 0 ) {
-				$uploaded = media_handle_upload( $label . '_' . $file_suffix, 0);
-//				, null, array(
-//					'mimes' => get_allowed_mime_types(),
-//					'validate' =>
-//				) );
+				$uploaded = media_handle_upload( $label . '_' . $file_suffix, 0 );
+				//				, null, array(
+				//					'mimes' => get_allowed_mime_types(),
+				//					'validate' =>
+				//				) );
 
 				if ( is_wp_error( $uploaded ) ) {
 					$this->fontsampler->msg->error( 'Error uploading ' . $label . ' file: ' . $uploaded->get_error_message() );
@@ -369,12 +382,12 @@ class FontsamplerFormhandler {
 				$this->fontsampler->admin_hide_legacy_formats = 0;
 			}
 
-			$settings_fields = array_keys($this->fontsampler->db->get_default_settings());
+			$settings_fields   = array_keys( $this->fontsampler->db->get_default_settings() );
 			$checkbox_features = $this->fontsampler->helpers->get_checkbox_features();
 
 			foreach ( $settings_fields as $field ) {
 				if ( in_array( $field, $checkbox_features ) ) {
-					$data[ $field ] = (isset( $this->post[ $field ]) && $this->post[ $field ] == 1) ? 1 : 0;
+					$data[ $field ] = ( isset( $this->post[ $field ] ) && $this->post[ $field ] == 1 ) ? 1 : 0;
 				} else {
 					if ( isset( $this->post[ $field ] ) ) {
 						$data[ $field ] = trim( $this->post[ $field ] );

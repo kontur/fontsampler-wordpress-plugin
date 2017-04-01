@@ -15,7 +15,7 @@
     <textarea name="initial" rows="5"
               dir="{% if set.is_ltr == 1 %}ltr{% else %}rtl{% endif %}"
               style="text-align: {{ set.alignment_initial }};"
-    >{% if set.initial is not empty %} {{ set.initial }} {% endif %}</textarea>
+    >{% if set.initial is not empty %}{{ set.initial }}{% endif %}</textarea>
 </label>
 
 
@@ -23,6 +23,7 @@
     <strong>Default text alignment:</strong>
     <div>
         <label>
+            {{ set.alignment_initial }}
             <div class="fontsampler-image-radio {% if set.alignment_initial == 'left' %} active {% endif %}">
                 <input type="radio" name="alignment_initial" value="left"
                         {% if set.alignment_initial == 'left' %} checked="checked" {% endif %}>
@@ -44,6 +45,14 @@
                         {% if set.alignment_initial == 'right' %} checked="checked" {% endif %}>
                 <img class="fontsampler-admin-alignment-icon"
                      src="{{ image('icons/align-right.svg') }}">Right
+            </div>
+        </label>
+        <label>
+            <div class="fontsampler-image-radio {% if set.alignment_initial is empty %} active {% endif %}">
+                <input type="radio" name="alignment_initial" value="{{ defaults.alignment_initial }}"
+                        {% if set.alignment_initial is empty %} checked="checked" {% endif %}>
+                <img class="fontsampler-admin-alignment-icon"
+                     src="{{ image('icons/align-' ~ defaults.alignment_initial ~ '.svg') }}">Use default ({{ defaults.alignment_initial }})
             </div>
         </label>
     </div>

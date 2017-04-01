@@ -140,7 +140,8 @@
     .notice {
         border: 1px solid #eee;
         padding: 1em;
-        margin: 0 0 2em;
+        margin: 0 1.5em 2em 0;
+        box-shadow: none;
     }
 
     code {
@@ -175,13 +176,13 @@
         display: block;
     }
     .info {
-        color: blue;
+        color: @fs_color_ok;
     }
     .note {
-        color: orange;
+        color: @fs_color_warning;
     }
     .error {
-        color: red;
+        color: @fs_color_delete;
     }
 
     ul.real-list {

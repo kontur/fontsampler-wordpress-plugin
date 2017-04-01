@@ -23,16 +23,18 @@
 
 {#CSS value fields (font size, etc)#}
 {{	include( 'partials/styles-css-field.twig', {
-	name: 'css_size_label',
+	name: 'css_value_size_label',
 	description: 'Font size of the UI labels:',
 	additional: "You can use any valid <code>font-size</code> CSS declaration (Use 'inherit' for default look).",
-	default: defaults['css_size_label']
+	value: set['css_value_size_label'],
+	default: defaults['css_value_size_label']
 }) }}
 {{ 	include( 'partials/styles-css-field.twig', {
-	name: 'css_fontfamily_label',
+	name: 'css_value_fontfamily_label',
 	description: 'Font family of the UI labels:',
 	additional: "You can use any valid <code>font-family</code> CSS declaration (Use 'inherit' for default look).",
-	default: defaults['css_fontfamily_label']
+	value: set['css_value_fontfamily_label'],
+	default: defaults['css_value_fontfamily_label']
 }) }}
 
 {#Color pickers for various aspects#}
@@ -68,22 +70,25 @@
 {#Css value fields#}
 {{ 	include( 'partials/styles-css-field.twig', {
 	label: 'Column gutter',
-	name: 'css_column_gutter',
+	name: 'css_value_column_gutter',
 	description: 'UI columns gutter',
 	additional: "You can use any valid <code>size</code> CSS declaration.",
-	default: defaults['css_column_gutter']
+	value: set['css_value_column_gutter'],
+	default: defaults['css_value_column_gutter']
 }) }}
 {{ 	include( 'partials/styles-css-field.twig', {
 	label: 'Row gutter',
-	name: 'css_row_gutter',
+	name: 'css_value_row_gutter',
 	description: 'UI rows gutter',
 	additional: "You can use any valid <code>size</code> CSS declaration.",
-	default: defaults['css_row_gutter']
+	value: set['css_value_row_gutter'],
+	default: defaults['css_value_row_gutter']
 }) }}
 {{ 	include( 'partials/styles-css-field.twig', {
 	label: 'Row height',
-	name: 'css_row_height',
+	name: 'css_value_row_height',
 	description: 'UI rows height:',
 	additional: "You can use any valid <code>size</code> CSS declaration.",
-	default: defaults['css_row_height']
+	value: set['css_value_row_height'],
+	default: defaults['css_value_row_height']
 }) }}

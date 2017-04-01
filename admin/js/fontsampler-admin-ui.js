@@ -321,6 +321,15 @@ define(['jquery', 'rangeslider', 'selectric', 'validate'], function ($, r, s, v)
             $initial.css('text-align', $(this).val());
         });
 
+
+        // when clicking into a fontsampler options style's input field automatically
+        // select the corresponding radio
+        $(".fontsampler-options-row div:nth-of-type(1) input[type='text'], " +
+            ".fontsampler-options-row div:nth-of-type(1) textarea").on("focus", function () {
+            $(this).parentsUntil('.fontsampler-options-row')
+                .find("input[name*='use_default']").attr('checked', 'checked');
+        });
+
     }
 
     return main;

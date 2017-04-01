@@ -117,17 +117,15 @@ class FontsamplerDatabase {
 			`css_color_text` tinytext DEFAULT NULL,
 			`css_color_background` tinytext DEFAULT NULL,
 			`css_color_label` tinytext DEFAULT NULL,
-			`css_size_label` tinytext DEFAULT NULL,
-			`css_fontfamily_label` tinytext DEFAULT NULL,
+			`css_value_size_label` tinytext DEFAULT NULL,
+			`css_value_fontfamily_label` tinytext DEFAULT NULL,
 			`css_color_highlight` tinytext DEFAULT NULL,
 			`css_color_highlight_hover` tinytext DEFAULT NULL,
 			`css_color_line` tinytext DEFAULT NULL,
 			`css_color_handle` tinytext DEFAULT NULL,
-			`css_color_icon_active` tinytext DEFAULT NULL,
-			`css_color_icon_inactive` tinytext DEFAULT NULL,
-			`css_column_gutter` tinytext DEFAULT NULL,
-			`css_row_height` tinytext DEFAULT NULL,
-			`css_row_gutter` tinytext DEFAULT NULL,
+			`css_value_column_gutter` tinytext DEFAULT NULL,
+			`css_value_row_height` tinytext DEFAULT NULL,
+			`css_value_row_gutter` tinytext DEFAULT NULL,
 			`is_default` tinyint(1) unsigned DEFAULT 0,
 			PRIMARY KEY (`id`)
 			) DEFAULT CHARSET=utf8";
@@ -256,17 +254,17 @@ class FontsamplerDatabase {
 				'ALTER TABLE ' . $this->table_settings . " CHANGE `css_color_text` `css_color_text` tinytext DEFAULT NULL",
 				'ALTER TABLE ' . $this->table_settings . " CHANGE `css_color_background` `css_color_background` tinytext DEFAULT NULL",
 				'ALTER TABLE ' . $this->table_settings . " CHANGE `css_color_label` `css_color_label` tinytext DEFAULT NULL",
-				'ALTER TABLE ' . $this->table_settings . " CHANGE `css_size_label` `css_size_label` tinytext DEFAULT NULL",
-				'ALTER TABLE ' . $this->table_settings . " CHANGE `css_fontfamily_label` `css_fontfamily_label` tinytext DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `css_size_label` `css_value_size_label` tinytext DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `css_fontfamily_label` `css_value_fontfamily_label` tinytext DEFAULT NULL",
 				'ALTER TABLE ' . $this->table_settings . " CHANGE `css_color_highlight` `css_color_highlight` tinytext DEFAULT NULL",
 				'ALTER TABLE ' . $this->table_settings . " CHANGE `css_color_highlight_hover` `css_color_highlight_hover` tinytext DEFAULT NULL",
 				'ALTER TABLE ' . $this->table_settings . " CHANGE `css_color_line` `css_color_line` tinytext DEFAULT NULL",
 				'ALTER TABLE ' . $this->table_settings . " CHANGE `css_color_handle` `css_color_handle` tinytext DEFAULT NULL",
-				'ALTER TABLE ' . $this->table_settings . " CHANGE `css_color_icon_active` `css_color_icon_active` tinytext DEFAULT NULL",
-				'ALTER TABLE ' . $this->table_settings . " CHANGE `css_color_icon_inactive` `css_color_icon_inactive` tinytext DEFAULT NULL",
-				'ALTER TABLE ' . $this->table_settings . " CHANGE `css_column_gutter` `css_column_gutter` tinytext DEFAULT NULL",
-				'ALTER TABLE ' . $this->table_settings . " CHANGE `css_row_height` `css_row_height` tinytext DEFAULT NULL",
-				'ALTER TABLE ' . $this->table_settings . " CHANGE `css_row_gutter` `css_row_gutter` tinytext DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " DROP `css_color_icon_active`",
+				'ALTER TABLE ' . $this->table_settings . " DROP `css_color_icon_inactive`",
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `css_column_gutter` `css_value_column_gutter` tinytext DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `css_row_height` `css_value_row_height` tinytext DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `css_row_gutter` `css_value_row_gutter` tinytext DEFAULT NULL",
 
 				// rename those fields so that field and field slider settings have same prefix
 				'ALTER TABLE ' . $this->table_settings . " CHANGE `size` `font_size` tinyint(1) unsigned DEFAULT NULL",
@@ -783,11 +781,9 @@ class FontsamplerDatabase {
 		if ( intval( $count ) !== 0 ) {
 			$where = array( 'set_id' => $set_id );
 			$res = $this->wpdb->update( $this->table_settings, $data, $where);
-			var_dump("update settings", $res);
 		} else {
 			$data['set_id'] = $set_id;
 			$res = $this->wpdb->insert( $this->table_settings, $data );
-			var_dump("update settings, inserted", $res );
 		}
 	}
 

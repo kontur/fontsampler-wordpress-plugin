@@ -488,7 +488,7 @@
   display: none;
 }
 #fontsampler-admin #fontsampler-admin-ui-wrapper #fontsampler-ui-layout-preview {
-  border: 4px dotted #F2F2F2;
+  border: 4px solid #F2F2F2;
   padding: 10px;
 }
 #fontsampler-admin #fontsampler-admin-ui-wrapper #fontsampler-ui-layout-preview .fontsampler-interface {
@@ -804,7 +804,8 @@
 #fontsampler-admin .notice {
   border: 1px solid #eee;
   padding: 1em;
-  margin: 0 0 2em;
+  margin: 0 1.5em 2em 0;
+  box-shadow: none;
 }
 #fontsampler-admin code {
   border: 1px solid #ddd;
@@ -829,13 +830,13 @@
   display: block;
 }
 #fontsampler-admin .info {
-  color: blue;
+  color: #008EC2;
 }
 #fontsampler-admin .note {
-  color: orange;
+  color: #DDAA33;
 }
 #fontsampler-admin .error {
-  color: red;
+  color: #C0402F;
 }
 #fontsampler-admin ul.real-list {
   list-style: disc;
