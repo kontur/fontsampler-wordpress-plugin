@@ -16,10 +16,10 @@ class FontsamplerNotifications {
 	public function get_notifications() {
 		$notifications = array();
 		$notifications['fonts_missing_files'] = $this->get_fonts_missing_files();
-		$notifications['sets_missing_files'] = $this->get_sets_missing_fonts();
+		$notifications['sets_missing_fonts'] = $this->get_sets_missing_fonts();
 
 		$notifications['num_notifications'] =
-			sizeof($notifications['fonts_missing_files']) + sizeof($notifications['sets_missing_files']);
+			sizeof($notifications['fonts_missing_files']) + sizeof($notifications['sets_missing_fonts']);
 
 		return $notifications;
 	}

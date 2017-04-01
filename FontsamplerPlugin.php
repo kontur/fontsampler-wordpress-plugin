@@ -449,6 +449,14 @@ class FontsamplerPlugin {
 				echo $this->twig->render( 'about.twig' );
 				break;
 
+			case 'notifications':
+				$notifications = $this->notifications->get_notifications();
+				echo $this->twig->render( 'notifications.twig', array(
+					'missing_files' => $notifications['fonts_missing_files'],
+					'missing_fonts' => $notifications['sets_missing_fonts']
+				));
+				break;
+
 			default:
 				$offset   = isset( $_GET['offset'] ) ? intval( $_GET['offset'] ) : 0;
 				$num_rows = isset( $_GET['num_rows'] ) ? intval( $_GET['num_rows'] ) : 10;

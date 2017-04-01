@@ -1,0 +1,50 @@
+<table>
+    <thead>
+    <tr>
+        <th>Font name<br>
+            <small>Equals the displayed name in the fontsampler dropdown <br>(when it has several fonts)</small>
+        </th>
+        <th>Preview</th>
+        <th>Formats<br>
+            <small>A list of all formats provided (and used) for rendering type samplers using this font. <br>
+                You should at the very least provide a <span class="filename">WOFF</span> file.</small>
+        </th>
+        <th>Edit</th>
+        <th>Delete</th>
+    </tr>
+    </thead>
+
+    <tbody id="fontsampler-admin-tbody-ajax">
+    {% for font in fonts %}
+        <tr>
+            <td>{{ font.name }}</td>
+            <td>
+                <div class="fontsampler-preview"
+                     data-font-files='{{ fontfiles_json( font ) }}'>{{ font.name }}</div>
+            </td>
+            <td>
+                <ul>
+                    {% for format in formats %}
+                        {% if font[format] %}
+                            <li>
+                                <span class="fileformat filename">{{ format }}</span>
+                                <span class="filename">{{ file_from_path(font, format) }}</span>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </td>
+            <td>
+                <form method="post" action="?page=fontsampler&amp;subpage=font_edit&amp;id={{ font.id }}">
+                    {{ submit_button('Edit') }}
+                </form>
+            </td>
+            <td>
+                <form method="post" action="?page=fontsampler&amp;subpage=font_delete&amp;id={{ font.id }}">
+                    {{ submit_button('Delete', 'delete') }}
+                </form>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
