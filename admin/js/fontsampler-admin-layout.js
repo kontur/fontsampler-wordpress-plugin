@@ -118,7 +118,7 @@ define(['jquery'], function ($) {
                     }
                 };
 
-            // console.log(data.data);
+            //console.log(data.data);
 
             // since 2.8 ajaxurl is always defined in the admin header and points to admin-ajax.php
             $.post(ajaxurl, data, function (response) {

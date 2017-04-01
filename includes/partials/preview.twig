@@ -1,4 +1,8 @@
 <h2>Interface layout</h2>
+{% if settings is not empty %}
+<p>Note that this layout is used for Fontsamplers with default features and will vary if a Fontsampler
+uses customized features or layout.</p>
+{% endif %}
 
 <div id="fontsampler-admin-ui-wrapper">
     <input name="ui_order" type="hidden" value="{{ ui_order }}">
@@ -41,14 +45,6 @@
 
 <div class="fontsampler-admin-column-wrapper">
     <div class="fontsampler-admin-column-half">
-        <p>Customize the layout of interface elements to differ from the defaults.
-            Simply hover any element, then drag and drop the block into a new position.
-        </p>
-        <small>Only options you have enabled above will be available for sorting in this preview.</small>
-        <br>
-        <small>Note that the font displayed below is only a placeholders to render the interface.</small>
-    </div>
-    <div class="fontsampler-admin-column-half">
         <div id="fontsampler-ui-layout-preview-options">
             <p>Select the Fontsamplers' column layout. The size of the Fontsampler always depends
                 on its container in the page layout, so Fontsamplers have an different overall size when
@@ -56,11 +52,13 @@
                 container.</p>
 
             {# Include data-value for JS extraction, so the real value of the "default" can be null #}
-            <label class="fontsampler-admin-label-block">
-                <input type="radio" data-value="{{ defaults.ui_columns }}" value="default" name="ui_columns"
-                        {% if set.ui_columns is empty %} checked="checked" {% endif %}>
-                Use default ({{ defaults.ui_columns }} {{ defaults.ui_columns == 1 ? 'column' : 'columns' }})
-            </label>
+            {% if settings is empty %}
+                <label class="fontsampler-admin-label-block">
+                    <input type="radio" data-value="{{ defaults.ui_columns }}" value="default" name="ui_columns"
+                            {% if set.ui_columns is empty %} checked="checked" {% endif %}>
+                    Use default ({{ defaults.ui_columns }} {{ defaults.ui_columns == 1 ? 'column' : 'columns' }})
+                </label>
+            {% endif %}
             <label class="fontsampler-admin-label-block">
                 <input type="radio" data-value="1" value="1" name="ui_columns"
                         {% if set.ui_columns == 1 %} checked="checked" {% endif %}>1 column
@@ -79,5 +77,13 @@
                         {% if set.ui_columns == 4 %} checked="checked"{% endif %}>4 columns
             </label>
         </div>
+    </div>
+    <div class="fontsampler-admin-column-half">
+        <p>Customize the layout of interface elements to differ from the defaults.
+            Simply hover any element, then drag and drop the block into a new position.
+        </p>
+        <small>Only options you have enabled above will be available for sorting in this preview.</small>
+        <br>
+        <small>Note that the font displayed below is only a placeholders to render the interface.</small>
     </div>
 </div>

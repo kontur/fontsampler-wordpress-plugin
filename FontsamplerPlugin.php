@@ -353,6 +353,7 @@ class FontsamplerPlugin {
 				$defaults = $this->db->get_settings();
 				$set = $this->db->get_set( intval( $_GET['id'] ) );
 
+				// generate all necessary info for the live layout preview
 				$layout = new FontsamplerLayout();
 				$str = $layout->sanitizeString($set['ui_order'], $set);
 				$layout->stringToArray($str);
@@ -362,6 +363,7 @@ class FontsamplerPlugin {
 
 				$blocks = array_merge( $layout->getDefaultBlocks(), $layout->stringToArray( $set['ui_order'], $set ) );
 
+				// grab all possible included fonts
 				$fonts       = $this->db->get_fontfile_posts();
 				$fonts_order = implode( ',', array_map( function ( $font ) {
 					return $font['id'];
@@ -417,9 +419,22 @@ class FontsamplerPlugin {
 			case 'settings':
 				$this->helpers->check_is_writeable( plugin_dir_path( __FILE__ ) . 'css/fontsampler-css.css', true );
 				$settings = $this->db->get_default_settings();
+
+				// generate all necessary info for the live layout preview
+				$layout = new FontsamplerLayout();
+				$str = $layout->sanitizeString($settings['ui_order'], $settings);
+				$layout->stringToArray($str);
+				$ui_order = !empty( $set['ui_order'] )
+					? $layout->sanitizeString( $settings['ui_order'], $settings )
+					: $layout->arrayToString( $layout->getDefaultBlocks(), $settings );
+
+				$blocks = array_merge( $layout->getDefaultBlocks(), $layout->stringToArray( $settings['ui_order'], $settings ) );
+
 				echo $this->twig->render( 'settings.twig', array(
 					'set' => $settings,
-					'defaults' => $settings // for the most part use 'set', but some sliders read the "default" value
+					'defaults' => $settings, // for the most part use 'set', but some sliders read the "default" value
+					'ui_order'    => $ui_order,
+					'blocks'      => $blocks
 				));
 				break;
 
