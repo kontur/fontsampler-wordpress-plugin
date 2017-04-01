@@ -11,4 +11,10 @@
 	<li {{ is_current('about') }}>
 		<a href="?page=fontsampler&amp;subpage=about">About</a>
 	</li>
+	{% if num_notifications() > 0 %}
+	<li {{ is_current('notifications') }}>
+		<a href="?page=fontsampler&amp;subpage=notifications">Notifications
+            <span class="fontsampler-num-notifications">{{ num_notifications() }}</span></a>
+	</li>
+	{% endif %}
 </ul>

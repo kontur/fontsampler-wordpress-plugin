@@ -336,9 +336,9 @@ class FontsamplerDatabase {
 				$row['set_id'] = $row['id'];
 
 				// some field renamings:
-				$row['font_size'] = $row['size'];
+				$row['font_size']      = $row['size'];
 				$row['letter_spacing'] = $row['letter_spacing'];
-				$row['line_height'] = $row['lineheight'];
+				$row['line_height']    = $row['lineheight'];
 
 				// if default_features were selected, remove those fields from the set so that they will be NULL and
 				// thus get replaced with the is_default values when retrieved later on
@@ -431,7 +431,7 @@ class FontsamplerDatabase {
 			return $this->get_default_settings();
 		}
 
-		$sql = 'SELECT * FROM ' . $this->table_settings . ' WHERE `settings_id` = ' . $id . ' LIMIT 1';
+		$sql      = 'SELECT * FROM ' . $this->table_settings . ' WHERE `settings_id` = ' . $id . ' LIMIT 1';
 		$settings = $this->wpdb->get_row( $sql, ARRAY_A );
 
 		if ( empty( $settings ) ) {
@@ -459,10 +459,10 @@ class FontsamplerDatabase {
 
 		// replace all NULL values in the retrieved settings with the defaults
 		$defaults = $this->get_default_settings();
-		$merged = [];
+		$merged   = [];
 
 		// if no defaults are defined, just do nothing and return as such
-		if ( !$defaults) {
+		if ( ! $defaults ) {
 			return $settings;
 		}
 
@@ -483,7 +483,7 @@ class FontsamplerDatabase {
 	 * @return bool|array - returns the settings row marked as is_default
 	 */
 	function get_default_settings() {
-		$sql = 'SELECT * FROM ' . $this->table_settings . ' WHERE `is_default` = 1 LIMIT 1';
+		$sql      = 'SELECT * FROM ' . $this->table_settings . ' WHERE `is_default` = 1 LIMIT 1';
 		$defaults = $this->wpdb->get_row( $sql, ARRAY_A );
 
 		if ( empty( $defaults ) ) {
@@ -492,8 +492,8 @@ class FontsamplerDatabase {
 
 		// when we get the defaults, we don't want to manipulate the db row, but use only the values
 		// remove db "references"
-		unset($defaults['settings_id']);
-		unset($defaults['set_id']);
+		unset( $defaults['settings_id'] );
+		unset( $defaults['set_id'] );
 
 		return $defaults;
 	}
@@ -526,7 +526,7 @@ class FontsamplerDatabase {
 
 			// if this set uses default features, the join clause returned a bunch of NULL values
 			// supplement those with the actual defaults, so they are available
-			if ( intval( $set[ 'use_defaults' ] ) === 1 ) {
+			if ( intval( $set['use_defaults'] ) === 1 ) {
 				$set = array_merge( $set, $this->get_default_settings() );
 			}
 
@@ -566,7 +566,7 @@ class FontsamplerDatabase {
 
 		// if this set uses default features, the join clause returned a bunch of NULL values
 		// supplement those with the actual defaults, so they are available
-		if ( intval($set['use_defaults']) === 1 ) {
+		if ( intval( $set['use_defaults'] ) === 1 ) {
 			$set = array_merge( $set, $this->get_default_settings() );
 		}
 
@@ -601,6 +601,18 @@ class FontsamplerDatabase {
 		}
 
 		return $set;
+	}
+
+
+	function get_sets_missing_fonts() {
+		$sets    = $this->get_sets();
+		$missing = array();
+		foreach ( $sets as $set ) {
+			if ( empty( $set['fonts'] ) ) {
+				array_push( $missing, $set );
+			}
+		}
+		return empty($missing) ? false : $missing;
 	}
 
 
@@ -691,6 +703,25 @@ class FontsamplerDatabase {
 	}
 
 
+	function get_fontsets_missing_files() {
+		$fonts   = $this->get_fontsets();
+		$missing = array();
+		foreach ( $fonts as $font ) {
+			$all_empty = true;
+			foreach ( $this->fontsampler->font_formats as $format ) {
+				if ( ! empty( $font[ $format ] ) ) {
+					$all_empty = false;
+				}
+			}
+			if ( $all_empty ) {
+				array_push( $missing, $font );
+			}
+		}
+
+		return empty( $missing ) ? false : $missing;
+	}
+
+
 	function count_fontsets() {
 		$sql = 'SELECT COUNT(*) FROM ' . $this->table_fonts;
 
@@ -777,13 +808,13 @@ class FontsamplerDatabase {
 
 	function save_settings_for_set( $data, $set_id ) {
 		// check if this set has a settings row, if so update, if not, insert
-		$count = $this->wpdb->get_var("SELECT COUNT(*) FROM " . $this->table_settings . " WHERE set_id = $set_id");
+		$count = $this->wpdb->get_var( "SELECT COUNT(*) FROM " . $this->table_settings . " WHERE set_id = $set_id" );
 		if ( intval( $count ) !== 0 ) {
 			$where = array( 'set_id' => $set_id );
-			$res = $this->wpdb->update( $this->table_settings, $data, $where);
+			$res   = $this->wpdb->update( $this->table_settings, $data, $where );
 		} else {
 			$data['set_id'] = $set_id;
-			$res = $this->wpdb->insert( $this->table_settings, $data );
+			$res            = $this->wpdb->insert( $this->table_settings, $data );
 		}
 	}
 

@@ -16,7 +16,7 @@ class FontsamplerHelpers {
 	function __construct( $fontsampler ) {
 		$this->fontsampler         = $fontsampler;
 		$this->less                = new Less_Parser( array( 'compress' => true ) );
-		$this->layout = new FontsamplerLayout();
+		$this->layout              = new FontsamplerLayout();
 		$this->features            = [
 			'font_size'      => array(
 				'name'                 => 'font_size',
@@ -248,6 +248,10 @@ class FontsamplerHelpers {
 
 		$twig->addFunction( new Twig_SimpleFunction( 'image', function ( $src ) {
 			return plugin_dir_url( __FILE__ ) . $src;
+		} ) );
+
+		$twig->addFunction( new Twig_SimpleFunction( 'num_notifications', function () {
+			return $this->fontsampler->notifications->get_notifications()['num_notifications'];
 		} ) );
 
 		$twig->addGlobal( 'block_classes', $this->layout->blocks );

@@ -20,16 +20,13 @@ require_once( 'FontsamplerLayout.php' );
 require_once( 'FontsamplerHelpers.php' );
 require_once( 'FontsamplerPagination.php' );
 require_once( 'FontsamplerMessages.php' );
+require_once( 'FontsamplerNotifications.php' );
 
 require_once( 'vendor/oyejorge/less.php/lessc.inc.php');
 require_once( 'vendor/autoload.php');
 
-
 $loader = new Twig_Loader_Filesystem( __DIR__ . '/includes' );
 $twig = new Twig_Environment( $loader );
-
-//$deprecations = new Twig_Util_DeprecationCollector($twig);
-//print_r($deprecations->collectDir(__DIR__.'/templates'));
 
 global $wpdb;
 $f = new FontsamplerPlugin( $wpdb, $twig );

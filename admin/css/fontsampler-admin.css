@@ -838,6 +838,16 @@
 #fontsampler-admin .error {
   color: #C0402F;
 }
+#fontsampler-admin .fontsampler-num-notifications {
+  border-radius: 100%;
+  background: #E5604E;
+  color: #FFFFFF;
+  display: inline-block;
+  height: 1.25em;
+  margin: 0 0 -0.25em 0.5em;
+  text-align: center;
+  width: 1.25em;
+}
 #fontsampler-admin ul.real-list {
   list-style: disc;
   margin: 0 0 0 2em;

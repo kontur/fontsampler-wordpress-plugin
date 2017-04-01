@@ -20,6 +20,7 @@ class FontsamplerPlugin {
 	public $msg;
 	public $db;
 	public $helpers;
+	public $notifications;
 	private $forms;
 
 	const FONTSAMPLER_OPTION_DB_VERSION = 'fontsampler_db_version';
@@ -31,6 +32,7 @@ class FontsamplerPlugin {
 		$this->msg     = new FontsamplerMessages();
 		$this->helpers = new FontsamplerHelpers( $this );
 		$this->db      = new FontsamplerDatabase( $wpdb, $this );
+		$this->notifications = new FontsamplerNotifications( $this );
 		$this->twig    = $twig;
 
 		// keep track of db versions and migrations via this
@@ -336,7 +338,6 @@ class FontsamplerPlugin {
 			}
 			ob_end_flush();
 		}
-
 
 		$subpage = isset( $_GET['subpage'] ) ? $_GET['subpage'] : '';
 		switch ( $subpage ) {
