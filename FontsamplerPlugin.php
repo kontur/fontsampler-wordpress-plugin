@@ -342,9 +342,15 @@ class FontsamplerPlugin {
 		switch ( $subpage ) {
 			case 'set_create':
 				$defaults = $this->db->get_default_settings();
-				$defaults['use_defaults'] = 1;
+
+				$set = $defaults;
+				$set['use_defaults'] = 1;
+				$set['alignment_initial'] = null;
+				$set['ui_columns'] = null;
+
 				echo $this->twig->render( 'set-edit.twig', array(
-					'set' => $defaults,
+					'set' => $set,
+					'defaults' => $defaults,
 					'fonts'    => $this->db->get_fontfile_posts()
 				));
 				break;
