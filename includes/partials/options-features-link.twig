@@ -25,27 +25,35 @@
 
 {% block default %}
     {% if not settings %}
-        <label>
-            <input type="radio" name="{{ name }}_type" value="label_default"
-                {% if type == 'label' and label is empty %} checked="checked" {% endif %}>
-            <span class="settings-description">Use default label for "{{ name }}" link:</span><br>
-            <input type="text" name="{{ name }}_label" class="fontsampler-admin-slider-label"
-                   value="{{ defaults_label }}"/>
-        </label>
+        {% if default_label %}
+            <label>
+                <input type="radio" name="{{ name }}_type" value="label_default"
+                    {% if type == 'label' and label is empty %} checked="checked" {% endif %}>
+                <span class="settings-description">Use default label for "{{ name }}" link:</span><br>
+                <span class="fontsampler-default-value">{{ defaults_label }}</span>
+                <input type="hidden" name="{{ name }}_label" class="fontsampler-admin-slider-label"
+                       value="{{ defaults_label }}"/>
+            </label>
+        {% else %}
+            <label class="fontsampler-label-disabled">
+                <input type="radio" disabled="disabled">
+                <span class="settings-description">No default label available from settings</span>
+            </label>
+        {% endif %}
         <br>
         {% if default_image %}
             <label class="fontsampler-setting-image">
                 <input type="radio" name="{{ name }}_type" value="image_default"
                     {% if type == 'image' and image is empty %} checked="checked" {% endif %}>
                 <span class="settings-description">Use default image for the "{{ name }}" link:</span><br>
-                <img src="">{{ default_image }}
+                <span class="custom-image-container"><img src="{{ wp_get_attachment_image_src( default_image ) }}"></span>
                 <br>
                 <small>Recommended size about 200 x 60 pixels</small>
             </label>
         {% else %}
             <label class="fontsampler-setting-image fontsampler-label-disabled">
                 <input type="radio" disabled="disabled">
-                <span class="settings-description">No default image available in settings</span>
+                <span class="settings-description">No default image available from settings</span>
             </label>
         {% endif %}
     {% endif %}

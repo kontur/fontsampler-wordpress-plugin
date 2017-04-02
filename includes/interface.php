@@ -160,8 +160,8 @@
 						break;
 
 					case 'specimen':
-						if ( $set['specimen'] ) : ?>
-							<a href="<?php echo $set['specimen']; ?>" target="_blank">
+						if ( $set['specimen'] && ! empty( $set['specimen_url'])) : ?>
+							<a href="<?php echo $set['specimen_url']; ?>" target="_blank">
 								<?php
 								if ( $options['specimen_image'] ):
 									$image_src = wp_get_attachment_image_src( $options['specimen_image'], 'full' );

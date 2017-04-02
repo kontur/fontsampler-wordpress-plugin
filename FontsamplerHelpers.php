@@ -254,6 +254,10 @@ class FontsamplerHelpers {
 			return $this->fontsampler->notifications->get_notifications()['num_notifications'];
 		} ) );
 
+		$twig->addFunction( new Twig_SimpleFunction( 'wp_get_attachment_image_src', function ( $id, $option = 'full' ) {
+			return wp_get_attachment_image_src( $id, $option )[0];
+		} ) );
+
 		$twig->addGlobal( 'block_classes', $this->layout->blocks );
 
 		$twig->addGlobal( 'block_labels', $this->layout->labels );

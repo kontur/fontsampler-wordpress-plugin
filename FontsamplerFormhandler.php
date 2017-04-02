@@ -104,7 +104,16 @@ class FontsamplerFormhandler {
 			}
 
 			// loop through all simple checkbox features
-			$checkboxes = array( 'sampletexts', 'fontpicker', 'alignment', 'invert', 'opentype', 'multiline' );
+			$checkboxes = array(
+				'sampletexts',
+				'fontpicker',
+				'alignment',
+				'invert',
+				'opentype',
+				'multiline',
+				'buy',
+				'specimen'
+			);
 			foreach ( $checkboxes as $checkbox ) {
 				if ( isset( $this->post[ $checkbox ] ) ) {
 					$settings[ $checkbox ] = 1;
@@ -116,6 +125,36 @@ class FontsamplerFormhandler {
 						$settings['sample_texts'] = null;
 					} else {
 						$settings['sample_texts'] = $this->post['sample_texts'];
+					}
+				}
+			}
+
+			// upload buy and specimen images or set labels
+			foreach ( array( 'buy', 'specimen' ) as $link ) {
+				if ( $settings[ $link ] === 1 ) {
+					// store the actual link value
+					$settings[ $link . '_url' ] = isset( $this->post[ $link . '_url' ] )
+						? $this->post[ $link . '_url' ] : null;
+
+					$type              = $link . '_type';
+					$settings[ $type ] = isset( $this->post[ $type ] ) ? $this->post[ $type ] : null;
+
+					if ( false !== strpos( $settings[ $type ], '_default' ) ) {
+						// selected one of the DEFAULT options:
+						// replace the "_default" and set all individual values to null
+						// so that the set will inherit from the defaults
+						$settings[ $type ]            = str_replace( '_default', '', $settings[ $type ] );
+						$settings[ $link . '_image' ] = null;
+						$settings[ $link . '_label' ] = null;
+					} else {
+						// custom settings for this SET, save the value that corresponds to the "type" submitted
+						if ( $settings[ $type ] === 'image' ) {
+							$settings[ $link . '_label' ] = null;
+							$settings[ $link . '_image' ] = trim( $this->post[ $link . '_image' ] );
+						} else {
+							$settings[ $link . '_label' ] = trim( $this->post[ $link . '_label' ] );
+							$settings[ $link . '_image' ] = null;
+						}
 					}
 				}
 			}
@@ -399,6 +438,7 @@ class FontsamplerFormhandler {
 				}
 			}
 
+			// upload buy and specimen images or set labels
 			foreach ( array( 'buy', 'specimen' ) as $link ) {
 				if ( $data[ $link ] === 1 ) {
 					// buy_url gets stored already from above foreach loop
