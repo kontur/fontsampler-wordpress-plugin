@@ -18,9 +18,14 @@ class FontsamplerNotifications {
 		$notifications['fonts_missing_files'] = $this->get_fonts_missing_files();
 		$notifications['sets_missing_fonts'] = $this->get_sets_missing_fonts();
 
-		$notifications['num_notifications'] =
-			sizeof($notifications['fonts_missing_files']) + sizeof($notifications['sets_missing_fonts']);
-
+		$notifications['num_notifications'] = 0;
+		if ( false !== $notifications['fonts_missing_files'] ) {
+			$notifications['num_notifications'] += sizeof($notifications['fonts_missing_files']);
+		}
+		if ( false !== $notifications['sets_missing_fonts'] ) {
+			$notifications['num_notifications'] += sizeof($notifications['sets_missing_fonts']);
+		}
+		
 		return $notifications;
 	}
 
