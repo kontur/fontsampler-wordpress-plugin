@@ -155,11 +155,17 @@ class FontsamplerPlugin {
 		<?php
 		// merge in possibly passed in attributes
 		$attributes = shortcode_atts( array( 'id' => '0' ), $atts );
+		$id = intval($attributes['id']);
 
 		// do nothing if missing id
-		if ( 0 != $attributes['id'] ) {
-			$set   = $this->db->get_set( intval( $attributes['id'] ) );
+		if ( 0 != $id ) {
+			$set   = $this->db->get_set( $id );
+			$css   = $this->helpers->get_custom_css( $set ); // returns false or link to generated custom css
 			$fonts = $this->helpers->get_best_file_from_fonts( $this->db->get_fontset_for_set( intval( $attributes['id'] ) ) );
+
+			if ( false !== $css ) {
+				wp_enqueue_style( 'fontsampler-interface-' . $id, $css, array(), false );
+			}
 
 			if ( false == $set || false == $fonts ) {
 				if ( current_user_can( 'edit_posts' ) || current_user_can( 'edit_pages' ) ) {

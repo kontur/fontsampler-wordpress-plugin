@@ -1,4 +1,7 @@
 
+css/custom/*
+css/fontsampler-interface.css
+
 admin/css/*
 !admin/css/*.less
 !admin/css/fontsampler-admin.css

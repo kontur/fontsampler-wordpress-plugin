@@ -165,8 +165,12 @@ class FontsamplerFormhandler {
 				return substr( $item, 0, 10 ) === 'css_color_';
 			} );
 			foreach ( $css_colors as $key ) {
-				$settings[ $key ] = $this->post[ $key . '_use_default' ] == 1
-					? null : $this->post[ $key ];
+				if ( $use_defaults ) {
+					$settings[ $key ] = null;
+				} else {
+					$settings[ $key ] = $this->post[ $key . '_use_default' ] == 1
+						? null : $this->post[ $key ];
+				}
 			}
 
 			// loop through css fields
@@ -175,8 +179,12 @@ class FontsamplerFormhandler {
 				return substr( $item, 0, 10 ) === 'css_value_';
 			} );
 			foreach ( $css_colors as $key ) {
-				$settings[ $key ] = $this->post[ $key . '_use_default' ] == 1
-					? null : $this->post[ $key ];
+				if ( $use_defaults ) {
+					$settings[ $key ] = null;
+				} else {
+					$settings[ $key ] = $this->post[ $key . '_use_default' ] == 1
+						? null : $this->post[ $key ];
+				}
 			}
 		}
 
@@ -192,6 +200,7 @@ class FontsamplerFormhandler {
 
 			if ( $id ) {
 				$this->fontsampler->db->save_settings_for_set( $settings, $id );
+				$this->fontsampler->helpers->get_custom_css( $this->fontsampler->db->get_set( $id ) );
 				$this->fontsampler->msg->info( 'Created fontsampler with id ' . $id
 				                               . '. You can now embed it in your posts or pages by adding [fontsampler id='
 				                               . $id . '].' );
@@ -210,6 +219,7 @@ class FontsamplerFormhandler {
 				$this->fontsampler->db->delete_settings_for_set( $id );
 			}
 			$this->fontsampler->db->update_set( array( 'use_defaults' => $use_defaults ? 1 : 0 ), $id );
+			$this->fontsampler->helpers->write_custom_css_for_set( $this->fontsampler->db->get_set( $id ) );
 			$this->fontsampler->msg->info( 'Fontsampler ' . $id . ' successfully updated.' );
 		}
 

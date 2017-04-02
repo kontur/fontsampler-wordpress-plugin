@@ -65,24 +65,74 @@ class FontsamplerHelpers {
 
 
 	/**
+	 * @id - if false return the default css file and compile if needed
+	 *
 	 * @return string path to include styles css file
+	 * (general plugin css, or custom css for a particular fontsampler)
 	 */
-	function get_css_file() {
-		// check path for existing file
-		// if not, create it by merging css template with settings
-		if ( ! file_exists( plugin_dir_path( __FILE__ ) . 'css/fontsampler-css.css' ) ) {
-			$default_settings = $this->get_settings();
-			if ( ! $this->write_css_from_settings( $default_settings ) ) {
-				// if creating the missing file failed return the base styles by themselves
-				return plugin_dir_url( __FILE__ ) . 'css/fontsampler-interface.css';
+	function get_css_file( $id = false, $css = false ) {
+
+		if ( false === $id ) {
+			// check path for existing file
+			// if not, create it by merging css template with settings
+			if ( ! file_exists( plugin_dir_path( __FILE__ ) . 'css/fontsampler-css.css' ) ) {
+				$default_settings = $this->get_settings();
+				if ( ! $this->write_css_from_settings( $default_settings ) ) {
+					// if creating the missing file failed return the base styles by themselves
+					return plugin_dir_url( __FILE__ ) . 'css/fontsampler-interface.css';
+				}
+			}
+
+			// return file path to the css that contains base css merged with settings css
+			return plugin_dir_url( __FILE__ ) . 'css/fontsampler-css.css';
+		} else {
+			$path = plugin_dir_path( __FILE__ ) . 'css/custom/fontsampler-interface-' . $id . '.css';
+			$url  = plugin_dir_url( __FILE__ ) . 'css/custom/fontsampler-interface-' . $id . '.css';
+			if ( ! file_exists( $path ) ) {
+				$this->write_custom_css( $path, $css, $id );
+			}
+
+			return $url;
+		}
+	}
+
+
+	function write_custom_css_for_set( $set ) {
+		$defaults = $this->fontsampler->db->get_default_settings();
+		$css      = array_filter( $set, function ( $item ) {
+			return substr( $item, 0, 4 ) === 'css_';
+		}, ARRAY_FILTER_USE_KEY );
+
+		$supplemented = array();
+		foreach ( $css as $key => $value ) {
+			if ( null === $value ) {
+				// any null values, replace them from defaults, so we can render a custom css
+				// with all values filled
+				$supplemented[ $key ] = $defaults[ $key ];
+			} else {
+				// found a non null value => generate custom css!
+				$supplemented[ $key ] = $value;
 			}
 		}
+		$path = plugin_dir_path( __FILE__ ) . 'css/custom/fontsampler-interface-' . $set['id'] . '.css';
 
-		// return file path to the css that contains base css merged with settings css
-		return plugin_dir_url( __FILE__ ) . 'css/fontsampler-css.css';
+		return $this->write_custom_css( $path, $css, $set['id'] );
+	}
 
-		// For testing changes to the default:
-		// return plugin_dir_url( __FILE__ ) . 'css/fontsampler-interface.css';
+
+	function write_custom_css( $path, $css = null, $id = null ) {
+		$input  = plugin_dir_path( __FILE__ ) . 'css/fontsampler-interface.less';
+		$output = $path;
+
+		// the initial $input holds all less variables and declarations
+		// to make it more specific than the defaults, let's substitute all
+		// ".fontsampler-interface" with ".fontsampler-interface.fontsampler-id-X"
+		$content = file_get_contents( $input );
+		$content = str_replace( '.fontsampler-interface', '.fontsampler-interface.fontsampler-id-' . $id, $content );
+
+		$vars = $this->settings_array_css_to_less( $css );
+
+		return $this->write_less( $content, $output, $vars, false );
 	}
 
 
@@ -93,21 +143,32 @@ class FontsamplerHelpers {
 		$input  = plugin_dir_path( __FILE__ ) . 'css/fontsampler-css.less';
 		$output = plugin_dir_path( __FILE__ ) . 'css/fontsampler-css.css';
 
-		$m = new FontsamplerMessages();
-
 		// reduce passed in settings row to only values for keys starting with css_ and prefix those keys with an @ for
 		// matching and replacing
-		$settings_less_vars = array();
-		foreach ( $settings as $key => $value ) {
-			if ( false !== strpos( $key, 'css_' ) ) {
-				$settings_less_vars[ $key ] = $value;
-			}
-		}
+		$vars = $this->settings_array_css_to_less( $settings );
 
-		if ( file_exists( $input ) ) {
+		return $this->write_less( $input, $output, $vars );
+	}
+
+
+	/**
+	 * @param $input        - file path or string
+	 * @param $output
+	 * @param $vars         -  variables to supplement in less
+	 * @param bool $is_path - signifies if @input is a file path, or a string
+	 *
+	 * @return bool
+	 */
+	function write_less( $input, $output, $vars, $is_path = true ) {
+		$m = new FontsamplerMessages();
+		if ( file_exists( $input ) || ! $is_path ) {
 			try {
-				$this->less->parseFile( $input );
-				$this->less->ModifyVars( $settings_less_vars );
+				if ( $is_path ) {
+					$this->less->parseFile( $input );
+				} else {
+					$this->less->parse( $input );
+				}
+				$this->less->ModifyVars( $vars );
 				$css = $this->less->getCss();
 			} catch ( Exception $e ) {
 				$m->error( $e->getMessage() );
@@ -122,12 +183,43 @@ class FontsamplerHelpers {
 				return false;
 			}
 			if ( false !== file_put_contents( $output, $css ) ) {
-				return true;
-			} else {
+				return $output;
 			}
 		}
 
 		return false;
+	}
+
+
+	function get_custom_css( $set ) {
+		if ( intval( $set['use_defaults'] ) === 1 ) {
+			return false;
+		}
+		$defaults = $this->fontsampler->db->get_default_settings();
+		$css      = array_filter( $set, function ( $item ) {
+			return substr( $item, 0, 4 ) === 'css_';
+		}, ARRAY_FILTER_USE_KEY );
+
+		$supplemented  = array();
+		$defaults_only = true; // detect if any of the values actually differ from the defaults
+		foreach ( $css as $key => $value ) {
+			if ( null === $value ) {
+				// any null values, replace them from defaults, so we can render a custom css
+				// with all values filled
+				$supplemented[ $key ] = $defaults[ $key ];
+			} else {
+				// found a non null value => generate custom css!
+				$defaults_only        = false;
+				$supplemented[ $key ] = $value;
+			}
+		}
+
+		if ( $defaults_only ) {
+			return false;
+		}
+
+		return $this->get_css_file( $set['id'], $supplemented );
+
 	}
 
 
@@ -195,6 +287,23 @@ class FontsamplerHelpers {
 		}
 
 		return sizeof( $fontsFiltered ) > 0 ? $fontsFiltered : false;
+	}
+
+
+	/**
+	 * @param $row - entire or partial row of fontsampler_settings table
+	 *
+	 * @return array - reduced to an array of only key-value paris whose key starts with css_
+	 */
+	function settings_array_css_to_less( $row ) {
+		$vars = array();
+		foreach ( $row as $key => $value ) {
+			if ( false !== strpos( $key, 'css_' ) ) {
+				$vars[ $key ] = $value;
+			}
+		}
+
+		return $vars;
 	}
 
 
