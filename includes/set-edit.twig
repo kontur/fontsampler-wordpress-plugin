@@ -18,57 +18,13 @@
 		{% if set.id is not empty and set.fonts is not empty %}
 			{% for setfont in set.fonts %}
 				<li>
-					<span class="fontsampler-fontset-sort-handle">&varr;</span>
-					<select name="font_id[]">
-						<option value="0">-pick from existing-</option>
-						{#for each dropdown loop print out all fonts and if the current font is in the set, select it#}
-						{% for font in fonts %}
-							<option {% if setfont in fonts and setfont.id == font.id %} selected="selected" {% endif %}value="{{ font.id }}">
-								{{ font.name }}
-							</option>
-						{% endfor %}
-					</select>
-					<button class="button delete fontsampler-fontset-remove"
-							title="Remove this fontset from sampler">
-						<i class="icon">&minus;</i>
-						<span>Remove fontset</span>
-					</button>
-					<div class="fontsampler-initial-font-selection">
-						<input type="radio" name="initial_font" value="{{ setfont.id }}"
-						{% if set.initial_font is not empty or set.initial_font == setfont.id %}
-						    checked="checked"><span class="fontsampler-initial-font selected">
-						{% else %}
-							><span class="fontsampler-initial-font">
-						{% endif %}
-								<span class="initial-font-selected">Is initially selected</span>
-								<span class="initial-font-unselected">Set as initial</span>
-							</span>
-					</div>
+					{{ include( 'partials/font-row.twig', { fonts: fonts, setfont: setfont }) }}
 				</li>
 			{% endfor %}
 		{% elseif set.id is empty and fonts is not empty %}
 			<li>
 				<!-- for a new fontset, display one, non-selected, select choice -->
-				<span class="fontsampler-fontset-sort-handle">&varr;</span>
-				<select name="font_id[]">
-					<option value="0">-pick from existing-</option>
-					{% for font in fonts %}
-						<option value="{{ font.id }}">{{ font.name }}</option>
-					{% endfor %}
-				</select>
-				<button class="button delete fontsampler-fontset-remove"
-				        title="Remove this fontset from sampler">
-					<i class="icon">&minus;</i>
-					<span>Remove fontset</span>
-				</button>
-
-				<div class="fontsampler-initial-font-selection">
-					<input type="radio" name="initial_font" value="" checked="checked">
-					<span class="fontsampler-initial-font selected">
-						<span class="initial-font-selected">Is initially selected</span>
-						<span class="initial-font-unselected">Set as initial</span>
-					</span>
-				</div>
+				{{ include( 'partials/font-row.twig', { fonts: fonts, setfont: null }) }}
 			</li>
 		{% endif %}
 	</ul>
@@ -97,7 +53,6 @@
 
 	{% include 'partials/preview.twig' %}
 
-
 	{% if set.id is not empty %}
 		{{ submit_button('Save changes') }}
 	{% else %}
@@ -105,31 +60,12 @@
 	{% endif %}
 </form>
 
-
 <!-- hidden templates -->
 <div class="fontsampler-admin-placeholders">
 	<ul>
 		<li id="fontsampler-admin-fontpicker-placeholder">
 			<!-- for a new fontset, display one, non-selected, select choice -->
-			<span class="fontsampler-fontset-sort-handle">&varr;</span>
-			<select name="font_id[]">
-				<option value="0">-pick from existing-</option>
-				{% for font in fonts %}
-					<option value="{{ font.id }}">{{ font.name }}</option>
-				{% endfor %}
-			</select>
-			<button class="button delete fontsampler-fontset-remove"
-					title="Remove this fontset from sampler">
-				<i class="icon">&minus;</i>
-				<span>Remove fontset</span>
-			</button>
-			<div class="fontsampler-initial-font-selection">
-				<input type="radio" name="initial_font" value="">
-				<span class="fontsampler-initial-font">
-						<span class="initial-font-selected">Is initially selected</span>
-						<span class="initial-font-unselected">Set as initial</span>
-					</span>
-			</div>
+			{{ include( 'partials/font-row.twig', { fonts: fonts, setfont: null }) }}
 		</li>
 		<li id="fontsampler-fontset-inline-placeholder" class="fontsampler-fontset-inline">
 			<input class="inline_font_id" value="" type="hidden">
@@ -148,13 +84,13 @@
 				<span>Remove fontset</span>
 			</button>
 
-			<div class="fontsampler-initial-font-selection">
+			<label class="fontsampler-initial-font-selection">
 				<input type="radio" name="initial_font" value="">
 				<span class="fontsampler-initial-font">
 						<span class="initial-font-selected">Is initially selected</span>
 						<span class="initial-font-unselected">Set as initial</span>
 					</span>
-			</div>
+			</label>
 		</li>
 	</ul>
 </div>

@@ -1,0 +1,26 @@
+<span class="fontsampler-fontset-sort-handle">&varr;</span>
+<select name="font_id[]">
+    <option value="0">-pick from existing-</option>
+    {#for each dropdown loop print out all fonts and if the current font is in the set, select it#}
+    {% for font in fonts %}
+        <option {% if setfont in fonts and setfont.id == font.id %} selected="selected" {% endif %}
+                value="{{ font.id }}">{{ font.name }}
+        </option>
+    {% endfor %}
+</select>
+<button class="button delete fontsampler-fontset-remove"
+        title="Remove this fontset from sampler">
+    <i class="icon">&minus;</i>
+    <span>Remove fontset</span>
+</button>
+<label class="fontsampler-initial-font-selection">
+    <input type="radio" name="initial_font" value="{{ setfont.id }}"
+            {% if set.initial_font is not empty or set.initial_font == setfont.id %}
+           checked="checked"><span class="fontsampler-initial-font selected">
+        {% else %}
+        ><span class="fontsampler-initial-font">
+        {% endif %}
+            <span class="initial-font-selected">Is initially selected</span>
+            <span class="initial-font-unselected">Set as initial</span>
+        </span>
+</label>

@@ -1,5 +1,5 @@
 <label>Font name (mandatory)<br>
-	<input name="fontname[]" data-validation="length" data-validation-length="3-50"
+	<input name="fontname[]" type="text" data-validation="length" data-validation-length="3-50"
 	       {% if font.name is empty %} placeholder="e.g. MyFont Regular Italic"
 	       {% else %} value="{{ font.name }}"
 	       {% endif %}>
