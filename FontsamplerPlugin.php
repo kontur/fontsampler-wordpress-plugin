@@ -124,9 +124,13 @@ class FontsamplerPlugin {
 			'opentype'                  => 0,
 			'fontpicker'                => 0,
 			'buy_label'                 => 'Buy',
-			'buy_image'                 => '',
+			'buy_image'                 => null,
+			'buy_link'                  => null,
+			'buy_type'                  => 'label',
 			'specimen_label'            => 'Specimen',
-			'specimen_image'            => '',
+			'specimen_image'            => null,
+			'specimen_link'             => null,
+			'specimen_type'             => 'label',
 		);
 
 		$this->helpers->extend_twig( $twig );

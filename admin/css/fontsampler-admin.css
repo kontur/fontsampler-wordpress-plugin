@@ -247,29 +247,6 @@
 #fontsampler-admin .form-settings label input.fontsampler-admin-slider-label {
   width: 15em;
 }
-#fontsampler-admin .fontsampler-setting-image .fontsampler-upload-wrapper {
-  display: inline-block;
-  width: 10em;
-}
-#fontsampler-admin .fontsampler-setting-image .fontsampler-upload-wrapper .custom-img-container {
-  max-width: 100%;
-  max-height: 30px;
-  position: relative;
-}
-#fontsampler-admin .fontsampler-setting-image .fontsampler-upload-wrapper .custom-img-container img {
-  display: block;
-  max-height: 30px;
-}
-#fontsampler-admin .fontsampler-admin-alignment-icon {
-  border: 1px solid #ccc;
-  border-radius: 2px;
-  height: 15px;
-  margin-right: 0.5em;
-  padding: 5px;
-  position: relative;
-  top: 8px;
-  width: 15px;
-}
 #fontsampler-admin #fontsampler-fontset-list li select {
   width: 22.25em;
 }
@@ -432,6 +409,50 @@
 #fontsampler-admin .fontsampler-options-row > div .upload-custom-img i.icon {
   background: #7ED321;
 }
+#fontsampler-admin .fontsampler-options-row > div .upload-custom-img.hidden {
+  display: none;
+}
+#fontsampler-admin .fontsampler-options-row > div .delete-custom-img {
+  clear: both;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  display: inline-block;
+  font-weight: bold;
+  font-size: 1em;
+  line-height: 1.75em;
+  margin: 0 auto;
+  padding: 0.25em 0.5em;
+  position: relative;
+  text-shadow: none;
+  text-decoration: none;
+  transition: background 0.15s ease-in-out;
+  background: #E5604E;
+  color: #FFFFFF;
+}
+#fontsampler-admin .fontsampler-options-row > div .delete-custom-img i.icon {
+  display: inline-block;
+  font-style: normal;
+  height: 100%;
+  left: 0;
+  line-height: 2em;
+  position: absolute;
+  text-align: center;
+  top: 0;
+  width: 2em;
+}
+#fontsampler-admin .fontsampler-options-row > div .delete-custom-img span {
+  padding-left: 2em;
+}
+#fontsampler-admin .fontsampler-options-row > div .delete-custom-img:hover {
+  background: #C0402F;
+}
+#fontsampler-admin .fontsampler-options-row > div .delete-custom-img i.icon {
+  background: #C0402F;
+}
+#fontsampler-admin .fontsampler-options-row > div .delete-custom-img.hidden {
+  display: none;
+}
 #fontsampler-admin .fontsampler-options-row .fontsampler-options-row-values {
   display: block;
   padding: 0 0 0 1.75em;
@@ -476,6 +497,28 @@
 #fontsampler-admin .rangeslider--horizontal .rangeslider__handle {
   height: 12px;
   width: 12px;
+}
+#fontsampler-admin .fontsampler-setting-image .fontsampler-upload-wrapper {
+  display: inline-block;
+}
+#fontsampler-admin .fontsampler-setting-image .fontsampler-upload-wrapper .custom-img-container {
+  max-width: 100%;
+  max-height: 30px;
+  position: relative;
+}
+#fontsampler-admin .fontsampler-setting-image .fontsampler-upload-wrapper .custom-img-container img {
+  display: block;
+  max-height: 30px;
+}
+#fontsampler-admin .fontsampler-admin-alignment-icon {
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  height: 15px;
+  margin-right: 0.5em;
+  padding: 5px;
+  position: relative;
+  top: 8px;
+  width: 15px;
 }
 #fontsampler-admin #fontsampler-admin-ui-wrapper {
   position: relative;

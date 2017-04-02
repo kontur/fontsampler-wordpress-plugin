@@ -4,13 +4,16 @@
 
 {% block custom %}
     <label>
-        <input type="radio" name="{{ name }}_link_use" value="text">
-        <span class="settings-description">Use text label for "{{ name }}" link:</span>
+        <input type="radio" name="{{ name }}_type" value="label"
+            {% if type == 'label' and label is not empty %} checked="checked" {% endif %}
+        <span class="settings-description">Use text label for "{{ name }}" link:</span><br>
         <input type="text" name="{{ name }}_label" value="{{ label }}"/>
     </label>
+    <br>
     <label class="fontsampler-setting-image">
-        <input type="radio" name="{{ name }}_link_use" value="image">
-        <span class="settings-description">Use image for the "Buy" link:</span>
+        <input type="radio" name="{{ name }}_type" value="image"
+            {% if type == 'image' and image is not empty %} checked="checked" {% endif %}>
+        <span class="settings-description">Use image for the "Buy" link:</span><br>
         {{ include ('partials/media-upload.twig', {
             'image_id' : image,
             'image_name' : name ~ '_image'
@@ -23,16 +26,18 @@
 {% block default %}
     {% if not settings %}
         <label>
-            <input type="radio" name="{{ name }}_link_use" value="text">
-            <span class="settings-description">Use default label for "{{ name }}" link:</span>
+            <input type="radio" name="{{ name }}_type" value="label_default"
+                {% if type == 'label' and label is empty %} checked="checked" {% endif %}>
+            <span class="settings-description">Use default label for "{{ name }}" link:</span><br>
             <input type="text" name="{{ name }}_label" class="fontsampler-admin-slider-label"
                    value="{{ defaults_label }}"/>
         </label>
-
+        <br>
         {% if default_image %}
             <label class="fontsampler-setting-image">
-                <input type="radio" name="{{ name }}_link_use" value="image">
-                <span class="settings-description">Use default image for the "{{ name }}" link:</span>
+                <input type="radio" name="{{ name }}_type" value="image_default"
+                    {% if type == 'image' and image is empty %} checked="checked" {% endif %}>
+                <span class="settings-description">Use default image for the "{{ name }}" link:</span><br>
                 <img src="">{{ default_image }}
                 <br>
                 <small>Recommended size about 200 x 60 pixels</small>

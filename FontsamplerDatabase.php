@@ -78,6 +78,12 @@ class FontsamplerDatabase {
 	function create_table_settings() {
 		$sql = "CREATE TABLE " . $this->table_settings . "(
 			`settings_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+			`is_default` tinyint(1) unsigned DEFAULT 0,
+			`set_id` tinyint(1) unsigned DEFAULT NULL,
+			`initial` text DEFAULT NULL,
+			`is_ltr` tinyint( 1 ) DEFAULT 1,
+			`ui_order` VARCHAR( 255 ) DEFAULT NULL,
+			`ui_columns` tinyint( 1 ) DEFAULT NULL,
 			`font_size` tinyint(1) unsigned DEFAULT NULL,
 			`letter_spacing` tinyint(1) unsigned DEFAULT NULL,
 			`line_height` tinyint(1) unsigned DEFAULT NULL,
@@ -87,16 +93,16 @@ class FontsamplerDatabase {
 			`multiline` tinyint(1) unsigned DEFAULT NULL,
 			`opentype` tinyint(1) unsigned DEFAULT NULL,
 			`fontpicker` tinyint( 1 ) DEFAULT NULL,
-			`buy_label` VARCHAR(255) DEFAULT NULL,
-			`buy_image` int( 11 ) unsigned DEFAULT NULL,
-			`specimen_label` VARCHAR(255) DEFAULT NULL,
-			`specimen_image` int( 11 ) unsigned DEFAULT NULL,
-            `initial` text DEFAULT NULL,
-            `is_ltr` tinyint( 1 ) DEFAULT 1,
-            `ui_order` VARCHAR( 255 ) DEFAULT NULL,
-            `ui_columns` tinyint( 1 ) DEFAULT NULL,
             `buy` VARCHAR( 255 ) DEFAULT NULL,
 			`specimen` VARCHAR( 255 ) DEFAULT NULL,
+			`buy_label` VARCHAR(255) DEFAULT NULL,
+			`buy_image` int( 11 ) unsigned DEFAULT NULL,
+			`buy_link` VARCHAR( 255 ) DEFAULT NULL,
+			`buy_type` VARCHAR( 5 ) NULL DEFAULT 'label',
+			`specimen_label` VARCHAR(255) DEFAULT NULL,
+			`specimen_image` int( 11 ) unsigned DEFAULT NULL,
+			`specimen_link` VARCHAR( 255 ) DEFAULT NULL,
+			`specimen_type` VARCHAR( 5 ) NULL DEFAULT 'label',
 			`font_size_label` varchar(50) DEFAULT NULL,
 			`font_size_initial` smallint(5) unsigned DEFAULT NULL,
 			`font_size_min` smallint(5) unsigned DEFAULT NULL,
@@ -126,7 +132,6 @@ class FontsamplerDatabase {
 			`css_value_column_gutter` tinytext DEFAULT NULL,
 			`css_value_row_height` tinytext DEFAULT NULL,
 			`css_value_row_gutter` tinytext DEFAULT NULL,
-			`is_default` tinyint(1) unsigned DEFAULT 0,
 			PRIMARY KEY (`id`)
 			) DEFAULT CHARSET=utf8";
 		$this->wpdb->query( $sql );
@@ -229,7 +234,11 @@ class FontsamplerDatabase {
 				'ALTER TABLE ' . $this->table_settings . " ADD `ui_order` VARCHAR( 255 ) DEFAULT NULL",
 				'ALTER TABLE ' . $this->table_settings . " ADD `ui_columns` tinyint( 1 ) DEFAULT NULL",
 				'ALTER TABLE ' . $this->table_settings . " ADD `buy` VARCHAR( 255 ) DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " ADD `buy_link` VARCHAR( 255 ) DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " ADD `buy_type` VARCHAR( 5 ) NULL DEFAULT 'label'",
 				'ALTER TABLE ' . $this->table_settings . " ADD `specimen` VARCHAR( 255 ) DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " ADD `specimen_link` VARCHAR( 255 ) DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " ADD `specimen_type` VARCHAR( 5 ) NULL DEFAULT 'label'",
 				'ALTER TABLE ' . $this->table_settings . " ADD `is_default` tinyint(1) unsigned DEFAULT 0",
 
 				// change the defaults to allow NULL for existing settings fields

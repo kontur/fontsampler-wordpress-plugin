@@ -158,6 +158,18 @@
 
             .upload-custom-img {
                 .button-add();
+
+                &.hidden {
+                    display: none;
+                }
+            }
+
+            .delete-custom-img {
+                .button-delete();
+
+                &.hidden {
+                    display: none;
+                }
             }
         }
         .fontsampler-options-row-values {
@@ -217,5 +229,34 @@
             height: 12px;
             width: 12px;
         }
+    }
+
+    // the wrapper element for inline uploads, like for the buy and specimen link images
+    .fontsampler-setting-image {
+        .fontsampler-upload-wrapper {
+            display: inline-block;
+
+            .custom-img-container {
+                max-width: 100%;
+                max-height: 30px;
+                position: relative;
+
+                img {
+                    display: block;
+                    max-height: 30px;
+                }
+            }
+        }
+    }
+
+    .fontsampler-admin-alignment-icon {
+        border: 1px solid #ccc;
+        border-radius: 2px;
+        height: 15px;
+        margin-right: 0.5em;
+        padding: 5px;
+        position: relative;
+        top: 8px;
+        width: 15px;
     }
 }

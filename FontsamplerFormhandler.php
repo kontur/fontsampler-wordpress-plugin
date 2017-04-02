@@ -111,7 +111,7 @@ class FontsamplerFormhandler {
 				}
 
 				// exception here: sampletexts has a further subsection about using defaults or custom
-				if ( $checkbox === 'sampletexts') {
+				if ( $checkbox === 'sampletexts' ) {
 					if ( intval( $this->post['sampletexts_use_default'] ) === 1 ) {
 						$settings['sample_texts'] = null;
 					} else {
@@ -391,9 +391,33 @@ class FontsamplerFormhandler {
 				} else {
 					if ( isset( $this->post[ $field ] ) ) {
 						$data[ $field ] = trim( $this->post[ $field ] );
+					} else {
+						// if the field is not one of the UI block checkboxes
+						// and it was not posted it was posted as "empty", so set it null in the db
+						$data[ $field ] = null;
 					}
 				}
 			}
+
+			foreach ( array( 'buy', 'specimen' ) as $link ) {
+				if ( $data[ $link ] === 1 ) {
+					// buy_url gets stored already from above foreach loop
+					// buy_type already gets stored, but remove the "_default" suffix
+					$data[ $link . '_type' ] = str_replace( '_default', '', $data[ $link . '_type' ] );
+					if ( empty( $data[ $link . '_type' ] ) ) {
+						$data[ $link . '_type' ] = 'label';
+					}
+					$data[ $link . '_label' ] = $data[ $link . '_type' ] === 'label'
+						? $this->post[ $link . '_label' ]
+						: $this->fontsampler->settings_defaults[ $link . '_label' ]; // since this is settings, restore default if unset
+					$data[ $link . '_image' ] = $data[ $link . '_type' ] === 'image'
+						? $this->post[ $link . '_image' ]
+						: null;
+				}
+			}
+
+			$data['is_default'] = 1;
+			$data['set_id']     = null;
 
 			// atm no inserts, only updating the defaults
 			$this->fontsampler->db->update_settings( $data );
@@ -404,6 +428,5 @@ class FontsamplerFormhandler {
 			// further generate a new settings css file
 			$this->fontsampler->helpers->write_css_from_settings( $data );
 		}
-
 	}
 }

@@ -17,7 +17,8 @@
      data-value-line-height="<?php echo $options['line_height_initial']; ?>"
      data-step-line-height="1">
 
-	<div class="fontsampler-interface columns-<?php echo $set['ui_columns']; echo ' fontsampler-id-' . $set['id']; ?>">
+	<div class="fontsampler-interface columns-<?php echo $set['ui_columns'];
+	echo ' fontsampler-id-' . $set['id']; ?>">
 
 		<?php
 
@@ -103,7 +104,7 @@
 									data-value="center"><img
 										src="<?php echo plugin_dir_url( __FILE__ ); ?>../icons/align-center.svg">
 								</button>
-								<button <?php if ( !$is_ltr || $options['alignment_initial'] == "right" ) :
+								<button <?php if ( ! $is_ltr || $options['alignment_initial'] == "right" ) :
 									echo 'class="fontsampler-multiselect-selected"'; endif; ?>
 									data-value="right"><img
 										src="<?php echo plugin_dir_url( __FILE__ ); ?>../icons/align-right.svg">
@@ -141,18 +142,18 @@
 						break;
 
 					case 'buy':
-						if ( $set['buy'] ) : ?>
-							<a href="<?php echo $set['buy']; ?>" target="_blank">
+						if ( $set['buy'] && ! empty( $set['buy_url'] ) ) : ?>
+							<a href="<?php echo $set['buy_url']; ?>" target="_blank">
 								<?php
-								if ( $options['buy_image'] ):
-									$image_src = wp_get_attachment_image_src( $options['buy_image'], 'full' );
+								if ( $set['buy_image'] ):
+									$image_src = wp_get_attachment_image_src( $set['buy_image'], 'full' );
 									?>
 									<img class="fontsampler-interface-link-image"
 									     src="<?php echo $image_src[0]; ?>"
-									     alt="<?php echo $options['buy_label']; ?>">
+									     alt="<?php echo $set['buy_label']; ?>">
 								<?php else: ?>
-									<span
-										class="fontsampler-interface-link-text"><?php echo $options['buy_label']; ?></span>
+									<span class="fontsampler-interface-link-text"
+									><?php echo $set['buy_label']; ?></span>
 								<?php endif; ?>
 							</a>
 						<?php endif;
@@ -187,17 +188,17 @@
 						}
 						?>
 						<div autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
-							class="current-font type-tester__content <?php
-						if ( ! isset( $set['multiline'] ) ||
-						     ( isset( $set['multiline'] ) && $set['multiline'] != "1" )
-						) :
-							echo ' fontsampler-is-singleline';
+						     class="current-font type-tester__content <?php
+						     if ( ! isset( $set['multiline'] ) ||
+						          ( isset( $set['multiline'] ) && $set['multiline'] != "1" )
+						     ) :
+							     echo ' fontsampler-is-singleline';
 
-						endif; ?>"
+						     endif; ?>"
 						     contenteditable="true"
 							<?php if ( ! $set['is_ltr'] ): echo ' dir="rtl" '; endif; ?>
 
-							style="text-align: <?php echo $options['alignment_initial']; ?>;"
+							 style="text-align: <?php echo $options['alignment_initial']; ?>;"
 						><?php echo $initial_text; ?></div>
 
 						<?php
@@ -212,14 +213,5 @@
 
 		endforeach;
 		?>
-
-
-		<?php if ( ! empty( $set['buy_url'] ) ) : ?>
-			<a href="<?php echo $set['buy_url']; ?>"><?php echo $settings['buy_label']; ?></a>
-		<?php endif; ?>
-		<?php if ( ! empty( $set['specimen_url'] ) ) : ?>
-			<a href="<?php echo $set['specimen_url']; ?>"><?php echo $settings['specimen_label']; ?></a>
-		<?php endif; ?>
-
 	</div>
 </div>
