@@ -33,7 +33,12 @@
 					   data-validation="mime" data-validation-allowing="{{ format }}">
 			</td>
 			<td>
-				{% if font[format] is not empty %}<button class="button delete fontsampler-fontset-remove-font">&times;</button>{% endif %}
+				{% if font[format] is not empty %}
+					<button class="button delete fontsampler-fontset-remove-font">
+						<i class="icon">&times;</i>
+						<span>Delete file</span>
+					</button>
+				{% endif %}
 			</td>
 		</tr>
 	{% endfor %}

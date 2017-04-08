@@ -53,8 +53,8 @@ class FontsamplerFormhandler {
 			$this->fontsampler->db->error( 'Error: No font sets deleted' );
 		} else {
 			$this->fontsampler->db->delete_join( array( 'font_id' => $id ) );
-			$this->fontsampler->msg->info( 'Font set succesfully removed. Font set also removed from any fontsamplers using it.' );
-			$this->fontsampler->msg->notice( 'Note that the font files themselves have not been removed from the Wordpress uploads folder ( Media Gallery ).' );
+			$this->fontsampler->msg->add_info( 'Font set succesfully removed. Font set also removed from any fontsamplers using it.' );
+			$this->fontsampler->msg->add_notice( 'Note that the font files themselves have not been removed from the Wordpress uploads folder ( Media Gallery ).' );
 		}
 
 		return true;
@@ -203,11 +203,11 @@ class FontsamplerFormhandler {
 			if ( $id ) {
 				$this->fontsampler->db->save_settings_for_set( $settings, $id );
 				$this->fontsampler->helpers->get_custom_css( $this->fontsampler->db->get_set( $id ) );
-				$this->fontsampler->msg->info( 'Created fontsampler with id ' . $id
+				$this->fontsampler->msg->add_info( 'Created fontsampler with id ' . $id
 				                               . '. You can now embed it in your posts or pages by adding [fontsampler id='
 				                               . $id . '].' );
 			} else {
-				$this->fontsampler->msg->error( 'Error: Failed to create new fontsampler.' );
+				$this->fontsampler->msg->add_error( 'Error: Failed to create new fontsampler.' );
 
 				return false;
 			}
@@ -222,7 +222,7 @@ class FontsamplerFormhandler {
 			}
 			$this->fontsampler->db->update_set( array( 'use_defaults' => $use_defaults ? 1 : 0 ), $id );
 			$this->fontsampler->helpers->write_custom_css_for_set( $this->fontsampler->db->get_set( $id ) );
-			$this->fontsampler->msg->info( 'Fontsampler ' . $id . ' successfully updated.' );
+			$this->fontsampler->msg->add_info( 'Fontsampler ' . $id . ' successfully updated.' );
 		}
 
 		// wipe join table for this fontsampler, then add whatever now was instructed to be saved
@@ -378,14 +378,14 @@ class FontsamplerFormhandler {
 				//				) );
 
 				if ( is_wp_error( $uploaded ) ) {
-					$this->fontsampler->msg->error( 'Error uploading ' . $label . ' file: ' . $uploaded->get_error_message() );
+					$this->fontsampler->msg->add_error( 'Error uploading ' . $label . ' file: ' . $uploaded->get_error_message() );
 				} else {
-					$this->fontsampler->msg->info( 'Uploaded ' . $label . ' file: ' . $file['name'] );
+					$this->fontsampler->msg->add_info( 'Uploaded ' . $label . ' file: ' . $file['name'] );
 					$data[ $label ] = $uploaded;
 				}
 			} else {
 				if ( in_array( $label, $this->fontsampler->font_formats_legacy ) && ! $this->fontsampler->admin_hide_legacy_formats ) {
-					$this->fontsampler->msg->notice( 'No ' . $label . ' file provided. You can still add it later.' );
+					$this->fontsampler->msg->add_notice( 'No ' . $label . ' file provided. You can still add it later.' );
 				}
 			}
 		}
@@ -396,7 +396,7 @@ class FontsamplerFormhandler {
 			return $id;
 		} else {
 			if ( $this->fontsampler->db->insert_font( $data ) ) {
-				$this->fontsampler->msg->info( 'Created fontset ' . $name );
+				$this->fontsampler->msg->add_info( 'Created fontset ' . $name );
 
 				return $this->fontsampler->db->get_insert_id();
 			}
@@ -412,7 +412,7 @@ class FontsamplerFormhandler {
 			if ( 'delete_set' == $this->post['action'] && isset( $id ) && is_int( $id ) && $id > 0 ) {
 				check_admin_referer( 'fontsampler-action-delete_set' );
 				if ( $this->fontsampler->db->delete_set( intval( $this->post['id'] ) ) ) {
-					$this->fontsampler->msg->info( 'Deleted Fontsampler ' . $id );
+					$this->fontsampler->msg->add_info( 'Deleted Fontsampler ' . $id );
 				}
 			}
 		}

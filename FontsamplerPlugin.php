@@ -347,7 +347,7 @@ class FontsamplerPlugin {
 					$this->forms->handle_settings_edit();
 					break;
 				default:
-					$this->msg->notice( 'Form submitted, but no matching action found for ' . $_POST['action'] );
+					$this->msg->add_notice( 'Form submitted, but no matching action found for ' . $_POST['action'] );
 					break;
 			}
 			ob_end_flush();
@@ -391,7 +391,7 @@ class FontsamplerPlugin {
 				}, $set['fonts'] ) );
 
 				if ( empty($set) ){
-					$this->msg->error('No set selected');
+					$this->msg->add_error('No set selected');
 				}
 
 				echo $this->twig->render( 'set-edit.twig', array(
