@@ -97,11 +97,11 @@ class FontsamplerDatabase {
 			`specimen` VARCHAR( 255 ) DEFAULT NULL,
 			`buy_label` VARCHAR(255) DEFAULT NULL,
 			`buy_image` int( 11 ) unsigned DEFAULT NULL,
-			`buy_link` VARCHAR( 255 ) DEFAULT NULL,
+			`buy_url` VARCHAR( 255 ) DEFAULT NULL,
 			`buy_type` VARCHAR( 5 ) NULL DEFAULT 'label',
 			`specimen_label` VARCHAR(255) DEFAULT NULL,
 			`specimen_image` int( 11 ) unsigned DEFAULT NULL,
-			`specimen_link` VARCHAR( 255 ) DEFAULT NULL,
+			`specimen_url` VARCHAR( 255 ) DEFAULT NULL,
 			`specimen_type` VARCHAR( 5 ) NULL DEFAULT 'label',
 			`font_size_label` varchar(50) DEFAULT NULL,
 			`font_size_initial` smallint(5) unsigned DEFAULT NULL,
@@ -136,7 +136,9 @@ class FontsamplerDatabase {
 			) DEFAULT CHARSET=utf8";
 		$this->wpdb->query( $sql );
 
-		$this->wpdb->insert( $this->table_settings, $this->fontsampler->settings_defaults );
+		$data = $this->fontsampler->settings_defaults;
+		$data['is_default'] = 1;
+		$this->wpdb->insert( $this->table_settings, $data );
 	}
 
 
@@ -235,10 +237,10 @@ class FontsamplerDatabase {
 				'ALTER TABLE ' . $this->table_settings . " ADD `ui_order` VARCHAR( 255 ) DEFAULT NULL",
 				'ALTER TABLE ' . $this->table_settings . " ADD `ui_columns` tinyint( 1 ) DEFAULT NULL",
 				'ALTER TABLE ' . $this->table_settings . " ADD `buy` VARCHAR( 255 ) DEFAULT NULL",
-				'ALTER TABLE ' . $this->table_settings . " ADD `buy_link` VARCHAR( 255 ) DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " ADD `buy_url` VARCHAR( 255 ) DEFAULT NULL",
 				'ALTER TABLE ' . $this->table_settings . " ADD `buy_type` VARCHAR( 5 ) NULL DEFAULT 'label'",
 				'ALTER TABLE ' . $this->table_settings . " ADD `specimen` VARCHAR( 255 ) DEFAULT NULL",
-				'ALTER TABLE ' . $this->table_settings . " ADD `specimen_link` VARCHAR( 255 ) DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " ADD `specimen_url` VARCHAR( 255 ) DEFAULT NULL",
 				'ALTER TABLE ' . $this->table_settings . " ADD `specimen_type` VARCHAR( 5 ) NULL DEFAULT 'label'",
 				'ALTER TABLE ' . $this->table_settings . " ADD `is_default` tinyint(1) unsigned DEFAULT 0",
 
@@ -299,7 +301,7 @@ class FontsamplerDatabase {
 				foreach ( $queries as $sql ) {
 					try {
 						$this->wpdb->query( $sql );
-						if ($this->wpdb->last_error) {
+						if ( $this->wpdb->last_error ) {
 							$this->fontsampler->msg->add_error( $this->wpdb->last_error . '<br>' . $this->wpdb->last_query );
 						}
 					} catch ( Exception $e ) {
@@ -357,16 +359,16 @@ class FontsamplerDatabase {
 				// these fields no longer used or not going to settings table
 				unset( $row['id'], $row['name'], $row['default_features'],
 					$row['initial_font'], $row['size'], $row['letterspacing'], $row['lineheight'],
-					$row['use_defaults']);
+					$row['use_defaults'] );
 
 				// add each previous set's data to the settings table
 				try {
 					$this->wpdb->insert( $this->table_settings, $row );
-					if ($this->wpdb->last_error) {
+					if ( $this->wpdb->last_error ) {
 						$this->fontsampler->msg->add_error( $this->wpdb->last_error . '<br>' . $this->wpdb->last_query );
 					}
 					//echo $this->wpdb->last_query;
-					$this->fontsampler->msg->add_notice( 'Migrated Fontsampler ' . $row['set_id'] . ' to 0.2.0');
+					$this->fontsampler->msg->add_notice( 'Migrated Fontsampler ' . $row['set_id'] . ' to 0.2.0' );
 				} catch ( Exception $e ) {
 					$this->fontsampler->msg->add_error( "Problem updating database to version 0.2.0. The following sql query failed: " . $sql );
 				}
@@ -626,7 +628,8 @@ class FontsamplerDatabase {
 				array_push( $missing, $set );
 			}
 		}
-		return empty($missing) ? false : $missing;
+
+		return empty( $missing ) ? false : $missing;
 	}
 
 
@@ -720,15 +723,17 @@ class FontsamplerDatabase {
 	function get_fontsets_missing_files() {
 		$fonts   = $this->get_fontsets();
 		$missing = array();
-		foreach ( $fonts as $font ) {
-			$all_empty = true;
-			foreach ( $this->fontsampler->font_formats as $format ) {
-				if ( ! empty( $font[ $format ] ) ) {
-					$all_empty = false;
+		if ( false !== $fonts ) {
+			foreach ( $fonts as $font ) {
+				$all_empty = true;
+				foreach ( $this->fontsampler->font_formats as $format ) {
+					if ( ! empty( $font[ $format ] ) ) {
+						$all_empty = false;
+					}
 				}
-			}
-			if ( $all_empty ) {
-				array_push( $missing, $font );
+				if ( $all_empty ) {
+					array_push( $missing, $font );
+				}
 			}
 		}
 
