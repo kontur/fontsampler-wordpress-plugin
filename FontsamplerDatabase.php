@@ -290,6 +290,11 @@ class FontsamplerDatabase {
 				'ALTER TABLE ' . $this->table_settings . " CHANGE `css_row_gutter` `css_value_row_gutter` tinytext DEFAULT NULL",
 				'ALTER TABLE ' . $this->table_settings . " CHANGE `buy_label` `buy_label` VARCHAR(255) DEFAULT NULL",
 				'ALTER TABLE ' . $this->table_settings . " CHANGE `specimen_label` `specimen_label` VARCHAR(255) DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `sampletexts` `sampletexts` tinyint(1) unsigned DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `alignment` `alignment` tinyint(1) unsigned DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `invert` `invert` tinyint(1) unsigned DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `multiline` `multiline` tinyint(1) unsigned DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `opentype` `opentype` tinyint(1) unsigned DEFAULT NULL",
 
 				// currently in the settings table is only the default, so set it that way
 				'UPDATE ' . $this->table_settings . " SET is_default = 1, set_id = NULL",
