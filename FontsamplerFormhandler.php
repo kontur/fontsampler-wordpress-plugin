@@ -90,7 +90,7 @@ class FontsamplerFormhandler {
 
 			// loop through the first 3 options that have more detailed sliders associated with them
 			// which in turn can rely on using defaults or adapt a custom setting as well
-			$sliders = array( 'font_size', 'letter_spacing', 'line_height' );
+			$sliders = array( 'fontsize', 'letterspacing', 'lineheight' );
 			foreach ( $sliders as $slider ) {
 				if ( isset( $this->post[ $slider ] ) && intval( $this->post[ $slider ] ) === 1 ) {
 					$settings[ $slider ]              = 1;

@@ -247,6 +247,10 @@ define(['jquery'], function ($) {
             var item = $this.attr("name"),
                 checked = $this.is(":checked");
 
+            if ('multiline' === item) {
+                return;
+            }
+
             if (checked) {
                 if (!inUIOrder(item)) {
                     addToUIOrder(item);

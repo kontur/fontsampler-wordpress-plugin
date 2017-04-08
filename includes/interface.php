@@ -36,12 +36,12 @@
 
 				switch ( $item ) {
 
-					case 'size':
-						if ( $set['size'] ) : ?>
+					case 'fontsize':
+						if ( $set['fontsize'] ) : ?>
 							<label class="fontsampler-slider">
-								<span class="slider-label"><?php echo $options['font_size_label']; ?></span>
-								<span class="slider-value type-tester__label" data-target-property="font-size"></span>
-								<div class="type-tester__slider" data-target-property="font-size"></div>
+								<span class="slider-label"><?php echo $options['fontsize_label']; ?></span>
+								<span class="slider-value type-tester__label" data-target-property="fontsize"></span>
+								<div class="type-tester__slider" data-target-property="fontsize"></div>
 							</label>
 						<?php endif;
 						break;
@@ -49,10 +49,10 @@
 					case 'letterspacing':
 						if ( $set['letterspacing'] ) : ?>
 							<label class="fontsampler-slider">
-								<span class="slider-label"><?php echo $options['letter_spacing_label']; ?></span>
+								<span class="slider-label"><?php echo $options['letterspacing_label']; ?></span>
 								<span class="slider-value type-tester__label"
-								      data-target-property="letter-spacing"></span>
-								<div class="type-tester__slider" data-target-property="letter-spacing"></div>
+								      data-target-property="letterspacing"></span>
+								<div class="type-tester__slider" data-target-property="letterspacing"></div>
 							</label>
 						<?php endif;
 						break;
@@ -60,9 +60,9 @@
 					case 'lineheight':
 						if ( $set['lineheight'] ) : ?>
 							<label class="fontsampler-slider">
-								<span class="slider-label"><?php echo $options['line_height_label']; ?></span>
-								<span class="slider-value type-tester__label" data-target-property="line-height"></span>
-								<div class="type-tester__slider" data-target-property="line-height"></div>
+								<span class="slider-label"><?php echo $options['lineheight_label']; ?></span>
+								<span class="slider-value type-tester__label" data-target-property="lineheight"></span>
+								<div class="type-tester__slider" data-target-property="lineheight"></div>
 							</label>
 						<?php endif;
 						break;

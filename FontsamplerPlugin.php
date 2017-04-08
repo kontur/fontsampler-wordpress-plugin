@@ -67,9 +67,9 @@ class FontsamplerPlugin {
 		// TODO combined default_features and boolean options as array of objects
 		// with "isBoolean" attribute
 		$this->default_features = array(
-			'font_size',
-			'letter_spacing',
-			'line_height',
+			'fontsize',
+			'letterspacing',
+			'lineheight',
 			'sampletexts',
 			'alignment',
 			'invert',
@@ -85,21 +85,21 @@ class FontsamplerPlugin {
 		$this->font_formats_legacy = array( 'eot', 'ttf' );
 
 		$this->settings_defaults = array(
-			'font_size_label'           => 'Size',
-			'font_size_min'             => '8',
-			'font_size_max'             => '96',
-			'font_size_initial'         => '14',
-			'font_size_unit'            => 'px',
-			'letter_spacing_label'      => 'Letter spacing',
-			'letter_spacing_min'        => '-5',
-			'letter_spacing_max'        => '5',
-			'letter_spacing_initial'    => '0',
-			'letter_spacing_unit'       => 'px',
-			'line_height_label'         => 'Line height',
-			'line_height_min'           => '70',
-			'line_height_max'           => '300',
-			'line_height_initial'       => '110',
-			'line_height_unit'          => '%',
+			'fontsize_label'           => 'Size',
+			'fontsize_min'             => '8',
+			'fontsize_max'             => '96',
+			'fontsize_initial'         => '14',
+			'fontsize_unit'            => 'px',
+			'letterspacing_label'      => 'Letter spacing',
+			'letterspacing_min'        => '-5',
+			'letterspacing_max'        => '5',
+			'letterspacing_initial'    => '0',
+			'letterspacing_unit'       => 'px',
+			'lineheight_label'         => 'Line height',
+			'lineheight_min'           => '70',
+			'lineheight_max'           => '300',
+			'lineheight_initial'       => '110',
+			'lineheight_unit'          => '%',
 			'alignment_initial'         => 'left',
 			'sample_texts'              => "hamburgerfontstiv\nabcdefghijklmnopqrstuvwxyz\nABCDEFGHIJKLMNOPQRSTUVWXYZ\nThe quick brown fox jumps over the lazy cat",
 			'css_color_text'            => '#333333',
@@ -114,9 +114,9 @@ class FontsamplerPlugin {
 			'css_value_column_gutter'         => '10px',
 			'css_value_row_height'            => '30px',
 			'css_value_row_gutter'            => '10px',
-			'font_size'                 => 1,
-			'letter_spacing'            => 1,
-			'line_height'               => 1,
+			'fontsize'                 => 1,
+			'letterspacing'            => 1,
+			'lineheight'               => 1,
 			'sampletexts'               => 0,
 			'alignment'                 => 0,
 			'invert'                    => 0,
@@ -450,9 +450,10 @@ class FontsamplerPlugin {
 				$layout = new FontsamplerLayout();
 				$str = $layout->sanitizeString($settings['ui_order'], $settings);
 				$layout->stringToArray($str);
-				$ui_order = !empty( $set['ui_order'] )
-					? $layout->sanitizeString( $settings['ui_order'], $settings )
-					: $layout->arrayToString( $layout->getDefaultBlocks(), $settings );
+
+				$ui_order = empty( $settings['ui_order'] )
+					? $layout->arrayToString( $layout->getDefaultBlocks(), $settings )
+					: $layout->sanitizeString( $settings['ui_order'], $settings );
 
 				$blocks = array_merge( $layout->getDefaultBlocks(), $layout->stringToArray( $settings['ui_order'], $settings ) );
 
@@ -534,9 +535,8 @@ class FontsamplerPlugin {
 		// from this set create all blocks; pass in the generated set to make
 		// sure all fields sync
 		$blocks = $layout->stringToArray( $set['ui_order'], $set );
-
 		$options = $this->db->get_settings();
-		$settings = $this->db->get_settings();
+		$settings = $options;
 
 ?>
 

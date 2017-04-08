@@ -18,24 +18,24 @@ class FontsamplerHelpers {
 		$this->less                = new Less_Parser( array( 'compress' => true ) );
 		$this->layout              = new FontsamplerLayout();
 		$this->features            = [
-			'font_size'      => array(
-				'name'                 => 'font_size',
+			'fontsize'      => array(
+				'name'                 => 'fontsize',
 				'label'                => 'Size control',
 				'slider_label'         => 'Label',
 				'slider_initial_label' => 'Initial px',
 				'slider_min_label'     => 'Min px',
 				'slider_max_label'     => 'Max px',
 			),
-			'letter_spacing' => array(
-				'name'                 => 'letter_spacing',
+			'letterspacing' => array(
+				'name'                 => 'letterspacing',
 				'label'                => 'Letter spacing control',
 				'slider_label'         => 'Label',
 				'slider_initial_label' => 'Initial px',
 				'slider_min_label'     => 'Min px',
 				'slider_max_label'     => 'Max px',
 			),
-			'line_height'    => array(
-				'name'                 => 'line_height',
+			'lineheight'    => array(
+				'name'                 => 'lineheight',
 				'label'                => 'Line height control',
 				'slider_label'         => 'Label',
 				'slider_initial_label' => 'Initial px',

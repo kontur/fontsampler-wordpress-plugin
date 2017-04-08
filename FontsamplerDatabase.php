@@ -84,9 +84,9 @@ class FontsamplerDatabase {
 			`is_ltr` tinyint( 1 ) DEFAULT 1,
 			`ui_order` VARCHAR( 255 ) DEFAULT NULL,
 			`ui_columns` tinyint( 1 ) DEFAULT NULL,
-			`font_size` tinyint(1) unsigned DEFAULT NULL,
-			`letter_spacing` tinyint(1) unsigned DEFAULT NULL,
-			`line_height` tinyint(1) unsigned DEFAULT NULL,
+			`fontsize` tinyint(1) unsigned DEFAULT NULL,
+			`letterspacing` tinyint(1) unsigned DEFAULT NULL,
+			`lineheight` tinyint(1) unsigned DEFAULT NULL,
 			`sampletexts` tinyint(1) unsigned DEFAULT NULL,
 			`alignment` tinyint(1) unsigned DEFAULT NULL,
 			`invert` tinyint(1) unsigned DEFAULT NULL,
@@ -103,21 +103,21 @@ class FontsamplerDatabase {
 			`specimen_image` int( 11 ) unsigned DEFAULT NULL,
 			`specimen_url` VARCHAR( 255 ) DEFAULT NULL,
 			`specimen_type` VARCHAR( 5 ) NULL DEFAULT 'label',
-			`font_size_label` varchar(50) DEFAULT NULL,
-			`font_size_initial` smallint(5) unsigned DEFAULT NULL,
-			`font_size_min` smallint(5) unsigned DEFAULT NULL,
-			`font_size_max` smallint(5) unsigned DEFAULT NULL,
-			`font_size_unit` varchar(50) DEFAULT NULL,
-			`letter_spacing_label` varchar(50) DEFAULT NULL,
-			`letter_spacing_initial` tinyint(5) DEFAULT NULL,
-			`letter_spacing_min` tinyint(3) DEFAULT NULL,
-			`letter_spacing_max` tinyint(3) DEFAULT NULL,
-			`letter_spacing_unit` varchar(50) DEFAULT NULL,
-			`line_height_label` varchar(50) DEFAULT NULL,
-			`line_height_initial` smallint(5) DEFAULT NULL,
-			`line_height_min` smallint(5) DEFAULT NULL,
-			`line_height_max` smallint(5) DEFAULT NULL,
-			`line_height_unit` varchar(50) DEFAULT NULL,
+			`fontsize_label` varchar(50) DEFAULT NULL,
+			`fontsize_initial` smallint(5) unsigned DEFAULT NULL,
+			`fontsize_min` smallint(5) unsigned DEFAULT NULL,
+			`fontsize_max` smallint(5) unsigned DEFAULT NULL,
+			`fontsize_unit` varchar(50) DEFAULT NULL,
+			`letterspacing_label` varchar(50) DEFAULT NULL,
+			`letterspacing_initial` tinyint(5) DEFAULT NULL,
+			`letterspacing_min` tinyint(3) DEFAULT NULL,
+			`letterspacing_max` tinyint(3) DEFAULT NULL,
+			`letterspacing_unit` varchar(50) DEFAULT NULL,
+			`lineheight_label` varchar(50) DEFAULT NULL,
+			`lineheight_initial` smallint(5) DEFAULT NULL,
+			`lineheight_min` smallint(5) DEFAULT NULL,
+			`lineheight_max` smallint(5) DEFAULT NULL,
+			`lineheight_unit` varchar(50) DEFAULT NULL,
 			`alignment_initial` varchar(50) DEFAULT NULL,
 			`sample_texts` text DEFAULT NULL,
 			`css_color_text` tinytext DEFAULT NULL,
@@ -257,21 +257,21 @@ class FontsamplerDatabase {
 				'ALTER TABLE ' . $this->table_settings . " ADD `is_default` tinyint(1) unsigned DEFAULT 0",
 
 				// change the defaults to allow NULL for existing settings fields
-				'ALTER TABLE ' . $this->table_settings . " CHANGE `font_size_label` `font_size_label` varchar(50) NULL DEFAULT NULL",
-				'ALTER TABLE ' . $this->table_settings . " CHANGE `font_size_initial` `font_size_initial` smallint(5) unsigned DEFAULT NULL",
-				'ALTER TABLE ' . $this->table_settings . " CHANGE `font_size_min` `font_size_min` smallint(5) unsigned DEFAULT NULL",
-				'ALTER TABLE ' . $this->table_settings . " CHANGE `font_size_max` `font_size_max` smallint(5) unsigned DEFAULT NULL",
-				'ALTER TABLE ' . $this->table_settings . " CHANGE `font_size_unit` `font_size_unit` varchar(50) DEFAULT NULL",
-				'ALTER TABLE ' . $this->table_settings . " CHANGE `letter_spacing_label` `letter_spacing_label` varchar(50) DEFAULT NULL",
-				'ALTER TABLE ' . $this->table_settings . " CHANGE `letter_spacing_initial` `letter_spacing_initial` tinyint(5) DEFAULT NULL",
-				'ALTER TABLE ' . $this->table_settings . " CHANGE `letter_spacing_min` `letter_spacing_min` tinyint(3) DEFAULT NULL",
-				'ALTER TABLE ' . $this->table_settings . " CHANGE `letter_spacing_max` `letter_spacing_max` tinyint(3) DEFAULT NULL",
-				'ALTER TABLE ' . $this->table_settings . " CHANGE `letter_spacing_unit` `letter_spacing_unit` varchar(50) DEFAULT NULL",
-				'ALTER TABLE ' . $this->table_settings . " CHANGE `line_height_label` `line_height_label` varchar(50) DEFAULT NULL",
-				'ALTER TABLE ' . $this->table_settings . " CHANGE `line_height_initial` `line_height_initial` smallint(5) DEFAULT NULL",
-				'ALTER TABLE ' . $this->table_settings . " CHANGE `line_height_min` `line_height_min` smallint(5) DEFAULT NULL",
-				'ALTER TABLE ' . $this->table_settings . " CHANGE `line_height_max` `line_height_max` smallint(5) DEFAULT NULL",
-				'ALTER TABLE ' . $this->table_settings . " CHANGE `line_height_unit` `line_height_unit` varchar(50) DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `font_size_label` `fontsize_label` varchar(50) NULL DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `font_size_initial` `fontsize_initial` smallint(5) unsigned DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `font_size_min` `fontsize_min` smallint(5) unsigned DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `font_size_max` `fontsize_max` smallint(5) unsigned DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `font_size_unit` `fontsize_unit` varchar(50) DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `letter_spacing_label` `letterspacing_label` varchar(50) DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `letter_spacing_initial` `letterspacing_initial` tinyint(5) DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `letter_spacing_min` `letterspacing_min` tinyint(3) DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `letter_spacing_max` `letterspacing_max` tinyint(3) DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `letter_spacing_unit` `letterspacing_unit` varchar(50) DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `line_height_label` `lineheight_label` varchar(50) DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `line_height_initial` `lineheight_initial` smallint(5) DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `line_height_min` `lineheight_min` smallint(5) DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `line_height_max` `lineheight_max` smallint(5) DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `line_height_unit` `lineheight_unit` varchar(50) DEFAULT NULL",
 				'ALTER TABLE ' . $this->table_settings . " CHANGE `alignment_initial` `alignment_initial` varchar(50) DEFAULT NULL",
 				'ALTER TABLE ' . $this->table_settings . " CHANGE `sample_texts` `sample_texts` text DEFAULT NULL",
 				'ALTER TABLE ' . $this->table_settings . " CHANGE `css_color_text` `css_color_text` tinytext DEFAULT NULL",
@@ -290,11 +290,6 @@ class FontsamplerDatabase {
 				'ALTER TABLE ' . $this->table_settings . " CHANGE `css_row_gutter` `css_value_row_gutter` tinytext DEFAULT NULL",
 				'ALTER TABLE ' . $this->table_settings . " CHANGE `buy_label` `buy_label` VARCHAR(255) DEFAULT NULL",
 				'ALTER TABLE ' . $this->table_settings . " CHANGE `specimen_label` `specimen_label` VARCHAR(255) DEFAULT NULL",
-
-				// rename those fields so that field and field slider settings have same prefix
-				'ALTER TABLE ' . $this->table_settings . " CHANGE `size` `font_size` tinyint(1) unsigned DEFAULT NULL",
-				'ALTER TABLE ' . $this->table_settings . " CHANGE `letterspacing` `letter_spacing` tinyint(1) unsigned DEFAULT NULL",
-				'ALTER TABLE ' . $this->table_settings . " CHANGE `lineheight` `line_height` tinyint(1) unsigned DEFAULT NULL",
 
 				// currently in the settings table is only the default, so set it that way
 				'UPDATE ' . $this->table_settings . " SET is_default = 1, set_id = NULL",
@@ -357,14 +352,12 @@ class FontsamplerDatabase {
 				$row['set_id'] = $row['id'];
 
 				// some field renamings:
-				$row['font_size']      = $row['size'];
-				$row['letter_spacing'] = $row['letterspacing'];
-				$row['line_height']    = $row['lineheight'];
+				$row['fontsize']      = $row['size'];
 
 				// if < 0.2.0 "default_features" were selected, remove those fields from the set so that they will be NULL and
 				// thus get replaced with the is_default values when retrieved later on
 				if ( 1 == $row['default_features'] ) {
-					unset( $row['font_size'], $row['letter_spacing'], $row['line_height'], $row['sampletexts'], $row['alignment'],
+					unset( $row['fontsize'], $row['letterspacing'], $row['lineheight'], $row['sampletexts'], $row['alignment'],
 						$row['invert'], $row['multiline'], $row['opentype'], $row['fontpicker'], $row['buy'], $row['specimen'] );
 				}
 
@@ -386,7 +379,7 @@ class FontsamplerDatabase {
 				}
 			}
 
-			// delete these fields from the original sets table as those are now managed via the settings table
+			// delete these fields from the original "sets" table as those are now managed via the settings table
 			$drop = array(
 				'initial',
 				'size',

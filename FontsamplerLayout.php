@@ -21,7 +21,7 @@ class FontsamplerLayout {
 		// the first entry in the array is also the default
 		$this->blocks = array(
 			'fontsampler'   => array( 'full' ),
-			'size'          => array( 'column', 'full' ),
+			'fontsize'      => array( 'column', 'full' ),
 			'letterspacing' => array( 'column', 'full' ),
 			'lineheight'    => array( 'column', 'full' ),
 			'alignment'     => array( 'column', 'inline' ),
@@ -36,7 +36,7 @@ class FontsamplerLayout {
 		// the labels used in the admin UI for sorting the layout
 		$this->labels = array(
 			'fontsampler'   => 'Fontsampler',
-			'size'          => 'Font size',
+			'fontsize'      => 'Font size',
 			'letterspacing' => 'Letter spacing',
 			'lineheight'    => 'Line height',
 			'alignment'     => 'Alignment',
@@ -63,13 +63,13 @@ class FontsamplerLayout {
 		$arr = explode( ',', $string );
 
 		foreach ( $arr as $item ) {
-			if ($item != "|") {
+			if ( $item != "|" ) {
 				$pos           = strpos( $item, '_' );
 				$key           = substr( $item, 0, $pos );
 				$class         = substr( $item, $pos + 1, strlen( $item ) - $pos );
 				$array[ $key ] = $class;
 			} else {
-				$array[ "|" ] = "";
+				$array["|"] = "";
 			}
 		}
 
@@ -106,9 +106,11 @@ class FontsamplerLayout {
 
 		// pre 0.2.0 - reading & parsing works, new saves / edits will be formatted correctly;
 		// foo|bar now is foo,|,bar - detect non-comma surrounded | and format them correctly for 0.2.0 interpretation
-		$string = preg_replace('/([^,]*)\|([^,]*)/', '$1,|,$2', $string);
+		$string = preg_replace( '/([^,]*)\|([^,]*)/', '$1,|,$2', $string );
+		$string = preg_replace( '/(^|,|\|)size/', '$1fontsize', $string ); // pre 0.2.0 fontsize field was called size
 		$string = str_replace( 'options', '', $string ); // no longer in use, now specific options individually
 		$string = str_replace( ',,', ',', $string ); // remove "empty" rows
+
 
 		$uiOrder = array();
 		foreach ( explode( ',', $string ) as $item ) {
@@ -139,16 +141,13 @@ class FontsamplerLayout {
 			// check of all the items in UI_ORDER are really be based on set
 			// remove those that are in UI_ORDER but not actually present
 			foreach ( $uiOrder as $blockstring ) {
-				if ($blockstring != "|") {
+				if ( $blockstring != "|" ) {
 					$block = substr( $blockstring, 0, strpos( $blockstring, '_' ) );
 
 					// if an item is in ui_order but not actually present in set remove it
-					if ( ! isset( $set[ $block ] ) || empty( $set[ $block ] ) ) {
-						if ( $block != "fontsampler" ) {
-						} else {
-							array_push( $newarray, $blockstring );
-						}
-					} else {
+					if ( ( isset( $set[ $block ] ) && 1 === intval( $set[ $block ] ) ) && $block !== "fontsampler" ) {
+						array_push( $newarray, $blockstring );
+					} else if ( $block === "fontsampler" ) {
 						array_push( $newarray, $blockstring );
 					}
 				} else {
@@ -167,7 +166,7 @@ class FontsamplerLayout {
 					// if one of the set's blocks has a 1 value but is not in the array of blocks from $ui_order
 					// push it in
 					if ( ! in_array( $setblock, $justblocknames ) ) {
-//						 echo "<br>missing $setblock from ui_order but it is in set";
+						//						 echo "<br>missing $setblock from ui_order but it is in set";
 						array_push( $newarray, $setblock . '_' . $this->blocks[ $setblock ][0] );
 					}
 				}
