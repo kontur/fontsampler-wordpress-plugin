@@ -318,7 +318,7 @@ define(['jquery', 'rangeslider', 'selectric', 'validate'], function ($, r, s, v)
             $initial.attr('dir', $(this).val() == 1 ? 'ltr' : 'rtl');
         });
         $("[name='alignment_initial']").on("change", function () {
-            $initial.css('text-align', $(this).val());
+            $initial.css('text-align', $(this).data('value'));
         });
 
 

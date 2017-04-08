@@ -67,15 +67,17 @@ class FontsamplerPlugin {
 		// TODO combined default_features and boolean options as array of objects
 		// with "isBoolean" attribute
 		$this->default_features = array(
-			'size',
-			'letterspacing',
-			'lineheight',
+			'font_size',
+			'letter_spacing',
+			'line_height',
 			'sampletexts',
 			'alignment',
 			'invert',
 			'multiline',
 			'opentype',
 			'fontpicker',
+			'buy',
+			'specimen',
 		);
 		// note: font_formats order matters: most preferred to least preferred
 		// note: so far no feature detection and no fallbacks, so woff2 last until fixed
@@ -103,17 +105,15 @@ class FontsamplerPlugin {
 			'css_color_text'            => '#333333',
 			'css_color_background'      => '#ffffff',
 			'css_color_label'           => '#333333',
-			'css_size_label'            => 'inherit',
-			'css_fontfamily_label'      => 'inherit',
+			'css_value_size_label'            => 'inherit',
+			'css_value_fontfamily_label'      => 'inherit',
 			'css_color_highlight'       => '#efefef',
 			'css_color_highlight_hover' => '#dedede',
 			'css_color_line'            => '#333333',
 			'css_color_handle'          => '#333333',
-			'css_color_icon_active'     => '#333333',
-			'css_color_icon_inactive'   => '#dedede',
-			'css_column_gutter'         => '10px',
-			'css_row_height'            => '30px',
-			'css_row_gutter'            => '10px',
+			'css_value_column_gutter'         => '10px',
+			'css_value_row_height'            => '30px',
+			'css_value_row_gutter'            => '10px',
 			'font_size'                 => 1,
 			'letter_spacing'            => 1,
 			'line_height'               => 1,
@@ -151,8 +151,8 @@ class FontsamplerPlugin {
 		$script_url = preg_replace( "/^http\:\/\/[^\/]*/", "", plugin_dir_url( __FILE__ ) );
 		?>
 		<script> var fontsamplerBaseUrl = '<?php echo $script_url; ?>'; </script>
-
 		<?php
+
 		// merge in possibly passed in attributes
 		$attributes = shortcode_atts( array( 'id' => '0' ), $atts );
 		$id = intval($attributes['id']);
@@ -289,6 +289,7 @@ class FontsamplerPlugin {
 			: 'fontsampler-admin-show-legacy-formats';
 		echo '">';
 
+		// output base url for javascript loading fontsamplers in the admin area
 		$script_url = preg_replace( "/^http\:\/\/[^\/]*/", "", plugin_dir_url( __FILE__ ) );
 		?>
 		<script> var fontsamplerBaseUrl = '<?php echo $script_url; ?>'; </script>

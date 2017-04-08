@@ -198,7 +198,7 @@
 						     contenteditable="true"
 							<?php if ( ! $set['is_ltr'] ): echo ' dir="rtl" '; endif; ?>
 
-							 style="text-align: <?php echo $options['alignment_initial']; ?>;"
+							 style="text-align: <?php echo $set['alignment_initial']; ?>;"
 						><?php echo $initial_text; ?></div>
 
 						<?php

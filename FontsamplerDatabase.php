@@ -132,7 +132,7 @@ class FontsamplerDatabase {
 			`css_value_column_gutter` tinytext DEFAULT NULL,
 			`css_value_row_height` tinytext DEFAULT NULL,
 			`css_value_row_gutter` tinytext DEFAULT NULL,
-			PRIMARY KEY (`id`)
+			PRIMARY KEY (`settings_id`)
 			) DEFAULT CHARSET=utf8";
 		$this->wpdb->query( $sql );
 
@@ -144,6 +144,7 @@ class FontsamplerDatabase {
 	 * Updates the database schemas based on current db version and target db version
 	 */
 	function migrate_db() {
+
 		// list here any queries to update the tables to the specific version
 		// NOTE: ASCENDING ORDER MATTERS!!!
 		$changes = array(
@@ -225,7 +226,7 @@ class FontsamplerDatabase {
 				'ALTER TABLE ' . $this->table_sets . " ADD `use_defaults` tinyint(1) unsigned DEFAULT 0",
 
 				// change the id field name to not interfere with the now more common joins
-				'ALTER TABLE ' . $this->table_settings . " CHANGE `id` `settings_id` int(11) unsigned NOT NULL AUTO_INCREMENT,",
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `id` `settings_id` int(11) unsigned NOT NULL AUTO_INCREMENT",
 
 				// add these fields from sets to settings
 				'ALTER TABLE ' . $this->table_settings . " ADD `set_id` tinyint(1) unsigned DEFAULT NULL",
@@ -242,7 +243,6 @@ class FontsamplerDatabase {
 				'ALTER TABLE ' . $this->table_settings . " ADD `is_default` tinyint(1) unsigned DEFAULT 0",
 
 				// change the defaults to allow NULL for existing settings fields
-				'ALTER TABLE ' . $this->table_settings . " CHANGE `id` `settings_id` int(11) unsigned NOT NULL AUTO_INCREMENT",
 				'ALTER TABLE ' . $this->table_settings . " CHANGE `font_size_label` `font_size_label` varchar(50) NULL DEFAULT NULL",
 				'ALTER TABLE ' . $this->table_settings . " CHANGE `font_size_initial` `font_size_initial` smallint(5) unsigned DEFAULT NULL",
 				'ALTER TABLE ' . $this->table_settings . " CHANGE `font_size_min` `font_size_min` smallint(5) unsigned DEFAULT NULL",
@@ -274,6 +274,8 @@ class FontsamplerDatabase {
 				'ALTER TABLE ' . $this->table_settings . " CHANGE `css_column_gutter` `css_value_column_gutter` tinytext DEFAULT NULL",
 				'ALTER TABLE ' . $this->table_settings . " CHANGE `css_row_height` `css_value_row_height` tinytext DEFAULT NULL",
 				'ALTER TABLE ' . $this->table_settings . " CHANGE `css_row_gutter` `css_value_row_gutter` tinytext DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `buy_label` `buy_label` VARCHAR(255) DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `specimen_label` `specimen_label` VARCHAR(255) DEFAULT NULL",
 
 				// rename those fields so that field and field slider settings have same prefix
 				'ALTER TABLE ' . $this->table_settings . " CHANGE `size` `font_size` tinyint(1) unsigned DEFAULT NULL",
@@ -296,13 +298,13 @@ class FontsamplerDatabase {
 			) {
 				foreach ( $queries as $sql ) {
 					try {
-						// this try catch doesn't seem to do anything, since WP throwns and prints it's own errors
-						// TODO check how debug mode influences this
-						// NOTE: most important though that single error (i.e. existing column or something) doesn't break
-						// the entire update loop
-						$res = $this->wpdb->query( $sql );
+						$this->wpdb->query( $sql );
+						if ($this->wpdb->last_error) {
+							$this->fontsampler->msg->add_error( $this->wpdb->last_error . '<br>' . $this->wpdb->last_query );
+						}
 					} catch ( Exception $e ) {
-						$this->fontsampler->msg->error( "Problem updating database to version $version. The following sql query failed: " . $sql );
+						$this->fontsampler->msg->add_error( "Problem updating database to version $version. The following sql query failed: " . $sql );
+						$this->fontsampler->msg->add_error( $this->wpdb->print_error() );
 					}
 				}
 
@@ -313,7 +315,7 @@ class FontsamplerDatabase {
 				}
 
 				// bump the version number option in the options database
-				$this->fontsampler->msg->info( "Updated database schema to $version" );
+				$this->fontsampler->msg->add_info( "Updated database schema to $version" );
 				update_option( 'fontsampler_db_version', $version );
 			}
 		}
@@ -325,10 +327,7 @@ class FontsamplerDatabase {
 		// if all executed bump the version number option in the options database to the manually entered db version
 		// even if the last query was not of that high of a version (which it shouldn't)
 		update_option( 'fontsampler_db_version', $this->fontsampler->fontsampler_db_version );
-		$this->fontsampler->msg->info( 'Database schemas now up to date' );
-
-
-		return true;
+		$this->fontsampler->msg->add_info( 'Database schemas now up to date' );
 	}
 
 
@@ -340,34 +339,40 @@ class FontsamplerDatabase {
 		$res = $this->wpdb->get_results( $sql, ARRAY_A );
 
 		if ( ! empty( $res ) ) {
-
 			foreach ( $res as $row ) {
 				$row['set_id'] = $row['id'];
 
 				// some field renamings:
 				$row['font_size']      = $row['size'];
-				$row['letter_spacing'] = $row['letter_spacing'];
+				$row['letter_spacing'] = $row['letterspacing'];
 				$row['line_height']    = $row['lineheight'];
 
-				// if default_features were selected, remove those fields from the set so that they will be NULL and
+				// if < 0.2.0 "default_features" were selected, remove those fields from the set so that they will be NULL and
 				// thus get replaced with the is_default values when retrieved later on
 				if ( 1 == $row['default_features'] ) {
 					unset( $row['font_size'], $row['letter_spacing'], $row['line_height'], $row['sampletexts'], $row['alignment'],
-						$row['invert'], $row['multiline'], $row['opentype'], $row['fontpicker'] );
+						$row['invert'], $row['multiline'], $row['opentype'], $row['fontpicker'], $row['buy'], $row['specimen'] );
 				}
 
 				// these fields no longer used or not going to settings table
-				unset( $row['id'], $row['name'], $row['default_features'], $row['initial_font'] );
+				unset( $row['id'], $row['name'], $row['default_features'],
+					$row['initial_font'], $row['size'], $row['letterspacing'], $row['lineheight'],
+					$row['use_defaults']);
 
 				// add each previous set's data to the settings table
 				try {
 					$this->wpdb->insert( $this->table_settings, $row );
+					if ($this->wpdb->last_error) {
+						$this->fontsampler->msg->add_error( $this->wpdb->last_error . '<br>' . $this->wpdb->last_query );
+					}
+					//echo $this->wpdb->last_query;
+					$this->fontsampler->msg->add_notice( 'Migrated Fontsampler ' . $row['set_id'] . ' to 0.2.0');
 				} catch ( Exception $e ) {
-					$this->fontsampler->msg->error( "Problem updating database to version 0.2.0. The following sql query failed: " . $sql );
+					$this->fontsampler->msg->add_error( "Problem updating database to version 0.2.0. The following sql query failed: " . $sql );
 				}
 			}
 
-			// delete these fields from the sets table
+			// delete these fields from the original sets table as those are now managed via the settings table
 			$drop = array(
 				'initial',
 				'size',
@@ -392,7 +397,7 @@ class FontsamplerDatabase {
 					$sql = "ALTER TABLE " . $this->table_sets . " DROP " . $field;
 					$this->wpdb->query( $sql );
 				} catch ( Exception $e ) {
-					$this->fontsampler->msg->error( "Problem updating database to version 0.2.0. The following sql query failed: " . $sql );
+					$this->fontsampler->msg->add_error( "Problem updating database to version 0.2.0. The following sql query failed: " . $sql );
 				}
 			}
 		}

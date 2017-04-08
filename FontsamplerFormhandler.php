@@ -79,11 +79,13 @@ class FontsamplerFormhandler {
 		if ( ! $use_defaults ) {
 
 			// set these basic submitted infos
-			$settings['set_id']     = $id;
-			$settings['is_ltr']     = $this->post['is_ltr'];
-			$settings['initial']    = $this->post['initial'];
-			$settings['ui_order']   = $this->post['ui_order'];
-			$settings['ui_columns'] = $this->post['ui_columns'] == 'default'
+			$settings['set_id']            = $id;
+			$settings['is_ltr']            = $this->post['is_ltr'];
+			$settings['alignment_initial'] = $this->post['alignment_initial'] === 'default' ?
+				null : $this->post['alignment_initial'];
+			$settings['initial']           = $this->post['initial'];
+			$settings['ui_order']          = $this->post['ui_order'];
+			$settings['ui_columns']        = $this->post['ui_columns'] == 'default'
 				? null : intval( $this->post['ui_columns'] );
 
 			// loop through the first 3 options that have more detailed sliders associated with them

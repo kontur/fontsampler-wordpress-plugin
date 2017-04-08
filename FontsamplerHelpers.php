@@ -367,6 +367,14 @@ class FontsamplerHelpers {
 			return wp_get_attachment_image_src( $id, $option )[0];
 		} ) );
 
+		$twig->addFunction( new Twig_SimpleFunction( 'has_messages', function () {
+			return $this->fontsampler->msg->has_messages();
+		} ) );
+
+		$twig->addFunction( new Twig_SimpleFunction( 'get_messages', function () {
+			return $this->fontsampler->msg->get_messages( true );
+		} ) );
+
 		$twig->addGlobal( 'block_classes', $this->layout->blocks );
 
 		$twig->addGlobal( 'block_labels', $this->layout->labels );

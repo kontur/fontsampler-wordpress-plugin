@@ -1,3 +1,8 @@
+{% if has_messages() %}
+    <header class="notice">
+        {{ get_messages()|raw }}
+    </header>
+{% endif %}
 
 <header id="fontsampler-menu">
     {% include 'header.twig'  %}
