@@ -4,6 +4,9 @@
  * Class FontsamplerLayout
  *
  * Helper class for converting UI layouts to a db stored string and back
+ * The db value is a string of fields + their default "layout", with commas separating blocks (and their css width
+ * forcing new rows where needed) and | representing row breaks, e.g.:
+ * fontsampler_full,size_column,|,lineheight_column,fontpicker_full
  */
 class FontsamplerLayout {
 
@@ -99,10 +102,13 @@ class FontsamplerLayout {
 	 */
 	public function sanitizeString( $string, $set = null ) {
 
-		// remove no longer used fields or formatting
-		//		$string = str_replace( '|', ',', $string );
-		$string = str_replace( 'options', '', $string );
-		$string = str_replace( ',,', ',', $string );
+		// remove no longer used fields or formatting:
+
+		// pre 0.2.0 - reading & parsing works, new saves / edits will be formatted correctly;
+		// foo|bar now is foo,|,bar - detect non-comma surrounded | and format them correctly for 0.2.0 interpretation
+		$string = preg_replace('/([^,]*)\|([^,]*)/', '$1,|,$2', $string);
+		$string = str_replace( 'options', '', $string ); // no longer in use, now specific options individually
+		$string = str_replace( ',,', ',', $string ); // remove "empty" rows
 
 		$uiOrder = array();
 		foreach ( explode( ',', $string ) as $item ) {
@@ -139,7 +145,6 @@ class FontsamplerLayout {
 					// if an item is in ui_order but not actually present in set remove it
 					if ( ! isset( $set[ $block ] ) || empty( $set[ $block ] ) ) {
 						if ( $block != "fontsampler" ) {
-							//						echo "<br>block $block in ui_order but not in set";
 						} else {
 							array_push( $newarray, $blockstring );
 						}

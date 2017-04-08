@@ -169,7 +169,7 @@ class FontsamplerPlugin {
 
 			if ( false == $set || false == $fonts ) {
 				if ( current_user_can( 'edit_posts' ) || current_user_can( 'edit_pages' ) ) {
-					return '<div><strong>The typesampler with ID ' . $attributes['id'] . ' can not be displayed because some files or the type sampler set are missing!</strong> <em>You are seeing this notice because you have rights to edit posts - regular users will see an empty spot here.</em></div>';
+					return '<div class="fontsampler-warning"><strong>The typesampler with ID ' . $attributes['id'] . ' can not be displayed because some files or the type sampler set are missing!</strong> <em>You are seeing this notice because you have rights to edit posts - regular users will see an empty spot here.</em></div>';
 				} else {
 					return '<!-- typesampler #' . $attributes['id'] . ' failed to render -->';
 				}
