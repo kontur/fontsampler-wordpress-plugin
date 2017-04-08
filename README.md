@@ -12,14 +12,12 @@ font.
 
 ## Current status
 The plugin is hosted on the [Wordpress plugin directory](https://wordpress.org/plugins/fontsampler/) and you can install 
-it directly from your Wordpress admin panel. For improvements and suggestions, feel free to get involved by opening issues 
+it directly from your Wordpress admin panel. The plugin is free to use, including commercial websites. [Donations are welcome](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LSK5YQHHCGGYS) and support continuous development and improvments. For improvements and suggestions, feel free to get involved by opening issues 
 or feature requests here, or join [the discussion group](https://groups.google.com/forum/#!forum/fontsampler-wordpress-plugin-development) 
 to hear more about the progress and development schedule.
 
 ## Supporting development
-You can support the development of the plugin via funding the [indiegogo campaign](https://www.indiegogo.com/projects/wordpress-plugin-for-letting-users-test-typefaces#/) 
-or, later, donating to the project to show your appreciation. Furthermore, beta testers are very welcome to try out first 
-builds and give feedback.
+You can [donate to the plugin](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LSK5YQHHCGGYS)'s continuous development effort via PayPal. The first effort in developing this plugin was funded via an [indiegogo campaign](https://www.indiegogo.com/projects/wordpress-plugin-for-letting-users-test-typefaces#/), which is now closed. Supporters are listed (if they wish) on the plugin's about page and documentation.
 
 **Pull requests are more than welcome** as well, but let me know in the issues list what you are working on.
 
@@ -27,7 +25,7 @@ builds and give feedback.
 See the [issues](https://github.com/kontur/fontsampler-wordpress-plugin/issues) for the latest up-to-date information:
 
 ### Installing preview versions
-**IMPORTANT DISCLAIMER: Install directly from this repository if you wish to contribute of check out latest development features.** 
+**IMPORTANT DISCLAIMER: Install directly from this repository if you wish to contribute of check out latest development features. For regular use please install via the WP plugin interface.** 
 I recommend to test the plugin on backup or local Wordpress installations, not in your website's 
 production environment. At the very least back up your database and `wp-content` folder before testing the plugin. You 
 have been warned!
