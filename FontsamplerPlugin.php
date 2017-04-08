@@ -346,6 +346,11 @@ class FontsamplerPlugin {
 				case 'edit_settings':
 					$this->forms->handle_settings_edit();
 					break;
+				case 'reset_settings':
+					if ($this->forms->handle_settings_reset()) {
+					$this->msg->add_info( 'Settings successfully reset' );
+					}
+					break;
 				default:
 					$this->msg->add_notice( 'Form submitted, but no matching action found for ' . $_POST['action'] );
 					break;
@@ -457,6 +462,10 @@ class FontsamplerPlugin {
 					'ui_order'    => $ui_order,
 					'blocks'      => $blocks
 				));
+				break;
+
+			case 'settings_reset':
+				echo $this->twig->render( 'settings-reset.twig' );
 				break;
 
 			case 'about':

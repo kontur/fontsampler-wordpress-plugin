@@ -247,6 +247,15 @@
 #fontsampler-admin .form-settings label input.fontsampler-admin-slider-label {
   width: 15em;
 }
+#fontsampler-admin .fontsampler-settings-reset {
+  display: inline-block;
+  float: right;
+  position: relative;
+  top: -3em;
+}
+#fontsampler-admin .fontsampler-settings-reset p {
+  margin: 0;
+}
 #fontsampler-admin #fontsampler-fontset-list li select {
   width: 22.25em;
 }

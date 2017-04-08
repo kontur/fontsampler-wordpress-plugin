@@ -481,4 +481,8 @@ class FontsamplerFormhandler {
 			$this->fontsampler->helpers->write_css_from_settings( $data );
 		}
 	}
+
+	function handle_settings_reset() {
+		return $this->fontsampler->db->set_default_settings();
+	}
 }

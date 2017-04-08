@@ -136,9 +136,21 @@ class FontsamplerDatabase {
 			) DEFAULT CHARSET=utf8";
 		$this->wpdb->query( $sql );
 
-		$data = $this->fontsampler->settings_defaults;
+		$this->set_default_settings();
+	}
+
+	/**
+	 * Insert or reset the default settings
+	 */
+	function set_default_settings() {
+		$data               = $this->fontsampler->settings_defaults;
 		$data['is_default'] = 1;
+		if ( false !== $this->get_default_settings() ) {
+			$this->wpdb->delete( $this->table_settings, array( 'is_default' => 1 ) );
+		}
 		$this->wpdb->insert( $this->table_settings, $data );
+
+		return true;
 	}
 
 
