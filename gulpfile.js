@@ -17,8 +17,10 @@ var dependencies = [
     'Atem-CPS-whitelisting/lib',
     'Atem-Errors/lib',
     'Atem-Math-Tools/lib',
-    'Atem-Pen-Case/lib'
+    'Atem-Pen-Case/lib',
+    'clipboard/dist/clipboard.js'
 ];
+
 
 // this is a bit excessively called also when other bower packages update as well
 gulp.task('watch', function () {

@@ -152,6 +152,43 @@
   height: 2em;
   line-height: 1em !important;
 }
+#fontsampler-admin .fontsampler-copy-clipboard {
+  position: relative;
+  float: left;
+  background: #B8E986;
+  border: 3px solid #CBCBCB;
+  border-left: 0;
+  border-radius: 0 5px 5px 0;
+  color: #222222;
+  font-weight: bold;
+  font-size: smaller;
+  padding: 0.4em 1em 0.3em;
+  height: 3em;
+  outline: none;
+  cursor: pointer;
+}
+#fontsampler-admin .fontsampler-copy-clipboard:hover {
+  background: #7ED321;
+}
+#fontsampler-admin .fontsampler-copy-clipboard:after {
+  background: #7ED321;
+  border-radius: 5px;
+  color: #FFFFFF;
+  content: "Copied to clipboard";
+  position: absolute;
+  top: 3em;
+  left: -1em;
+  padding: 0.2em 0.5em;
+  width: 6em;
+  z-index: 99;
+  opacity: 0;
+  height: 0;
+  transition: all 0.2s ease-in-out;
+}
+#fontsampler-admin .fontsampler-copy-clipboard.success:after {
+  opacity: 1;
+  height: auto;
+}
 .rangeslider,
 .rangeslider__fill {
   display: block;
@@ -862,13 +899,27 @@
   box-shadow: none;
 }
 #fontsampler-admin code {
-  border: 1px solid #ddd;
+  border: 3px solid #CBCBCB;
   font-family: monospace;
-  background: #eee;
+  background: #F2F2F2;
   padding: 0.4em 1em 0.3em;
   font-size: smaller;
-  border-radius: 3px;
+  border-radius: 5px;
   text-align: center;
+}
+#fontsampler-admin code.fontsampler-clipboard {
+  border-radius: 5px 0 0 5px;
+  float: left;
+  box-sizing: border-box;
+  height: 3em;
+  margin: 0;
+  display: block;
+}
+#fontsampler-admin .fontsampler-clipboard-wrapper {
+  min-width: 15em;
+}
+#fontsampler-admin .fontsampler-clipboard-wrapper:hover > * {
+  border-color: #B8E986;
 }
 #fontsampler-admin .filename {
   font-family: monospace;

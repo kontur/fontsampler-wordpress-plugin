@@ -2,7 +2,7 @@
  * All the jquery components dealing with manipulating the
  * various admin side interactions
  */
-define(['jquery', 'rangeslider', 'selectric', 'validate'], function ($, r, s, v) {
+define(['jquery', 'rangeslider', 'selectric', 'validate', 'clipboard'], function ($, r, s, v, clipboard) {
 
     function main() {
 
@@ -331,6 +331,16 @@ define(['jquery', 'rangeslider', 'selectric', 'validate'], function ($, r, s, v)
         });
 
     }
+
+    // add "copy to clipboard" functionality to fontsampler listing table
+    var cb = new clipboard(".fontsampler-copy-clipboard");
+    cb.on('success', function(e) {
+        e.clearSelection();
+        $(e.trigger).addClass('success');
+        setTimeout(function () {
+            $(e.trigger).removeClass('success');
+        }, 1500);
+    });
 
     return main;
 

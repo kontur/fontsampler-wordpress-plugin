@@ -15,7 +15,8 @@ require.config({
         'specimenTools': 'js/libs/specimen-tools/lib',
         'rangeslider': 'js/libs/rangeslider.js/dist/rangeslider',
         'selectric': 'js/libs/jquery-selectric/public/jquery.selectric',
-        'validate': 'js/libs/jquery-form-validator/form-validator/jquery.form-validator'
+        'validate': 'js/libs/jquery-form-validator/form-validator/jquery.form-validator',
+        'clipboard': 'js/libs/clipboard/dist/clipboard',
     },
 
     // these shims tell require that when loading these libraries it needs to make

@@ -772,7 +772,11 @@ define([
         if(typeof obj !== 'object') return;
         for(k in obj)
             deepFreeze(obj[k]);
-        Object.freeze(obj);
+        try {
+          Object.freeze(obj);
+        } catch (e) {
+          return;
+        }
     }
 
     // Don't want returned sub objects to be changeable by a client:

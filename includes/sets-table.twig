@@ -37,7 +37,15 @@
                     {% endfor %}
                 </ul>
             </td>
-            <td><code>[fontsampler id={{ set.id }}]</code></td>
+            <td>
+                <div class="fontsampler-clipboard-wrapper">
+                    <code class="fontsampler-clipboard" id="fontsampler-copy-clipboard-target-{{ set.id }}">[fontsampler
+                        id={{ set.id }}]</code>
+                    <button class="fontsampler-copy-clipboard"
+                            data-clipboard-target="#fontsampler-copy-clipboard-target-{{ set.id }}"
+                    >Copy</button>
+                </div>
+            </td>
             <td>
                 <form method="post" action="?page=fontsampler&amp;subpage=set_edit&amp;id={{ set.id }}"
                       style="display: inline-block;">

@@ -145,14 +145,33 @@
     }
 
     code {
-        border: 1px solid #ddd;
+        border: 3px solid @fs_color_medium;
         font-family: monospace;
-        background: #eee;
+        background: @fs_color_light;
         padding: 0.4em 1em 0.3em;
         font-size: smaller;
-        border-radius: 3px;
+        border-radius: 5px;
         text-align: center;
+
+        &.fontsampler-clipboard {
+            border-radius: 5px 0 0 5px;
+            float: left;
+            box-sizing: border-box;
+            height: 3em;
+            margin: 0;
+            display: block;
+        }
     }
+
+    .fontsampler-clipboard-wrapper {
+        min-width: 15em;
+        &:hover {
+            & > * {
+                border-color: @fs_color_add_light;
+            }
+        }
+    }
+
     .filename {
         font-family: monospace;
         font-size: smaller;

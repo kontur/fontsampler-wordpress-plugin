@@ -103,4 +103,49 @@
         height: 2em;
         line-height: 1em !important;
     }
+
+    .fontsampler-copy-clipboard {
+        position: relative;
+        float: left;
+
+        background: @fs_color_add_light;
+        border: 3px solid @fs_color_medium;
+        border-left: 0;
+        border-radius: 0 5px 5px 0;
+        color: @fs_color_text;
+        font-weight: bold;
+        font-size: smaller;
+        padding: 0.4em 1em 0.3em;
+        height: 3em;
+        outline: none;
+        cursor: pointer;
+
+        &:hover {
+            background: @fs_color_add;
+        }
+
+        &:after {
+            background: @fs_color_add;
+            border-radius: 5px;
+            color: @fs_color_white;
+            content: "Copied to clipboard";
+            position: absolute;
+            top: 3em;
+            left: -1em;
+            padding: 0.2em 0.5em;
+            width: 6em;
+            z-index: 99;
+            opacity: 0;
+            height: 0;
+            transition: all 0.2s ease-in-out;
+        }
+
+        &.success {
+            &:after {
+                opacity: 1;
+                height: auto;
+            }
+        }
+
+    }
 }
