@@ -1,3 +1,16 @@
+# 0.2.0
+- Complete style overhaul for the admin area
+- Supporting fully customisable settings on a per Fontsampler basis
+- Color themes can be customised for each Fontsampler
+- Added "Notifications" tab to admin area informing of any detected problems
+- Implemented sorting and storing a default Fontsampler layout order in the settings
+- Implemented action to reset the settings to the shipped defaults (in case you get carried away tweaking the settings ;) )
+- Implemented copy-to-clipboard button in admin area for improved ease of use
+- Fixed iOS 8 javascript errors from an included library
+- Updated sponsors (Yay, thanks!)
+- Internally restructured the database and templating system for more modular future development
+- Improved the database migration routine to give better error messages to admin users
+
 # 0.1.7
 - Hotfix to upload filetype filter
 

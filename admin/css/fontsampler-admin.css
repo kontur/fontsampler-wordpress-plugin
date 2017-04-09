@@ -845,6 +845,9 @@
   border: 4px solid #F2F2F2;
   padding: 4px;
 }
+#fontsampler-admin table.fontsampler-fontset-files {
+  margin: 0 auto;
+}
 #fontsampler-admin th,
 #fontsampler-admin td {
   padding: 0.25em 0.5em;

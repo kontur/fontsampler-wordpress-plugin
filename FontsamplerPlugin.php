@@ -366,12 +366,23 @@ class FontsamplerPlugin {
 				$set = $defaults;
 				$set['use_defaults'] = 1;
 				$set['alignment_initial'] = null;
-				$set['ui_columns'] = null;
+
+				// generate all necessary info for the live layout preview
+				$layout = new FontsamplerLayout();
+				$str = $layout->sanitizeString($set['ui_order'], $set);
+				$layout->stringToArray($str);
+				$ui_order = !empty( $set['ui_order'] )
+					? $layout->sanitizeString( $set['ui_order'], $set )
+					: $layout->arrayToString( $layout->getDefaultBlocks(), $set );
+
+				$blocks = array_merge( $layout->getDefaultBlocks(), $layout->stringToArray( $set['ui_order'], $set ) );
 
 				echo $this->twig->render( 'set-edit.twig', array(
 					'set' => $set,
 					'defaults' => $defaults,
-					'fonts'    => $this->db->get_fontfile_posts()
+					'fonts'    => $this->db->get_fontfile_posts(),
+					'ui_order'    => $ui_order,
+					'blocks'      => $blocks
 				));
 				break;
 
