@@ -1,0 +1,13 @@
+{% extends 'layout.twig' %}
+
+{% block content %}
+<h1>Do you really want to reset settings to defaults?</h1>
+<p><strong>This action can not be reversed and will affect all Fontsamplers using default options.</strong></p>
+<form method="post" action="?page=fontsampler&amp;subpage=settings">
+	<input type="hidden" name="action" value="reset_settings">
+	{{ wp_nonce_field( 'fontsampler-action-reset_settings' )|raw }}
+
+	{{ submit_button( 'Yes, reset Settings to defaults', 'delete' ) }}
+</form>
+<p><a href="?page=fontsampler&amp;subpage=settings">Back without reseting.</a></p>
+{% endblock %}

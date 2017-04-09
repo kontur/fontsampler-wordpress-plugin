@@ -1,0 +1,98 @@
+{% extends('layout.twig') %}
+
+{% block content %}
+<h1>{% if set.id is empty %}New fontsampler{% else %}Edit fontsampler {{ set.id }}{% endif %}</h1>
+
+<p>Once you save the fontsampler, it will be saved with an ID you use to embed it on your wordpress pages</p>
+<form method="post" enctype="multipart/form-data" action="?page=fontsampler" id="fontsampler-edit-sample">
+	<input type="hidden" name="action" value="edit_set">
+	{{ wp_nonce_field( 'fontsampler-action-edit_set' )|raw }}
+
+	{% if set.id is not empty %}<input type="hidden" name="id" value="{{ set.id }}">{% endif %}
+
+	<h2>Fonts</h2>
+	{% if fonts is not empty %}<p>Pick which fontsets to use, or upload your fontsampler's fonts now:</p>{% endif %}
+
+	<input type="hidden" name="fonts_order" value="{% if fonts_order is not empty %}{{ fonts_order }}{% endif %}">
+	<ul id="fontsampler-fontset-list">
+		{% if set.id is not empty and set.fonts is not empty %}
+			{% for setfont in set.fonts %}
+				<li>
+					{{ include( 'partials/font-row.twig', { fonts: fonts, setfont: setfont }) }}
+				</li>
+			{% endfor %}
+		{% elseif set.id is empty and fonts is not empty %}
+			<li>
+				<!-- for a new fontset, display one, non-selected, select choice -->
+				{{ include( 'partials/font-row.twig', { fonts: fonts, setfont: null }) }}
+			</li>
+		{% endif %}
+	</ul>
+
+	<div>
+		{% if fonts is not empty %}
+			<button class="button add fontsampler-fontset-add" style="margin-bottom: 0.5em;">
+				<i class="icon">+</i>
+				<span>Add existing fontset</span>
+			</button>
+			<br>
+		{% endif %}
+		<button class="button add fontsampler-fontset-create-inline">
+			<i class="icon">&#8679;</i>
+			<span>Upload new fontset</span>
+		</button>
+	</div>
+	<br>
+	<small>Picking multiple fontsets will enable the select field for switching between fonts used in the
+		Fontsampler.
+	</small>
+	<br>
+	<small>Use the <span class="fontsampler-fontset-sort-handle">&varr;</span> -arrow on the left to drag the order of the fonts. Use the minus on the right to remove fonts.</small>
+
+	{% include 'options.twig' %}
+
+	{% include 'partials/preview.twig' %}
+
+	{% if set.id is not empty %}
+		{{ submit_button('Save changes') }}
+	{% else %}
+		{{ submit_button('Save new Fontsampler') }}
+	{% endif %}
+</form>
+
+<!-- hidden templates -->
+<div class="fontsampler-admin-placeholders">
+	<ul>
+		<li id="fontsampler-admin-fontpicker-placeholder">
+			<!-- for a new fontset, display one, non-selected, select choice -->
+			{{ include( 'partials/font-row.twig', { fonts: fonts, setfont: null }) }}
+		</li>
+		<li id="fontsampler-fontset-inline-placeholder" class="fontsampler-fontset-inline">
+			<input class="inline_font_id" value="" type="hidden">
+			<span class="fontsampler-fontset-sort-handle">&varr;</span>
+
+			<div class="fontsampler-fontset-inline-wrapper">
+				{% include 'fontset-fonts.twig' %}
+				<small style="float: left;">Uploading at the very least a <code>woff</code> file is recommended.
+					You can later edit the files of this fontset in the
+					<a href="?page=fontsampler&subpage=fonts">Fonts &amp; Files</a> tab.
+				</small>
+			</div>
+			<button class="button delete fontsampler-fontset-remove"
+					title="Remove this fontset from sampler">
+				<i class="icon">&minus;</i>
+				<span>Remove fontset</span>
+			</button>
+
+			<label class="fontsampler-initial-font-selection">
+				<input type="radio" name="initial_font" value="">
+				<span class="fontsampler-initial-font">
+						<span class="initial-font-selected">Is initially selected</span>
+						<span class="initial-font-unselected">Set as initial</span>
+					</span>
+			</label>
+		</li>
+	</ul>
+</div>
+
+{% endblock %}

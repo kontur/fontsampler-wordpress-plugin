@@ -1,0 +1,30 @@
+<h2>Options</h2>
+{% if not settings %}
+<label class="fontsampler-radio block">
+    <input type="radio" name="use_default_options"
+           value="1" {% if set.use_defaults == 1 %} checked="checked" {% endif %}>
+    <span>Use default options</span>
+</label>
+<label class="fontsampler-radio block">
+    <input type="radio" name="use_default_options"
+           value="0" {% if set.use_defaults == 0 %} checked="checked" {% endif %}>
+    <span>Use custom options</span>
+</label>
+{% endif %}
+
+<div class="fontsampler-options {% if settings %} fontsampler-options-settings {% endif %}">
+    <h3>Basic</h3>
+    <fieldset>
+        {% include 'partials/options-basic.twig' %}
+    </fieldset>
+
+    <h3>Features</h3>
+    <fieldset>
+        {% include 'partials/options-features.twig' %}
+    </fieldset>
+
+    <h3>Styling</h3>
+    <fieldset class="no-padding">
+        {% include 'partials/options-styles.twig' %}
+    </fieldset>
+</div>

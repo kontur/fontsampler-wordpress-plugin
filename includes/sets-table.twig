@@ -1,0 +1,66 @@
+<table>
+    <thead>
+    <tr>
+        <th>Fonts<br>
+            <small>List one or more font sets used in this sampler</small>
+        </th>
+        <th>Preview<br>
+            <small>Font without interface options; Note that this display uses the supplied formats.</small>
+        </th>
+        <th>Shortcode<br>
+            <small>Copy this code including brackets and insert them where you want to render the font sampler
+            </small>
+        </th>
+        <th>Edit</th>
+        <th>Delete</th>
+    </tr>
+    </thead>
+    <tbody id="fontsampler-admin-tbody-ajax">
+    {% for set in sets %}
+        <tr>
+            <td>
+                <ul>
+                    {% for font in set.fonts %}
+                        <li>
+                            <a href="?page=fontsampler&amp;subpage=font_edit&amp;id={{ font.id }}">{{ font.name }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </td>
+            <td>
+                <ul>
+                    {% for font in set.fonts %}
+                        <li>
+                            <div class="fontsampler-preview"
+                                 data-font-files='{{ fontfiles_json(font) }}'>{{ font.name }}</div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </td>
+            <td>
+                <div class="fontsampler-clipboard-wrapper">
+                    <code class="fontsampler-clipboard" id="fontsampler-copy-clipboard-target-{{ set.id }}">[fontsampler
+                        id={{ set.id }}]</code>
+                    <button class="fontsampler-copy-clipboard"
+                            data-clipboard-target="#fontsampler-copy-clipboard-target-{{ set.id }}"
+                    >Copy</button>
+                </div>
+            </td>
+            <td>
+                <form method="post" action="?page=fontsampler&amp;subpage=set_edit&amp;id={{ set.id }}"
+                      style="display: inline-block;">
+                    {{ submit_button('Edit set') }}
+                </form>
+            </td>
+            <td>
+                <form method="post" action="?page=fontsampler&amp;subpage=set_delete&amp;id={{ set.id }}"
+                      style="display: inline-block;">
+                    <input type="hidden" name="id" value="{{ set.id }}">
+                    {{ submit_button('Delete set', 'delete') }}
+                </form>
+            </td>
+        </tr>
+
+    {% endfor %}
+    </tbody>
+</table>

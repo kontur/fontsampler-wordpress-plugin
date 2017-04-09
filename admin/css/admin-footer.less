@@ -1,0 +1,42 @@
+
+#fontsampler-admin {
+    footer {
+        margin: 1.5em 1.5em 0 0;
+        padding: 1em 2em 0.5em;
+        background: white;
+        ul {
+            overflow: auto;
+        }
+        li {
+            box-sizing: border-box;
+            display: inline-block;
+            float: left;
+            padding-right: 1em;
+            width: 20%;
+            max-width: 120px;
+
+            > a {
+                display: block;
+                height: 0;
+                padding-top: 150/240*100%;
+                position: relative;
+                text-align: center;
+                width: 100%;
+
+                img {
+                    display: block;
+                    height: 100%;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    position: absolute;
+                }
+            }
+            > img {
+                display: block;
+                height: 150/240*100/5%;
+                width: 100%;
+            }
+        }
+    }
+}

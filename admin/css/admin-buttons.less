@@ -1,0 +1,151 @@
+@import "admin-variables.less";
+
+.button() {
+    clear: both;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    display: inline-block;
+    font-weight: bold;
+    font-size: 1em;
+    line-height: 1.75em;
+    margin: 0 auto;
+    padding: 0.25em 0.5em;
+    position: relative;
+    text-shadow: none;
+    text-decoration: none;
+    transition: background 0.15s ease-in-out;
+
+    i.icon {
+        display: inline-block;
+        font-style: normal;
+        height: 100%;
+        left: 0;
+        line-height: 2em;
+        position: absolute;
+        text-align: center;
+        top: 0;
+        width: 2em;
+    }
+    span {
+        padding-left: 2em;
+    }
+}
+
+.button-primary() {
+    .button();
+
+    background: @fs_color_ok_light;
+    color: @fs_color_white;
+    &:hover {
+        background: @fs_color_ok;
+    }
+}
+
+.button-add() {
+    .button();
+
+    background: @fs_color_add_light;
+    color: @fs_color_text;
+    &:hover {
+        background: @fs_color_add;
+    }
+
+    i.icon {
+        background: @fs_color_add;
+    }
+}
+
+.button-delete() {
+    .button();
+
+    background: @fs_color_delete_light;
+    color: @fs_color_white;
+    &:hover {
+        background: @fs_color_delete;
+    }
+
+    i.icon {
+        background: @fs_color_delete;
+    }
+}
+
+#fontsampler-admin {
+
+    table .button {
+        margin: 0 auto;
+    }
+
+    .button {
+        .button();
+
+        &.button-primary {
+            .button-primary();
+        }
+
+        &.add {
+            .button-add();
+        }
+
+        &.delete {
+            .button-delete();
+        }
+    }
+
+    table + .button {
+        margin-top: 1em !important;
+    }
+
+    .wp-picker-default {
+        background: lightgrey;
+        top: -0.1em;
+        position: relative;
+        height: 2em;
+        line-height: 1em !important;
+    }
+
+    .fontsampler-copy-clipboard {
+        position: relative;
+        float: left;
+
+        background: @fs_color_add_light;
+        border: 3px solid @fs_color_medium;
+        border-left: 0;
+        border-radius: 0 5px 5px 0;
+        color: @fs_color_text;
+        font-weight: bold;
+        font-size: smaller;
+        padding: 0.4em 1em 0.3em;
+        height: 3em;
+        outline: none;
+        cursor: pointer;
+
+        &:hover {
+            background: @fs_color_add;
+        }
+
+        &:after {
+            background: @fs_color_add;
+            border-radius: 5px;
+            color: @fs_color_white;
+            content: "Copied to clipboard";
+            position: absolute;
+            top: 3em;
+            left: -1em;
+            padding: 0.2em 0.5em;
+            width: 6em;
+            z-index: 99;
+            opacity: 0;
+            height: 0;
+            transition: all 0.2s ease-in-out;
+        }
+
+        &.success {
+            &:after {
+                opacity: 1;
+                height: auto;
+            }
+        }
+
+    }
+}

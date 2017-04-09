@@ -1,15 +1,15 @@
-define(['jquery', 'rangeslider', 'selectric'], function($) {
+define(['jquery', 'rangeslider', 'selectric'], function ($) {
 
     function debounce(fn, debounceDuration) {
         debounceDuration = debounceDuration || 100;
-        return function() {
+        return function () {
             if (!fn.debouncing) {
                 var args = Array.prototype.slice.apply(arguments);
                 fn.lastReturnVal = fn.apply(window, args);
                 fn.debouncing = true;
             }
             clearTimeout(fn.debounceTimeout);
-            fn.debounceTimeout = setTimeout(function(){
+            fn.debounceTimeout = setTimeout(function () {
                 fn.debouncing = false;
             }, debounceDuration);
             return fn.lastReturnVal;
@@ -100,7 +100,7 @@ define(['jquery', 'rangeslider', 'selectric'], function($) {
 
         // prevent line breaks on single line instances
         $wrapper.find(typeTesterContentSelector + '.fontsampler-is-singleline')
-            .on( "keypress keyup change paste", function( event ) {
+            .on("keypress keyup change paste", function (event) {
 
                 if (event.type === "keypress") {
                     // for keypress events immediately block pressing enter for line break
@@ -110,10 +110,16 @@ define(['jquery', 'rangeslider', 'selectric'], function($) {
                 } else {
                     // allow other events, filter any html with $.text() and replace linebreaks
                     // TODO fix paste event from setting the caret to the front of the non-input non-textarea
-                    var text = $(this).text().replace('/\n/gi', '');
-                    $(this).html(text);
+                    var $this = $(this),
+                        text = $this.text(),
+                        hasLinebreaks = text.indexOf("\n"),
+                        numChildren = $this.children().length;
+
+                    if (-1 !== hasLinebreaks || 0 !== numChildren) {
+                        $(this).html(text.replace('/\n/gi', ''));
+                    }
                 }
-        } );
+            });
 
         $wrapper.removeClass("on-loading");
 

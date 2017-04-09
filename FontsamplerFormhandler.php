@@ -10,24 +10,11 @@ class FontsamplerFormhandler {
 	private $fontsampler;
 	private $post;
 	private $files;
-	private $boolean_options;
 
 	function __construct( $fontsampler, $post, $files ) {
 		$this->fontsampler = $fontsampler;
 		$this->post        = $post;
 		$this->files       = $files;
-
-		$this->boolean_options = array(
-			'size',
-			'letterspacing',
-			'lineheight',
-			'sampletexts',
-			'alignment',
-			'invert',
-			'opentype',
-			'multiline',
-			'fontpicker',
-		);
 	}
 
 
@@ -66,8 +53,8 @@ class FontsamplerFormhandler {
 			$this->fontsampler->db->error( 'Error: No font sets deleted' );
 		} else {
 			$this->fontsampler->db->delete_join( array( 'font_id' => $id ) );
-			$this->fontsampler->msg->info( 'Font set succesfully removed. Font set also removed from any fontsamplers using it.' );
-			$this->fontsampler->msg->notice( 'Note that the font files themselves have not been removed from the Wordpress uploads folder ( Media Gallery ).' );
+			$this->fontsampler->msg->add_info( 'Font set succesfully removed. Font set also removed from any fontsamplers using it.' );
+			$this->fontsampler->msg->add_notice( 'Note that the font files themselves have not been removed from the Wordpress uploads folder ( Media Gallery ).' );
 		}
 
 		return true;
@@ -80,12 +67,167 @@ class FontsamplerFormhandler {
 
 	function handle_set_edit( $id = null ) {
 		check_admin_referer( 'fontsampler-action-edit_set' );
-		$data = array();
 
-		// loop over all checkbox fields and register their state
-		foreach ( $this->boolean_options as $index ) {
-			$data[ $index ] = isset( $this->post[ $index ] );
+		// for the settings to be inserted, create a copy of the defaults with "null" values,
+		// then fill from $post
+		$settings     = array_map( function () {
+			return null;
+		}, $this->fontsampler->db->get_settings() );
+		$use_defaults = intval( $this->post['use_default_options'] ) === 1;
+
+		// if this fontsampler uses custom settings, insert them
+		if ( ! $use_defaults ) {
+
+			// set these basic submitted infos
+			$settings['set_id']            = $id;
+			$settings['is_ltr']            = $this->post['is_ltr'];
+			$settings['alignment_initial'] = $this->post['alignment_initial'] === 'default' ?
+				null : $this->post['alignment_initial'];
+			$settings['initial']           = $this->post['initial'];
+			$settings['ui_order']          = $this->post['ui_order'];
+			$settings['ui_columns']        = $this->post['ui_columns'] == 'default'
+				? null : intval( $this->post['ui_columns'] );
+
+			// loop through the first 3 options that have more detailed sliders associated with them
+			// which in turn can rely on using defaults or adapt a custom setting as well
+			$sliders = array( 'fontsize', 'letterspacing', 'lineheight' );
+			foreach ( $sliders as $slider ) {
+				if ( isset( $this->post[ $slider ] ) && intval( $this->post[ $slider ] ) === 1 ) {
+					$settings[ $slider ]              = 1;
+					$settings[ $slider . '_label' ]   = intval( $this->post[ $slider . '_use_default' ] ) === 1 ?
+						null : $this->post[ $slider . '_label' ];
+					$settings[ $slider . '_min' ]     = intval( $this->post[ $slider . '_min_use_default' ] ) === 1 ?
+						null : $this->post[ $slider . '_min' ];
+					$settings[ $slider . '_initial' ] = intval( $this->post[ $slider . '_initial_use_default' ] ) === 1 ?
+						null : $this->post[ $slider . '_initial' ];
+					$settings[ $slider . '_max' ]     = intval( $this->post[ $slider . '_max_use_default' ] ) === 1 ?
+						null : $this->post[ $slider . '_max' ];
+				}
+			}
+
+			// loop through all simple checkbox features
+			$checkboxes = array(
+				'sampletexts',
+				'fontpicker',
+				'alignment',
+				'invert',
+				'opentype',
+				'multiline',
+				'buy',
+				'specimen'
+			);
+			foreach ( $checkboxes as $checkbox ) {
+				if ( isset( $this->post[ $checkbox ] ) ) {
+					$settings[ $checkbox ] = 1;
+				}
+
+				// exception here: sampletexts has a further subsection about using defaults or custom
+				if ( $checkbox === 'sampletexts' ) {
+					if ( intval( $this->post['sampletexts_use_default'] ) === 1 ) {
+						$settings['sample_texts'] = null;
+					} else {
+						$settings['sample_texts'] = $this->post['sample_texts'];
+					}
+				}
+			}
+
+			// upload buy and specimen images or set labels
+			foreach ( array( 'buy', 'specimen' ) as $link ) {
+				if ( $settings[ $link ] === 1 ) {
+					// store the actual link value
+					$settings[ $link . '_url' ] = isset( $this->post[ $link . '_url' ] )
+						? $this->post[ $link . '_url' ] : null;
+
+					$type              = $link . '_type';
+					$settings[ $type ] = isset( $this->post[ $type ] ) ? $this->post[ $type ] : null;
+
+					if ( false !== strpos( $settings[ $type ], '_default' ) ) {
+						// selected one of the DEFAULT options:
+						// replace the "_default" and set all individual values to null
+						// so that the set will inherit from the defaults
+						$settings[ $type ]            = str_replace( '_default', '', $settings[ $type ] );
+						$settings[ $link . '_image' ] = null;
+						$settings[ $link . '_label' ] = null;
+					} else {
+						// custom settings for this SET, save the value that corresponds to the "type" submitted
+						if ( $settings[ $type ] === 'image' ) {
+							$settings[ $link . '_label' ] = null;
+							$settings[ $link . '_image' ] = trim( $this->post[ $link . '_image' ] );
+						} else {
+							$settings[ $link . '_label' ] = trim( $this->post[ $link . '_label' ] );
+							$settings[ $link . '_image' ] = null;
+						}
+					}
+				}
+			}
+
+			// loop through css colors
+			// these can be gotten from default settings, all color fields start with 'css_color_...'
+			$css_colors = array_filter( array_keys( $settings ), function ( $item ) {
+				return substr( $item, 0, 10 ) === 'css_color_';
+			} );
+			foreach ( $css_colors as $key ) {
+				if ( $use_defaults ) {
+					$settings[ $key ] = null;
+				} else {
+					$settings[ $key ] = $this->post[ $key . '_use_default' ] == 1
+						? null : $this->post[ $key ];
+				}
+			}
+
+			// loop through css fields
+			// these can be gotten from default settings, all css fields other than colors start with 'css_value_...'
+			$css_colors = array_filter( array_keys( $settings ), function ( $item ) {
+				return substr( $item, 0, 10 ) === 'css_value_';
+			} );
+			foreach ( $css_colors as $key ) {
+				if ( $use_defaults ) {
+					$settings[ $key ] = null;
+				} else {
+					$settings[ $key ] = $this->post[ $key . '_use_default' ] == 1
+						? null : $this->post[ $key ];
+				}
+			}
 		}
+
+		// save the fontsampler set to the DB
+		if ( ! isset( $id ) ) {
+			// insert new
+			$set = array(
+				'name'         => '..',
+				'initial_font' => isset( $this->post['initial_font'] ) ? $this->post['initial_font'] : null,
+				'use_defaults' => $use_defaults ? 1 : 0
+			);
+			$id  = $this->fontsampler->db->insert_set( $set );
+
+			if ( $id ) {
+				$this->fontsampler->db->save_settings_for_set( $settings, $id );
+				$this->fontsampler->helpers->get_custom_css( $this->fontsampler->db->get_set( $id ) );
+				$this->fontsampler->msg->add_info( 'Created fontsampler with id ' . $id
+				                               . '. You can now embed it in your posts or pages by adding [fontsampler id='
+				                               . $id . '].' );
+			} else {
+				$this->fontsampler->msg->add_error( 'Error: Failed to create new fontsampler.' );
+
+				return false;
+			}
+		} else {
+			// update existing
+			if ( ! $use_defaults ) {
+				$this->fontsampler->db->save_settings_for_set( $settings, $id );
+			} else {
+				// if updating an existing set that now uses default settings but used to have
+				// custom settings, delete those
+				$this->fontsampler->db->delete_settings_for_set( $id );
+			}
+			$this->fontsampler->db->update_set( array( 'use_defaults' => $use_defaults ? 1 : 0 ), $id );
+			$this->fontsampler->helpers->write_custom_css_for_set( $this->fontsampler->db->get_set( $id ) );
+			$this->fontsampler->msg->add_info( 'Fontsampler ' . $id . ' successfully updated.' );
+		}
+
+		// wipe join table for this fontsampler, then add whatever now was instructed to be saved
+		$this->fontsampler->db->delete_join( array( 'set_id' => $id ) );
+
 
 		// handle any possibly included inline fontset creation
 		// Any items present in the fontname array indicate new fonts have been added inline and need to be
@@ -94,52 +236,6 @@ class FontsamplerFormhandler {
 		if ( isset( $this->post['fontname'] ) ) {
 			$inlineFontIds = $this->upload_multiple_fontset_files( $this->post['fontname'] );
 		}
-
-		// substitute in defaults, if we are to use them
-		// when defaults get updates, any sets with the default_features = 1 will need to get updated
-		if ( $this->post['default_features'] == 1 ) {
-			$substitutes              = array_intersect_key( $this->fontsampler->db->get_settings(), $this->boolean_options );
-			$data                     = array_replace( $data, $substitutes );
-			$data['default_features'] = 1;
-		} else {
-			$data['default_features'] = 0;
-		}
-
-		$data['initial']      = ! empty( $this->post['initial'] ) ? $this->post['initial'] : "";
-		$data['is_ltr']       = ! empty( $this->post['is_ltr'] ) && $this->post['is_ltr'] == "1" ? 1 : 0;
-		$data['ui_order']     = $this->post['ui_order'];
-		$data['initial_font'] = $this->handle_set_get_initial_font( $inlineFontIds );
-		$data['buy']          = ! empty( $this->post['buy'] ) ? $this->post['buy'] : "";
-		$data['specimen']     = ! empty( $this->post['specimen'] ) ? $this->post['specimen'] : "";
-		$data['ui_columns']   = ! empty( $this->post['ui_columns'] ) ? $this->post['ui_columns'] : "";
-
-		$set_id = null;
-		// save the fontsampler set to the DB
-		if ( ! isset( $id ) ) {
-			// insert new
-			$set_id = $this->fontsampler->db->insert_set( $data );
-			if ( $set_id ) {
-				$this->fontsampler->msg->info( 'Created fontsampler with id ' . $set_id
-				                               . '. You can now embed it in your posts or pages by adding [fontsampler id='
-				                               . $set_id . '].' );
-			} else {
-				$this->fontsampler->msg->error( 'Error: Failed to create new fontsampler.' );
-
-				return false;
-			}
-		} else {
-			// update existing
-			if ( $this->fontsampler->db->update_set( $data, $id ) ) {
-				$set_id = $id;
-			} else {
-				$this->fontsampler->msg->error( 'Error: Failed to update fontsampler ' . $id . '.' );
-
-				return false;
-			}
-		}
-
-		// wipe join table for this fontsampler, then add whatever now was instructed to be saved
-		$this->fontsampler->db->delete_join( array( 'set_id' => $set_id ) );
 
 
 		// fonts_order looks something like like 3,2,1,inline_0,4 where ints are existing fonts and inline_x are
@@ -168,7 +264,7 @@ class FontsamplerFormhandler {
 		foreach ( array_unique( $font_ids ) as $font_id ) {
 			if ( 0 != $font_id ) {
 				$this->fontsampler->db->insert_join( array(
-					'set_id'  => $set_id,
+					'set_id'  => $id,
 					'font_id' => $font_id,
 					'order'   => $font_index
 				) );
@@ -271,26 +367,25 @@ class FontsamplerFormhandler {
 			) );
 		}
 
-
 		foreach ( $this->fontsampler->font_formats as $label ) {
 			$file = $this->files[ $label . '_' . $file_suffix ];
 
 			if ( ! empty( $file ) && $file['size'] > 0 ) {
-				$uploaded = media_handle_upload( $label . '_' . $file_suffix, 0);
-//				, null, array(
-//					'mimes' => get_allowed_mime_types(),
-//					'validate' =>
-//				) );
+				$uploaded = media_handle_upload( $label . '_' . $file_suffix, 0 );
+				//				, null, array(
+				//					'mimes' => get_allowed_mime_types(),
+				//					'validate' =>
+				//				) );
 
 				if ( is_wp_error( $uploaded ) ) {
-					$this->fontsampler->msg->error( 'Error uploading ' . $label . ' file: ' . $uploaded->get_error_message() );
+					$this->fontsampler->msg->add_error( 'Error uploading ' . $label . ' file: ' . $uploaded->get_error_message() );
 				} else {
-					$this->fontsampler->msg->info( 'Uploaded ' . $label . ' file: ' . $file['name'] );
+					$this->fontsampler->msg->add_info( 'Uploaded ' . $label . ' file: ' . $file['name'] );
 					$data[ $label ] = $uploaded;
 				}
 			} else {
 				if ( in_array( $label, $this->fontsampler->font_formats_legacy ) && ! $this->fontsampler->admin_hide_legacy_formats ) {
-					$this->fontsampler->msg->notice( 'No ' . $label . ' file provided. You can still add it later.' );
+					$this->fontsampler->msg->add_notice( 'No ' . $label . ' file provided. You can still add it later.' );
 				}
 			}
 		}
@@ -301,7 +396,7 @@ class FontsamplerFormhandler {
 			return $id;
 		} else {
 			if ( $this->fontsampler->db->insert_font( $data ) ) {
-				$this->fontsampler->msg->info( 'Created fontset ' . $name );
+				$this->fontsampler->msg->add_info( 'Created fontset ' . $name );
 
 				return $this->fontsampler->db->get_insert_id();
 			}
@@ -317,7 +412,7 @@ class FontsamplerFormhandler {
 			if ( 'delete_set' == $this->post['action'] && isset( $id ) && is_int( $id ) && $id > 0 ) {
 				check_admin_referer( 'fontsampler-action-delete_set' );
 				if ( $this->fontsampler->db->delete_set( intval( $this->post['id'] ) ) ) {
-					$this->fontsampler->msg->info( 'Deleted ' . $id );
+					$this->fontsampler->msg->add_info( 'Deleted Fontsampler ' . $id );
 				}
 			}
 		}
@@ -325,44 +420,69 @@ class FontsamplerFormhandler {
 
 
 	function handle_settings_edit() {
-		// no settings ID's for now, just one default row
-		if ( isset( $this->post['id'] ) ) {
-			$id = (int) ( $this->post['id'] );
-			if ( 'edit_settings' == $this->post['action'] && isset( $id ) && is_int( $id ) && $id > 0 ) {
-				// update the wp_option field for hiding legacy font formats
-				if ( isset( $this->post['admin_hide_legacy_formats'] ) ) {
-					$val = intval( $this->post['admin_hide_legacy_formats'] );
-					update_option( constant( get_class( $this->fontsampler ) . "::FONTSAMPLER_OPTION_HIDE_LEGACY_FORMATS" ), $val );
-					$this->fontsampler->admin_hide_legacy_formats = $val;
+		if ( 'edit_settings' == $this->post['action'] ) {
+			$data = array();
+
+			// update the wp_option field for hiding legacy font formats
+			if ( isset( $this->post['admin_hide_legacy_formats'] ) ) {
+				$val = intval( $this->post['admin_hide_legacy_formats'] );
+				update_option( constant( get_class( $this->fontsampler ) . "::FONTSAMPLER_OPTION_HIDE_LEGACY_FORMATS" ), $val );
+				$this->fontsampler->admin_hide_legacy_formats = $val;
+			} else {
+				update_option( constant( get_class( $this->fontsampler ) . "::FONTSAMPLER_OPTION_HIDE_LEGACY_FORMATS" ), 0 );
+				$this->fontsampler->admin_hide_legacy_formats = 0;
+			}
+
+			$settings_fields   = array_keys( $this->fontsampler->db->get_default_settings() );
+			$checkbox_features = $this->fontsampler->helpers->get_checkbox_features();
+
+			foreach ( $settings_fields as $field ) {
+				if ( in_array( $field, $checkbox_features ) ) {
+					$data[ $field ] = ( isset( $this->post[ $field ] ) && $this->post[ $field ] == 1 ) ? 1 : 0;
 				} else {
-					update_option( constant( get_class( $this->fontsampler ) . "::FONTSAMPLER_OPTION_HIDE_LEGACY_FORMATS" ), 0 );
-					$this->fontsampler->admin_hide_legacy_formats = 0;
-				}
-
-
-				$settings_fields = array_keys( $this->fontsampler->settings_defaults );
-
-				$data = array();
-				foreach ( $settings_fields as $field ) {
-					if ( in_array( $field, $this->fontsampler->default_features ) ) {
-						$data[ $field ] = isset( $this->post[ $field ] ) ? 1 : 0;
+					if ( isset( $this->post[ $field ] ) ) {
+						$data[ $field ] = trim( $this->post[ $field ] );
 					} else {
-						if ( isset( $this->post[ $field ] ) ) {
-							$data[ $field ] = trim( $this->post[ $field ] );
-						}
+						// if the field is not one of the UI block checkboxes
+						// and it was not posted it was posted as "empty", so set it null in the db
+						$data[ $field ] = null;
 					}
 				}
-
-				// atm no inserts, only updating the defaults
-				$this->fontsampler->db->update_settings( $data, $id );
-
-				// rewrite any fontsampler sets that use the defaults
-				$this->fontsampler->db->update_defaults( $data );
-
-				// further generate a new settings css file
-				$this->fontsampler->helpers->write_css_from_settings( $data );
 			}
+
+			// upload buy and specimen images or set labels
+			foreach ( array( 'buy', 'specimen' ) as $link ) {
+				if ( $data[ $link ] === 1 ) {
+					// buy_url gets stored already from above foreach loop
+					// buy_type already gets stored, but remove the "_default" suffix
+					$data[ $link . '_type' ] = str_replace( '_default', '', $data[ $link . '_type' ] );
+					if ( empty( $data[ $link . '_type' ] ) ) {
+						$data[ $link . '_type' ] = 'label';
+					}
+					$data[ $link . '_label' ] = $data[ $link . '_type' ] === 'label'
+						? $this->post[ $link . '_label' ]
+						: $this->fontsampler->settings_defaults[ $link . '_label' ]; // since this is settings, restore default if unset
+					$data[ $link . '_image' ] = $data[ $link . '_type' ] === 'image'
+						? $this->post[ $link . '_image' ]
+						: null;
+				}
+			}
+
+			$data['is_default'] = 1;
+			$data['set_id']     = null;
+
+			// atm no inserts, only updating the defaults
+			$this->fontsampler->db->update_settings( $data );
+
+			// rewrite any fontsampler sets that use the defaults
+			$this->fontsampler->db->update_defaults( $data );
+
+			// further generate a new settings css file
+			$this->fontsampler->helpers->write_css_from_settings( $data );
 		}
 	}
 
+	function handle_settings_reset() {
+		return $this->fontsampler->db->set_default_settings();
+	}
 }

@@ -9,9 +9,9 @@
  *    /,'
  *   /'
  *
- * Selectric ϟ v1.10.1 (Sep 23 2016) - http://lcdsantos.github.io/jQuery-Selectric/
+ * Selectric ϟ v1.11.1 (Jan 10 2017) - http://lcdsantos.github.io/jQuery-Selectric/
  *
- * Copyright (c) 2016 Leonardo Santos; MIT License
+ * Copyright (c) 2017 Leonardo Santos; MIT License
  *
  */
 
@@ -191,7 +191,7 @@
       },
 
       /**
-       * Calls the events and hooks registered with function name.
+       * Calls the events registered with function name.
        *
        * @param {string}    fn - The name of the function.
        * @param {number} scope - Scope that should be set on the function.
@@ -205,19 +205,13 @@
           func.apply(elm, args);
         }
 
-        if ( $.fn[pluginName].hooks[fn] ) {
-          $.each($.fn[pluginName].hooks[fn], function() {
-            this.apply(elm, args);
-          });
-        }
-
         $(elm).trigger(pluginName + '-' + this.toDash(fn), args);
       },
 
       /**
        * Transform array list to concatenated string and remove empty values
        * @param  {array} arr - Class list
-       * @return {string}    - Concatenated string
+       * @return {string}      Concatenated string
        */
       arrayToClassname: function(arr) {
         var newArr = $.grep(arr, function(item) {
@@ -281,7 +275,7 @@
         .wrap(hideSelectWrapper);
 
       _this.originalTabindex = _this.$element.prop('tabindex');
-      _this.$element.prop('tabindex', false);
+      _this.$element.prop('tabindex', -1);
 
       _this.populate();
       _this.activate();
@@ -377,7 +371,7 @@
           // Hide default (please choose) if more then one element were selected.
           // If no option value were given value is set to option text by default
           if ( labelMarkup.length > 1 || labelMarkup.length === 0 ) {
-            return $.trim(item.value) !== '' && item.value !== item.text;
+            return $.trim(item.value) !== '';
           }
           return item;
         });
@@ -453,7 +447,7 @@
             $elm.children().each(function(i) {
               var $elm = $(this);
 
-              optionsGroup.items[i] = _this.getItemData(currIndex, $elm, optionsGroup.groupDisabled);
+              optionsGroup.items[i] = _this.getItemData(currIndex, $elm, optionsGroup.groupDisabled || $elm.prop('disabled'));
 
               _this.lookupItems[currIndex] = optionsGroup.items[i];
 
@@ -483,7 +477,7 @@
      * @param  {integer} index      - Current item index
      * @param  {node}    $elm       - Current element node
      * @param  {boolean} isDisabled - Current element disabled state
-     * @return {object}             - Item object
+     * @return {object}               Item object
      */
     getItemData: function(index, $elm, isDisabled) {
       var _this = this;
@@ -509,6 +503,10 @@
     getItemsMarkup: function(items) {
       var _this = this;
       var markup = '<ul>';
+
+      if ( $.isFunction(_this.options.listBuilder) && _this.options.listBuilder ) {
+        items = _this.options.listBuilder(items);
+      }
 
       $.each(items, function(i, elm) {
         if ( elm.label !== undefined ) {
@@ -542,23 +540,33 @@
     /**
      * Generate every option markup
      *
-     * @param  {number} i   - Index of current item
-     * @param  {object} elm - Current item
-     * @return {string}       HTML for the option
+     * @param  {number} index    - Index of current item
+     * @param  {object} itemData - Current item
+     * @return {string}            HTML for the option
      */
-    getItemMarkup: function(i, elm) {
+    getItemMarkup: function(index, itemData) {
       var _this = this;
       var itemBuilder = _this.options.optionsItemBuilder;
+      // limit access to item data to provide a simple interface
+      // to most relevant options.
+      var filteredItemData = {
+        value: itemData.value,
+        text : itemData.text,
+        slug : itemData.slug,
+        index: itemData.index
+      };
 
       return _this.utils.format('<li data-index="{1}" class="{2}">{3}</li>',
-        i,
+        index,
         _this.utils.arrayToClassname([
-          elm.className,
-          i === _this.items.length - 1 ? 'last'     : '',
-          elm.disabled                 ? 'disabled' : '',
-          elm.selected                 ? 'selected' : ''
+          itemData.className,
+          index === _this.items.length - 1  ? 'last'     : '',
+          itemData.disabled                 ? 'disabled' : '',
+          itemData.selected                 ? 'selected' : ''
         ]),
-        $.isFunction(itemBuilder) ? itemBuilder(elm, elm.element, i) : _this.utils.format(itemBuilder, elm)
+        $.isFunction(itemBuilder)
+          ? _this.utils.format(itemBuilder(itemData), itemData)
+          : _this.utils.format(itemBuilder, filteredItemData)
       );
     },
 
@@ -625,6 +633,7 @@
           })
           .on('input propertychange', function() {
             var val = _this.elements.input.val();
+            var searchRegExp = new RegExp('^' + _this.utils.escapeRegExp(val), 'i');
 
             // Clear search
             clearTimeout(_this.resetStr);
@@ -635,9 +644,9 @@
             if ( val.length ) {
               // Search in select options
               $.each(_this.items, function(i, elm) {
-                if ( new RegExp('^' + _this.utils.escapeRegExp(val), 'i').test(elm.slug) && !elm.disabled ) {
+                if ( !elm.disabled && searchRegExp.test(elm.text) || searchRegExp.test(elm.slug) ) {
                   _this.highlight(i);
-                  return false;
+                  return;
                 }
               });
             }
@@ -667,7 +676,7 @@
      */
     handleKeys: function(e) {
       var _this = this;
-      var key = e.keyCode || e.which;
+      var key = e.which;
       var keys = _this.options.keys;
 
       var isPrevKey = $.inArray(key, keys.previous) > -1;
@@ -690,11 +699,11 @@
         }
 
         if ( isPrevKey ) {
-          goToItem = _this.utils.previousEnabledItem(_this.items, idx);
+          goToItem = _this.utils.previousEnabledItem(_this.lookupItems, idx);
         }
 
         if ( isNextKey ) {
-          goToItem = _this.utils.nextEnabledItem(_this.items, idx);
+          goToItem = _this.utils.nextEnabledItem(_this.lookupItems, idx);
         }
 
         _this.highlight(goToItem);
@@ -785,6 +794,7 @@
      */
     detectItemVisibility: function(index) {
       var _this = this;
+      var $filteredLi = _this.$li.filter('[data-index]');
 
       if ( _this.state.multiple ) {
         // If index is an array, we can assume a multiple select and we
@@ -794,8 +804,8 @@
         index = $.isArray(index) ? Math.min.apply(Math, index) : index;
       }
 
-      var liHeight = _this.$li.eq(index).outerHeight();
-      var liTop = _this.$li[index].offsetTop;
+      var liHeight = $filteredLi.eq(index).outerHeight();
+      var liTop = $filteredLi[index].offsetTop;
       var itemsScrollTop = _this.elements.itemsScroll.scrollTop();
       var scrollT = liTop + liHeight * 2;
 
@@ -822,7 +832,9 @@
 
       if ( e ) {
         e.preventDefault();
-        e.stopPropagation();
+        if (_this.options.stopPropagation) {
+          e.stopPropagation();
+        }
       }
 
       if ( _this.state.enabled ) {
@@ -944,19 +956,16 @@
 
       _this.utils.triggerCallback('BeforeHighlight', _this);
 
-      // Parameter index is required
-      if ( index === undefined ) {
+      // Parameter index is required and should not be a disabled item
+      if ( index === undefined || index === -1 || _this.lookupItems[index].disabled ) {
         return;
       }
 
-      // If element is disabled, can't select it
-      if ( index !== -1 && !_this.lookupItems[index].disabled ) {
-        $filteredLi
-          .eq(_this.state.highlightedIdx = index)
-          .addClass('highlighted');
+      $filteredLi
+        .eq(_this.state.highlightedIdx = index)
+        .addClass('highlighted');
 
-        _this.detectItemVisibility(index);
-      }
+      _this.detectItemVisibility(index);
 
       _this.utils.triggerCallback('Highlight', _this);
     },
@@ -964,17 +973,17 @@
     /**
      * Select option
      *
-     * @param {number}  index - Index of the option that will be selected
+     * @param {number} index - Index of the option that will be selected
      */
     select: function(index) {
       var _this = this;
-      var $filteredLi = _this.$li.filter('[data-index]').removeClass('selected');
+      var $filteredLi = _this.$li.filter('[data-index]');
 
       _this.utils.triggerCallback('BeforeSelect', _this, index);
 
-      // Don't select disabled items
-      if (index !== -1 && _this.lookupItems[index].disabled) {
-        return false;
+      // Parameter index is required and should not be a disabled item
+      if ( index === undefined || index === -1 || _this.lookupItems[index].disabled ) {
+        return;
       }
 
       if ( _this.state.multiple ) {
@@ -989,12 +998,14 @@
         }
 
         $filteredLi
+          .removeClass('selected')
           .filter(function(index) {
             return $.inArray(index, _this.state.selectedIdx) !== -1;
           })
           .addClass('selected');
       } else {
         $filteredLi
+          .removeClass('selected')
           .eq(_this.state.selectedIdx = index)
           .addClass('selected');
       }
@@ -1045,38 +1056,6 @@
   };
 
   /**
-   * Hooks for the callbacks
-   *
-   * @type {object}
-   */
-  $.fn[pluginName].hooks = {
-    /**
-     * @param {string} callbackName - The callback name.
-     * @param {string}     hookName - The name of the hook to be attached.
-     * @param {function}         fn - Callback function.
-     */
-    add: function(callbackName, hookName, fn) {
-      if ( !this[callbackName] ) {
-        this[callbackName] = {};
-      }
-
-      this[callbackName][hookName] = fn;
-
-      return this;
-    },
-
-    /**
-     * @param {string} callbackName - The callback name.
-     * @param {string}     hookName - The name of the hook that will be removed.
-     */
-    remove: function(callbackName, hookName) {
-      delete this[callbackName][hookName];
-
-      return this;
-    }
-  };
-
-  /**
    * Default plugin options
    *
    * @type {object}
@@ -1086,7 +1065,7 @@
     maxHeight            : 300,
     keySearchTimeout     : 500,
     arrowButtonMarkup    : '<b class="button">&#x25be;</b>',
-    disableOnMobile      : true,
+    disableOnMobile      : false,
     nativeOnMobile       : true,
     openOnFocus          : true,
     openOnHover          : false,
@@ -1096,8 +1075,10 @@
     preventWindowScroll  : true,
     inheritOriginalWidth : false,
     allowWrap            : true,
+    stopPropagation      : true,
     optionsItemBuilder   : '{text}', // function(itemData, element, index)
     labelBuilder         : '{text}', // function(currItem)
+    listBuilder          : false,    // function(items)
     keys                 : {
       previous : [37, 38],                 // Left / Up
       next     : [39, 40],                 // Right / Down

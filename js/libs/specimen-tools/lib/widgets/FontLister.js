@@ -1,5 +1,7 @@
 define([
+    'specimenTools/_BaseWidget'
 ], function(
+    Parent
 ) {
     "use strict";
 
@@ -8,9 +10,11 @@ define([
      * See FamilyChooser for a more advanced interface.
      */
 
-    function FontLister(container, pubSub) {
+    function FontLister(container, pubSub, fontData, options) {
+        Parent.call(this, options);
         this._container = container;
         this._pubSub = pubSub;
+        this._fontsData = fontData;
 
         this._elements = [];
         this._selectContainer = this._container.ownerDocument.createElement('select');
@@ -18,38 +22,53 @@ define([
         this._selectContainer.enabled = false;
         this._container.appendChild(this._selectContainer);
 
-        this._pubSub.subscribe('prepareFont', this._prepareLoadHook.bind(this));
-        this._pubSub.subscribe('loadFont', this._onLoadFont.bind(this));
         this._pubSub.subscribe('allFontsLoaded', this._onAllFontsLoaded.bind(this));
         this._pubSub.subscribe('activateFont', this._onActivateFont.bind(this));
     }
+    var _p = FontLister.prototype = Object.create(Parent.prototype);
+    _p.constructor = FontLister;
 
-    var _p = FontLister.prototype;
-
-    _p._prepareLoadHook = function(i, fontFileName) {
-        var option = this._selectContainer.ownerDocument.createElement('option');
-        option.textContent = '';
-        option.value = i;
-        option.addEventListener('change', this._activateFont.bind(this, i));
-        this._elements.push(option);
-        this._selectContainer.appendChild(option);
-    };
-
-    _p._onLoadFont = function(i, fontFileName, font) {
-        /*jshint unused: vars*/
-        this._elements[i].textContent = font.names.fullName.en;
-    };
-
-    _p._activateFont = function(i) {
-        // this will call this._onActivateFont
-        this._pubSub.publish('activateFont', i);
+    FontLister.defaultOptions = {
+        order: 'load' // OR: 'family'
     };
 
     _p._onActivateFont = function (fontIndex) {
-        this._elements[fontIndex].setAttribute('selected', true);
+        var i,l
+          , options = this._selectContainer.children
+          , option
+          ;
+        for(i=0,l=options.length;i<l;i++) {
+            option = options[i];
+            option.selected = option.value == fontIndex;
+        }
     };
 
     _p._onAllFontsLoaded = function() {
+        var fonts
+          , i, l, option, fontIndex
+          ;
+
+        switch(this._options.order){
+            case 'family':
+                fonts = this._fontsData.getFontIndexesInFamilyOrder();
+            case 'load':
+                /* falls through */
+            default:
+                fonts = this._fontsData.getFontIndexes();
+        }
+
+        for(i=0,l=fonts.length;i<l;i++) {
+            fontIndex = fonts[i];
+            option = this._selectContainer.ownerDocument.createElement('option');
+            option.textContent = [
+                        this._fontsData.getFamilyName(fontIndex)
+                      , this._fontsData.getStyleName(fontIndex)
+                      ].join(' ');
+
+            option.value = fontIndex;
+            this._elements.push(option);
+            this._selectContainer.appendChild(option);
+        }
         this._selectContainer.enabled = true;
     };
 

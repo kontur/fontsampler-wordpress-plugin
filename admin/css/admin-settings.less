@@ -5,10 +5,6 @@
         display: block;
         margin: 10px 0;
 
-        span.setting-description, .fontsampler-admin-settings-styling small {
-            display: inline-block;
-            width: 23em;
-        }
         span.styling-description {
             float: left;
         }
@@ -18,13 +14,11 @@
         }
         span input[type="text"],
         span input.current-value {
-            float: right;
-            margin: 0 1em;
             width: 3em;
         }
-        input[type="range"] {
-            width: 20em;
-        }
+        //input[type="range"] {
+        //    width: 20em;
+        //}
         textarea {
             clear: both;
             display: block;
@@ -33,9 +27,9 @@
             display: block;
             margin-bottom: 1em;
         }
-        input[type="text"] {
-            width: 9em;
-        }
+        //input[type="text"] {
+        //    width: 9em;
+        //}
 
 
         input.fontsampler-admin-slider-label {
@@ -43,33 +37,15 @@
         }
     }
 
-
-    .fontsampler-setting-image {
-        .fontsampler-upload-wrapper {
-            display: inline-block;
-            width: 10em;
-
-            .custom-img-container {
-                max-width: 100%;
-                max-height: 30px;
-                position: relative;
-
-                img {
-                    display: block;
-                    max-height: 30px;
-                }
-            }
-        }
-    }
-
-    .fontsampler-admin-alignment-icon {
-        border: 1px solid #ccc;
-        border-radius: 2px;
-        height: 15px;
-        margin-right: 0.5em;
-        padding: 5px;
+    // reset button / form at the top of the settings page
+    .fontsampler-settings-reset {
+        display: inline-block;
+        float: right;
         position: relative;
-        top: 8px;
-        width: 15px;
+        top: -3em;
+
+        p {
+            margin: 0;
+        }
     }
 }

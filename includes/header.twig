@@ -1,0 +1,20 @@
+<ul>
+	<li {{ is_current('index,set_edit,set_delete,set_create') }}>
+		<a href="?page=fontsampler">Fontsamplers</a>
+	</li>
+	<li {{ is_current('fonts,font_edit,font_delete,font_create') }}>
+		<a href="?page=fontsampler&amp;subpage=fonts">Fontsets &amp; files</a>
+	</li>
+	<li {{ is_current('settings') }}>
+		<a href="?page=fontsampler&amp;subpage=settings">Settings</a>
+	</li>
+	<li {{ is_current('about') }}>
+		<a href="?page=fontsampler&amp;subpage=about">About</a>
+	</li>
+	{% if num_notifications() > 0 %}
+	<li {{ is_current('notifications') }}>
+		<a href="?page=fontsampler&amp;subpage=notifications">Notifications
+            <span class="fontsampler-num-notifications">{{ num_notifications() }}</span></a>
+	</li>
+	{% endif %}
+</ul>

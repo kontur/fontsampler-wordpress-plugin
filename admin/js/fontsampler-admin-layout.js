@@ -11,7 +11,7 @@ define(['jquery'], function ($) {
             $preview = $("#fontsampler-ui-layout-preview"),
             $previewOptions = $("#fontsampler-ui-layout-preview-options"),
             $ui_order = $("input[name=ui_order]"),
-            $optionsCheckboxes = $("#fontsampler-options-checkboxes"),
+            $uiBlockCheckboxes = $("input.fontsampler-checkbox-ui-block"),
 
             layoutClasses = ["full", "column", "inline"],
             columnsClasses = "columns-1 columns-2 columns-3 columns-4",
@@ -24,7 +24,7 @@ define(['jquery'], function ($) {
 
 
         /**
-         * Listen for changes to the block layout
+         * Listen for changes to the block layout via the block overlay in the preview
          */
         $preview.on("change", ".fontsampler-ui-block-overlay input[type=radio]", changeBlockClass);
         function changeBlockClass() {
@@ -40,8 +40,9 @@ define(['jquery'], function ($) {
          */
         $previewOptions.on("change", "input[type=radio]", changeColumnCount);
         function changeColumnCount() {
-            var cols = $(this).val(),
+            var cols = $(this).data('value'),
                 colsClass = "columns-" + cols;
+
             $preview.removeClass(columnsClasses).addClass(colsClass);
             $("." + interfaceClass).removeClass(columnsClasses).addClass(colsClass);
 
@@ -106,22 +107,18 @@ define(['jquery'], function ($) {
          */
         function reloadPreview() {
             var ui_order = $ui_order.val(),
-                ui_columns = $previewOptions.find("input[type=radio]:checked").val(),
-                specimen = $("input[name=specimen]").val(),
-                buy = $("input[name=buy]").val(),
+                ui_columns = $previewOptions.find("input[type=radio]:checked").data('value'),
 
                 data = {
                     'action': 'get_mock_fontsampler',
                     'data': {
                         "ui_columns": ui_columns,
                         "ui_order": ui_order,
-                        "specimen": specimen,
-                        "buy": buy,
                         "initial": "Layout preview only, for arranging the layout blocks"
                     }
                 };
 
-            // console.log(data.data);
+            //console.log(data.data);
 
             // since 2.8 ajaxurl is always defined in the admin header and points to admin-ajax.php
             $.post(ajaxurl, data, function (response) {
@@ -207,38 +204,35 @@ define(['jquery'], function ($) {
         /**
          * Switching from defaults to individual checkboxes
          */
-        $("#fontsampler-edit-sample input[name=default_features]").on("change", function () {
-            var $checkboxes = $optionsCheckboxes.find("input[type=checkbox]"),
-                $this = $(this);
+        $("input[name=use_default_options]").on("change", function () {
+            var $this = $(this);
 
-            $checkboxes.each(function () {
-                var $that = $(this);
+            $uiBlockCheckboxes.each(function () {
+                var $that = $(this),
+                    name = $that.attr('name');
 
                 if (parseInt($this.val()) === 1) {
                     // use defaults:
-                    if ($that.data('default') == 'checked') {
+                    if (parseInt($that.data('default')) === 1) {
                         $that.attr('checked', 'checked');
                     } else {
                         $that.removeAttr('checked');
                     }
-                    $optionsCheckboxes.addClass("use-defaults");
                 } else {
-                    // use custom set:
-                    if ($that.data('set') == 'checked') {
+                    if (parseInt($that.data('set')) === 1) {
                         $that.attr('checked', 'checked');
                     } else {
                         $that.removeAttr('checked');
                     }
-                    $optionsCheckboxes.removeClass("use-defaults");
                 }
-                iterateCheckboxes($that);
+                checkboxUiOrderCheck($that);
             });
         });
 
 
         // sampler checkboxes & UI preview interaction
-        $("#fontsampler-edit-sample input[type=checkbox]").on("change", function () {
-            iterateCheckboxes($(this));
+        $uiBlockCheckboxes.on("change", function () {
+            checkboxUiOrderCheck($(this));
         });
 
         /**
@@ -249,9 +243,13 @@ define(['jquery'], function ($) {
          * @param $this - the checkbox
          * @returns {boolean}
          */
-        function iterateCheckboxes($this) {
+        function checkboxUiOrderCheck($this) {
             var item = $this.attr("name"),
                 checked = $this.is(":checked");
+
+            if ('multiline' === item) {
+                return;
+            }
 
             if (checked) {
                 if (!inUIOrder(item)) {

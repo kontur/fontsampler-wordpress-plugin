@@ -1,0 +1,28 @@
+{% extends 'layout.twig' %}
+
+{% block content %}
+<h1>Fontsets & files</h1>
+
+{% if not fonts %}
+
+	<p>Fontsets are all the webfont files associated with one font. Any Fontsampler you create can use one or more
+	font sets.</p>
+	<p>Different weights or styles each need their own font set (which can consist of woff2, woff, eot, svg and ttf files).</p>
+
+{% else %}
+
+	<p>Listed here are the fonts and the file formats that are provided for displaying them.</p>
+
+	{% include 'pagination.twig' %}
+
+	{{ include('fontsets-table.twig', { fonts: fonts }) }}
+
+	{% include 'pagination.twig' %}
+
+{% endif %}
+
+<a class="button add" href="?page=fontsampler&subpage=font_create">
+	<i class="icon">+</i>
+	<span>Create a new font record</span>
+</a>
+{% endblock %}

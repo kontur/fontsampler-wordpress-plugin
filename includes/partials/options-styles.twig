@@ -1,0 +1,94 @@
+{#Color pickers for basic colors#}
+{{  include( 'partials/styles-color-field.twig', {
+	label: 'Text color',
+	name: 'css_color_text',
+	description: 'Color of the fontsampler text',
+	value: set['css_color_text'],
+	default: defaults['css_color_text']
+}) }}
+{{  include( 'partials/styles-color-field.twig', {
+	label: 'Background color',
+	name: 'css_color_background',
+	description: 'Color of the fontsampler text background',
+	value: set['css_color_background'],
+	default: defaults['css_color_background']
+}) }}
+{{  include( 'partials/styles-color-field.twig', {
+	label: 'Label text color',
+	name: 'css_color_label',
+	description: 'Text color of the UI labels',
+	value: set['css_color_label'],
+	default: defaults['css_color_label']
+}) }}
+
+{#CSS value fields (font size, etc)#}
+{{	include( 'partials/styles-css-field.twig', {
+	name: 'css_value_size_label',
+	description: 'Font size of the UI labels:',
+	additional: "You can use any valid <code>font-size</code> CSS declaration (Use 'inherit' for default look).",
+	value: set['css_value_size_label'],
+	default: defaults['css_value_size_label']
+}) }}
+{{ 	include( 'partials/styles-css-field.twig', {
+	name: 'css_value_fontfamily_label',
+	description: 'Font family of the UI labels:',
+	additional: "You can use any valid <code>font-family</code> CSS declaration (Use 'inherit' for default look).",
+	value: set['css_value_fontfamily_label'],
+	default: defaults['css_value_fontfamily_label']
+}) }}
+
+{#Color pickers for various aspects#}
+{{  include( 'partials/styles-color-field.twig', {
+	label: 'Highlight color',
+	name: 'css_color_highlight',
+	description: 'Background color of the dropdown items',
+	value: set['css_color_highlight'],
+	default: defaults['css_color_highlight']
+}) }}
+{{  include( 'partials/styles-color-field.twig', {
+	label: 'Highlight color (hover)',
+	name: 'css_color_highlight_hover',
+	description: 'Background color of the dropdown items when hovered',
+	value: set['css_color_highlight_hover'],
+	default: defaults['css_color_highlight_hover']
+}) }}
+{{  include( 'partials/styles-color-field.twig', {
+	label: 'Line color',
+	name: 'css_color_line',
+	description: 'Color of the slider and dropdown line',
+	value: set['css_color_line'],
+	default: defaults['css_color_line']
+}) }}
+{{  include( 'partials/styles-color-field.twig', {
+	label: 'Slider handle color',
+	name: 'css_color_handle',
+	description: 'Color of the slider handle',
+	value: set['css_color_handle'],
+	default: defaults['css_color_handle']
+}) }}
+
+{#Css value fields#}
+{{ 	include( 'partials/styles-css-field.twig', {
+	label: 'Column gutter',
+	name: 'css_value_column_gutter',
+	description: 'UI columns gutter',
+	additional: "You can use any valid <code>size</code> CSS declaration.",
+	value: set['css_value_column_gutter'],
+	default: defaults['css_value_column_gutter']
+}) }}
+{{ 	include( 'partials/styles-css-field.twig', {
+	label: 'Row gutter',
+	name: 'css_value_row_gutter',
+	description: 'UI rows gutter',
+	additional: "You can use any valid <code>size</code> CSS declaration.",
+	value: set['css_value_row_gutter'],
+	default: defaults['css_value_row_gutter']
+}) }}
+{{ 	include( 'partials/styles-css-field.twig', {
+	label: 'Row height',
+	name: 'css_value_row_height',
+	description: 'UI rows height:',
+	additional: "You can use any valid <code>size</code> CSS declaration.",
+	value: set['css_value_row_height'],
+	default: defaults['css_value_row_height']
+}) }}

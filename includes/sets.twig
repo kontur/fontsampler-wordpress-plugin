@@ -1,0 +1,30 @@
+{% extends('layout.twig') %}
+
+{% block content %}
+
+<h1>Fontsamplers</h1>
+
+{% if sets is empty %}
+    <em>No sets created yet.</em>
+    <p>This is where your created fontsamplers will be listed once you've added some below.</p>
+{% else %}
+    <p>Listed here are all the font samplers you have created so far.</p>
+    <p>A font sampler is a number (or just one) font set and settings that are used to display a interface for testing a
+        font (or several in one).</p>
+    <p>You can include your font samplers on any page or post by adding the respective shortcode listed in the table
+        below.</p>
+
+    {% include 'pagination.twig' %}
+
+    {{ include('sets-table.twig', { sets: sets }) }}
+
+    {% include 'pagination.twig' %}
+
+{% endif %}
+
+<a class="button add" href="?page=fontsampler&amp;subpage=set_create">
+    <i class="icon">+</i>
+    <span>Create a new font sampler</span>
+</a>
+
+{% endblock %}

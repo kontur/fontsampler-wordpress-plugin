@@ -3,8 +3,8 @@ Contributors: kontur
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LSK5YQHHCGGYS
 Tags: fonts, typeface, preview, shortcode
 Requires at least: 4.0
-Tested up to: 4.7.2
-Stable tag: 0.1.7
+Tested up to: 4.7.3
+Stable tag: 0.2.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -31,7 +31,7 @@ Features include:
 * Automatic detection and controls for testing Opentype features
 * Switches for alignment and inverting the text and background color
 * Support for any language script and script direction
-* Supports woff2, woff, eot and ttf files
+* Supports (soon: woff2,) woff, eot and ttf files
 * Unlimited Fontsamplers per page
 * Customizable interface layout
 * Customizable interface styling (colors)
@@ -46,12 +46,33 @@ Features include:
 
 = Can I control which user interface elements are visible? =
 
-Absolutely. You can enable and arrange each interface element for every Fontsampler
+Absolutely. You can enable and arrange each interface element for every Fontsampler. You can even style the color theme for each Fontsampler.
 
 = Do I have to configure each Fontsampler if I have several? =
 
 There are defaults for the sliders as well as which interface elements are visible that get applied to all Fontsampler
-that are set to use the default values.
+that are set to use the default values. Editing the defaults will update all your Fontsamplers that are set to use defaults.
+
+= What webfont filetypes are supported? =
+
+WOFF, EOT and TTF are supported, and support for WOFF2 will soon be fully implemented and is already available in the admin interface.
+It is recommended that for now you use the WOFF format unless you need to support legacy browsers.
+
+= Does the plugin support displaying non-latin fonts? =
+
+Absolutely. Right to left scripts are equally supported and improvements to the admin area for Wordpress installations with
+right to left scripts are on the development roadmap.
+
+= How can I integrate the plugin with my e-commerce solution? =
+
+You can use the shortcode anywhere on your Wordpress site, so adding it to the description fields of your e-commerce plugin
+(e.g. WooCommerce and the like) will let you display the Fontsampler there. The user interface also has options to include a link
+to a specimen (web link or pdf) as well as a purchase link, for example to an external retailer.
+
+= Can you preview OpenType features in the tester? =
+
+That is possible, you only need to activate the corresponding user interface element and Fontsampler will automatically
+detect all available OpenType features from the provided webfont files.
 
 == Screenshots ==
 
@@ -64,40 +85,24 @@ that are set to use the default values.
 
 == Changelog ==
 
+= 0.2.0 =
+* Complete style overhaul for the admin area
+* Supporting fully customisable settings on a per Fontsampler basis
+* Color themes can be customised for each Fontsampler
+* Added "Notifications" tab to admin area informing of any detected problems
+* Implemented sorting and storing a default Fontsampler layout order in the settings
+* Implemented action to reset the settings to the shipped defaults (in case you get carried away tweaking the settings ;) )
+* Implemented copy-to-clipboard button in admin area for improved ease of use
+* Fixed iOS 8 javascript errors from an included library
+* Updated sponsors (Yay, thanks!)
+* Internally restructured the database and templating system for more modular future development
+* Improved the database migration routine to give better error messages to admin users
+
 = 0.1.7 =
-- Hotfix to upload filetype filter
+* Hotfix to upload filetype filter
 
 = 0.1.6 =
 * Implemented workaround for WP core bug preventing file uploads for some users
 * Fixed uninstall script to run without error messages
 
-= 0.1.5 =
-* Fixed PHP 7 compatibility issues
-* Fixed issue that failed to apply css changes as a result from a plugin update
-* Forced browsers with spellcheckers and autocorrect to ignore the fontsampler text input
-
-= 0.1.4 =
-* Updated to allow for more lenient italic detection (now also from Font name)
-* Fix small possible alignment interference from theme CSS
-
-= 0.1.3 =
-* Fontsamplers now support families with different widths
-* Each fontsampler instance is now wrapped in a DOM element with the fontsampler's ID for custom styling
-* Fixed a small interface alignment issues
-
-= 0.1.2 =
-* Added editable default setting for alignment
-* Fixed some alignment issues not properly respecting editable UI block height and underline
-
-= 0.1.1 =
-* Fontsampler layout preview and manipulation improved, including options for column count and column span of individual user interface elements
-* Fontsampler layout preview now renders an actual mock Fontsampler in the admin interface to better visualise the layout
-* Added option to add links for Buying and viewing a Specimen to the interface
-* Added default label text and images for those two links to the settings
-* Added column and row gutter, as well as row height as customisable settings
-* Activating the "Invert" UI option will add "fontsampler-inverted" to the <body>, so you can define styles for when it's active (e.g. inverting the overall page background color)
-* Improved under the hood generation of css files when customising Fontsampler styling
-* Improved under the hood admin javascript loading
-
-= 0.1.0 =
-* Initial public release
+See the changelog tab to review the changes in prior updates.

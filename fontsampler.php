@@ -2,8 +2,8 @@
 /*
 Plugin Name: Fontsampler
 Plugin URI:  https://fontsampler.johannesneumeier.com
-Description: Create interactive webfont previews via shortcodes
-Version:     0.1.7
+Description: Create interactive webfont previews via shortcodes. Create and edit previews from the <a href="http://fontsampler.dev/wp-admin/admin.php?page=fontsampler">&para; Fontsampler</a> sidebar menu.
+Version:     0.2.0
 Author:      Johannes Neumeier
 Author URI:  http://johannesneumeier.com
 Copyright:   Copyright 2016-2017 Johannes Neumeier
@@ -20,11 +20,16 @@ require_once( 'FontsamplerLayout.php' );
 require_once( 'FontsamplerHelpers.php' );
 require_once( 'FontsamplerPagination.php' );
 require_once( 'FontsamplerMessages.php' );
+require_once( 'FontsamplerNotifications.php' );
 
 require_once( 'vendor/oyejorge/less.php/lessc.inc.php');
+require_once( 'vendor/autoload.php');
+
+$loader = new Twig_Loader_Filesystem( __DIR__ . '/includes' );
+$twig = new Twig_Environment( $loader );
 
 global $wpdb;
-$f = new FontsamplerPlugin( $wpdb );
+$f = new FontsamplerPlugin( $wpdb, $twig );
 
 // register the shortcode hook
 add_shortcode( 'fontsampler', array( $f, 'fontsampler_shortcode' ) );
@@ -58,7 +63,6 @@ function common_upload_real_mimes($checked, $file, $filename, $mimes) {
 			$checked['type'] = true;
 			return $checked;
 		}
-		return false;
 	}
 	return $checked;
 }

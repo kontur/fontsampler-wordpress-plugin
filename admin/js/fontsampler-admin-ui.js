@@ -2,9 +2,9 @@
  * All the jquery components dealing with manipulating the
  * various admin side interactions
  */
-define(['jquery', 'rangeslider', 'selectric', 'validate'], function ($, r, s, v) {
+define(['jquery', 'rangeslider', 'selectric', 'validate', 'clipboard'], function ($, r, s, v, clipboard) {
 
-    function main () {
+    function main() {
 
         // enable frontend side form validation
         $.validate({
@@ -144,7 +144,7 @@ define(['jquery', 'rangeslider', 'selectric', 'validate'], function ($, r, s, v)
 
 
         // setting sliders
-        $('#fontsampler-admin .form-settings input[type="range"]').rangeslider({
+        $('#fontsampler-admin input[type="range"]').rangeslider({
             // Feature detection the default is `true`.
             // Set this to `false` if you want to use
             // the polyfill also in Browsers which support
@@ -248,13 +248,99 @@ define(['jquery', 'rangeslider', 'selectric', 'validate'], function ($, r, s, v)
                 $("html, body").scrollTop(0);
             });
 
-            $("#fontsampler-admin nav.fontsampler-pagination a.fontsampler-pagination-current-page").removeClass("fontsampler-pagination-current-page");
-            $("#fontsampler-admin nav.fontsampler-pagination a:nth-of-type(" + ($this.index() + 1) + ")").addClass("fontsampler-pagination-current-page");
+            $("#fontsampler-admin .fontsampler-pagination-current-page")
+                .removeClass("fontsampler-pagination-current-page");
+
+            $("#fontsampler-admin nav.fontsampler-pagination li:nth-of-type(" + ($this.parent().index() + 1) + ")")
+                .children("a").addClass("fontsampler-pagination-current-page").blur();
 
             return false;
         });
 
+
+        $(".fontsampler-toggle-show-hide").on("click", function (e) {
+            e.preventDefault();
+            var $this = $(this),
+                $next = $(this).next(),
+                $show = $this.children('span:first-child'),
+                $hide = $this.children('span:last-child');
+
+            $next.toggleClass("fontsampler-visible");
+
+            if (!$next.hasClass("fontsampler-visible")) {
+                $show.show();
+                $hide.hide();
+            } else {
+                $show.hide();
+                $hide.show();
+            }
+        });
+
+
+        $(".fontsampler-options").accordion({
+            active: false,
+            collapsible: true,
+            header: 'h3',
+            heightStyle: 'content'
+        });
+
+
+        var $use_default_options = $("input[name=use_default_options]");
+        var $options = $(".fontsampler-options");
+        $("input[name=use_default_options]").change(function () {
+            if ($(this).val() == 1) {
+                $options.accordion("disable");
+                $options.accordion("option", "active", false);
+            } else {
+                $options.accordion("enable");
+            }
+        });
+
+        if ($use_default_options.filter(":checked").val() == 1) {
+            $options.accordion("disable");
+            $options.accordion("option", "active", false);
+        }
+
+
+        $(".fontsampler-image-radio").on("click", function () {
+            var $this = $(this),
+                name = $this.find('input').attr('name'),
+                $all = $('.fontsampler-image-radio').has('input[name="' + name + '"]');
+
+            $all.removeClass("active").find("input:checked").removeAttr("checked");
+            $this.addClass("active").find('input').attr('checked', 'checked').trigger('change');
+        });
+
+
+        // fontsampler & settings direction options
+        $initial = $("textarea[name='initial']");
+        $("[name='is_ltr']").on("change", function () {
+            $initial.attr('dir', $(this).val() == 1 ? 'ltr' : 'rtl');
+        });
+        $("[name='alignment_initial']").on("change", function () {
+            $initial.css('text-align', $(this).data('value'));
+        });
+
+
+        // when clicking into a fontsampler options style's input field automatically
+        // select the corresponding radio
+        $(".fontsampler-options-row div:nth-of-type(1) input[type='text'], " +
+            ".fontsampler-options-row div:nth-of-type(1) textarea").on("focus", function () {
+            $(this).parentsUntil('.fontsampler-options-row')
+                .find("input[name*='use_default']").attr('checked', 'checked');
+        });
+
     }
+
+    // add "copy to clipboard" functionality to fontsampler listing table
+    var cb = new clipboard(".fontsampler-copy-clipboard");
+    cb.on('success', function(e) {
+        e.clearSelection();
+        $(e.trigger).addClass('success');
+        setTimeout(function () {
+            $(e.trigger).removeClass('success');
+        }, 1500);
+    });
 
     return main;
 

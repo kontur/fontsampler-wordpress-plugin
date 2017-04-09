@@ -1,0 +1,34 @@
+{% extends('layout.twig') %}
+
+{% block content %}
+<h1>Settings</h1>
+<form method="post" action="?page=fontsampler&amp;subpage=settings_reset" class="form-settings fontsampler-settings-reset">
+	{{ submit_button('Restore default settings') }}
+</form>
+
+<form method="post" action="?page=fontsampler&amp;subpage=settings" class="form-settings fontsampler-validate">
+	<input type="hidden" name="action" value="edit_settings">
+	{{ wp_nonce_field( 'fontsampler-action-edit_settings' )|raw }}
+
+	{{ include('options.twig', { 'settings': true }) }}
+
+	{{ include('partials/preview.twig', { 'settings': true }) }}
+
+	<h2>Admin interface customizations</h2>
+	<label>
+		<input type="checkbox"
+		       name="admin_hide_legacy_formats"
+		       value="1"
+			   {% if admin_hide_legacy_formats() %} checked="checked" {% endif %}>
+		<span class="settings-description">Hide legacy webfont formats in admin interface.</span>
+		<small>When activated (recommended) this option hides all but the <span class="filename">WOFF</span> and
+			<span class="filename">WOFF2</span> webfont formats, since those are the formats sufficient for rendering
+			webfonts in modern browsers. Enabling this option de-clutters the interface. Disable only if you explicitly
+			want to upload <span class="filename">EOT</span>, <span class="filename">SVG</span> or
+			<span class="filename">TTF</span> files for the fontsamplers to use.
+		</small>
+	</label>
+	{{ submit_button('Save') }}
+</form>
+
+{% endblock %}

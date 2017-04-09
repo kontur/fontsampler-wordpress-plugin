@@ -17,7 +17,8 @@
      data-value-line-height="<?php echo $options['line_height_initial']; ?>"
      data-step-line-height="1">
 
-	<div class="fontsampler-interface columns-<?php echo $set['ui_columns']; echo ' fontsampler-id-' . $set['id']; ?>">
+	<div class="fontsampler-interface columns-<?php echo $set['ui_columns'];
+	echo ' fontsampler-id-' . $set['id']; ?>">
 
 		<?php
 
@@ -35,12 +36,12 @@
 
 				switch ( $item ) {
 
-					case 'size':
-						if ( $set['size'] ) : ?>
+					case 'fontsize':
+						if ( $set['fontsize'] ) : ?>
 							<label class="fontsampler-slider">
-								<span class="slider-label"><?php echo $options['font_size_label']; ?></span>
-								<span class="slider-value type-tester__label" data-target-property="font-size"></span>
-								<div class="type-tester__slider" data-target-property="font-size"></div>
+								<span class="slider-label"><?php echo $options['fontsize_label']; ?></span>
+								<span class="slider-value type-tester__label" data-target-property="fontsize"></span>
+								<div class="type-tester__slider" data-target-property="fontsize"></div>
 							</label>
 						<?php endif;
 						break;
@@ -48,10 +49,10 @@
 					case 'letterspacing':
 						if ( $set['letterspacing'] ) : ?>
 							<label class="fontsampler-slider">
-								<span class="slider-label"><?php echo $options['letter_spacing_label']; ?></span>
+								<span class="slider-label"><?php echo $options['letterspacing_label']; ?></span>
 								<span class="slider-value type-tester__label"
-								      data-target-property="letter-spacing"></span>
-								<div class="type-tester__slider" data-target-property="letter-spacing"></div>
+								      data-target-property="letterspacing"></span>
+								<div class="type-tester__slider" data-target-property="letterspacing"></div>
 							</label>
 						<?php endif;
 						break;
@@ -59,9 +60,9 @@
 					case 'lineheight':
 						if ( $set['lineheight'] ) : ?>
 							<label class="fontsampler-slider">
-								<span class="slider-label"><?php echo $options['line_height_label']; ?></span>
-								<span class="slider-value type-tester__label" data-target-property="line-height"></span>
-								<div class="type-tester__slider" data-target-property="line-height"></div>
+								<span class="slider-label"><?php echo $options['lineheight_label']; ?></span>
+								<span class="slider-value type-tester__label" data-target-property="lineheight"></span>
+								<div class="type-tester__slider" data-target-property="lineheight"></div>
 							</label>
 						<?php endif;
 						break;
@@ -103,7 +104,7 @@
 									data-value="center"><img
 										src="<?php echo plugin_dir_url( __FILE__ ); ?>../icons/align-center.svg">
 								</button>
-								<button <?php if ( !$is_ltr || $options['alignment_initial'] == "right" ) :
+								<button <?php if ( ! $is_ltr || $options['alignment_initial'] == "right" ) :
 									echo 'class="fontsampler-multiselect-selected"'; endif; ?>
 									data-value="right"><img
 										src="<?php echo plugin_dir_url( __FILE__ ); ?>../icons/align-right.svg">
@@ -141,26 +142,26 @@
 						break;
 
 					case 'buy':
-						if ( $set['buy'] ) : ?>
-							<a href="<?php echo $set['buy']; ?>" target="_blank">
+						if ( $set['buy'] && ! empty( $set['buy_url'] ) ) : ?>
+							<a href="<?php echo $set['buy_url']; ?>" target="_blank">
 								<?php
-								if ( $options['buy_image'] ):
-									$image_src = wp_get_attachment_image_src( $options['buy_image'], 'full' );
+								if ( $set['buy_image'] ):
+									$image_src = wp_get_attachment_image_src( $set['buy_image'], 'full' );
 									?>
 									<img class="fontsampler-interface-link-image"
 									     src="<?php echo $image_src[0]; ?>"
-									     alt="<?php echo $options['buy_label']; ?>">
+									     alt="<?php echo $set['buy_label']; ?>">
 								<?php else: ?>
-									<span
-										class="fontsampler-interface-link-text"><?php echo $options['buy_label']; ?></span>
+									<span class="fontsampler-interface-link-text"
+									><?php echo $set['buy_label']; ?></span>
 								<?php endif; ?>
 							</a>
 						<?php endif;
 						break;
 
 					case 'specimen':
-						if ( $set['specimen'] ) : ?>
-							<a href="<?php echo $set['specimen']; ?>" target="_blank">
+						if ( $set['specimen'] && ! empty( $set['specimen_url'])) : ?>
+							<a href="<?php echo $set['specimen_url']; ?>" target="_blank">
 								<?php
 								if ( $options['specimen_image'] ):
 									$image_src = wp_get_attachment_image_src( $options['specimen_image'], 'full' );
@@ -187,17 +188,17 @@
 						}
 						?>
 						<div autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
-							class="current-font type-tester__content <?php
-						if ( ! isset( $set['multiline'] ) ||
-						     ( isset( $set['multiline'] ) && $set['multiline'] != "1" )
-						) :
-							echo ' fontsampler-is-singleline';
+						     class="current-font type-tester__content <?php
+						     if ( ! isset( $set['multiline'] ) ||
+						          ( isset( $set['multiline'] ) && $set['multiline'] != "1" )
+						     ) :
+							     echo ' fontsampler-is-singleline';
 
-						endif; ?>"
+						     endif; ?>"
 						     contenteditable="true"
 							<?php if ( ! $set['is_ltr'] ): echo ' dir="rtl" '; endif; ?>
 
-							style="text-align: <?php echo $options['alignment_initial']; ?>;"
+							 style="text-align: <?php echo $set['alignment_initial']; ?>;"
 						><?php echo $initial_text; ?></div>
 
 						<?php
@@ -212,14 +213,5 @@
 
 		endforeach;
 		?>
-
-
-		<?php if ( ! empty( $set['buy_url'] ) ) : ?>
-			<a href="<?php echo $set['buy_url']; ?>"><?php echo $settings['buy_label']; ?></a>
-		<?php endif; ?>
-		<?php if ( ! empty( $set['specimen_url'] ) ) : ?>
-			<a href="<?php echo $set['specimen_url']; ?>"><?php echo $settings['specimen_label']; ?></a>
-		<?php endif; ?>
-
 	</div>
 </div>

@@ -294,7 +294,7 @@ define([
         var font = this._data[fontIndex].font
           , italicFromOS2 = !!(font.tables.os2.fsSelection & font.fsSelectionValues.ITALIC)
           , subFamily = this.getSubfamilyName(fontIndex).toLowerCase()
-          , italicFromName = subFamily.indexOf("italic") > -1
+          , italicFromName = subFamily.indexOf("italic") !== -1
           ;
         return italicFromOS2 || italicFromName;
     };
@@ -496,6 +496,56 @@ define([
             result.push(fontIndex);
         return result;
     };
+
+
+    /* Polyfill codePointAt */
+    /*! http://mths.be/codepointat v0.1.0 by @mathias */
+    if (!String.prototype.codePointAt) {
+      (function() {
+        'use strict'; // needed to support `apply`/`call` with `undefined`/`null`
+        var codePointAt = function(position) {
+            if (this == null) {
+                throw TypeError();
+            }
+            var string = String(this)
+              , size = string.length
+            // `ToInteger`
+              , index = position ? Number(position) : 0
+              , first, second;
+
+            if (index != index) { // better `isNaN`
+                index = 0;
+            }
+            // Account for out-of-bounds indices:
+            if (index < 0 || index >= size) {
+                return undefined;
+            }
+            // Get the first code unit
+            first = string.charCodeAt(index);
+            second;
+            if ( // check if it’s the start of a surrogate pair
+                first >= 0xD800 && first <= 0xDBFF && // high surrogate
+                size > index + 1 // there is a next code unit
+            ) {
+                second = string.charCodeAt(index + 1);
+                if (second >= 0xDC00 && second <= 0xDFFF) { // low surrogate
+                    // http://mathiasbynens.be/notes/javascript-encoding#surrogate-formulae
+                    return (first - 0xD800) * 0x400 + second - 0xDC00 + 0x10000;
+                }
+            }
+          return first;
+        };
+        if (Object.defineProperty) {
+            Object.defineProperty(String.prototype, 'codePointAt', {
+                'value': codePointAt,
+                'configurable': true,
+                'writable': true
+            });
+        } else {
+            String.prototype.codePointAt = codePointAt;
+        }
+      }());
+    }
 
     FontsData._installPublicCachedInterface(_p);
     return FontsData;

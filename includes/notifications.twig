@@ -1,0 +1,16 @@
+{% extends 'layout.twig' %}
+
+{% block content %}
+    <h1>Notifications</h1>
+    <p>Below a quick overview of issues detected.</p>
+
+    {% if missing_files is not empty %}
+        <h2>Missing webfont files</h2>
+        {{ include('fontsets-table.twig', { fonts: missing_files }) }}
+    {% endif %}
+
+    {% if missing_fonts is not empty %}
+        <h2>Fontsamplers missing fonts</h2>
+        {{ include('sets-table.twig', { sets: missing_fonts }) }}
+    {% endif %}
+{% endblock %}

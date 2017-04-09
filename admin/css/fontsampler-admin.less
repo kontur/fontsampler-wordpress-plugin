@@ -1,7 +1,15 @@
+@import "admin-variables.less";
+@import "admin-buttons.less";
 @import "../../css/fontsampler-custom-rangeslider.less";
+
 @import "admin-settings.less";
 @import "admin-sampler.less";
 @import "admin-fontsets.less";
+@import "admin-options.less";
+@import "admin-preview.less";
+
+@import "admin-header.less";
+@import "admin-footer.less";
 
 /*
  * Scope all css to be contained only within the fontsampler wrapper
@@ -10,7 +18,6 @@
 
     padding-top: 1em;
 
-    header,
     main {
         background: white;
         margin: 0 1.5em 0 0;
@@ -19,8 +26,8 @@
 
     fieldset label, label.fontsampler-admin-label-block {
         display: block;
-        color: #666;
-        margin: 1em 0;
+        color: @fs_color_text_medium;
+        margin: 0.5em 0;
 
         &:hover, &:focus {
             input, select {
@@ -49,9 +56,22 @@
         }
     }
 
+    input[type=text], textarea {
+        border: 2px solid @fs_color_medium;
+
+        &:hover, &:focus {
+            box-shadow: none;
+            border: 2px solid @fs_color_ok_light;
+        }
+    }
+
     fieldset {
         border: 1px solid #ccc;
-        padding: 1em 2em;
+        padding: 1em;
+
+        &.no-padding {
+            padding: 0;
+        }
 
         legend {
             font-weight: bold;
@@ -59,16 +79,22 @@
         }
     }
 
+    table, thead, tbody, tr, th, td {
+        text-align: left;
+        vertical-align: middle;
+    }
+
     table {
         border-collapse: collapse;
         border-spacing: 0;
         width: 100%;
-        margin: 1em auto 2em;
-    }
+        margin: -1em auto 0;
+        border: 4px solid @fs_color_light;
+        padding: 4px;
 
-    table, thead, tbody, tr, th, td {
-        text-align: left;
-        vertical-align: middle;
+        &.fontsampler-fontset-files {
+            margin: 0 auto;
+        }
     }
 
     th, td {
@@ -80,10 +106,16 @@
     }
 
     th {
-        border-bottom: 1px solid #999;
-        font-weight: normal;
-        font-size: larger;
+        background: @fs_color_light;
+        font-weight: bold;
+        font-size: inherit;
+        text-transform: uppercase;
         vertical-align: top;
+        small {
+            font-size: smaller;
+            font-weight: normal;
+            text-transform: none;
+        }
     }
 
     p {
@@ -101,7 +133,7 @@
 
     small {
         color: #AAA;
-        font-size: small;
+        font-size: smaller;
         font-family: sans-serif;
         line-height: 1em;
         margin-top: 0.5em;
@@ -112,18 +144,38 @@
     .notice {
         border: 1px solid #eee;
         padding: 1em;
-        margin: 0 0 2em;
+        margin: 0 1.5em 2em 0;
+        box-shadow: none;
     }
 
     code {
-        border: 1px solid #ddd;
+        border: 3px solid @fs_color_medium;
         font-family: monospace;
-        background: #eee;
+        background: @fs_color_light;
         padding: 0.4em 1em 0.3em;
         font-size: smaller;
-        border-radius: 3px;
+        border-radius: 5px;
         text-align: center;
+
+        &.fontsampler-clipboard {
+            border-radius: 5px 0 0 5px;
+            float: left;
+            box-sizing: border-box;
+            height: 3em;
+            margin: 0;
+            display: block;
+        }
     }
+
+    .fontsampler-clipboard-wrapper {
+        min-width: 15em;
+        &:hover {
+            & > * {
+                border-color: @fs_color_add_light;
+            }
+        }
+    }
+
     .filename {
         font-family: monospace;
         font-size: smaller;
@@ -132,46 +184,6 @@
     td .fileformat {
         display: inline-block;
         width: 4em;
-    }
-
-    footer {
-        margin: 1.5em 1.5em 0 0;
-        padding: 1em 2em 0.5em;
-        background: white;
-        ul {
-            overflow: auto;
-        }
-        li {
-            box-sizing: border-box;
-            display: inline-block;
-            float: left;
-            padding-right: 1em;
-            width: 20%;
-            max-width: 120px;
-
-            > a {
-                display: block;
-                height: 0;
-                padding-top: 150/240*100%;
-                position: relative;
-                text-align: center;
-                width: 100%;
-
-                img {
-                    display: block;
-                    height: 100%;
-                    top: 0;
-                    left: 0;
-                    right: 0;
-                    position: absolute;
-                }
-            }
-            > img {
-                display: block;
-                height: 150/240*100/5%;
-                width: 100%;
-            }
-        }
     }
 
     label {
@@ -187,63 +199,29 @@
         display: block;
     }
     .info {
-        color: blue;
+        color: @fs_color_ok;
     }
     .note {
-        color: orange;
+        color: @fs_color_warning;
     }
     .error {
-        color: red;
+        color: @fs_color_delete;
+    }
+
+    .fontsampler-num-notifications {
+        border-radius: 100%;
+        background: @fs_color_delete_light;
+        color: @fs_color_white;
+        display: inline-block;
+        height: 1.25em;
+        margin: 0 0 -0.25em 0.5em;
+        text-align: center;
+        width: 1.25em;
     }
 
     ul.real-list {
         list-style: disc;
         margin: 0 0 0 2em;
-    }
-
-    #fontsampler-menu {
-        ul {
-            border-bottom: 1px solid #999;
-            margin: 0;
-            padding: 0 1em;
-
-            li {
-                padding: 0;
-                margin: 0;
-                font-size: larger;
-                display: inline-block;
-                border-bottom: 0;
-
-                a {
-                    border: 1px solid #fff;
-                    border-top-left-radius: 3px;
-                    border-top-right-radius: 3px;
-                    border-bottom: 0;
-                    display: inline-block;
-                    padding: 0.5em 1em;
-                    text-decoration: none;
-                    outline: none;
-
-                    &:hover, &:focus {
-                        background: #008ec2;
-                        border: 1px solid #006799;
-                        border-bottom: 0;
-                        color: #fff;
-                    }
-                }
-
-                &.current {
-                    background: #fafafa;
-                    a {
-                        border: 1px solid #999;
-                        border-bottom: 0;
-                        border-top-left-radius: 3px;
-                        border-top-right-radius: 3px;
-                        color: #333;
-                    }
-                }
-            }
-        }
     }
 
     // any sort of hidden placeholder
@@ -283,161 +261,6 @@
         float: left;
         margin-right: 5%;
         width: 45%;
-    }
-
-    #fontsampler-admin-ui-wrapper {
-        position: relative;
-
-        &:hover {
-            .fontsampler-ui-block,
-            .fontsampler-interface-row-break {
-                outline: 1px dotted orange;
-            }
-        }
-
-        #fontsampler-ui-blocks-list {
-            display: none;
-        }
-
-        // fontsampler UI sortable
-        #fontsampler-ui-layout-preview {
-            border: 1px dotted grey;
-            padding: 10px;
-
-            // sortable preview fontsamplers
-            .fontsampler-interface {
-                position: relative;
-
-                // style the otherwise invisible row break so it can be drag and dropped as well
-                .fontsampler-interface-row-break {
-                    cursor: move;
-                    height: 1.5em;
-                    background: #ccc;
-                    font-style: italic;
-                    text-align: center;
-                    margin-bottom: 10px;
-                    position: relative;
-
-                    &:before {
-                        content: "ROW BREAK";
-                    }
-
-                    &:hover {
-                        outline: 1px solid orange;
-                    }
-
-                    .fontsampler-delete-row-break {
-                        position: absolute;
-                        right: 0;
-                        top: 0;
-                        height: 100%;
-                        line-height: 1;
-                        border: none;
-                        background: transparent;
-                        cursor: pointer;
-                        font-weight: bold;
-                    }
-                }
-
-                .fontsampler-ui-block {
-                    position: relative;
-
-                    // on hovering a block show the overlay
-                    &:hover,
-                    &.fontsampler-ui-block-menu-open {
-                        .fontsampler-ui-block-overlay {
-                            display: block;
-                            outline: 1px solid orange;
-                        }
-                    }
-
-                    &.fontsampler-ui-block-menu-open {
-                        .fontsampler-ui-block-overlay {
-                            .fontsampler-ui-block-options {
-                                display: block;
-                            }
-                        }
-                    }
-
-                    // the admin overlay of each ui block with buttons for expanding settings and layout options
-                    .fontsampler-ui-block-overlay {
-                        background: rgba(255, 155, 0, 0.9);
-                        box-sizing: border-box;
-                        cursor: move !important;
-                        display: none;
-                        height: 100%;
-                        left: 0;
-                        outline: 1px dotted orange;
-                        opacity: 1;
-                        padding: 10px;
-                        position: absolute;
-                        top: 0;
-                        width: 100%;
-                        z-index: 19;
-
-                        // the button that toggles class settings and adding linebreak
-                        .fontsampler-ui-block-settings {
-                            box-sizing: border-box;
-                            border: none;
-                            background: transparent;
-                            cursor: pointer;
-                            display: block;
-                            height: 100%;
-                            outline: none;
-                            padding: 5px;
-                            position: absolute;
-                            right: 0;
-                            top: 0;
-                            width: 30px;
-
-                            img {
-                                display: block;
-                                height: 20px;
-                                width: 20px;
-                            }
-                        }
-
-                        // wrapper that holds line break button and column class radios
-                        .fontsampler-ui-block-options {
-                            border: 2px solid orange;
-                            display: none;
-                            padding: 10px;
-                            position: absolute;
-                            right: -1px;
-                            top: 100%;
-                            background: rgba(255, 200, 50, 0.9);
-                            min-width: 15em;
-                            width: auto;
-
-                            .fontsampler-ui-block-add-break {
-                                margin-bottom: 1em;
-                            }
-                            .fontsampler-ui-block-layout-classes {
-                                label {
-                                    display: block;
-                                    margin: 0.5em 0;
-                                }
-                            }
-                        }
-
-                    }
-                }
-            }
-        }
-        #fontsampler-ui-layout-preview-options {
-            clear: both;
-            display: block;
-        }
-
-        .type-tester__slider {
-            margin-top: 4px;
-        }
-    }
-
-    ul.fontsampler-ui-preview-placeholder {
-        li {
-            display: none;
-        }
     }
 
     .selectric .button {
@@ -491,32 +314,123 @@
 
     // pagination
     .fontsampler-pagination {
-        margin: 1em auto;
+        ul {
+            margin: 0 auto;
+            display: inline-block;
+            background: @fs_color_light;
+            padding: 1em 0.5em;
+
+            li {
+                display: inline-block;
+            }
+        }
 
         a {
-            background: #eee;
-            border: 1px solid #eee;
-            color: #888;
+            background: @fs_color_white;
+            border: 0;
+            color: @fs_color_link;
+            font-weight: bold;
             text-decoration: none;
             text-transform: uppercase;
             margin: 0 0.25em;
             padding: 0.25em 0.75em;
             outline: none;
             box-shadow: none;
-            border-radius: 3px;
+            border-radius: 0;
             letter-spacing: 2px;
+            transition: background 0.15s ease-in-out;
 
             &.fontsampler-pagination-current-page {
-                color: #008ec2;
-                background: #eee;
-                border: 1px solid #ccc !important;
+                color: @fs_color_white;
+                background: @fs_color_ok;
             }
 
             &:hover, &:focus {
-                border: 1px solid #008ec2;
-                color: #006799;
+                background: @fs_color_ok_light;
+                color: @fs_color_white;
             }
         }
     }
 
+    .fontsampler-pagination + table {
+        margin-top: -1em;
+    }
+
+    table + .fontsampler-pagination {
+        margin-bottom: 1em;
+    }
+
+    label.fontsampler-label-disabled {
+        .settings-description {
+            color: @fs_color_disabled;
+        }
+    }
+
+    label.fontsampler-radio {
+        display: inline-block;
+        margin: 0.5em 0;
+
+        &.block {
+            display: block;
+        }
+
+        input[type=radio] {
+            display: inline-block;
+            margin: 0.1em 0.5em 0em;
+            vertical-align: top;
+        }
+        span {
+            display: inline-block;
+        }
+    }
+
+    .fontsampler-toggle-show-hide {
+        span {
+            display: none;
+        }
+        span:first-child {
+            display: block;
+        }
+    }
+
+    .fontsampler-visible {
+        display: block;
+    }
+
+    // <button> link that looks just like text link
+    .fontsampler-button-link {
+        background: transparent;
+        border: 0;
+        color: @fs_color_link;
+        cursor: pointer;
+        display: inline-block;
+        font-size: smaller;
+        outline: 0;
+        padding: 0 1em;
+        margin: 0;
+        vertical-align: text-bottom;
+    }
+
+    .fontsampler-image-radio {
+        background: @fs_color_white;
+        position: relative;
+
+        &:hover img {
+            background: @fs_color_ok;
+        }
+
+        &.active {
+            img {
+                background: @fs_color_ok_light;
+            }
+        }
+        input[type="radio"] {
+            display: block;
+            visibility: hidden;
+            width: 1em;
+            position: absolute;
+            left: -1em;
+            top: 0;
+        }
+    }
 }

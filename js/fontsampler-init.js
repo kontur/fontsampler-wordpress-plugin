@@ -6,9 +6,9 @@ jQuery(function () {
 
 		$(this).fontSampler({
 			fontFile: file,
-			fontSize: options["font_size_initial"] + options["font_size_unit"],
-			letterSpacing: options["letter_spacing_initial"] + options["letter_spacing_unit"],
-			leading: options["line_height_initial"] + options["line_height_unit"],
+			fontSize: options["fontsize_initial"] + options["fontsize_unit"],
+			letterSpacing: options["letterspacing_initial"] + options["letterspacing_unit"],
+			leading: options["lineheight_initial"] + options["lineheight_unit"],
 			multiLine: options["multiline"] == 1 ? true : false,
 		});
 	});
@@ -21,15 +21,15 @@ jQuery(function () {
 			unit = $(this).data('unit');
 
 		switch ($(this).attr('name')) {
-			case 'font-size':
+			case 'fontsize':
 				$fs.fontSampler('changeSize', val + unit);
 				break;
 
-			case 'letter-spacing':
+			case 'letterspacing':
 				$fs.fontSampler('changeLetterSpacing', val + unit);
 				break;
 
-			case 'line-height':
+			case 'lineheight':
 				$fs.fontSampler('changeLeading', val + unit);
 				break;
 		}

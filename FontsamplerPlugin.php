@@ -14,27 +14,31 @@ class FontsamplerPlugin {
 	public $default_features;
 	public $admin_hide_legacy_formats;
 	public $fontsampler_db_version;
+	public $twig;
 
 	// helper classes
 	public $msg;
 	public $db;
 	public $helpers;
+	public $notifications;
 	private $forms;
 
 	const FONTSAMPLER_OPTION_DB_VERSION = 'fontsampler_db_version';
 	const FONTSAMPLER_OPTION_HIDE_LEGACY_FORMATS = 'fontsampler_hide_legacy_formats';
 
-	function __construct( $wpdb ) {
+	function __construct( $wpdb, $twig ) {
 
 		// instantiate all needed helper subclasses
 		$this->msg     = new FontsamplerMessages();
 		$this->helpers = new FontsamplerHelpers( $this );
 		$this->db      = new FontsamplerDatabase( $wpdb, $this );
+		$this->notifications = new FontsamplerNotifications( $this );
+		$this->twig    = $twig;
 
 		// keep track of db versions and migrations via this
 		// simply set this to the current PLUGIN VERSION number when bumping it
 		// i.e. a database update always bumps the version number of the plugin as well
-		$this->fontsampler_db_version = '0.1.5';
+		$this->fontsampler_db_version = '0.2.0';
 		$current_db_version           = get_option( self::FONTSAMPLER_OPTION_DB_VERSION );
 
 		// if no previous db version has been registered assume new install and set
@@ -63,7 +67,7 @@ class FontsamplerPlugin {
 		// TODO combined default_features and boolean options as array of objects
 		// with "isBoolean" attribute
 		$this->default_features = array(
-			'size',
+			'fontsize',
 			'letterspacing',
 			'lineheight',
 			'sampletexts',
@@ -72,6 +76,8 @@ class FontsamplerPlugin {
 			'multiline',
 			'opentype',
 			'fontpicker',
+			'buy',
+			'specimen',
 		);
 		// note: font_formats order matters: most preferred to least preferred
 		// note: so far no feature detection and no fallbacks, so woff2 last until fixed
@@ -79,51 +85,58 @@ class FontsamplerPlugin {
 		$this->font_formats_legacy = array( 'eot', 'ttf' );
 
 		$this->settings_defaults = array(
-			'font_size_label'           => 'Size',
-			'font_size_min'             => '8',
-			'font_size_max'             => '96',
-			'font_size_initial'         => '14',
-			'font_size_unit'            => 'px',
-			'letter_spacing_label'      => 'Letter spacing',
-			'letter_spacing_min'        => '-5',
-			'letter_spacing_max'        => '5',
-			'letter_spacing_initial'    => '0',
-			'letter_spacing_unit'       => 'px',
-			'line_height_label'         => 'Line height',
-			'line_height_min'           => '70',
-			'line_height_max'           => '300',
-			'line_height_initial'       => '110',
-			'line_height_unit'          => '%',
+			'fontsize_label'           => 'Size',
+			'fontsize_min'             => '8',
+			'fontsize_max'             => '96',
+			'fontsize_initial'         => '14',
+			'fontsize_unit'            => 'px',
+			'letterspacing_label'      => 'Letter spacing',
+			'letterspacing_min'        => '-5',
+			'letterspacing_max'        => '5',
+			'letterspacing_initial'    => '0',
+			'letterspacing_unit'       => 'px',
+			'lineheight_label'         => 'Line height',
+			'lineheight_min'           => '70',
+			'lineheight_max'           => '300',
+			'lineheight_initial'       => '110',
+			'lineheight_unit'          => '%',
 			'alignment_initial'         => 'left',
 			'sample_texts'              => "hamburgerfontstiv\nabcdefghijklmnopqrstuvwxyz\nABCDEFGHIJKLMNOPQRSTUVWXYZ\nThe quick brown fox jumps over the lazy cat",
 			'css_color_text'            => '#333333',
 			'css_color_background'      => '#ffffff',
 			'css_color_label'           => '#333333',
-			'css_size_label'            => 'inherit',
-			'css_fontfamily_label'      => 'inherit',
+			'css_value_size_label'            => 'inherit',
+			'css_value_fontfamily_label'      => 'inherit',
 			'css_color_highlight'       => '#efefef',
 			'css_color_highlight_hover' => '#dedede',
 			'css_color_line'            => '#333333',
 			'css_color_handle'          => '#333333',
-			'css_color_icon_active'     => '#333333',
-			'css_color_icon_inactive'   => '#dedede',
-			'css_column_gutter'         => '10px',
-			'css_row_height'            => '30px',
-			'css_row_gutter'            => '10px',
-			'size'                      => 1,
-			'letterspacing'             => 1,
-			'lineheight'                => 1,
+			'css_value_column_gutter'         => '10px',
+			'css_value_row_height'            => '30px',
+			'css_value_row_gutter'            => '10px',
+			'fontsize'                 => 1,
+			'letterspacing'            => 1,
+			'lineheight'               => 1,
 			'sampletexts'               => 0,
 			'alignment'                 => 0,
 			'invert'                    => 0,
 			'multiline'                 => 1,
 			'opentype'                  => 0,
 			'fontpicker'                => 0,
+			'buy'                       => 0,
+			'specimen'                  => 0,
 			'buy_label'                 => 'Buy',
-			'buy_image'                 => '',
+			'buy_image'                 => null,
+			'buy_url'                  => null,
+			'buy_type'                  => 'label',
 			'specimen_label'            => 'Specimen',
-			'specimen_image'            => '',
+			'specimen_image'            => null,
+			'specimen_url'             => null,
+			'specimen_type'             => 'label',
+			'ui_columns'                => 3,
 		);
+
+		$this->helpers->extend_twig( $twig );
 	}
 
 
@@ -141,19 +154,25 @@ class FontsamplerPlugin {
 		$script_url = preg_replace( "/^http\:\/\/[^\/]*/", "", plugin_dir_url( __FILE__ ) );
 		?>
 		<script> var fontsamplerBaseUrl = '<?php echo $script_url; ?>'; </script>
-
 		<?php
+
 		// merge in possibly passed in attributes
 		$attributes = shortcode_atts( array( 'id' => '0' ), $atts );
+		$id = intval($attributes['id']);
 
 		// do nothing if missing id
-		if ( 0 != $attributes['id'] ) {
-			$set   = $this->db->get_set( intval( $attributes['id'] ) );
+		if ( 0 != $id ) {
+			$set   = $this->db->get_set( $id );
+			$css   = $this->helpers->get_custom_css( $set ); // returns false or link to generated custom css
 			$fonts = $this->helpers->get_best_file_from_fonts( $this->db->get_fontset_for_set( intval( $attributes['id'] ) ) );
+
+			if ( false !== $css ) {
+				wp_enqueue_style( 'fontsampler-interface-' . $id, $css, array(), false );
+			}
 
 			if ( false == $set || false == $fonts ) {
 				if ( current_user_can( 'edit_posts' ) || current_user_can( 'edit_pages' ) ) {
-					return '<div><strong>The typesampler with ID ' . $attributes['id'] . ' can not be displayed because some files or the type sampler set are missing!</strong> <em>You are seeing this notice because you have rights to edit posts - regular users will see an empty spot here.</em></div>';
+					return '<div class="fontsampler-warning"><strong>The typesampler with ID ' . $attributes['id'] . ' can not be displayed because some files or the type sampler set are missing!</strong> <em>You are seeing this notice because you have rights to edit posts - regular users will see an empty spot here.</em></div>';
 				} else {
 					return '<!-- typesampler #' . $attributes['id'] . ' failed to render -->';
 				}
@@ -212,12 +231,14 @@ class FontsamplerPlugin {
 		wp_enqueue_script( 'require-js', plugin_dir_url( __FILE__ ) . 'js/libs/requirejs/require.js', array(), false, true);
 		wp_enqueue_script( 'fontsampler-admin-main-js', plugin_dir_url( __FILE__ ) . 'admin/js/fontsampler-admin-main.js', array(
 			'wp-color-picker',
-			'jquery-ui-sortable'
+			'jquery-ui-sortable',
+			'jquery-ui-accordion',
 		), false, true);
 
 		wp_enqueue_script( 'fontsampler-js', plugin_dir_url( __FILE__ ) . 'js/libs/jquery-fontsampler/dist/jquery.fontsampler.js', array( 'jquery' ) );
 
 		wp_enqueue_style( 'wp-color-picker' );
+		wp_enqueue_style( 'jquery-ui-accordion' );
 		wp_enqueue_style( 'fontsampler-css', $this->helpers->get_css_file() );
 		wp_enqueue_style( 'fontsampler_admin_css', plugin_dir_url( __FILE__ ) . '/admin/css/fontsampler-admin.css', false, '1.0.0' );
 
@@ -271,14 +292,11 @@ class FontsamplerPlugin {
 			: 'fontsampler-admin-show-legacy-formats';
 		echo '">';
 
+		// output base url for javascript loading fontsamplers in the admin area
 		$script_url = preg_replace( "/^http\:\/\/[^\/]*/", "", plugin_dir_url( __FILE__ ) );
 		?>
 		<script> var fontsamplerBaseUrl = '<?php echo $script_url; ?>'; </script>
 		<?php
-
-		include( 'includes/header.php' );
-
-		echo '<main>';
 
 		$this->db->check_and_create_tables();
 
@@ -328,106 +346,168 @@ class FontsamplerPlugin {
 				case 'edit_settings':
 					$this->forms->handle_settings_edit();
 					break;
+				case 'reset_settings':
+					if ($this->forms->handle_settings_reset()) {
+					$this->msg->add_info( 'Settings successfully reset' );
+					}
+					break;
 				default:
-					$this->msg->notice( 'Form submitted, but no matching action found for ' . $_POST['action'] );
+					$this->msg->add_notice( 'Form submitted, but no matching action found for ' . $_POST['action'] );
 					break;
 			}
 			ob_end_flush();
 		}
 
-
 		$subpage = isset( $_GET['subpage'] ) ? $_GET['subpage'] : '';
 		switch ( $subpage ) {
 			case 'set_create':
-				$default_settings        = $this->db->get_settings();
-				$set                     = array_intersect_key( $default_settings, array_flip( $this->default_features ) );
-				$set['default_features'] = 1; // by default pick the default UI options
+				$defaults = $this->db->get_default_settings();
 
-				$formats = $this->font_formats;
-				$fonts   = $this->db->get_fontfile_posts();
-				include( 'includes/set-edit.php' );
-				break;
+				$set = $defaults;
+				$set['use_defaults'] = 1;
+				$set['alignment_initial'] = null;
 
-			case 'set_edit':
-				$default_settings = $this->db->get_settings();
-				$set              = $this->db->get_set( intval( $_GET['id'] ) );
-				if ( sizeof( $set['fonts'] ) > 1 ) {
-					$set['fontpicker'] = 1;
-				}
-
+				// generate all necessary info for the live layout preview
 				$layout = new FontsamplerLayout();
 				$str = $layout->sanitizeString($set['ui_order'], $set);
 				$layout->stringToArray($str);
+				$ui_order = !empty( $set['ui_order'] )
+					? $layout->sanitizeString( $set['ui_order'], $set )
+					: $layout->arrayToString( $layout->getDefaultBlocks(), $set );
 
+				$blocks = array_merge( $layout->getDefaultBlocks(), $layout->stringToArray( $set['ui_order'], $set ) );
+
+				echo $this->twig->render( 'set-edit.twig', array(
+					'set' => $set,
+					'defaults' => $defaults,
+					'fonts'    => $this->db->get_fontfile_posts(),
+					'ui_order'    => $ui_order,
+					'blocks'      => $blocks
+				));
+				break;
+
+			case 'set_edit':
+				$defaults = $this->db->get_settings();
+				$set = $this->db->get_set( intval( $_GET['id'] ) );
+
+				// generate all necessary info for the live layout preview
+				$layout = new FontsamplerLayout();
+				$str = $layout->sanitizeString($set['ui_order'], $set);
+				$layout->stringToArray($str);
+				$ui_order = !empty( $set['ui_order'] )
+					? $layout->sanitizeString( $set['ui_order'], $set )
+					: $layout->arrayToString( $layout->getDefaultBlocks(), $set );
+
+				$blocks = array_merge( $layout->getDefaultBlocks(), $layout->stringToArray( $set['ui_order'], $set ) );
+
+				// grab all possible included fonts
 				$fonts       = $this->db->get_fontfile_posts();
 				$fonts_order = implode( ',', array_map( function ( $font ) {
 					return $font['id'];
 				}, $set['fonts'] ) );
-				$formats     = $this->font_formats;
-				include( 'includes/set-edit.php' );
+
+				if ( empty($set) ){
+					$this->msg->add_error('No set selected');
+				}
+
+				echo $this->twig->render( 'set-edit.twig', array(
+					'set'         => $set,
+					'defaults'    => $defaults,
+					'fonts'       => $fonts,
+					'fonts_order' => $fonts_order,
+					'ui_order'    => $ui_order,
+					'blocks'      => $blocks
+				));
 				break;
 
 			case 'set_delete':
 				$set = $this->db->get_set( intval( $_GET['id'] ) );
-				include( 'includes/set-delete.php' );
+				echo $this->twig->render( 'set-delete.twig', array( 'set' => $set ));
 				break;
 
 			case 'fonts':
-				$offset   = isset( $_GET['offset'] ) ? intval( $_GET['offset'] ) : 0;
-				$num_rows = isset( $_GET['num_rows'] ) ? intval( $_GET['num_rows'] ) : 10;
-				$initials = $this->db->get_fontsets_initials();
-				if ( sizeof( $initials ) > 10 ) {
-					$pagination = new FontsamplerPagination( $initials, $num_rows, false, $offset );
-				}
+				$offset     = isset( $_GET['offset'] ) ? intval( $_GET['offset'] ) : 0;
+				$num_rows   = isset( $_GET['num_rows'] ) ? intval( $_GET['num_rows'] ) : 10;
+				$initials   = $this->db->get_fontsets_initials();
+				$pagination = new FontsamplerPagination( $initials, $num_rows, false, $offset );
 
-				$fonts   = $this->db->get_fontsets( $offset, $num_rows );
-				$formats = $this->font_formats;
-
-				include( 'includes/fontsets.php' );
+				echo $this->twig->render( 'fontsets.twig', array(
+						'fonts'      => $this->db->get_fontsets( $offset, $num_rows ),
+						'pagination' => $pagination->pages('?page=fontsampler&amp;subpage=fonts&amp;offset=###first###&amp;num_rows=###items###', sizeof( $initials )),
+					)
+				);
 				break;
 
 			case 'font_create':
-				$font    = null;
-				$formats = $this->font_formats;
-				include( 'includes/fontset-edit.php' );
+				echo $this->twig->render( 'fontset-edit.twig' );
 				break;
 
 			case 'font_edit':
-				$font    = $this->db->get_fontset( intval( $_GET['id'] ) );
-				$formats = $this->font_formats;
-				include( 'includes/fontset-edit.php' );
+				echo $this->twig->render( 'fontset-edit.twig', array(
+					'font' => $this->db->get_fontset( intval( $_GET['id'] ) )
+				));
 				break;
 
 			case 'font_delete':
 				$font = $this->db->get_fontset( intval( $_GET['id'] ) );
-				include( 'includes/fontset-delete.php' );
+				echo $this->twig->render( 'fontset-delete.twig', array( 'font' => $font ) );
 				break;
 
 			case 'settings':
-				$defaults = $this->db->get_settings();
 				$this->helpers->check_is_writeable( plugin_dir_path( __FILE__ ) . 'css/fontsampler-css.css', true );
-				include( 'includes/settings.php' );
+				$settings = $this->db->get_default_settings();
+
+				// generate all necessary info for the live layout preview
+				$layout = new FontsamplerLayout();
+				$str = $layout->sanitizeString($settings['ui_order'], $settings);
+				$layout->stringToArray($str);
+
+				$ui_order = empty( $settings['ui_order'] )
+					? $layout->arrayToString( $layout->getDefaultBlocks(), $settings )
+					: $layout->sanitizeString( $settings['ui_order'], $settings );
+
+				$blocks = array_merge( $layout->getDefaultBlocks(), $layout->stringToArray( $settings['ui_order'], $settings ) );
+
+				echo $this->twig->render( 'settings.twig', array(
+					'set' => $settings,
+					'defaults' => $settings, // for the most part use 'set', but some sliders read the "default" value
+					'ui_order'    => $ui_order,
+					'blocks'      => $blocks
+				));
+				break;
+
+			case 'settings_reset':
+				echo $this->twig->render( 'settings-reset.twig' );
 				break;
 
 			case 'about':
-				include( 'includes/about.php' );
+				echo $this->twig->render( 'about.twig' );
+				break;
+
+			case 'notifications':
+				$notifications = $this->notifications->get_notifications();
+				echo $this->twig->render( 'notifications.twig', array(
+					'missing_files' => $notifications['fonts_missing_files'],
+					'missing_fonts' => $notifications['sets_missing_fonts']
+				));
 				break;
 
 			default:
 				$offset   = isset( $_GET['offset'] ) ? intval( $_GET['offset'] ) : 0;
 				$num_rows = isset( $_GET['num_rows'] ) ? intval( $_GET['num_rows'] ) : 10;
 				$initials = $this->db->get_samples_ids();
-				if ( sizeof( $initials ) > 10 ) {
-					$pagination = new FontsamplerPagination( $initials, $num_rows, true, $offset );
-				}
+				$pagination = new FontsamplerPagination( $initials, $num_rows, true, $offset );
 
 				$sets = $this->db->get_sets( $offset, $num_rows );
-				include( 'includes/sets.php' );
+
+				echo $this->twig->render( 'sets.twig', array(
+						'sets' => $sets,
+						'pagination' => $pagination->pages('?page=fontsampler&amp;subpage=sets&amp;offset=###first###&amp;num_rows=###items###', sizeof($initials)),
+					)
+				);
 				break;
 		}
-		echo '</main>';
 
-		include( 'includes/footer.php' );
 		echo '</section>';
 	}
 
@@ -466,9 +546,8 @@ class FontsamplerPlugin {
 		// from this set create all blocks; pass in the generated set to make
 		// sure all fields sync
 		$blocks = $layout->stringToArray( $set['ui_order'], $set );
-
 		$options = $this->db->get_settings();
-		$settings = $this->db->get_settings();
+		$settings = $options;
 
 ?>
 

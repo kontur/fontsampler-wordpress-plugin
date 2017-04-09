@@ -1,0 +1,60 @@
+@import "admin-variables.less";
+
+#fontsampler-admin {
+    header {
+        background: white;
+        margin: 0 1.5em 0 0;
+        padding: 1em 1em;
+    }
+
+    #fontsampler-menu {
+        ul {
+            border-bottom: 4px solid @fs_color_link;
+            margin: 0;
+            padding: 0 1em;
+
+            li {
+                padding: 0;
+                margin: 0;
+                font-size: larger;
+                display: inline-block;
+                border-bottom: 0;
+                background: @fs_color_white;
+
+                a {
+                    border: 0;
+                    background: @fs_color_light;
+                    border-radius: 0;
+                    border-bottom: 0;
+                    box-shadow: none;
+                    color: @fs_color_link;
+                    display: inline-block;
+                    font-weight: bold;
+                    padding: 0.5em 1em;
+                    text-decoration: none;
+                    outline: none;
+                    transition: background 0.15s ease-in-out;
+
+                    &:active {
+                        background: @fs_color_white !important;
+                        color: @fs_color_link !important;
+                    }
+
+                    &:hover, &:focus {
+                        background: @fs_color_ok_light;
+                        border-bottom: 0;
+                        color: #fff;
+                    }
+                }
+
+                &.current {
+                    a {
+                        background: @fs_color_link;
+                        border-bottom: 0;
+                        color: @fs_color_white;
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,46 @@
+<label>Font name (mandatory)<br>
+	<input name="fontname[]" type="text" data-validation="length" data-validation-length="3-50"
+	       {% if font.name is empty %} placeholder="e.g. MyFont Regular Italic"
+	       {% else %} value="{{ font.name }}"
+	       {% endif %}>
+</label>
+
+<h2>Font files</h2>
+<table class="fontsampler-fontset-files">
+	<thead>
+	<tr>
+		<th>Format</th>
+		{% if font.id is not empty %}<th>Current file</th>{% endif %}
+		<th>Upload new file</th>
+		<th>{% if font.id is not empty %}Remove existing file{% endif %}</th>
+	</tr>
+	</thead>
+	<tbody>
+	{% for format in formats %}
+		<tr class="{{ is_legacy_format(format) ? 'fontsampler-admin-legacy-format' : 'fontsampler-admin-format' }}">
+			<td><code class="fileformat">{{ format }}</code></td>
+			{% if font.id is not empty %}
+				<td class="fontsampler-fontset-current-file">
+					{% if font[format] is not empty %}
+						<span class="filename">{{ font[format] }}</span>
+						<input type="hidden" name="existing_file_{{ format }}[]"
+						       class="hidden-file-name" value="{{ font[format] }}">
+					{% endif %}
+				</td>
+			{% endif %}
+			<td>
+				<input type="file" name="{{ format }}_0"
+					   data-validation="mime" data-validation-allowing="{{ format }}">
+			</td>
+			<td>
+				{% if font[format] is not empty %}
+					<button class="button delete fontsampler-fontset-remove-font">
+						<i class="icon">&times;</i>
+						<span>Delete file</span>
+					</button>
+				{% endif %}
+			</td>
+		</tr>
+	{% endfor %}
+	</tbody>
+</table>
