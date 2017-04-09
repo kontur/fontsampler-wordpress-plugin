@@ -295,9 +295,10 @@ class FontsamplerDatabase {
 				'ALTER TABLE ' . $this->table_settings . " CHANGE `invert` `invert` tinyint(1) unsigned DEFAULT NULL",
 				'ALTER TABLE ' . $this->table_settings . " CHANGE `multiline` `multiline` tinyint(1) unsigned DEFAULT NULL",
 				'ALTER TABLE ' . $this->table_settings . " CHANGE `opentype` `opentype` tinyint(1) unsigned DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `size` `fontsize` tinyint(1) unsigned DEFAULT NULL",
 
 				// currently in the settings table is only the default, so set it that way
-				'UPDATE ' . $this->table_settings . " SET is_default = 1, set_id = NULL",
+				'UPDATE ' . $this->table_settings . " SET is_default = 1, set_id = NULL, ui_columns = 3",
 			)
 		);
 
@@ -352,6 +353,8 @@ class FontsamplerDatabase {
 		$sql = "SELECT * FROM " . $this->table_sets;
 		$res = $this->wpdb->get_results( $sql, ARRAY_A );
 
+		// iterate through all fontsampler sets and move their settings from the sets row to the linked settings row
+		// finally remove unneeded columns from sets table
 		if ( ! empty( $res ) ) {
 			foreach ( $res as $row ) {
 				$row['set_id'] = $row['id'];

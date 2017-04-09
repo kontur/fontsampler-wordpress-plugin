@@ -190,8 +190,10 @@ class FontsamplerHelpers {
 		return false;
 	}
 
-
 	function get_custom_css( $set ) {
+		if ( false === $set ) {
+			return false;
+		}
 		if ( intval( $set['use_defaults'] ) === 1 ) {
 			return false;
 		}
