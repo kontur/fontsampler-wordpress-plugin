@@ -1,20 +1,20 @@
 <div class="type-tester"
-     data-min-font-size="<?php echo $options['font_size_min']; ?>"
-     data-max-font-size="<?php echo $options['font_size_max']; ?>"
-     data-unit-font-size="<?php echo $options['font_size_unit']; ?>"
-     data-value-font-size="<?php echo $options['font_size_initial']; ?>"
+     data-min-font-size="<?php echo $options['fontsize_min']; ?>"
+     data-max-font-size="<?php echo $options['fontsize_max']; ?>"
+     data-unit-font-size="<?php echo $options['fontsize_unit']; ?>"
+     data-value-font-size="<?php echo $options['fontsize_initial']; ?>"
      data-step-font-size="1"
 
-     data-min-letter-spacing="<?php echo $options['letter_spacing_min']; ?>"
-     data-max-letter-spacing="<?php echo $options['letter_spacing_max']; ?>"
-     data-unit-letter-spacing="<?php echo $options['letter_spacing_unit']; ?>"
-     data-value-letter-spacing="<?php echo $options['letter_spacing_initial']; ?>"
+     data-min-letter-spacing="<?php echo $options['letterspacing_min']; ?>"
+     data-max-letter-spacing="<?php echo $options['letterspacing_max']; ?>"
+     data-unit-letter-spacing="<?php echo $options['letterspacing_unit']; ?>"
+     data-value-letter-spacing="<?php echo $options['letterspacing_initial']; ?>"
      data-step-letter-spacing="1"
 
-     data-min-line-height="<?php echo $options['line_height_min']; ?>"
-     data-max-line-height="<?php echo $options['line_height_max']; ?>"
-     data-unit-line-height="<?php echo $options['line_height_unit']; ?>"
-     data-value-line-height="<?php echo $options['line_height_initial']; ?>"
+     data-min-line-height="<?php echo $options['lineheight_min']; ?>"
+     data-max-line-height="<?php echo $options['lineheight_max']; ?>"
+     data-unit-line-height="<?php echo $options['lineheight_unit']; ?>"
+     data-value-line-height="<?php echo $options['lineheight_initial']; ?>"
      data-step-line-height="1">
 
 	<div class="fontsampler-interface columns-<?php echo $set['ui_columns'];
@@ -40,8 +40,8 @@
 						if ( $set['fontsize'] ) : ?>
 							<label class="fontsampler-slider">
 								<span class="slider-label"><?php echo $options['fontsize_label']; ?></span>
-								<span class="slider-value type-tester__label" data-target-property="fontsize"></span>
-								<div class="type-tester__slider" data-target-property="fontsize"></div>
+								<span class="slider-value type-tester__label" data-target-property="font-size"></span>
+								<div class="type-tester__slider" data-target-property="font-size"></div>
 							</label>
 						<?php endif;
 						break;
@@ -51,8 +51,8 @@
 							<label class="fontsampler-slider">
 								<span class="slider-label"><?php echo $options['letterspacing_label']; ?></span>
 								<span class="slider-value type-tester__label"
-								      data-target-property="letterspacing"></span>
-								<div class="type-tester__slider" data-target-property="letterspacing"></div>
+								      data-target-property="letter-spacing"></span>
+								<div class="type-tester__slider" data-target-property="letter-spacing"></div>
 							</label>
 						<?php endif;
 						break;
@@ -61,8 +61,8 @@
 						if ( $set['lineheight'] ) : ?>
 							<label class="fontsampler-slider">
 								<span class="slider-label"><?php echo $options['lineheight_label']; ?></span>
-								<span class="slider-value type-tester__label" data-target-property="lineheight"></span>
-								<div class="type-tester__slider" data-target-property="lineheight"></div>
+								<span class="slider-value type-tester__label" data-target-property="line-height"></span>
+								<div class="type-tester__slider" data-target-property="line-height"></div>
 							</label>
 						<?php endif;
 						break;

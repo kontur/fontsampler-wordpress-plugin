@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: fonts, typeface, preview, shortcode
 Requires at least: 4.0
 Tested up to: 4.7.3
-Stable tag: 0.2.0
+Stable tag: 0.2.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -85,6 +85,10 @@ detect all available OpenType features from the provided webfont files.
 
 == Changelog ==
 
+= 0.2.1 =
+* Hotfix for Fontsampler sliders not working in the user-facing frontend
+* Small fix to prevent unnecessarily breaking older versions of PHP
+
 = 0.2.0 =
 * Complete style overhaul for the admin area
 * Supporting fully customisable settings on a per Fontsampler basis
@@ -100,9 +104,5 @@ detect all available OpenType features from the provided webfont files.
 
 = 0.1.7 =
 * Hotfix to upload filetype filter
-
-= 0.1.6 =
-* Implemented workaround for WP core bug preventing file uploads for some users
-* Fixed uninstall script to run without error messages
 
 See the changelog tab to review the changes in prior updates.
