@@ -360,7 +360,7 @@ class FontsamplerDatabase {
 				$row['set_id'] = $row['id'];
 
 				// some field renamings:
-				$row['fontsize']      = $row['size'];
+				$row['fontsize'] = $row['size'];
 
 				// if < 0.2.0 "default_features" were selected, remove those fields from the set so that they will be NULL and
 				// thus get replaced with the is_default values when retrieved later on
@@ -855,6 +855,41 @@ class FontsamplerDatabase {
 		$this->wpdb->delete( $this->table_settings, array( 'set_id' => $set_id ) );
 
 		return true;
+	}
+
+
+	function fix_settings_from_defaults() {
+		$settings = $this->get_default_settings();
+		unset($settings['is_default']);
+
+		foreach ( $settings as $key => $value ) {
+			$value_empty = null === $value || "" === $value;
+			$default_not_empty = in_array( $key, $this->fontsampler->settings_defaults )
+			                     && null !== $this->fontsampler->settings_defaults[ $key ];
+			if ( $value_empty && $default_not_empty ) {
+				$settings[ $key ] = $this->fontsampler->settings_defaults[ $key ];
+			}
+		}
+		$this->update_settings( $settings );
+		return true;
+	}
+
+
+	function get_default_settings_errors() {
+		$settings = $this->get_default_settings();
+		unset($settings['is_default']);
+
+		$problems = array();
+		foreach ( $settings as $key => $value ) {
+			$value_empty = null === $value || "" === $value;
+			$default_not_empty = in_array( $key, $this->fontsampler->settings_defaults )
+			                     && null !== $this->fontsampler->settings_defaults[ $key ];
+			if ( $value_empty && $default_not_empty ) {
+				array_push( $problems, $key );
+			}
+		}
+
+		return sizeof( $problems ) !== 0 ? $problems : false;
 	}
 
 

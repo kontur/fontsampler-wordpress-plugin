@@ -66,7 +66,7 @@
     }
 
     fieldset {
-        border: 1px solid #ccc;
+        border: 4px solid @fs_color_light;
         padding: 1em;
 
         &.no-padding {
@@ -431,6 +431,15 @@
             position: absolute;
             left: -1em;
             top: 0;
+        }
+    }
+
+    fieldset.fontsampler-fix-default-settings {
+        li {
+            margin: 1em 0;
+        }
+        .submit {
+            margin: 0;
         }
     }
 }

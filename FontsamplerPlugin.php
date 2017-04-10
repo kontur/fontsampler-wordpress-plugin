@@ -111,12 +111,12 @@ class FontsamplerPlugin {
 			'css_color_highlight_hover' => '#dedede',
 			'css_color_line'            => '#333333',
 			'css_color_handle'          => '#333333',
-			'css_value_column_gutter'         => '10px',
-			'css_value_row_height'            => '30px',
-			'css_value_row_gutter'            => '10px',
-			'fontsize'                 => 1,
-			'letterspacing'            => 1,
-			'lineheight'               => 1,
+			'css_value_column_gutter'   => '10px',
+			'css_value_row_height'      => '30px',
+			'css_value_row_gutter'      => '10px',
+			'fontsize'                  => 1,
+			'letterspacing'             => 1,
+			'lineheight'                => 1,
 			'sampletexts'               => 0,
 			'alignment'                 => 0,
 			'invert'                    => 0,
@@ -127,13 +127,16 @@ class FontsamplerPlugin {
 			'specimen'                  => 0,
 			'buy_label'                 => 'Buy',
 			'buy_image'                 => null,
-			'buy_url'                  => null,
+			'buy_url'                   => null,
 			'buy_type'                  => 'label',
 			'specimen_label'            => 'Specimen',
 			'specimen_image'            => null,
-			'specimen_url'             => null,
+			'specimen_url'              => null,
 			'specimen_type'             => 'label',
 			'ui_columns'                => 3,
+			'ui_order'                  => null,
+			'is_ltr'                    => 1,
+			'initial'                   => null // initial fontset_id
 		);
 
 		$this->helpers->extend_twig( $twig );
@@ -351,6 +354,11 @@ class FontsamplerPlugin {
 					$this->msg->add_info( 'Settings successfully reset' );
 					}
 					break;
+				case 'fix_default_settings':
+					if ($this->db->fix_settings_from_defaults()) {
+						$this->msg->add_info( 'Settings successfully restored from defaults');
+					}
+					break;
 				default:
 					$this->msg->add_notice( 'Form submitted, but no matching action found for ' . $_POST['action'] );
 					break;
@@ -488,7 +496,8 @@ class FontsamplerPlugin {
 				$notifications = $this->notifications->get_notifications();
 				echo $this->twig->render( 'notifications.twig', array(
 					'missing_files' => $notifications['fonts_missing_files'],
-					'missing_fonts' => $notifications['sets_missing_fonts']
+					'missing_fonts' => $notifications['sets_missing_fonts'],
+					'missing_settings' => $notifications['settings_defaults']
 				));
 				break;
 

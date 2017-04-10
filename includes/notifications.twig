@@ -13,4 +13,21 @@
         <h2>Fontsamplers missing fonts</h2>
         {{ include('sets-table.twig', { sets: missing_fonts }) }}
     {% endif %}
+
+    {% if missing_settings is not empty %}
+        <h2>Some required default settings are empty</h2>
+        <fieldset class="fontsampler-fix-default-settings">
+            <p>Detected problems:</p>
+            <ul class="real-list">
+                {% for field in missing_settings %}
+                    <li>The <code>{{ field }}</code> -database field for the default settings is empty.</li>
+                {% endfor %}
+            </ul>
+            <form method="post" enctype="multipart/form-data" action="?page=fontsampler">
+                <input type="hidden" name="action" value="fix_default_settings">
+                {{ wp_nonce_field( 'fontsampler-action-fix_default_settings' )|raw }}
+                {{ submit_button('Restore those values from defaults') }}
+            </form>
+        </fieldset>
+    {% endif %}
 {% endblock %}

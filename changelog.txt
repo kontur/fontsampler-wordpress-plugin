@@ -1,3 +1,8 @@
+# 0.2.2
+- Hotfix fixing missing default setting units for font size, line height and letterspacing sliders after saving settings
+- Implemented further checks for ensuring the default settings are valid
+- Implemented "Fix from defaults" action in case some default settings were invalid
+
 # 0.2.1
 - Hotfix for Fontsampler sliders not working in the user-facing frontend
 - Small fix to prevent unnecessarily breaking older versions of PHP
