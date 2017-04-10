@@ -1,3 +1,7 @@
+# 0.2.1
+- Hotfix for Fontsampler sliders not working in the user-facing frontend
+- Small fix to prevent unnecessarily breaking older versions of PHP
+
 # 0.2.0
 - Complete style overhaul for the admin area
 - Supporting fully customisable settings on a per Fontsampler basis
