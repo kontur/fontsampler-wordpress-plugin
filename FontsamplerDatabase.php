@@ -488,7 +488,7 @@ class FontsamplerDatabase {
 
 		// replace all NULL values in the retrieved settings with the defaults
 		$defaults = $this->get_default_settings();
-		$merged   = [];
+		$merged   = array();
 
 		// if no defaults are defined, just do nothing and return as such
 		if ( ! $defaults ) {
@@ -826,7 +826,7 @@ class FontsamplerDatabase {
 
 
 	function update_settings( $data, $id = false ) {
-		$where = [];
+		$where = array();
 		if ( false === $id ) {
 			$where['is_default'] = '1';
 		} else {
