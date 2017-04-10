@@ -204,8 +204,8 @@ class FontsamplerFormhandler {
 				$this->fontsampler->db->save_settings_for_set( $settings, $id );
 				$this->fontsampler->helpers->get_custom_css( $this->fontsampler->db->get_set( $id ) );
 				$this->fontsampler->msg->add_info( 'Created fontsampler with id ' . $id
-				                               . '. You can now embed it in your posts or pages by adding [fontsampler id='
-				                               . $id . '].' );
+				                                   . '. You can now embed it in your posts or pages by adding [fontsampler id='
+				                                   . $id . '].' );
 			} else {
 				$this->fontsampler->msg->add_error( 'Error: Failed to create new fontsampler.' );
 
@@ -470,6 +470,11 @@ class FontsamplerFormhandler {
 
 			$data['is_default'] = 1;
 			$data['set_id']     = null;
+
+			// explicitly save the units, since they are not yet editable and thus missing from the $post
+			$data['fontsize_unit']      = $this->fontsampler->settings_defaults['fontsize_unit'];
+			$data['letterspacing_unit'] = $this->fontsampler->settings_defaults['letterspacing_unit'];
+			$data['lineheight_unit']    = $this->fontsampler->settings_defaults['lineheight_unit'];
 
 			// atm no inserts, only updating the defaults
 			$this->fontsampler->db->update_settings( $data );

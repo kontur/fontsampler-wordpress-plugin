@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: fonts, typeface, preview, shortcode
 Requires at least: 4.0
 Tested up to: 4.7.3
-Stable tag: 0.2.1
+Stable tag: 0.2.2
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -85,6 +85,11 @@ detect all available OpenType features from the provided webfont files.
 
 == Changelog ==
 
+= 0.2.2 =
+* Hotfix fixing missing default setting units for font size, line height and letterspacing sliders after saving settings
+* Implemented further checks for ensuring the default settings are valid
+* Implemented "Fix from defaults" action in case some default settings were invalid
+
 = 0.2.1 =
 * Hotfix for Fontsampler sliders not working in the user-facing frontend
 * Small fix to prevent unnecessarily breaking older versions of PHP
@@ -101,8 +106,5 @@ detect all available OpenType features from the provided webfont files.
 * Updated sponsors (Yay, thanks!)
 * Internally restructured the database and templating system for more modular future development
 * Improved the database migration routine to give better error messages to admin users
-
-= 0.1.7 =
-* Hotfix to upload filetype filter
 
 See the changelog tab to review the changes in prior updates.
