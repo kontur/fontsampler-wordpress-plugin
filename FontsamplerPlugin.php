@@ -152,7 +152,11 @@ class FontsamplerPlugin {
 	 * Register the [fontsampler id=XX] hook for use in pages and posts
 	 */
 	function fontsampler_shortcode( $atts ) {
-		$this->fontsampler_interface_enqueues();
+		// Not an ideal solution, but for the majority of conflicts from requirejs
+		// delaying trying to enqueue the fontsampler javascript ins the wp_footer
+		// hook seems to push it to the end of the enqueue stack
+		// instead of: $this->fontsampler_interface_enqueues(); this:
+		add_action( 'wp_footer', array( $this, 'fontsampler_interface_enqueues' ) );
 
 		$script_url = preg_replace( "/^http\:\/\/[^\/]*/", "", plugin_dir_url( __FILE__ ) );
 		?>
@@ -215,8 +219,8 @@ class FontsamplerPlugin {
 	 * Register all script and styles needed in the front end
 	 */
 	function fontsampler_interface_enqueues() {
-		wp_enqueue_script( 'require-js', plugin_dir_url( __FILE__ ) . 'js/libs/requirejs/require.js' );
-		wp_enqueue_script( 'main-js', plugin_dir_url( __FILE__ ) . 'js/main.js' );
+		wp_enqueue_script( 'require-js', plugin_dir_url( __FILE__ ) . 'js/libs/requirejs/require.js', array(), false, true );
+		wp_enqueue_script( 'main-js', plugin_dir_url( __FILE__ ) . 'js/main.js', array(), false, true );
 		wp_enqueue_style( 'fontsampler-css', $this->helpers->get_css_file() );
 	}
 
@@ -229,7 +233,6 @@ class FontsamplerPlugin {
         if($hook != 'toplevel_page_fontsampler') {
                 return;
         }
-
 
 		wp_enqueue_script( 'require-js', plugin_dir_url( __FILE__ ) . 'js/libs/requirejs/require.js', array(), false, true);
 		wp_enqueue_script( 'fontsampler-admin-main-js', plugin_dir_url( __FILE__ ) . 'admin/js/fontsampler-admin-main.js', array(
