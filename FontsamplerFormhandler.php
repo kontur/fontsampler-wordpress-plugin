@@ -220,7 +220,11 @@ class FontsamplerFormhandler {
 				// custom settings, delete those
 				$this->fontsampler->db->delete_settings_for_set( $id );
 			}
-			$this->fontsampler->db->update_set( array( 'use_defaults' => $use_defaults ? 1 : 0 ), $id );
+			$update = array (
+				'use_defaults' => $use_defaults ? 1 : 0,
+				'initial_font' => isset( $this->post['initial_font'] ) ? $this->post['initial_font'] : null,
+			);
+			$this->fontsampler->db->update_set( $update, $id );
 			$this->fontsampler->helpers->write_custom_css_for_set( $this->fontsampler->db->get_set( $id ) );
 			$this->fontsampler->msg->add_info( 'Fontsampler ' . $id . ' successfully updated.' );
 		}
