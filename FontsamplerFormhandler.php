@@ -50,18 +50,30 @@ class FontsamplerFormhandler {
 
 
 	/**
-	 * TODO: possibly also remove font file from wp media gallery?
-	 *
 	 * @param int $id
 	 *
 	 * @return bool
 	 */
-	function handle_font_delete( $id ) {
+	function handle_font_delete( $id  ) {
 		check_admin_referer( 'fontsampler-action-delete_font' );
 		$id = intval( $id );
 
 		if ( ! $id ) {
 			return false;
+		}
+
+		// if files are set to be deleted
+		if ( 1 === intval( $this->post['remove_files'] ) ) {
+			$font = $this->fontsampler->db->get_fontset_raw( $id );
+			foreach ( $this->fontsampler->font_formats as $format ) {
+				if ( ! empty( $font[ $format ] ) ) {
+					if ( false === wp_delete_attachment( $font[ $format ] ) ) {
+						$this->fontsampler->add_info( 'Font file for format ' . $format . ' removed from Wordpress Media Gallery' );
+					}
+				}
+			}
+		} else {
+			$this->fontsampler->msg->add_notice( 'Note that the font files themselves have not been removed from the Wordpress uploads folder ( Media Gallery ).' );
 		}
 
 		$res = $this->fontsampler->db->delete_font( $id );
@@ -70,7 +82,6 @@ class FontsamplerFormhandler {
 		} else {
 			$this->fontsampler->db->delete_join( array( 'font_id' => $id ) );
 			$this->fontsampler->msg->add_info( 'Font set succesfully removed. Font set also removed from any fontsamplers using it.' );
-			$this->fontsampler->msg->add_notice( 'Note that the font files themselves have not been removed from the Wordpress uploads folder ( Media Gallery ).' );
 		}
 
 		return true;

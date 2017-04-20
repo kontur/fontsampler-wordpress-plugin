@@ -707,6 +707,14 @@ class FontsamplerDatabase {
 	}
 
 
+	function get_fontset_raw( $font_id ) {
+		$sql    = 'SELECT * FROM ' . $this->table_fonts . ' WHERE `id`=' . $font_id . ' LIMIT 1';
+		$result = $this->wpdb->get_results( $sql, ARRAY_A );
+
+		return 0 == $this->wpdb->num_rows ? false : $result[0];
+	}
+
+
 	/*
 	 * Read all sets of fonts with font files
 	 */

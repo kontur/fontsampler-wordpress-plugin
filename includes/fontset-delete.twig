@@ -11,6 +11,25 @@
 		<input type="hidden" name="action" value="delete_font">
 		{{ wp_nonce_field( 'fontsampler-action-delete_font' )|raw }}
 		<input type="hidden" name="id" value="{{ font.id }}">
+		<p>Files in this Fontset:</p>
+		<ul class="real-list">
+			{% for format in formats %}
+				{% if font[format] is not empty %}
+					<li>
+						{{ format }}: <code>{{ font[format] }}</code>
+					</li>
+				{% endif %}
+			{% endfor %}
+		</ul>
+		<br>
+		<label class="fontsampler-radio">
+			<input type="radio" value="1" name="remove_files" checked>
+			<span>Also remove all associated files from the Wordpress Media Gallery</span>
+		</label><br>
+		<label class="fontsampler-radio">
+			<input type="radio" value="0" name="remove_files">
+			<span>Keep all associated files from the Wordpress Media Gallery</span>
+		</label>
 
 		{{ submit_button( 'Yes, delete Fontset', 'delete' ) }}
 	</form>
