@@ -9,6 +9,11 @@
         {{ include('fontsets-table.twig', { fonts: missing_files }) }}
     {% endif %}
 
+    {% if missing_names is not empty %}
+        <h2>Missing name for webfont set</h2>
+        {{ include('fontsets-table.twig', { fonts: missing_names }) }}
+    {% endif %}
+
     {% if missing_fonts is not empty %}
         <h2>Fontsamplers missing fonts</h2>
         {{ include('sets-table.twig', { sets: missing_fonts }) }}

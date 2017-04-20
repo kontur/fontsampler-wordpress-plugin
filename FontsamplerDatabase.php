@@ -754,6 +754,21 @@ class FontsamplerDatabase {
 	}
 
 
+	function get_fontsets_missing_name() {
+		$fonts   = $this->get_fontsets();
+		$missing = array();
+		if ( false !== $fonts ) {
+			foreach ( $fonts as $font ) {
+				if ( empty( $font['name'] ) ) {
+					array_push( $missing, $font );
+				}
+			}
+		}
+
+		return empty( $missing ) ? false : $missing;
+	}
+
+
 	function count_fontsets() {
 		$sql = 'SELECT COUNT(*) FROM ' . $this->table_fonts;
 
@@ -860,10 +875,10 @@ class FontsamplerDatabase {
 
 	function fix_settings_from_defaults() {
 		$settings = $this->get_default_settings();
-		unset($settings['is_default']);
+		unset( $settings['is_default'] );
 
 		foreach ( $settings as $key => $value ) {
-			$value_empty = null === $value || "" === $value;
+			$value_empty       = null === $value || "" === $value;
 			$default_not_empty = in_array( $key, $this->fontsampler->settings_defaults )
 			                     && null !== $this->fontsampler->settings_defaults[ $key ];
 			if ( $value_empty && $default_not_empty ) {
@@ -871,17 +886,18 @@ class FontsamplerDatabase {
 			}
 		}
 		$this->update_settings( $settings );
+
 		return true;
 	}
 
 
 	function get_default_settings_errors() {
 		$settings = $this->get_default_settings();
-		unset($settings['is_default']);
+		unset( $settings['is_default'] );
 
 		$problems = array();
 		foreach ( $settings as $key => $value ) {
-			$value_empty = null === $value || "" === $value;
+			$value_empty       = null === $value || "" === $value;
 			$default_not_empty = in_array( $key, $this->fontsampler->settings_defaults )
 			                     && null !== $this->fontsampler->settings_defaults[ $key ];
 			if ( $value_empty && $default_not_empty ) {

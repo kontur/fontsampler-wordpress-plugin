@@ -18,10 +18,14 @@ class FontsamplerNotifications {
 		$notifications['fonts_missing_files'] = $this->get_fonts_missing_files();
 		$notifications['sets_missing_fonts'] = $this->get_sets_missing_fonts();
 		$notifications['settings_defaults'] = $this->get_settings_problems();
+		$notifications['fonts_missing_name'] = $this->get_fonts_missing_name();
 
 		$notifications['num_notifications'] = 0;
 		if ( false !== $notifications['fonts_missing_files'] ) {
 			$notifications['num_notifications'] += sizeof($notifications['fonts_missing_files']);
+		}
+		if ( false !== $notifications['fonts_missing_name'] ) {
+			$notifications['num_notifications'] += sizeof($notifications['fonts_missing_name']);
 		}
 		if ( false !== $notifications['sets_missing_fonts'] ) {
 			$notifications['num_notifications'] += sizeof($notifications['sets_missing_fonts']);
@@ -39,6 +43,10 @@ class FontsamplerNotifications {
 
 	private function get_fonts_missing_files() {
 		return $this->fontsampler->db->get_fontsets_missing_files();
+	}
+
+	private function get_fonts_missing_name() {
+		return $this->fontsampler->db->get_fontsets_missing_name();
 	}
 
 	private function get_sets_missing_fonts() {

@@ -500,6 +500,7 @@ class FontsamplerPlugin {
 				echo $this->twig->render( 'notifications.twig', array(
 					'missing_files' => $notifications['fonts_missing_files'],
 					'missing_fonts' => $notifications['sets_missing_fonts'],
+					'missing_names' => $notifications['fonts_missing_name'],
 					'missing_settings' => $notifications['settings_defaults']
 				));
 				break;
