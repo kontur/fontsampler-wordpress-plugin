@@ -4,6 +4,16 @@
     <h1>Notifications</h1>
     <p>Below a quick overview of issues detected.</p>
 
+    {% if folder_permissions is not empty %}
+        <h2>Folder permissions</h2>
+        <p>The following folders and files need to be writable for the server:</p>
+        <ul class="real-list">
+            {% for folder in folder_permissions %}
+                <li><code>{{ folder }}</code></li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
     {% if missing_files is not empty %}
         <h2>Missing webfont files</h2>
         {{ include('fontsets-table.twig', { fonts: missing_files }) }}

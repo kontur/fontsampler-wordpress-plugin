@@ -501,7 +501,8 @@ class FontsamplerPlugin {
 					'missing_files' => $notifications['fonts_missing_files'],
 					'missing_fonts' => $notifications['sets_missing_fonts'],
 					'missing_names' => $notifications['fonts_missing_name'],
-					'missing_settings' => $notifications['settings_defaults']
+					'missing_settings' => $notifications['settings_defaults'],
+					'folder_permissions' => $notifications['folder_permissions']
 				));
 				break;
 
