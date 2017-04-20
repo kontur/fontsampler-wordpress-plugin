@@ -25,8 +25,24 @@ class FontsamplerFormhandler {
 
 	function handle_font_edit( $id = null ) {
 		check_admin_referer( 'fontsampler-action-edit_font' );
+
+		// check if "existing_file_format" fields are passed in, which are references to existing
+		// files that should not be null'ed
+		$formats_exist    = null;
+		$existing_formats = array_filter( $this->post, function ( $key ) {
+			if ( substr( $key, 0, 13 ) === "existing_file" ) {
+				return true;
+			}
+		}, ARRAY_FILTER_USE_KEY );
+		$keys             = array_keys( $existing_formats );
+		if ( is_array( $keys ) ) {
+			$formats_exist = array_map( function ( $key ) {
+				return substr( $key, 14 );
+			}, $keys );
+		}
+
 		if ( ! empty( $this->post['fontname'][0] ) ) {
-			$this->upload_multiple_fontset_files( $this->post['fontname'], $id );
+			$this->upload_multiple_fontset_files( $this->post['fontname'], $id, $formats_exist );
 		}
 
 		return true;
@@ -220,7 +236,7 @@ class FontsamplerFormhandler {
 				// custom settings, delete those
 				$this->fontsampler->db->delete_settings_for_set( $id );
 			}
-			$update = array (
+			$update = array(
 				'use_defaults' => $use_defaults ? 1 : 0,
 				'initial_font' => isset( $this->post['initial_font'] ) ? $this->post['initial_font'] : null,
 			);
@@ -325,18 +341,18 @@ class FontsamplerFormhandler {
 	 *
 	 * @return: array of font ids inserted to the database
 	 */
-	function upload_multiple_fontset_files( $names, $id = null ) {
+	function upload_multiple_fontset_files( $names, $id = null, $ignore_formats = null ) {
 		$num_names = sizeof( $names );
 
 		if ( $num_names === 1 ) {
 			// single font, i.e. only one inline font, or create font dialog
-			return array( $this->upload_fontset_files( $names[0], 0, $id ) );
+			return array( $this->upload_fontset_files( $names[0], 0, $id, $ignore_formats ) );
 		} else {
 			// multiple fonts posted for saving
 			$created = array();
 			for ( $i = 0; $i < $num_names; $i ++ ) {
 				$name = $names[ $i ];
-				array_push( $created, $this->upload_fontset_files( $name, $i, $id ) );
+				array_push( $created, $this->upload_fontset_files( $name, $i, $id, $ignore_formats ) );
 			}
 
 			return $created;
@@ -353,7 +369,7 @@ class FontsamplerFormhandler {
 	 *
 	 * @return int or boolean: inserted fontset database id or false
 	 */
-	function upload_fontset_files( $name, $file_suffix = 0, $id = null ) {
+	function upload_fontset_files( $name, $file_suffix = 0, $id = null, $ignore_formats = null ) {
 		$data = array(
 			'name' => $name,
 		);
@@ -369,6 +385,12 @@ class FontsamplerFormhandler {
 				'eot'   => null,
 				'ttf'   => null,
 			) );
+
+			if ( is_array( $ignore_formats ) and ! empty( $ignore_formats ) ) {
+				foreach ( $ignore_formats as $format ) {
+					unset( $data[ $format ] );
+				}
+			}
 		}
 
 		foreach ( $this->fontsampler->font_formats as $label ) {
