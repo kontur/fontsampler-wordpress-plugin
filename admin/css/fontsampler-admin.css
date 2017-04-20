@@ -31,6 +31,9 @@
 #fontsampler-admin .button span {
   padding-left: 2em;
 }
+#fontsampler-admin .button.hidden {
+  visibility: hidden;
+}
 #fontsampler-admin .button.button-primary {
   clear: both;
   border: 0;
@@ -62,6 +65,9 @@
 }
 #fontsampler-admin .button.button-primary span {
   padding-left: 2em;
+}
+#fontsampler-admin .button.button-primary.hidden {
+  visibility: hidden;
 }
 #fontsampler-admin .button.button-primary:hover {
   background: #008EC2;
@@ -97,6 +103,9 @@
 }
 #fontsampler-admin .button.add span {
   padding-left: 2em;
+}
+#fontsampler-admin .button.add.hidden {
+  visibility: hidden;
 }
 #fontsampler-admin .button.add:hover {
   background: #7ED321;
@@ -135,6 +144,9 @@
 }
 #fontsampler-admin .button.delete span {
   padding-left: 2em;
+}
+#fontsampler-admin .button.delete.hidden {
+  visibility: hidden;
 }
 #fontsampler-admin .button.delete:hover {
   background: #C0402F;
@@ -293,6 +305,14 @@
 #fontsampler-admin .fontsampler-settings-reset p {
   margin: 0;
 }
+#fontsampler-admin #fontsampler-fontset-list .fontsampler-font-set {
+  background: #F2F2F2;
+  padding: 0.5em;
+}
+#fontsampler-admin #fontsampler-fontset-list .fontsampler-font-set .fontsampler-fonts-table {
+  background: #FFFFFF;
+  margin-top: 1em;
+}
 #fontsampler-admin #fontsampler-fontset-list li select {
   width: 22.25em;
 }
@@ -449,6 +469,9 @@
 #fontsampler-admin .fontsampler-options-row > div .upload-custom-img span {
   padding-left: 2em;
 }
+#fontsampler-admin .fontsampler-options-row > div .upload-custom-img.hidden {
+  visibility: hidden;
+}
 #fontsampler-admin .fontsampler-options-row > div .upload-custom-img:hover {
   background: #7ED321;
 }
@@ -489,6 +512,9 @@
 }
 #fontsampler-admin .fontsampler-options-row > div .delete-custom-img span {
   padding-left: 2em;
+}
+#fontsampler-admin .fontsampler-options-row > div .delete-custom-img.hidden {
+  visibility: hidden;
 }
 #fontsampler-admin .fontsampler-options-row > div .delete-custom-img:hover {
   background: #C0402F;
@@ -817,6 +843,9 @@
   box-shadow: none;
   border: 2px solid #64CAF0;
 }
+#fontsampler-admin input[type=text].fontsampler-input-warning {
+  border-color: #C0402F;
+}
 #fontsampler-admin fieldset {
   border: 4px solid #F2F2F2;
   padding: 1em;
@@ -847,6 +876,9 @@
 }
 #fontsampler-admin table.fontsampler-fontset-files {
   margin: 0 auto;
+}
+#fontsampler-admin input.fontsampler-font-set-fontname {
+  width: 20em;
 }
 #fontsampler-admin th,
 #fontsampler-admin td {
@@ -917,6 +949,10 @@
   height: 3em;
   margin: 0;
   display: block;
+}
+#fontsampler-admin small code {
+  border-width: 1px !important;
+  padding: 0.1em 0.25em !important;
 }
 #fontsampler-admin .fontsampler-clipboard-wrapper {
   min-width: 15em;
@@ -1000,6 +1036,9 @@
 }
 #fontsampler-admin .fontsampler-initial-font-selection {
   display: inline-block;
+  vertical-align: top;
+  margin-top: 0.25em;
+  margin-left: 1em;
 }
 #fontsampler-admin .fontsampler-initial-font.selected span.initial-font-selected {
   display: inline-block;

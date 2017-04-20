@@ -15,10 +15,10 @@
 </button>
 <label class="fontsampler-initial-font-selection">
     <input type="radio" name="initial_font" value="{{ setfont.id }}"
-            {% if set.initial_font is not empty or set.initial_font == setfont.id %}
+        {% if set.initial_font is not empty and set.initial_font == setfont.id %}
            checked="checked"><span class="fontsampler-initial-font selected">
         {% else %}
-        ><span class="fontsampler-initial-font">
+            ><span class="fontsampler-initial-font">
         {% endif %}
             <span class="initial-font-selected">Is initially selected</span>
             <span class="initial-font-unselected">Set as initial</span>

@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: fonts, typeface, preview, shortcode
 Requires at least: 4.0
 Tested up to: 4.7.3
-Stable tag: 0.2.2
+Stable tag: 0.2.3
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -84,6 +84,15 @@ detect all available OpenType features from the provided webfont files.
 6. This is how you include a Fontsampler in a page or post: Simply add the shortcode for the created Fontsampler to your text
 
 == Changelog ==
+
+= 0.2.3 =
+* All font files are now handled via the WP media gallery popup in the admin area
+* Added option to delete all linked media gallery files when deleting a fontset
+* Added option to selected existing webfont file from media gallery for several fontsets
+* Added file and folder permissions check and notification to the admin area
+* Fixed an issue where removing one file would remove all files of a fontset
+* Fixed an issue where the initially selected font of a Fontsampler would not get saved
+* Fixed an issue where a setting in the server's php.ini would limit the amount of inline fonts that could be uploaded inline while adding a new Fontsampler
 
 = 0.2.2 =
 * Hotfix fixing missing default setting units for font size, line height and letterspacing sliders after saving settings

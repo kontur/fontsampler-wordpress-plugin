@@ -225,17 +225,8 @@ class FontsamplerHelpers {
 	}
 
 
-	function check_is_writeable( $handle, $output_wrapper = false ) {
-		$m = new FontsamplerMessages();
+	function check_is_writeable( $handle) {
 		if ( ( is_dir( $handle ) || is_file( $handle ) ) && false === is_writeable( $handle ) ) {
-			if ( $output_wrapper ) {
-				echo '<div class="notice">';
-			}
-			$m->notice( 'Warning: ' . $handle . ' not writable by the server, update the folder/file permissions.' );
-			if ( $output_wrapper ) {
-				echo '</div>';
-			}
-
 			return false;
 		}
 

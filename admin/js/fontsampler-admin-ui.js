@@ -4,7 +4,7 @@
  */
 define(['jquery', 'rangeslider', 'selectric', 'validate', 'clipboard'], function ($, r, s, v, clipboard) {
 
-    function main() {
+    function main(uploadInit) {
 
         // enable frontend side form validation
         $.validate({
@@ -12,6 +12,14 @@ define(['jquery', 'rangeslider', 'selectric', 'validate', 'clipboard'], function
             modules: 'file',
         });
 
+
+        $("body").on("change keyup blur", "input.fontsampler-input-warning", function () {
+            var $this = $(this);
+
+            if ($this.val() !== "") {
+                $this.removeClass("fontsampler-input-warning");
+            }
+        });
 
         // todo limit amount of select options to the number of font sets / don't allow duplicates on frontend side
         // duplicate inputs are going to be filtered out on db entry
@@ -88,6 +96,9 @@ define(['jquery', 'rangeslider', 'selectric', 'validate', 'clipboard'], function
             $fontsList.append($clone);
             updateInlineFontIndexes();
             updateFontsOrder();
+
+            uploadInit();
+
             return false;
         });
 
@@ -176,11 +187,6 @@ define(['jquery', 'rangeslider', 'selectric', 'validate', 'clipboard'], function
         });
 
 
-        $("#fontsampler-admin .fontsampler-fontset-remove-font").on("click", function (e) {
-            e.preventDefault();
-            $(this).closest("tr").find(".hidden-file-name").remove();
-            $(this).closest("tr").find(".filename").html("");
-        });
 
 
         // interface
@@ -331,6 +337,7 @@ define(['jquery', 'rangeslider', 'selectric', 'validate', 'clipboard'], function
         });
 
     }
+
 
     // add "copy to clipboard" functionality to fontsampler listing table
     var cb = new clipboard(".fontsampler-copy-clipboard");

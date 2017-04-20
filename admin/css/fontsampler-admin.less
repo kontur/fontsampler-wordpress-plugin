@@ -65,6 +65,10 @@
         }
     }
 
+    input[type=text].fontsampler-input-warning {
+        border-color: @fs_color_delete;
+    }
+
     fieldset {
         border: 4px solid @fs_color_light;
         padding: 1em;
@@ -95,6 +99,10 @@
         &.fontsampler-fontset-files {
             margin: 0 auto;
         }
+    }
+
+    input.fontsampler-font-set-fontname {
+        width: 20em;
     }
 
     th, td {
@@ -165,6 +173,11 @@
             margin: 0;
             display: block;
         }
+    }
+
+    small code {
+        border-width: 1px !important;
+        padding: 0.1em 0.25em !important;
     }
 
     .fontsampler-clipboard-wrapper {
@@ -277,6 +290,9 @@
 
     .fontsampler-initial-font-selection {
         display: inline-block;
+        vertical-align: top;
+        margin-top: 0.25em;
+        margin-left: 1em;
     }
 
     .fontsampler-initial-font {

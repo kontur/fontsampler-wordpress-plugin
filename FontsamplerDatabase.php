@@ -689,6 +689,7 @@ class FontsamplerDatabase {
 		foreach ( $this->fontsampler->font_formats as $format ) {
 			$sql .= ' ( SELECT guid FROM ' . $this->wpdb->prefix . 'posts p 
 					WHERE p.ID = f.' . $format . ' ) AS ' . $format . ',';
+			$sql .= 'f.' . $format . ' AS ' . $format . '_id,';
 		}
 		$sql = substr( $sql, 0, - 1 );
 		$sql .= ' FROM ' . $this->table_fonts . ' f ';
@@ -701,6 +702,14 @@ class FontsamplerDatabase {
 		} else {
 			$sql .= ' WHERE f.id= ' . intval( $font_id );
 		}
+		$result = $this->wpdb->get_results( $sql, ARRAY_A );
+
+		return 0 == $this->wpdb->num_rows ? false : $result[0];
+	}
+
+
+	function get_fontset_raw( $font_id ) {
+		$sql    = 'SELECT * FROM ' . $this->table_fonts . ' WHERE `id`=' . $font_id . ' LIMIT 1';
 		$result = $this->wpdb->get_results( $sql, ARRAY_A );
 
 		return 0 == $this->wpdb->num_rows ? false : $result[0];
@@ -745,6 +754,21 @@ class FontsamplerDatabase {
 					}
 				}
 				if ( $all_empty ) {
+					array_push( $missing, $font );
+				}
+			}
+		}
+
+		return empty( $missing ) ? false : $missing;
+	}
+
+
+	function get_fontsets_missing_name() {
+		$fonts   = $this->get_fontsets();
+		$missing = array();
+		if ( false !== $fonts ) {
+			foreach ( $fonts as $font ) {
+				if ( empty( $font['name'] ) ) {
 					array_push( $missing, $font );
 				}
 			}
@@ -860,10 +884,10 @@ class FontsamplerDatabase {
 
 	function fix_settings_from_defaults() {
 		$settings = $this->get_default_settings();
-		unset($settings['is_default']);
+		unset( $settings['is_default'] );
 
 		foreach ( $settings as $key => $value ) {
-			$value_empty = null === $value || "" === $value;
+			$value_empty       = null === $value || "" === $value;
 			$default_not_empty = in_array( $key, $this->fontsampler->settings_defaults )
 			                     && null !== $this->fontsampler->settings_defaults[ $key ];
 			if ( $value_empty && $default_not_empty ) {
@@ -871,17 +895,18 @@ class FontsamplerDatabase {
 			}
 		}
 		$this->update_settings( $settings );
+
 		return true;
 	}
 
 
 	function get_default_settings_errors() {
 		$settings = $this->get_default_settings();
-		unset($settings['is_default']);
+		unset( $settings['is_default'] );
 
 		$problems = array();
 		foreach ( $settings as $key => $value ) {
-			$value_empty = null === $value || "" === $value;
+			$value_empty       = null === $value || "" === $value;
 			$default_not_empty = in_array( $key, $this->fontsampler->settings_defaults )
 			                     && null !== $this->fontsampler->settings_defaults[ $key ];
 			if ( $value_empty && $default_not_empty ) {
