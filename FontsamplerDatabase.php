@@ -689,6 +689,7 @@ class FontsamplerDatabase {
 		foreach ( $this->fontsampler->font_formats as $format ) {
 			$sql .= ' ( SELECT guid FROM ' . $this->wpdb->prefix . 'posts p 
 					WHERE p.ID = f.' . $format . ' ) AS ' . $format . ',';
+			$sql .= 'f.' . $format . ' AS ' . $format . '_id,';
 		}
 		$sql = substr( $sql, 0, - 1 );
 		$sql .= ' FROM ' . $this->table_fonts . ' f ';

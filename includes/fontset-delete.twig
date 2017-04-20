@@ -23,12 +23,13 @@
 		</ul>
 		<br>
 		<label class="fontsampler-radio">
-			<input type="radio" value="1" name="remove_files" checked>
-			<span>Also remove all associated files from the Wordpress Media Gallery</span>
+			<input type="radio" value="0" name="remove_files" checked>
+			<span>Keep all associated files from the Wordpress Media Gallery</span>
 		</label><br>
 		<label class="fontsampler-radio">
-			<input type="radio" value="0" name="remove_files">
-			<span>Keep all associated files from the Wordpress Media Gallery</span>
+			<input type="radio" value="1" name="remove_files">
+			<span>Also remove all associated files from the Wordpress Media Gallery</span>
+			<small>Make sure no other Fontsets are referencing the same files!</small>
 		</label>
 
 		{{ submit_button( 'Yes, delete Fontset', 'delete' ) }}

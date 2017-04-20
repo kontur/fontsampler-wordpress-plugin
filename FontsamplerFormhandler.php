@@ -22,30 +22,27 @@ class FontsamplerFormhandler {
 		return $this->handle_font_edit( null );
 	}
 
-
 	function handle_font_edit( $id = null ) {
 		check_admin_referer( 'fontsampler-action-edit_font' );
+		$this->font_edit( $id );
+	}
 
-		// check if "existing_file_format" fields are passed in, which are references to existing
-		// files that should not be null'ed
-		$formats_exist    = null;
-		$existing_formats = array_filter( $this->post, function ( $key ) {
-			if ( substr( $key, 0, 13 ) === "existing_file" ) {
-				return true;
-			}
-		}, ARRAY_FILTER_USE_KEY );
-		$keys             = array_keys( $existing_formats );
-		if ( is_array( $keys ) ) {
-			$formats_exist = array_map( function ( $key ) {
-				return substr( $key, 14 );
-			}, $keys );
+	function font_edit( $id = null, $offset = 0 ) {
+		$data = array(
+			'woff'  => $this->post['woff'][ $offset ],
+			'woff2' => $this->post['woff2'][ $offset ],
+			'eot'   => $this->post['eot'][ $offset ],
+			'ttf'   => $this->post['ttf'][ $offset ],
+			'name'  => $this->post['fontname'][ $offset ]
+		);
+
+		if ( null === $id ) {
+			$id = $this->fontsampler->db->insert_font( $data );
+		} else {
+			$this->fontsampler->db->update_font( $data, $id );
 		}
 
-		if ( ! empty( $this->post['fontname'][0] ) ) {
-			$this->upload_multiple_fontset_files( $this->post['fontname'], $id, $formats_exist );
-		}
-
-		return true;
+		return $id;
 	}
 
 
@@ -54,7 +51,7 @@ class FontsamplerFormhandler {
 	 *
 	 * @return bool
 	 */
-	function handle_font_delete( $id  ) {
+	function handle_font_delete( $id ) {
 		check_admin_referer( 'fontsampler-action-delete_font' );
 		$id = intval( $id );
 
@@ -217,12 +214,30 @@ class FontsamplerFormhandler {
 			}
 		}
 
+
+		// handle any possibly included inline fontset creation
+		// Any items present in the fontname array indicate new fonts have been added inline and need to be
+		// processed
+		$inlineFontIds = array();
+		if ( isset( $this->post['fontname'] ) ) {
+			for ( $i = 0; $i < sizeof( $this->post['fontname'] ); $i ++ ) {
+				// all inline fontset creations are with $id=null, and their offset comes
+				// from how many entries there were in the fontname[] field
+				array_push($inlineFontIds, $this->font_edit( null, $i ));
+			}
+		}
+
+		$initial_font = isset( $this->post['initial_font'] ) ? $this->post['initial_font'] : null;
+		if (substr($initial_font, 0, 6) == "inline") {
+			$initial_font = $inlineFontIds[ intval( substr($initial_font, 7) ) ];
+		}
+
 		// save the fontsampler set to the DB
 		if ( ! isset( $id ) ) {
 			// insert new
 			$set = array(
 				'name'         => '..',
-				'initial_font' => isset( $this->post['initial_font'] ) ? $this->post['initial_font'] : null,
+				'initial_font' => $initial_font,
 				'use_defaults' => $use_defaults ? 1 : 0
 			);
 			$id  = $this->fontsampler->db->insert_set( $set );
@@ -249,7 +264,7 @@ class FontsamplerFormhandler {
 			}
 			$update = array(
 				'use_defaults' => $use_defaults ? 1 : 0,
-				'initial_font' => isset( $this->post['initial_font'] ) ? $this->post['initial_font'] : null,
+				'initial_font' => $initial_font,
 			);
 			$this->fontsampler->db->update_set( $update, $id );
 			$this->fontsampler->helpers->write_custom_css_for_set( $this->fontsampler->db->get_set( $id ) );
@@ -258,16 +273,6 @@ class FontsamplerFormhandler {
 
 		// wipe join table for this fontsampler, then add whatever now was instructed to be saved
 		$this->fontsampler->db->delete_join( array( 'set_id' => $id ) );
-
-
-		// handle any possibly included inline fontset creation
-		// Any items present in the fontname array indicate new fonts have been added inline and need to be
-		// processed
-		$inlineFontIds = array();
-		if ( isset( $this->post['fontname'] ) ) {
-			$inlineFontIds = $this->upload_multiple_fontset_files( $this->post['fontname'] );
-		}
-
 
 		// fonts_order looks something like like 3,2,1,inline_0,4 where ints are existing fonts and inline_x are
 		// newly inserted fontsets; those need to get substituted with the ids that were generated above from
@@ -341,105 +346,6 @@ class FontsamplerFormhandler {
 				return $this->post['initial_font'];
 			}
 		}
-	}
-
-
-	/**
-	 * Handles uploading and inserting one or more fontset's fonts (woff2, woff, etc) from the $this->files array
-	 *
-	 * @param $names : array of name fields
-	 * @param $id    : id of the db font entry, if it is an existing one that should be updated
-	 *
-	 * @return: array of font ids inserted to the database
-	 */
-	function upload_multiple_fontset_files( $names, $id = null, $ignore_formats = null ) {
-		$num_names = sizeof( $names );
-
-		if ( $num_names === 1 ) {
-			// single font, i.e. only one inline font, or create font dialog
-			return array( $this->upload_fontset_files( $names[0], 0, $id, $ignore_formats ) );
-		} else {
-			// multiple fonts posted for saving
-			$created = array();
-			for ( $i = 0; $i < $num_names; $i ++ ) {
-				$name = $names[ $i ];
-				array_push( $created, $this->upload_fontset_files( $name, $i, $id, $ignore_formats ) );
-			}
-
-			return $created;
-		}
-	}
-
-
-	/**
-	 * Handles uploading and inserting ONE fontset's fonts (woff2, woff, etc) from the $this->files array
-	 *
-	 * @param $name
-	 * @param int $file_suffix
-	 * @param int $id : id of the db font entry, if it is an existing one that should be updated
-	 *
-	 * @return int or boolean: inserted fontset database id or false
-	 */
-	function upload_fontset_files( $name, $file_suffix = 0, $id = null, $ignore_formats = null ) {
-		$data = array(
-			'name' => $name,
-		);
-
-		if ( null !== $id ) {
-			// initially set all formats to NULL
-			// if there previously there was a font, and now it got deleted,
-			// it will not linger in the db as unaffected
-			// column, but instead get deleted
-			$data = array_merge( $data, array(
-				'woff2' => null,
-				'woff'  => null,
-				'eot'   => null,
-				'ttf'   => null,
-			) );
-
-			if ( is_array( $ignore_formats ) and ! empty( $ignore_formats ) ) {
-				foreach ( $ignore_formats as $format ) {
-					unset( $data[ $format ] );
-				}
-			}
-		}
-
-		foreach ( $this->fontsampler->font_formats as $label ) {
-			$file = $this->files[ $label . '_' . $file_suffix ];
-
-			if ( ! empty( $file ) && $file['size'] > 0 ) {
-				$uploaded = media_handle_upload( $label . '_' . $file_suffix, 0 );
-				//				, null, array(
-				//					'mimes' => get_allowed_mime_types(),
-				//					'validate' =>
-				//				) );
-
-				if ( is_wp_error( $uploaded ) ) {
-					$this->fontsampler->msg->add_error( 'Error uploading ' . $label . ' file: ' . $uploaded->get_error_message() );
-				} else {
-					$this->fontsampler->msg->add_info( 'Uploaded ' . $label . ' file: ' . $file['name'] );
-					$data[ $label ] = $uploaded;
-				}
-			} else {
-				if ( in_array( $label, $this->fontsampler->font_formats_legacy ) && ! $this->fontsampler->admin_hide_legacy_formats ) {
-					$this->fontsampler->msg->add_notice( 'No ' . $label . ' file provided. You can still add it later.' );
-				}
-			}
-		}
-
-		if ( null !== $id ) {
-			$this->fontsampler->db->update_font( $data, $id );
-
-			return $id;
-		} else {
-			if ( $this->fontsampler->db->insert_font( $data ) ) {
-				$this->fontsampler->msg->add_info( 'Created fontset ' . $name );
-
-				return $this->fontsampler->db->get_insert_id();
-			}
-		}
-
-		return false;
 	}
 
 

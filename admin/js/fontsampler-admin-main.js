@@ -42,11 +42,13 @@ require([
     'admin/js/fontsampler-admin-ui',
     'admin/js/fontsampler-admin-layout',
     'admin/js/fontsampler-admin-upload',
+    'admin/js/fontsampler-admin-font-upload',
     'js/ui-setup'
-], function (specimentools, ui, layout, upload, setup) {
+], function (specimentools, ui, layout, upload, fontupload, setup) {
     specimentools(window);
-    ui();
+    ui(fontupload);
     layout(specimentools, setup); // pass in specimentools so we can re-init after ajax update
 
     upload();
+    fontupload();
 });

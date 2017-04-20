@@ -4,10 +4,9 @@
 define(['jquery'], function ($) {
 
     function main() {
-
         // Set all variables to be used in scope
         var frame,
-            $wrappers = $('.fontsampler-upload-wrapper');
+            $wrappers = $('.fontsampler-fontset-files');
 
         $wrappers.each(function () {
             MediaUploader($(this));
@@ -15,28 +14,26 @@ define(['jquery'], function ($) {
 
     }
 
-
     // Simple wrapper for the functionality of any uploader
     function MediaUploader($wrapper) {
         var frame,
-            addImgLink = $wrapper.find('.upload-custom-img'),
-            delImgLink = $wrapper.find('.delete-custom-img'),
-            imgContainer = $wrapper.find('.custom-img-container'),
-            imgIdInput = $wrapper.find('.custom-img-id');
+            addButton = $wrapper.find('.fontsampler-upload-font'),
+            delButton = $wrapper.find('.fontsampler-remove-font'),
+            nameContainer = $wrapper.find('.fontsampler-font-container .filename'),
+            idInput = $wrapper.find('.fontsampler-font-id');
 
         init();
 
         function init () {
             // ADD IMAGE LINK
-            addImgLink.on('click', onAddClick);
+            addButton.on('click', onAddClick);
 
             // DELETE IMAGE LINK
-            delImgLink.on('click', onDelClick);
+            delButton.on('click', onDelClick);
         }
 
 
         function onAddClick(event) {
-            event.preventDefault();
 
             // If the media frame already exists, reopen it.
             if (frame) {
@@ -46,7 +43,7 @@ define(['jquery'], function ($) {
 
             // Create a new media frame
             frame = wp.media({
-                title: 'Select or Upload Media Of Your Chosen Persuasion',
+                title: 'Select or Upload the webfont',
                 button: {
                     text: 'Use this media'
                 },
@@ -57,10 +54,10 @@ define(['jquery'], function ($) {
             frame.on('select', function () {
                 // Get media attachment details from the frame state
                 var attachment = frame.state().get('selection').first().toJSON();
-                imgContainer.append('<img src="' + attachment.url + '" alt="" />');
-                imgIdInput.val(attachment.id);
-                addImgLink.addClass('hidden');
-                delImgLink.removeClass('hidden');
+
+                nameContainer.html(attachment.url);//append('<img src="' + attachment.url + '" alt="" />');
+                idInput.val(attachment.id);
+                delButton.removeClass('hidden');
             });
 
             // Finally, open the modal on click
@@ -69,10 +66,9 @@ define(['jquery'], function ($) {
 
         function onDelClick(event) {
             event.preventDefault();
-            imgContainer.html('');
-            addImgLink.removeClass('hidden');
-            delImgLink.addClass('hidden');
-            imgIdInput.val('');
+            nameContainer.html('');
+            delButton.addClass('hidden');
+            idInput.val('');
         }
     }
 

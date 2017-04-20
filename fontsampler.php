@@ -22,11 +22,11 @@ require_once( 'FontsamplerPagination.php' );
 require_once( 'FontsamplerMessages.php' );
 require_once( 'FontsamplerNotifications.php' );
 
-require_once( 'vendor/oyejorge/less.php/lessc.inc.php');
-require_once( 'vendor/autoload.php');
+require_once( 'vendor/oyejorge/less.php/lessc.inc.php' );
+require_once( 'vendor/autoload.php' );
 
 $loader = new Twig_Loader_Filesystem( __DIR__ . '/includes' );
-$twig = new Twig_Environment( $loader );
+$twig   = new Twig_Environment( $loader );
 
 global $wpdb;
 $f = new FontsamplerPlugin( $wpdb, $twig );
@@ -37,9 +37,9 @@ add_shortcode( 'fontsampler', array( $f, 'fontsampler_shortcode' ) );
 // backend
 add_action( 'admin_menu', array( $f, 'fontsampler_plugin_setup_menu' ) );
 add_action( 'admin_enqueue_scripts', array( $f, 'fontsampler_admin_enqueues' ) );
-add_action( 'wp_ajax_get_mock_fontsampler', array( $f, 'ajax_get_mock_fontsampler'));
+add_action( 'wp_ajax_get_mock_fontsampler', array( $f, 'ajax_get_mock_fontsampler' ) );
 add_filter( 'upload_mimes', array( $f, 'allow_font_upload_types' ) );
-add_filter('wp_check_filetype_and_ext', 'common_upload_real_mimes', 10, 4);
+add_filter( 'wp_check_filetype_and_ext', 'common_upload_real_mimes', 10, 4 );
 register_activation_hook( __FILE__, array( $f, 'fontsampler_activate' ) );
 register_uninstall_hook( __FILE__, 'uninstall' );
 
@@ -54,16 +54,18 @@ register_uninstall_hook( __FILE__, 'uninstall' );
 // @param file
 // @param filename
 // @param mimes
-function common_upload_real_mimes($checked, $file, $filename, $mimes) {
+function common_upload_real_mimes( $checked, $file, $filename, $mimes ) {
 	if ( false === $checked['ext'] && false === $checked['type'] && false === $checked['proper_filename'] ) {
 		$filetype = wp_check_filetype( $filename );
 		$wp_mimes = get_allowed_mime_types();
-		if (in_array($filetype['ext'], array_keys($wp_mimes))) {
-			$checked['ext'] = true;
+		if ( in_array( $filetype['ext'], array_keys( $wp_mimes ) ) ) {
+			$checked['ext']  = true;
 			$checked['type'] = true;
+
 			return $checked;
 		}
 	}
+
 	return $checked;
 }
 
