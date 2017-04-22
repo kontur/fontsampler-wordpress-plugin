@@ -3,72 +3,83 @@
  */
 define(['jquery'], function ($) {
 
-    function main() {
-        // Set all variables to be used in scope
-        var frame,
-            $wrappers = $('.fontsampler-fontset-files');
+    function main(specimentools) {
 
-        $wrappers.each(function () {
+        var that = this,
+            $wrappers = $('#fontsampler-fontset-list .fontsampler-fontset-inline .fontsampler-fontset-files');
+
+        $wrappers.each(function (index, elem) {
             MediaUploader($(this));
         });
 
-    }
+        // Simple wrapper for the functionality of any uploader
+        function MediaUploader($wrapper) {
 
-    // Simple wrapper for the functionality of any uploader
-    function MediaUploader($wrapper) {
-        var frame,
-            addButton = $wrapper.find('.fontsampler-upload-font'),
-            delButton = $wrapper.find('.fontsampler-remove-font'),
-            nameContainer = $wrapper.find('.fontsampler-font-container .filename'),
-            idInput = $wrapper.find('.fontsampler-font-id');
+            var frame,
+                addButton = $wrapper.find('.fontsampler-upload-font'),
+                delButton = $wrapper.find('.fontsampler-remove-font'),
+                nameContainer = $wrapper.find('.fontsampler-font-container .filename'),
+                idInput = $wrapper.find('.fontsampler-font-id'),
+                preview = $wrapper.find('.fontsampler-font-upload-preview'),
+                tools = specimentools;
 
-        init();
+            init();
 
-        function init () {
-            // ADD IMAGE LINK
-            addButton.on('click', onAddClick);
+            function init() {
+                // ADD IMAGE LINK
+                $wrapper.on('click', addButton, onAddClick);
 
-            // DELETE IMAGE LINK
-            delButton.on('click', onDelClick);
-        }
-
-
-        function onAddClick(event) {
-
-            // If the media frame already exists, reopen it.
-            if (frame) {
-                frame.open();
-                return;
+                // DELETE IMAGE LINK
+                delButton.on('click', onDelClick);
             }
 
-            // Create a new media frame
-            frame = wp.media({
-                title: 'Select or Upload the webfont',
-                button: {
-                    text: 'Use this media'
-                },
-                multiple: false  // Set to true to allow multiple files to be selected
-            });
+            function onAddClick(event) {
 
-            // When an image is selected in the media frame...
-            frame.on('select', function () {
-                // Get media attachment details from the frame state
-                var attachment = frame.state().get('selection').first().toJSON();
+                // If the media frame already exists, reopen it.
+                if (frame) {
+                    frame.open();
+                    return;
+                }
 
-                nameContainer.html(attachment.url);//append('<img src="' + attachment.url + '" alt="" />');
-                idInput.val(attachment.id);
-                delButton.removeClass('hidden');
-            });
+                // Create a new media frame
+                frame = wp.media({
+                    title: 'Select or Upload the webfont',
+                    button: {
+                        text: 'Use this media'
+                    },
+                    multiple: false  // Set to true to allow multiple files to be selected
+                });
 
-            // Finally, open the modal on click
-            frame.open();
-        }
+                // When an image is selected in the media frame...
+                frame.on('select', function () {
+                    // Get media attachment details from the frame state
+                    var attachment = frame.state().get('selection').first().toJSON();
 
-        function onDelClick(event) {
-            event.preventDefault();
-            nameContainer.html('');
-            delButton.addClass('hidden');
-            idInput.val('');
+                    console.log(attachment);
+
+                    nameContainer.html(attachment.url);//append('<img src="' + attachment.url + '" alt="" />');
+                    idInput.val(attachment.id);
+                    delButton.removeClass('hidden');
+
+                    var file = attachment.filename;
+                    var format = file.substr(file.lastIndexOf(".") + 1, file.length);
+                    var json = "{'" + format + "': '" + attachment.url + "'}";
+
+                    preview.html('<div data-font-files="' + json +'" class="fontsampler-wrapper">Preview</div>');
+                    specimentools(window);
+
+                });
+
+                // Finally, open the modal on click
+                frame.open();
+            }
+
+            function onDelClick(event) {
+                event.preventDefault();
+                nameContainer.html('');
+                delButton.addClass('hidden');
+                idInput.val('');
+            }
         }
     }
 

@@ -4,7 +4,7 @@
  */
 define(['jquery', 'rangeslider', 'selectric', 'validate', 'clipboard'], function ($, r, s, v, clipboard) {
 
-    function main(uploadInit) {
+    function main(fontupload, specimentools) {
 
         // enable frontend side form validation
         $.validate({
@@ -97,7 +97,7 @@ define(['jquery', 'rangeslider', 'selectric', 'validate', 'clipboard'], function
             updateInlineFontIndexes();
             updateFontsOrder();
 
-            uploadInit();
+            fontupload(specimentools);
 
             return false;
         });

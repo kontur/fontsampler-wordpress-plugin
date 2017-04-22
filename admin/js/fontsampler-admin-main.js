@@ -46,9 +46,9 @@ require([
     'js/ui-setup'
 ], function (specimentools, ui, layout, upload, fontupload, setup) {
     specimentools(window);
-    ui(fontupload);
+    ui(fontupload, specimentools);
     layout(specimentools, setup); // pass in specimentools so we can re-init after ajax update
 
     upload();
-    fontupload();
+    //fontupload(specimentools);
 });
