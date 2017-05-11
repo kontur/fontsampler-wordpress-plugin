@@ -1,3 +1,4 @@
+@import "fontsampler-icons.css";
 /*======================================
   Selectric
 ======================================*/
@@ -583,4 +584,14 @@
 }
 .fontsampler-interface .selectric > .label {
   line-height: normal !important;
+}
+/* button icon colors */
+.fontsampler-interface .icon-align-left,
+.fontsampler-interface .icon-align-center,
+.fontsampler-interface .icon-align-right,
+.fontsampler-interface .icon-opentype,
+.fontsampler-interface .icon-invert-black,
+.fontsampler-interface .icon-invert-white,
+.fontsampler-interface .selectric > .button {
+  color: #333;
 }

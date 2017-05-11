@@ -96,18 +96,15 @@
 							<div class="fontsampler-multiselect three-items" data-name="alignment">
 								<button <?php if ( $is_ltr && $options['alignment_initial'] == "left" ) :
 									echo 'class="fontsampler-multiselect-selected"'; endif; ?>
-									data-value="left"><img
-										src="<?php echo plugin_dir_url( __FILE__ ); ?>../icons/align-left.svg">
+									data-value="left"><i class="icon-align-left"></i>
 								</button>
 								<button <?php if ( $options['alignment_initial'] == "center" ) :
 									echo 'class="fontsampler-multiselect-selected"'; endif; ?>
-									data-value="center"><img
-										src="<?php echo plugin_dir_url( __FILE__ ); ?>../icons/align-center.svg">
+									data-value="center"><i class="icon-align-center"></i>
 								</button>
 								<button <?php if ( ! $is_ltr || $options['alignment_initial'] == "right" ) :
 									echo 'class="fontsampler-multiselect-selected"'; endif; ?>
-									data-value="right"><img
-										src="<?php echo plugin_dir_url( __FILE__ ); ?>../icons/align-right.svg">
+									data-value="right"><i class="icon-align-right"></i>
 								</button>
 							</div>
 						<?php endif;
@@ -116,11 +113,11 @@
 					case 'invert':
 						if ( $set['invert'] ) : ?>
 							<div class="fontsampler-multiselect two-items" data-name="invert">
-								<button class="fontsampler-multiselect-selected" data-value="positive"><img
-										src="<?php echo plugin_dir_url( __FILE__ ); ?>../icons/invert-white.svg">
+								<button class="fontsampler-multiselect-selected" data-value="positive">
+									<i class="icon-invert-white"></i>
 								</button>
-								<button data-value="negative"><img
-										src="<?php echo plugin_dir_url( __FILE__ ); ?>../icons/invert-black.svg">
+								<button data-value="negative">
+									<i class="icon-invert-black"></i>
 								</button>
 							</div>
 						<?php endif;
@@ -131,7 +128,7 @@
 							<div class="fontsampler-multiselect one-item fontsampler-opentype feature-lister"
 							     data-name="opentype">
 								<button class="fontsampler-opentype-toggle">
-									<img src="<?php echo plugin_dir_url( __FILE__ ); ?>../icons/opentype.svg">
+									<i class="icon-opentype"></i>
 								</button>
 								<div class="fontsampler-opentype-features">
 									<fieldset class="feature-lister__features--default"></fieldset>
