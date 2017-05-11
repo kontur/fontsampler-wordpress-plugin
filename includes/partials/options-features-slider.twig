@@ -14,7 +14,10 @@
         {{ include ('partials/slider.twig', {
             label: slider_label,
             name: slider_name,
-            value: slider_default
+            value: slider_default,
+            min: slider_min,
+            max: slider_max,
+            group: slider_group
         }) }}
     </div>
 {% endblock %}

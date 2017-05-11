@@ -8,6 +8,7 @@
                    {#data-validation-allowing="range[1;256]"#}>
 		</span>
     <div class="slider">
-        <input type="range" name="{{ name }}" value="{{ value }}" {#min="1" max="255"#}>
+        {# Note that the min and max attributes are necessary to restrain the value #}
+        <input type="range" data-group="{{ group }}" name="{{ name }}" value="{{ value }}" min="{{ min }}" max="{{ max }}">
     </div>
 </label>

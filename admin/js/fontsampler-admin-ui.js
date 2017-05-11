@@ -163,16 +163,12 @@ define(['jquery', 'rangeslider', 'selectric', 'validate', 'clipboard'], function
             polyfill: false,
             onSlide: function () {
                 var $input = this.$element.closest("label").find(".current-value");
-                // prevent reacting to a slide event triggered my text field input update,
-                // thus preventing the user being unable to type, as the text input would get overwritten from this update
-                if (!$input.is(":focus")) {
-                    $input.val(this.$element.val());
-                }
+                $input.val(this.$element.val());
             }
         });
 
 
-        $("#fontsampler-admin .form-settings input.current-value").on("keyup", function () {
+        $("#fontsampler-admin input.current-value").on("keyup", function () {
             var $sliderInput = $(this).closest("label").find("input[name='" + $(this).data("name") + "']"),
                 min = $sliderInput.attr("min"),
                 max = $sliderInput.attr("max"),

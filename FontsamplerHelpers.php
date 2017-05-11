@@ -17,7 +17,7 @@ class FontsamplerHelpers {
 		$this->fontsampler         = $fontsampler;
 		$this->less                = new Less_Parser( array( 'compress' => true ) );
 		$this->layout              = new FontsamplerLayout();
-		$this->features            = [
+		$this->features            = array(
 			'fontsize'      => array(
 				'name'                 => 'fontsize',
 				'label'                => 'Size control',
@@ -42,8 +42,8 @@ class FontsamplerHelpers {
 				'slider_min_label'     => 'Min px',
 				'slider_max_label'     => 'Max px',
 			)
-		];
-		$this->additional_features = [
+		);
+		$this->additional_features = array(
 			'sampletexts' => 'Display dropdown selection for sample texts',
 			'fontpicker'  => 'Display fontsname(s) as dropdown selection (for several fonts) or label (for a single font)',
 			'alignment'   => 'Alignment controls',
@@ -52,7 +52,13 @@ class FontsamplerHelpers {
 			'multiline'   => 'Allow line breaks',
 			'buy'         => 'Display a link to buy these fonts',
 			'specimen'    => 'Display a link to a specimen',
-		];
+		);
+		// the default admin slider ranges for each field
+		$this->slider_ranges = array(
+			'fontsize'      => array( 0, 255 ), // pixels
+			'letterspacing' => array( - 25, 25 ), // pixels
+			'lineheight'    => array( 0, 500 ), // percent
+		);
 	}
 
 
@@ -225,7 +231,7 @@ class FontsamplerHelpers {
 	}
 
 
-	function check_is_writeable( $handle) {
+	function check_is_writeable( $handle ) {
 		if ( ( is_dir( $handle ) || is_file( $handle ) ) && false === is_writeable( $handle ) ) {
 			return false;
 		}
@@ -379,6 +385,8 @@ class FontsamplerHelpers {
 		$twig->addGlobal( 'additional_features', $this->additional_features );
 
 		$twig->addGlobal( 'formats', $this->fontsampler->font_formats );
+
+		$twig->addGlobal( 'slider_ranges', $this->slider_ranges );
 	}
 
 }

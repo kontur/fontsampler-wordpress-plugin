@@ -38,7 +38,7 @@ class FontsamplerPlugin {
 		// keep track of db versions and migrations via this
 		// simply set this to the current PLUGIN VERSION number when bumping it
 		// i.e. a database update always bumps the version number of the plugin as well
-		$this->fontsampler_db_version = '0.2.0';
+		$this->fontsampler_db_version = '0.2.4';
 		$current_db_version           = get_option( self::FONTSAMPLER_OPTION_DB_VERSION );
 
 		// if no previous db version has been registered assume new install and set
@@ -354,7 +354,7 @@ class FontsamplerPlugin {
 					break;
 				case 'reset_settings':
 					if ($this->forms->handle_settings_reset()) {
-					$this->msg->add_info( 'Settings successfully reset' );
+					$this->msg->add_info( 'Settings successfully reset. You may have to refresh the page for the reset CSS to reload.' );
 					}
 					break;
 				case 'fix_default_settings':

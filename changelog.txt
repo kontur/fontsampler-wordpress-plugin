@@ -1,3 +1,8 @@
+# 0.2.4
+- Fixed a database issue that prevented custom settings from being saved
+- Automatically re-generate the reset CSS after resetting settings to the defaults
+- Fixed an issue that prevented backend sliders from working properly
+
 # 0.2.3
 - All font files are now handled via the WP media gallery popup in the admin area
 - Added option to delete all linked media gallery files when deleting a fontset

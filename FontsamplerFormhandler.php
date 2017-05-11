@@ -223,13 +223,13 @@ class FontsamplerFormhandler {
 			for ( $i = 0; $i < sizeof( $this->post['fontname'] ); $i ++ ) {
 				// all inline fontset creations are with $id=null, and their offset comes
 				// from how many entries there were in the fontname[] field
-				array_push($inlineFontIds, $this->font_edit( null, $i ));
+				array_push( $inlineFontIds, $this->font_edit( null, $i ) );
 			}
 		}
 
 		$initial_font = isset( $this->post['initial_font'] ) ? $this->post['initial_font'] : null;
-		if (substr($initial_font, 0, 6) == "inline") {
-			$initial_font = $inlineFontIds[ intval( substr($initial_font, 7) ) ];
+		if ( substr( $initial_font, 0, 6 ) == "inline" ) {
+			$initial_font = $inlineFontIds[ intval( substr( $initial_font, 7 ) ) ];
 		}
 
 		// save the fontsampler set to the DB
@@ -431,6 +431,10 @@ class FontsamplerFormhandler {
 	}
 
 	function handle_settings_reset() {
-		return $this->fontsampler->db->set_default_settings();
+		if ( $this->fontsampler->db->set_default_settings() ) {
+			$this->fontsampler->helpers->write_css_from_settings( $this->fontsampler->db->get_default_settings() );
+			return true;
+		}
+		return false;
 	}
 }
