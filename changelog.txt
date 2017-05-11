@@ -2,6 +2,7 @@
 - Fixed a database issue that prevented custom settings from being saved
 - Automatically re-generate the reset CSS after resetting settings to the defaults
 - Fixed an issue that prevented backend sliders from working properly
+- Added automatic sanity check to admin min, initial and max sliders to avoid impossible overlap
 
 # 0.2.3
 - All font files are now handled via the WP media gallery popup in the admin area
