@@ -25,19 +25,33 @@
 {{	include( 'partials/styles-css-field.twig', {
 	name: 'css_value_size_label',
 	description: 'Font size of the UI labels:',
-	additional: "You can use any valid <code>font-size</code> CSS declaration (Use 'inherit' for default look).",
+	additional: "You can use any valid <code><a href='https://developer.mozilla.org/en-US/docs/Web/CSS/font-size' target='_blank'>font-size</a></code> CSS declaration (Use 'inherit' for default look).",
 	value: set['css_value_size_label'],
 	default: defaults['css_value_size_label']
 }) }}
 {{ 	include( 'partials/styles-css-field.twig', {
 	name: 'css_value_fontfamily_label',
 	description: 'Font family of the UI labels:',
-	additional: "You can use any valid <code>font-family</code> CSS declaration (Use 'inherit' for default look).",
+	additional: "You can use any valid <code><a href='https://developer.mozilla.org/en-US/docs/Web/CSS/font-family' target='_blank'>font-family</a></code> CSS declaration (Use 'inherit' for default look).",
 	value: set['css_value_fontfamily_label'],
 	default: defaults['css_value_fontfamily_label']
 }) }}
+{{ 	include( 'partials/styles-css-field.twig', {
+	name: 'css_value_lineheight_label',
+	description: 'Line-height of the UI labels:',
+	additional: "You can use any valid <code><a href='https://developer.mozilla.org/en-US/docs/Web/CSS/line-height' target='_blank'>line-height</a></code> CSS declaration (Use 'normal' for default look).",
+	value: set['css_value_lineheight_label'],
+	default: defaults['css_value_lineheight_label']
+}) }}
 
 {#Color pickers for various aspects#}
+{{  include( 'partials/styles-color-field.twig', {
+	label: 'Button background color',
+	name: 'css_color_button_background',
+	description: 'Background color of the UI buttons',
+	value: set['css_color_button_background'],
+	default: defaults['css_color_button_background']
+}) }}
 {{  include( 'partials/styles-color-field.twig', {
 	label: 'Highlight color',
 	name: 'css_color_highlight',

@@ -268,7 +268,8 @@ class FontsamplerFormhandler {
 			);
 			$this->fontsampler->db->update_set( $update, $id );
 			$this->fontsampler->helpers->write_custom_css_for_set( $this->fontsampler->db->get_set( $id ) );
-			$this->fontsampler->msg->add_info( 'Fontsampler ' . $id . ' successfully updated.' );
+			$this->fontsampler->msg->add_info( 'Fontsampler ' . $id . ' successfully updated. <a href="?page=fontsampler&subpage=set_edit&id=' .
+			                                   $id . '">Edit again</a>.' );
 		}
 
 		// wipe join table for this fontsampler, then add whatever now was instructed to be saved

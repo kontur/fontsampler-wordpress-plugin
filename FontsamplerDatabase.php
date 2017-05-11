@@ -125,6 +125,8 @@ class FontsamplerDatabase {
 			`css_color_label` tinytext DEFAULT NULL,
 			`css_value_size_label` tinytext DEFAULT NULL,
 			`css_value_fontfamily_label` tinytext DEFAULT NULL,
+			`css_value_lineheight_label` tinytext DEFAULT NULL,
+			`css_color_button_background` tinytext DEFAULT NULL,
 			`css_color_highlight` tinytext DEFAULT NULL,
 			`css_color_highlight_hover` tinytext DEFAULT NULL,
 			`css_color_line` tinytext DEFAULT NULL,
@@ -304,6 +306,10 @@ class FontsamplerDatabase {
 				'ALTER TABLE ' . $this->table_settings . " CHANGE `letterspacing` `letterspacing` tinyint(1) unsigned DEFAULT NULL",
 				'ALTER TABLE ' . $this->table_settings . " CHANGE `lineheight` `lineheight` tinyint(1) unsigned DEFAULT NULL",
 				'ALTER TABLE ' . $this->table_settings . " CHANGE `fontpicker` `fontpicker` tinyint(1) unsigned DEFAULT NULL",
+
+				'ALTER TABLE ' . $this->table_settings . " ADD `css_color_button_background` tinytext DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " ADD `css_value_lineheight_label` tinytext DEFAULT NULL",
+				'UPDATE ' . $this->table_settings . " SET `css_color_button_background` = '#efefef', `css_value_lineheight_label` = 'normal'",
 			)
 		);
 
