@@ -1143,12 +1143,22 @@
 #fontsampler-admin .fontsampler-image-radio {
   background: #FFFFFF;
   position: relative;
+  padding: 0.25em 0.5em;
+  border-radius: 5px;
+  box-sizing: border-box;
+  border: 1px solid transparent;
 }
-#fontsampler-admin .fontsampler-image-radio:hover img {
-  background: #008EC2;
+#fontsampler-admin .fontsampler-image-radio:hover {
+  border: 1px solid #64CAF0;
 }
-#fontsampler-admin .fontsampler-image-radio.active img {
-  background: #64CAF0;
+#fontsampler-admin .fontsampler-image-radio:hover i {
+  color: #64CAF0;
+}
+#fontsampler-admin .fontsampler-image-radio.active {
+  border: 1px solid #CBCBCB;
+}
+#fontsampler-admin .fontsampler-image-radio.active i {
+  color: #008EC2;
 }
 #fontsampler-admin .fontsampler-image-radio input[type="radio"] {
   display: block;

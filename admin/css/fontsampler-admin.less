@@ -430,14 +430,22 @@
     .fontsampler-image-radio {
         background: @fs_color_white;
         position: relative;
+        padding: 0.25em 0.5em;
+        border-radius: 5px;
+        box-sizing: border-box;
+        border: 1px solid transparent;
 
-        &:hover img {
-            background: @fs_color_ok;
+        &:hover {
+            border: 1px solid @fs_color_ok_light;
+            i {
+                color: @fs_color_ok_light;
+            }
         }
 
         &.active {
-            img {
-                background: @fs_color_ok_light;
+            border: 1px solid @fs_color_medium;
+            i {
+                color: @fs_color_ok;
             }
         }
         input[type="radio"] {
