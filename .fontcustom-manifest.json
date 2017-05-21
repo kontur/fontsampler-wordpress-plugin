@@ -1,0 +1,74 @@
+{
+  "checksum": {
+    "previous": "40418fc6fecf906d9588eca8b9dcf8c19511c5a5b562c72be4af39e2abca8413",
+    "current": "40418fc6fecf906d9588eca8b9dcf8c19511c5a5b562c72be4af39e2abca8413"
+  },
+  "fonts": [
+    "css/fontsampler-icons_40418fc6fecf906d9588eca8b9dcf8c1.ttf",
+    "css/fontsampler-icons_40418fc6fecf906d9588eca8b9dcf8c1.svg",
+    "css/fontsampler-icons_40418fc6fecf906d9588eca8b9dcf8c1.woff",
+    "css/fontsampler-icons_40418fc6fecf906d9588eca8b9dcf8c1.eot"
+  ],
+  "glyphs": {
+    "align-center": {
+      "codepoint": 61696,
+      "source": "icons/align-center.svg"
+    },
+    "align-left": {
+      "codepoint": 61697,
+      "source": "icons/align-left.svg"
+    },
+    "align-right": {
+      "codepoint": 61698,
+      "source": "icons/align-right.svg"
+    },
+    "invert-black": {
+      "codepoint": 61699,
+      "source": "icons/invert-black.svg"
+    },
+    "invert-white": {
+      "codepoint": 61700,
+      "source": "icons/invert-white.svg"
+    },
+    "opentype": {
+      "codepoint": 61701,
+      "source": "icons/opentype.svg"
+    },
+    "settings": {
+      "codepoint": 61702,
+      "source": "icons/settings.svg"
+    }
+  },
+  "options": {
+    "autowidth": false,
+    "config": "fontcustom.yml",
+    "css_selector": ".icon-{{glyph}}",
+    "debug": false,
+    "font_ascent": 448,
+    "font_descent": 64,
+    "font_design_size": 16,
+    "font_em": 512,
+    "font_name": "fontsampler-icons",
+    "force": false,
+    "input": {
+      "templates": "icons",
+      "vectors": "icons"
+    },
+    "no_hash": false,
+    "output": {
+      "css": "css",
+      "fonts": "css",
+      "preview": "css"
+    },
+    "preprocessor_path": null,
+    "quiet": false,
+    "templates": [
+      "css",
+      "preview"
+    ]
+  },
+  "templates": [
+    "css/fontsampler-icons.css",
+    "css/fontsampler-icons-preview.html"
+  ]
+}

@@ -38,7 +38,7 @@ class FontsamplerPlugin {
 		// keep track of db versions and migrations via this
 		// simply set this to the current PLUGIN VERSION number when bumping it
 		// i.e. a database update always bumps the version number of the plugin as well
-		$this->fontsampler_db_version = '0.2.0';
+		$this->fontsampler_db_version = '0.2.4';
 		$current_db_version           = get_option( self::FONTSAMPLER_OPTION_DB_VERSION );
 
 		// if no previous db version has been registered assume new install and set
@@ -107,6 +107,8 @@ class FontsamplerPlugin {
 			'css_color_label'           => '#333333',
 			'css_value_size_label'            => 'inherit',
 			'css_value_fontfamily_label'      => 'inherit',
+			'css_value_lineheight_label'    => 'normal',
+			'css_color_button_background' => '#efefef',
 			'css_color_highlight'       => '#efefef',
 			'css_color_highlight_hover' => '#dedede',
 			'css_color_line'            => '#333333',
@@ -191,6 +193,16 @@ class FontsamplerPlugin {
 			$settings = $this->db->get_settings();
 			$layout = new FontsamplerLayout();
 			$blocks = $layout->stringToArray( $set['ui_order'], $set );
+
+			// get the calculated initial values for data-font-size- etc, where the set overwrites options
+			// where available
+			$data_initial = array();
+			foreach ($set as $key => $value) {
+				$data_initial[$key] = $value;
+				if ($value === null && $options[$key] !== null) {
+					$data_initial[$key] = $options[$key];
+				}
+			}
 
 			// buffer output until return
 			ob_start();
@@ -354,7 +366,7 @@ class FontsamplerPlugin {
 					break;
 				case 'reset_settings':
 					if ($this->forms->handle_settings_reset()) {
-					$this->msg->add_info( 'Settings successfully reset' );
+					$this->msg->add_info( 'Settings successfully reset. You may have to refresh the page for the reset CSS to reload.' );
 					}
 					break;
 				case 'fix_default_settings':

@@ -1,3 +1,4 @@
+@import "fontsampler-icons.css";
 @import "fontsampler-custom-selectric.less";
 @import "fontsampler-custom-rangeslider.less";
 
@@ -60,7 +61,7 @@
         @media screen and (max-width: 768px) {
             .blocks(1) !important;
         }
-
+ 
         // any and all fontsampler UI elements are wrapped in this
         .fontsampler-ui-block {
             box-sizing: border-box;
@@ -69,6 +70,7 @@
 
             &.fontsampler-ui-block-fontsampler {
                 height: auto;
+                width: 100%;
             }
         }
 
@@ -282,12 +284,12 @@
         }
 
         .fontsampler-ui-block-invert {
-            button[data-value="positive"] img {
-                background: #fff;
-            }
-            button[data-value="negative"] img {
-                background: #333;
-            }
+            //button[data-value="positive"] img {
+            //    background: #fff;
+            //}
+            //button[data-value="negative"] img {
+            //    background: #333;
+            //}
         }
     }
 }

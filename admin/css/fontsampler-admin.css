@@ -269,6 +269,10 @@
   touch-action: pan-x;
   -ms-touch-action: pan-x;
 }
+#fontsampler-admin .form-settings .fontsampler-admin-slider-label .setting-description {
+  min-width: 10em;
+  display: inline-block;
+}
 #fontsampler-admin .form-settings label {
   clear: both;
   display: block;
@@ -542,6 +546,14 @@
 }
 #fontsampler-admin .fontsampler-options-features-details.fontsampler-visible {
   border: 2px solid #F2F2F2;
+}
+#fontsampler-admin .fontsampler-options-features-details.fontsampler-options-unchecked .fontsampler-options-row {
+  opacity: 0.1;
+}
+#fontsampler-admin .fontsampler-options-features-details.fontsampler-options-unchecked .fontsampler-options-row.fontsampler-options-row-fontsize_initial,
+#fontsampler-admin .fontsampler-options-features-details.fontsampler-options-unchecked .fontsampler-options-row.fontsampler-options-row-lineheight_initial,
+#fontsampler-admin .fontsampler-options-features-details.fontsampler-options-unchecked .fontsampler-options-row.fontsampler-options-row-letterspacing_initial {
+  opacity: 1;
 }
 #fontsampler-admin .fontsampler-options-features-details input[type=range] {
   width: 100%;
@@ -1139,12 +1151,22 @@
 #fontsampler-admin .fontsampler-image-radio {
   background: #FFFFFF;
   position: relative;
+  padding: 0.25em 0.5em;
+  border-radius: 5px;
+  box-sizing: border-box;
+  border: 1px solid transparent;
 }
-#fontsampler-admin .fontsampler-image-radio:hover img {
-  background: #008EC2;
+#fontsampler-admin .fontsampler-image-radio:hover {
+  border: 1px solid #64CAF0;
 }
-#fontsampler-admin .fontsampler-image-radio.active img {
-  background: #64CAF0;
+#fontsampler-admin .fontsampler-image-radio:hover i {
+  color: #64CAF0;
+}
+#fontsampler-admin .fontsampler-image-radio.active {
+  border: 1px solid #CBCBCB;
+}
+#fontsampler-admin .fontsampler-image-radio.active i {
+  color: #008EC2;
 }
 #fontsampler-admin .fontsampler-image-radio input[type="radio"] {
   display: block;

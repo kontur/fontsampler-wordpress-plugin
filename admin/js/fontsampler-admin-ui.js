@@ -162,29 +162,74 @@ define(['jquery', 'rangeslider', 'selectric', 'validate', 'clipboard'], function
             // the native <input type="range"> element.
             polyfill: false,
             onSlide: function () {
-                var $input = this.$element.closest("label").find(".current-value");
-                // prevent reacting to a slide event triggered my text field input update,
-                // thus preventing the user being unable to type, as the text input would get overwritten from this update
-                if (!$input.is(":focus")) {
-                    $input.val(this.$element.val());
+                var $input = this.$element.closest("label").find(".current-value"),
+                    before = $input.val();
+
+                $input.val(this.$element.val());
+                if (!checkSliderRange(this.$element)) {
+                    $input.val(before);
+                    this.$element.val(before).change();
                 }
             }
         });
 
-
-        $("#fontsampler-admin .form-settings input.current-value").on("keyup", function () {
+        $("#fontsampler-admin input.current-value").on("keyup", function () {
             var $sliderInput = $(this).closest("label").find("input[name='" + $(this).data("name") + "']"),
                 min = $sliderInput.attr("min"),
                 max = $sliderInput.attr("max"),
                 intval = parseInt($(this).val()),
-                constrainedValue = Math.min(Math.max(intval, min), max);
+                constrainedValue = Math.min(Math.max(intval, min), max),
+                before = $(this).val();
 
             // prevent blocking the type input while also updating it should the value have been beyond the limits
             if (intval !== constrainedValue && !isNaN(constrainedValue)) {
                 $(this).val(constrainedValue);
             }
-            $sliderInput.val(constrainedValue).change();
+
+            // update only when the keyup resulted in a different number than what is currently displayed
+            // this prevents resetting the cursor to the end when only an arrow is pressed to change caret position
+            if (constrainedValue !== parseInt($sliderInput.val())) {
+                if (checkSliderRange($sliderInput)) {
+                    $sliderInput.val(constrainedValue).change();
+                    $(this).val(before);
+                }
+            }
         });
+
+        /**
+         * Function to help restrain the 3-part sliders to not exceed their bounds
+         * @param $elem
+         * @returns {boolean}
+         */
+        function checkSliderRange($elem) {
+            var group = $elem.data("group");
+
+            // only apply to the three 3-part sliders:
+            if (["fontsize", "lineheight", "letterspacing"].indexOf(group) === -1) {
+                return true;
+            }
+
+            var min_use_default = parseInt($("input[name='" + group + "_min_use_default']:checked").val()) === 1,
+                min_default = parseInt($("input[name='" + group + "_min_use_default'][value='1']").siblings(".settings-description").find(".fontsampler-default-value").html()),
+                min_slider = parseInt($("input[name='"+ group+ "_min']").val()),
+                min = min_use_default ? min_default : min_slider,
+
+                ini_use_default = parseInt($("input[name='" + group + "_initial_use_default']:checked").val()) === 1,
+                ini_default = parseInt($("input[name='" + group + "_initial_use_default'][value='1']").siblings(".settings-description").find(".fontsampler-default-value").html()),
+                ini_slider = parseInt($("input[name='"+ group+ "_initial']").val()),
+                ini = ini_use_default ? ini_default : ini_slider,
+
+                max_use_default = parseInt($("input[name='" + group + "_max_use_default']:checked").val()) === 1,
+                max_default = parseInt($("input[name='" + group + "_max_use_default'][value='1']").siblings(".settings-description").find(".fontsampler-default-value").html()),
+                max_slider = parseInt($("input[name='"+ group+ "_max']").val()),
+                max = max_use_default ? max_default : max_slider;
+
+            if (max <= min || min > ini || max < ini) {
+                return false;
+            }
+
+            return true;
+        }
 
 
 
@@ -288,6 +333,17 @@ define(['jquery', 'rangeslider', 'selectric', 'validate', 'clipboard'], function
             collapsible: true,
             header: 'h3',
             heightStyle: 'content'
+        });
+
+        $("input[name='fontsize'],input[name='lineheight'],input[name='letterspacing']").on("change", function () {
+            var $wrapper = $(this).closest("div").find(".fontsampler-options-features-details"),
+                uncheckedClass = "fontsampler-options-unchecked";
+
+            if ($(this).is(":checked")) {
+                $wrapper.removeClass(uncheckedClass);
+            } else {
+                $wrapper.addClass(uncheckedClass);
+            }
         });
 
 

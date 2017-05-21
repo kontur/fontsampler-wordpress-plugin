@@ -10,7 +10,7 @@
             <span>{{ f.label }}</span>
         </label>
         {% include 'partials/button-details.twig' %}
-        <div class="fontsampler-options-features-details {#fontsampler-visible#}">
+        <div class="fontsampler-options-features-details {% if not set.use_defaults and set[label] is empty and not settings %} fontsampler-options-unchecked {% endif %}">
 
             {{ include('partials/options-features-label.twig', {
                 use_default: set[f.name ~ '_label'] is empty,
@@ -25,27 +25,39 @@
                 use_default: set[f.name ~ '_min'] is empty,
                 header: 'Minimum',
                 label: (label ~ '_min'),
+                initial: set[f.name ~ '_min'],
                 slider_label: f.slider_min_label,
                 slider_name: (f.name ~ '_min'),
-                slider_default: (defaults[f.name ~ '_min'])
+                slider_default: (defaults[f.name ~ '_min']),
+                slider_min: slider_ranges[f.name][0],
+                slider_max: slider_ranges[f.name][1],
+                slider_group: f.name
             }) }}
 
             {{ include('partials/options-features-slider.twig', {
                 use_default: set[f.name ~ '_initial'] is empty,
                 header: 'Initial',
                 label: (label ~ '_initial'),
+                initial: set[f.name ~ '_initial'],
                 slider_label: f.slider_initial_label,
                 slider_name: (f.name ~ '_initial'),
-                slider_default: (defaults[f.name ~ '_initial'])
+                slider_default: (defaults[f.name ~ '_initial']),
+                slider_min: slider_ranges[f.name][0],
+                slider_max: slider_ranges[f.name][1],
+                slider_group: f.name
             }) }}
 
             {{ include('partials/options-features-slider.twig', {
                 use_default: set[f.name ~ '_max'] is empty,
                 header: 'Maximum',
                 label: (label ~ '_max'),
+                initial: set[f.name ~ '_max'],
                 slider_label: f.slider_max_label,
                 slider_name: (f.name ~ '_max'),
-                slider_default: (defaults[f.name ~ '_max'])
+                slider_default: (defaults[f.name ~ '_max']),
+                slider_min: slider_ranges[f.name][0],
+                slider_max: slider_ranges[f.name][1],
+                slider_group: f.name
             }) }}
         </div>
     </div>

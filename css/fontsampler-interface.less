@@ -4,10 +4,12 @@
 @css_color_label: #333;
 @css_value_size_label: inherit;
 @css_value_fontfamily_label: inherit;
+@css_value_lineheight_label: normal;
 @css_color_highlight: #efefef;
 @css_color_highlight_hover: #dedede;
 @css_color_line: #333333;
 @css_color_handle: #333333;
+@css_color_button_background: #efefef;
 @css_value_column_gutter: 10px;
 @css_value_row_height: 30px;
 @css_value_row_gutter: 10px;
@@ -17,8 +19,8 @@
     color: @css_color_text;
 }
 
-.fontsampler-interface .type-tester__content.invert {
-    background: @css_color_text;
+.fontsampler-wrapper .fontsampler-interface .type-tester__content.invert {
+    color: @css_color_background;
 }
 
 /* css_color_background */
@@ -26,8 +28,8 @@
     background: @css_color_background;
 }
 
-.fontsampler-interface .type-tester__content.invert {
-    color: @css_color_background;
+.fontsampler-wrapper .fontsampler-interface .type-tester__content.invert {
+    background: @css_color_text;
 }
 
 /* css_color_label */
@@ -49,7 +51,8 @@
 }
 
 /* css_color_highlight_hover */
-.fontsampler-interface .selectric-items li:hover {
+.fontsampler-interface .selectric-items li:hover,
+.fontsampler-interface .selectric-items li.selected {
     background: @css_color_highlight_hover;
 }
 
@@ -63,6 +66,10 @@
 .fontsampler-interface .fontsampler-ui-block-buy a,
 .fontsampler-interface .fontsampler-ui-block-specimen a {
     border-bottom: 1px solid @css_color_line;
+}
+
+.fontsampler-interface .rangeslider {
+    background: @css_color_line;
 }
 
 .fontsampler-interface .fontsampler-opentype-features {
@@ -85,4 +92,33 @@
 
 .fontsampler-interface .fontsampler-interface-link-text {
     height: @css_value_row_height;
+}
+
+/* button backgrounds */
+.fontsampler-interface .fontsampler-ui-block .fontsampler-multiselect > button,
+.fontsampler-interface .selectric > .label,
+.fontsampler-interface .selectric > .button {
+    background: @css_color_button_background;
+}
+
+/* label line-height */
+.fontsampler-interface label.fontsampler-slider .slider-label,
+.fontsampler-interface label.fontsampler-slider .slider-value,
+.fontsampler-interface .fontsampler-font-label label {
+    line-height: @css_value_lineheight_label;
+}
+
+.fontsampler-interface .selectric > .label {
+    line-height: @css_value_lineheight_label !important;
+}
+
+/* button icon colors */
+.fontsampler-interface .icon-align-left,
+.fontsampler-interface .icon-align-center,
+.fontsampler-interface .icon-align-right,
+.fontsampler-interface .icon-opentype,
+.fontsampler-interface .icon-invert-black,
+.fontsampler-interface .icon-invert-white,
+.fontsampler-interface .selectric > .button {
+    color: @css_color_label;
 }

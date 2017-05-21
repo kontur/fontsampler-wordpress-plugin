@@ -114,6 +114,8 @@ class FontsamplerFormhandler {
 
 			// loop through the first 3 options that have more detailed sliders associated with them
 			// which in turn can rely on using defaults or adapt a custom setting as well
+			// also register any non-default value for initial, which can be active even when the UI block is not
+			// to allow setting a different default for the slider
 			$sliders = array( 'fontsize', 'letterspacing', 'lineheight' );
 			foreach ( $sliders as $slider ) {
 				if ( isset( $this->post[ $slider ] ) && intval( $this->post[ $slider ] ) === 1 ) {
@@ -122,11 +124,11 @@ class FontsamplerFormhandler {
 						null : $this->post[ $slider . '_label' ];
 					$settings[ $slider . '_min' ]     = intval( $this->post[ $slider . '_min_use_default' ] ) === 1 ?
 						null : $this->post[ $slider . '_min' ];
-					$settings[ $slider . '_initial' ] = intval( $this->post[ $slider . '_initial_use_default' ] ) === 1 ?
-						null : $this->post[ $slider . '_initial' ];
 					$settings[ $slider . '_max' ]     = intval( $this->post[ $slider . '_max_use_default' ] ) === 1 ?
 						null : $this->post[ $slider . '_max' ];
 				}
+				$settings[ $slider . '_initial' ] = intval( $this->post[ $slider . '_initial_use_default' ] ) === 1 ?
+					null : $this->post[ $slider . '_initial' ];
 			}
 
 			// loop through all simple checkbox features
@@ -223,13 +225,13 @@ class FontsamplerFormhandler {
 			for ( $i = 0; $i < sizeof( $this->post['fontname'] ); $i ++ ) {
 				// all inline fontset creations are with $id=null, and their offset comes
 				// from how many entries there were in the fontname[] field
-				array_push($inlineFontIds, $this->font_edit( null, $i ));
+				array_push( $inlineFontIds, $this->font_edit( null, $i ) );
 			}
 		}
 
 		$initial_font = isset( $this->post['initial_font'] ) ? $this->post['initial_font'] : null;
-		if (substr($initial_font, 0, 6) == "inline") {
-			$initial_font = $inlineFontIds[ intval( substr($initial_font, 7) ) ];
+		if ( substr( $initial_font, 0, 6 ) == "inline" ) {
+			$initial_font = $inlineFontIds[ intval( substr( $initial_font, 7 ) ) ];
 		}
 
 		// save the fontsampler set to the DB
@@ -268,7 +270,8 @@ class FontsamplerFormhandler {
 			);
 			$this->fontsampler->db->update_set( $update, $id );
 			$this->fontsampler->helpers->write_custom_css_for_set( $this->fontsampler->db->get_set( $id ) );
-			$this->fontsampler->msg->add_info( 'Fontsampler ' . $id . ' successfully updated.' );
+			$this->fontsampler->msg->add_info( 'Fontsampler ' . $id . ' successfully updated. <a href="?page=fontsampler&subpage=set_edit&id=' .
+			                                   $id . '">Edit again</a>.' );
 		}
 
 		// wipe join table for this fontsampler, then add whatever now was instructed to be saved
@@ -384,6 +387,7 @@ class FontsamplerFormhandler {
 					$data[ $field ] = ( isset( $this->post[ $field ] ) && $this->post[ $field ] == 1 ) ? 1 : 0;
 				} else {
 					if ( isset( $this->post[ $field ] ) ) {
+						var_dump($field, trim($this->post[$field]));
 						$data[ $field ] = trim( $this->post[ $field ] );
 					} else {
 						// if the field is not one of the UI block checkboxes
@@ -431,6 +435,10 @@ class FontsamplerFormhandler {
 	}
 
 	function handle_settings_reset() {
-		return $this->fontsampler->db->set_default_settings();
+		if ( $this->fontsampler->db->set_default_settings() ) {
+			$this->fontsampler->helpers->write_css_from_settings( $this->fontsampler->db->get_default_settings() );
+			return true;
+		}
+		return false;
 	}
 }

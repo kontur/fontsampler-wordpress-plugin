@@ -92,7 +92,7 @@ class FontsamplerDatabase {
 			`invert` tinyint(1) unsigned DEFAULT NULL,
 			`multiline` tinyint(1) unsigned DEFAULT NULL,
 			`opentype` tinyint(1) unsigned DEFAULT NULL,
-			`fontpicker` tinyint( 1 ) DEFAULT NULL,
+			`fontpicker` tinyint( 1 ) unsigned DEFAULT NULL,
             `buy` VARCHAR( 255 ) DEFAULT NULL,
 			`specimen` VARCHAR( 255 ) DEFAULT NULL,
 			`buy_label` VARCHAR(255) DEFAULT NULL,
@@ -125,6 +125,8 @@ class FontsamplerDatabase {
 			`css_color_label` tinytext DEFAULT NULL,
 			`css_value_size_label` tinytext DEFAULT NULL,
 			`css_value_fontfamily_label` tinytext DEFAULT NULL,
+			`css_value_lineheight_label` tinytext DEFAULT NULL,
+			`css_color_button_background` tinytext DEFAULT NULL,
 			`css_color_highlight` tinytext DEFAULT NULL,
 			`css_color_highlight_hover` tinytext DEFAULT NULL,
 			`css_color_line` tinytext DEFAULT NULL,
@@ -299,6 +301,15 @@ class FontsamplerDatabase {
 
 				// currently in the settings table is only the default, so set it that way
 				'UPDATE ' . $this->table_settings . " SET is_default = 1, set_id = NULL, ui_columns = 3",
+			),
+			'0.2.4' => array(
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `letterspacing` `letterspacing` tinyint(1) unsigned DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `lineheight` `lineheight` tinyint(1) unsigned DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " CHANGE `fontpicker` `fontpicker` tinyint(1) unsigned DEFAULT NULL",
+
+				'ALTER TABLE ' . $this->table_settings . " ADD `css_color_button_background` tinytext DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " ADD `css_value_lineheight_label` tinytext DEFAULT NULL",
+				'UPDATE ' . $this->table_settings . " SET `css_color_button_background` = '#efefef', `css_value_lineheight_label` = 'normal'",
 			)
 		);
 

@@ -7,7 +7,7 @@
         <label class="fontsampler-radio">
             <input type="radio" name="{{ label }}_use_default" value="0"
                    class="fontsampler-checkbox-ui-block"
-                   {% if use_default %} checked="checked" {% endif %}
+                   {% if not use_default %} checked="checked" {% endif %}
             >
             <span class="settings-description">Use custom slider label:</span>
         </label>
@@ -23,7 +23,7 @@
     {% if not settings %}
         <label class="fontsampler-radio">
             <input type="radio" name="{{ label }}_use_default" value="1"
-                {% if not use_default %} checked="checked" {% endif %}>
+                {% if use_default %} checked="checked" {% endif %}>
             <span class="settings-description">Use default: <span class="fontsampler-default-value">{{ default }}</span></span>
         </label>
     {% endif %}

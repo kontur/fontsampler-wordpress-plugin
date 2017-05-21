@@ -26,24 +26,21 @@
             <div class="fontsampler-image-radio {% if set.alignment_initial == 'left' %} active {% endif %}">
                 <input type="radio" name="alignment_initial" data-value="left" value="left"
                         {% if set.alignment_initial == 'left' %} checked="checked" {% endif %}>
-                <img class="fontsampler-admin-alignment-icon"
-                     src="{{ image('icons/align-left.svg') }}">Left
+                <i class="icon-align-left"></i> Left
             </div>
         </label>
         <label>
             <div class="fontsampler-image-radio {% if set.alignment_initial == 'center' %} active {% endif %}">
                 <input type="radio" name="alignment_initial" data-value="center" value="center"
                         {% if set.alignment_initial == 'center' %} checked="checked" {% endif %}>
-                <img class="fontsampler-admin-alignment-icon"
-                     src="{{ image('icons/align-center.svg') }}">Centered
+                <i class="icon-align-center"></i> Centered
             </div>
         </label>
         <label>
             <div class="fontsampler-image-radio {% if set.alignment_initial == 'right' %} active {% endif %}">
                 <input type="radio" name="alignment_initial" data-value="right" value="right"
                         {% if set.alignment_initial == 'right' %} checked="checked" {% endif %}>
-                <img class="fontsampler-admin-alignment-icon"
-                     src="{{ image('icons/align-right.svg') }}">Right
+                <i class="icon-align-right"></i> Right
             </div>
         </label>
         {% if settings is empty %}
@@ -51,8 +48,7 @@
             <div class="fontsampler-image-radio {% if set.alignment_initial is empty %} active {% endif %}">
                 <input type="radio" name="alignment_initial" data-value="{{ defaults.alignment_initial }}" value="default"
                         {% if set.alignment_initial is empty %} checked="checked" {% endif %}>
-                <img class="fontsampler-admin-alignment-icon"
-                     src="{{ image('icons/align-' ~ defaults.alignment_initial ~ '.svg') }}">Use default ({{ defaults.alignment_initial }})
+                <i class="icon-align-{{ defaults.alignment_initial }}"></i> Use default ({{ defaults.alignment_initial }})
             </div>
         </label>
         {% endif %}
