@@ -387,7 +387,6 @@ class FontsamplerFormhandler {
 					$data[ $field ] = ( isset( $this->post[ $field ] ) && $this->post[ $field ] == 1 ) ? 1 : 0;
 				} else {
 					if ( isset( $this->post[ $field ] ) ) {
-						var_dump($field, trim($this->post[$field]));
 						$data[ $field ] = trim( $this->post[ $field ] );
 					} else {
 						// if the field is not one of the UI block checkboxes
