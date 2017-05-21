@@ -3,8 +3,8 @@ Contributors: kontur
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LSK5YQHHCGGYS
 Tags: fonts, typeface, preview, shortcode
 Requires at least: 4.0
-Tested up to: 4.7.3
-Stable tag: 0.2.3
+Tested up to: 4.7.5
+Stable tag: 0.2.5
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -84,6 +84,10 @@ detect all available OpenType features from the provided webfont files.
 6. This is how you include a Fontsampler in a page or post: Simply add the shortcode for the created Fontsampler to your text
 
 == Changelog ==
+
+= 0.2.5 =
+* Hotfix resolving an issue where on-the-fly generation of more than one custom css file would result in faulty custom css files
+* Hotfix to make sure new custom css options added in 0.2.4 will use the default value upon update
 
 = 0.2.4 =
 * Fixed a database issue that prevented per Fontsampler custom settings from being saved

@@ -309,7 +309,7 @@ class FontsamplerDatabase {
 
 				'ALTER TABLE ' . $this->table_settings . " ADD `css_color_button_background` tinytext DEFAULT NULL",
 				'ALTER TABLE ' . $this->table_settings . " ADD `css_value_lineheight_label` tinytext DEFAULT NULL",
-				'UPDATE ' . $this->table_settings . " SET `css_color_button_background` = '#efefef', `css_value_lineheight_label` = 'normal'",
+				'UPDATE ' . $this->table_settings . " SET `css_color_button_background` = '#efefef', `css_value_lineheight_label` = 'normal' WHERE `is_default` = 1",
 			)
 		);
 

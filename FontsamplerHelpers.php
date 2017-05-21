@@ -77,7 +77,6 @@ class FontsamplerHelpers {
 	 * (general plugin css, or custom css for a particular fontsampler)
 	 */
 	function get_css_file( $id = false, $css = false ) {
-
 		if ( false === $id ) {
 			// check path for existing file
 			// if not, create it by merging css template with settings
@@ -125,7 +124,15 @@ class FontsamplerHelpers {
 		return $this->write_custom_css( $path, $css, $set['id'] );
 	}
 
-
+	/**
+	 * @param $path
+	 * @param null $css
+	 * @param null $id
+	 *
+	 * Helper function that writes the css file specific to a particular set
+	 *
+	 * @return bool
+	 */
 	function write_custom_css( $path, $css = null, $id = null ) {
 		$input  = plugin_dir_path( __FILE__ ) . 'css/fontsampler-interface.less';
 		$output = $path;
@@ -167,6 +174,7 @@ class FontsamplerHelpers {
 	 */
 	function write_less( $input, $output, $vars, $is_path = true ) {
 		$m = new FontsamplerMessages();
+		$this->less = new Less_Parser( array( 'compress' => true ) );
 		if ( file_exists( $input ) || ! $is_path ) {
 			try {
 				if ( $is_path ) {
@@ -196,6 +204,16 @@ class FontsamplerHelpers {
 		return false;
 	}
 
+
+	/**
+	 * @param $set
+	 *
+	 * Function that is called to retrieve a CSS file for a set
+	 * This either returns a string to the css file (just written or existing)
+	 * of false if it fails or the provided $set is invalid or has no non-default values
+	 *
+	 * @return bool|string
+	 */
 	function get_custom_css( $set ) {
 		if ( false === $set ) {
 			return false;
