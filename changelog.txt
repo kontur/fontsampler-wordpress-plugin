@@ -1,3 +1,7 @@
+# 0.2.5
+- Hotfix resolving an issue where on-the-fly generation of more than one custom css file would result in faulty custom css files
+- Hotfix to make sure new custom css options added in 0.2.4 will use the default value upon update
+
 # 0.2.4
 - Fixed a database issue that prevented per Fontsampler custom settings from being saved
 - Fixed an issue that prevented backend sliders from working properly
