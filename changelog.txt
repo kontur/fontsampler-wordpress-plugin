@@ -1,9 +1,11 @@
 # 0.2.4
-- Fixed a database issue that prevented custom settings from being saved
-- Automatically re-generate the reset CSS after resetting settings to the defaults
+- Fixed a database issue that prevented per Fontsampler custom settings from being saved
 - Fixed an issue that prevented backend sliders from working properly
+- Fixed an issue that prevented the invert button to work properly for per Fontsampler custom styling
+- Automatically re-generate the reset CSS after resetting settings to the defaults
+- Added (back) the possibility to set the font size, line height or letter spacing of a Fontsampler even though the respective user interface slider is disabled
 - Added automatic sanity check to admin min, initial and max sliders to avoid impossible overlap
-- Added more css options and tweaks how some are applied to allow better customization
+- Added more css options and tweaks to how some are applied to allow better customization
 
 # 0.2.3
 - All font files are now handled via the WP media gallery popup in the admin area

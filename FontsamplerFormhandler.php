@@ -114,6 +114,8 @@ class FontsamplerFormhandler {
 
 			// loop through the first 3 options that have more detailed sliders associated with them
 			// which in turn can rely on using defaults or adapt a custom setting as well
+			// also register any non-default value for initial, which can be active even when the UI block is not
+			// to allow setting a different default for the slider
 			$sliders = array( 'fontsize', 'letterspacing', 'lineheight' );
 			foreach ( $sliders as $slider ) {
 				if ( isset( $this->post[ $slider ] ) && intval( $this->post[ $slider ] ) === 1 ) {
@@ -122,11 +124,11 @@ class FontsamplerFormhandler {
 						null : $this->post[ $slider . '_label' ];
 					$settings[ $slider . '_min' ]     = intval( $this->post[ $slider . '_min_use_default' ] ) === 1 ?
 						null : $this->post[ $slider . '_min' ];
-					$settings[ $slider . '_initial' ] = intval( $this->post[ $slider . '_initial_use_default' ] ) === 1 ?
-						null : $this->post[ $slider . '_initial' ];
 					$settings[ $slider . '_max' ]     = intval( $this->post[ $slider . '_max_use_default' ] ) === 1 ?
 						null : $this->post[ $slider . '_max' ];
 				}
+				$settings[ $slider . '_initial' ] = intval( $this->post[ $slider . '_initial_use_default' ] ) === 1 ?
+					null : $this->post[ $slider . '_initial' ];
 			}
 
 			// loop through all simple checkbox features
@@ -385,6 +387,7 @@ class FontsamplerFormhandler {
 					$data[ $field ] = ( isset( $this->post[ $field ] ) && $this->post[ $field ] == 1 ) ? 1 : 0;
 				} else {
 					if ( isset( $this->post[ $field ] ) ) {
+						var_dump($field, trim($this->post[$field]));
 						$data[ $field ] = trim( $this->post[ $field ] );
 					} else {
 						// if the field is not one of the UI block checkboxes

@@ -1,20 +1,20 @@
 <div class="type-tester"
-     data-min-font-size="<?php echo $options['fontsize_min']; ?>"
-     data-max-font-size="<?php echo $options['fontsize_max']; ?>"
-     data-unit-font-size="<?php echo $options['fontsize_unit']; ?>"
-     data-value-font-size="<?php echo $options['fontsize_initial']; ?>"
+     data-min-font-size="<?php echo $data_initial['fontsize_min']; ?>"
+     data-max-font-size="<?php echo $data_initial['fontsize_max']; ?>"
+     data-unit-font-size="<?php echo $data_initial['fontsize_unit']; ?>"
+     data-value-font-size="40" <?php /*<?php echo $data_initial['fontsize_initial']; ?>"*/ ?>
      data-step-font-size="1"
 
-     data-min-letter-spacing="<?php echo $options['letterspacing_min']; ?>"
-     data-max-letter-spacing="<?php echo $options['letterspacing_max']; ?>"
-     data-unit-letter-spacing="<?php echo $options['letterspacing_unit']; ?>"
-     data-value-letter-spacing="<?php echo $options['letterspacing_initial']; ?>"
+     data-min-letter-spacing="<?php echo $data_initial['letterspacing_min']; ?>"
+     data-max-letter-spacing="<?php echo $data_initial['letterspacing_max']; ?>"
+     data-unit-letter-spacing="<?php echo $data_initial['letterspacing_unit']; ?>"
+     data-value-letter-spacing="<?php echo $data_initial['letterspacing_initial']; ?>"
      data-step-letter-spacing="1"
 
-     data-min-line-height="<?php echo $options['lineheight_min']; ?>"
-     data-max-line-height="<?php echo $options['lineheight_max']; ?>"
-     data-unit-line-height="<?php echo $options['lineheight_unit']; ?>"
-     data-value-line-height="<?php echo $options['lineheight_initial']; ?>"
+     data-min-line-height="<?php echo $data_initial['lineheight_min']; ?>"
+     data-max-line-height="<?php echo $data_initial['lineheight_max']; ?>"
+     data-unit-line-height="<?php echo $data_initial['lineheight_unit']; ?>"
+     data-value-line-height="<?php echo $data_initial['lineheight_initial']; ?>"
      data-step-line-height="1">
 
 	<div class="fontsampler-interface columns-<?php echo $set['ui_columns'];
@@ -195,7 +195,10 @@
 						     contenteditable="true"
 							<?php if ( ! $set['is_ltr'] ): echo ' dir="rtl" '; endif; ?>
 
-							 style="text-align: <?php echo $set['alignment_initial']; ?>;"
+							 style="text-align: <?php echo $set['alignment_initial']; ?>;
+								    font-size: <?php echo $data_initial['fontsize_initial'] . $data_initial['fontsize_unit']; ?>;
+								    letter-spacing: <?php echo $data_initial['letterspacing_initial'] . $data_initial['letterspacing_unit']; ?>;
+								    line-height: <?php echo $data_initial['lineheight_initial'] . $data_initial['lineheight_unit']; ?>;"
 						><?php echo $initial_text; ?></div>
 
 						<?php

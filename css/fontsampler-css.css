@@ -334,6 +334,7 @@
 }
 .fontsampler-wrapper .fontsampler-interface .fontsampler-ui-block.fontsampler-ui-block-fontsampler {
   height: auto;
+  width: 100%;
 }
 .fontsampler-wrapper .fontsampler-interface .fontsampler-multiselect {
   box-sizing: border-box;
@@ -508,15 +509,15 @@
 .fontsampler-interface .type-tester__content {
   color: #333;
 }
-.fontsampler-interface .type-tester__content.invert {
-  background: #333;
+.fontsampler-wrapper .fontsampler-interface .type-tester__content.invert {
+  color: #fff;
 }
 /* css_color_background */
 .fontsampler-interface .type-tester__content {
   background: #fff;
 }
-.fontsampler-interface .type-tester__content.invert {
-  color: #fff;
+.fontsampler-wrapper .fontsampler-interface .type-tester__content.invert {
+  background: #333;
 }
 /* css_color_label */
 /* css_size_label */

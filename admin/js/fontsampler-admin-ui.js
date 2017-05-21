@@ -335,6 +335,17 @@ define(['jquery', 'rangeslider', 'selectric', 'validate', 'clipboard'], function
             heightStyle: 'content'
         });
 
+        $("input[name='fontsize'],input[name='lineheight'],input[name='letterspacing']").on("change", function () {
+            var $wrapper = $(this).closest("div").find(".fontsampler-options-features-details"),
+                uncheckedClass = "fontsampler-options-unchecked";
+
+            if ($(this).is(":checked")) {
+                $wrapper.removeClass(uncheckedClass);
+            } else {
+                $wrapper.addClass(uncheckedClass);
+            }
+        });
+
 
         var $use_default_options = $("input[name=use_default_options]");
         var $options = $(".fontsampler-options");

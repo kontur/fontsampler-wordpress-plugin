@@ -194,6 +194,16 @@ class FontsamplerPlugin {
 			$layout = new FontsamplerLayout();
 			$blocks = $layout->stringToArray( $set['ui_order'], $set );
 
+			// get the calculated initial values for data-font-size- etc, where the set overwrites options
+			// where available
+			$data_initial = array();
+			foreach ($set as $key => $value) {
+				$data_initial[$key] = $value;
+				if ($value === null && $options[$key] !== null) {
+					$data_initial[$key] = $options[$key];
+				}
+			}
+
 			// buffer output until return
 			ob_start();
 			?>

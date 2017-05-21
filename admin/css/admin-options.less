@@ -197,6 +197,16 @@
             border: 2px solid @fs_color_light;
         }
 
+        &.fontsampler-options-unchecked .fontsampler-options-row {
+            opacity: 0.1;
+
+            &.fontsampler-options-row-fontsize_initial,
+            &.fontsampler-options-row-lineheight_initial,
+            &.fontsampler-options-row-letterspacing_initial {
+                opacity: 1;
+            }
+        }
+
         input[type=range] {
             width: 100%;
         }

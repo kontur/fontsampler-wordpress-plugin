@@ -38,9 +38,9 @@ class FontsamplerHelpers {
 				'name'                 => 'lineheight',
 				'label'                => 'Line height control',
 				'slider_label'         => 'Label',
-				'slider_initial_label' => 'Initial px',
-				'slider_min_label'     => 'Min px',
-				'slider_max_label'     => 'Max px',
+				'slider_initial_label' => 'Initial %',
+				'slider_min_label'     => 'Min %',
+				'slider_max_label'     => 'Max %',
 			)
 		);
 		$this->additional_features = array(

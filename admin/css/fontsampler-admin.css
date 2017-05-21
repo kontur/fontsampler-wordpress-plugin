@@ -547,6 +547,14 @@
 #fontsampler-admin .fontsampler-options-features-details.fontsampler-visible {
   border: 2px solid #F2F2F2;
 }
+#fontsampler-admin .fontsampler-options-features-details.fontsampler-options-unchecked .fontsampler-options-row {
+  opacity: 0.1;
+}
+#fontsampler-admin .fontsampler-options-features-details.fontsampler-options-unchecked .fontsampler-options-row.fontsampler-options-row-fontsize_initial,
+#fontsampler-admin .fontsampler-options-features-details.fontsampler-options-unchecked .fontsampler-options-row.fontsampler-options-row-lineheight_initial,
+#fontsampler-admin .fontsampler-options-features-details.fontsampler-options-unchecked .fontsampler-options-row.fontsampler-options-row-letterspacing_initial {
+  opacity: 1;
+}
 #fontsampler-admin .fontsampler-options-features-details input[type=range] {
   width: 100%;
 }
