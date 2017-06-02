@@ -232,7 +232,7 @@ class FontsamplerPlugin {
 	 */
 	function fontsampler_interface_enqueues() {
 		wp_enqueue_script( 'require-js', plugin_dir_url( __FILE__ ) . 'js/libs/requirejs/require.js', array(), false, true );
-		wp_enqueue_script( 'main-js', plugin_dir_url( __FILE__ ) . 'js/main.js', array(), false, true );
+		wp_enqueue_script( 'main-js', plugin_dir_url( __FILE__ ) . 'js/main.js', array('jquery'), false, true );
 		wp_enqueue_style( 'fontsampler-css', $this->helpers->get_css_file() );
 	}
 
