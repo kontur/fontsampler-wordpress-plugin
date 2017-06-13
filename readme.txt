@@ -58,6 +58,8 @@ that are set to use the default values. Editing the defaults will update all you
 WOFF, EOT and TTF are supported, and support for WOFF2 will soon be fully implemented and is already available in the admin interface.
 It is recommended that for now you use the WOFF format unless you need to support legacy browsers.
 
+Note that Wordpress might not by default accept those file types and you might have to whitelist those file types to your themes functions.php.
+
 = Does the plugin support displaying non-latin fonts? =
 
 Absolutely. Right to left scripts are equally supported and improvements to the admin area for Wordpress installations with
