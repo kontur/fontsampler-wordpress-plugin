@@ -102,6 +102,9 @@ define(['jquery', 'rangeslider', 'selectric', 'validate', 'clipboard'], function
             return false;
         });
 
+        // trigger once, for pages where the fontupload is not ajax but DOM elements are ready on load
+        fontupload(specimentools);
+
 
         /**
          * Update the input field fonts_order with a comma separated list of fonts, in the order they are sorted

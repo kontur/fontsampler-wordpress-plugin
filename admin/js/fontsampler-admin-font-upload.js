@@ -6,7 +6,7 @@ define(['jquery'], function ($) {
     function main(specimentools) {
 
         var that = this,
-            $wrappers = $('#fontsampler-fontset-list .fontsampler-fontset-inline .fontsampler-fontset-files');
+            $wrappers = $('.fontsampler-font-set .fontsampler-fontset-files');
 
         $wrappers.each(function (index, elem) {
             MediaUploader($(this));
@@ -27,7 +27,7 @@ define(['jquery'], function ($) {
 
             function init() {
                 // ADD IMAGE LINK
-                $wrapper.on('click', addButton, onAddClick);
+                $wrapper.on('click', ".fontsampler-upload-font", onAddClick);
 
                 // DELETE IMAGE LINK
                 delButton.on('click', onDelClick);
