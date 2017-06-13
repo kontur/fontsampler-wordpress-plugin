@@ -118,7 +118,6 @@
                 padding: 0 2px;
                 margin: 0;
                 text-align: center;
-                opacity: 0.5;
                 outline: none;
 
                 img {
@@ -276,8 +275,22 @@
                     padding: 10px;
 
                     label {
+                        box-sizing: border-box;
                         float: left;
+                        margin-bottom: 10px;
+                        position: relative;
+                        padding-left: 20px;
+                        padding-right: 20px;
                         width: 50%;
+
+                        input {
+                            position: absolute;
+                            left: 0;
+                            top: 0;
+                        }
+                        span {
+
+                        }
                     }
                 }
             }

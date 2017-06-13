@@ -2,7 +2,7 @@
      data-min-font-size="<?php echo $data_initial['fontsize_min']; ?>"
      data-max-font-size="<?php echo $data_initial['fontsize_max']; ?>"
      data-unit-font-size="<?php echo $data_initial['fontsize_unit']; ?>"
-     data-value-font-size="40" <?php /*<?php echo $data_initial['fontsize_initial']; ?>"*/ ?>
+     data-value-font-size="<?php echo $data_initial['fontsize_initial']; ?>"
      data-step-font-size="1"
 
      data-min-letter-spacing="<?php echo $data_initial['letterspacing_min']; ?>"

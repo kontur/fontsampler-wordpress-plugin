@@ -129,6 +129,7 @@ class FontsamplerDatabase {
 			`css_value_fontfamily_label` tinytext DEFAULT NULL,
 			`css_value_lineheight_label` tinytext DEFAULT NULL,
 			`css_color_button_background` tinytext DEFAULT NULL,
+			`css_color_button_background_inactive` tinytext DEFAULT NULL,
 			`css_color_highlight` tinytext DEFAULT NULL,
 			`css_color_highlight_hover` tinytext DEFAULT NULL,
 			`css_color_line` tinytext DEFAULT NULL,
@@ -317,6 +318,9 @@ class FontsamplerDatabase {
 				'ALTER TABLE ' . $this->table_settings . " ADD `buy_target` VARCHAR(10) DEFAULT NULL",
 				'ALTER TABLE ' . $this->table_settings . " ADD `specimen_target` VARCHAR(10) DEFAULT NULL",
 				'UPDATE ' . $this->table_settings . " SET `buy_target` = '_blank', `specimen_target` = '_blank' WHERE `is_default` = 1",
+
+				'ALTER TABLE ' . $this->table_settings . " ADD `css_color_button_background_inactive` tinytext DEFAULT NULL",
+				'UPDATE ' . $this->table_settings . " SET `css_color_button_background_inactive` = '#dfdfdf' WHERE `is_default` = 1",
 			)
 		);
 

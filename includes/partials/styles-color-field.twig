@@ -6,7 +6,7 @@
     {% if not settings %}
         <label class="fontsampler-radio">
             <input type="radio" name="{{ name }}_use_default" value="0"
-                {% if value is not empty %} checked="checked" {% endif %}>
+                {% if value is not empty and set_uses_defaults == 0 %} checked="checked" {% endif %}>
             <span class="settings-description">Use custom color</span>
         </label>
     {% endif %}
@@ -24,7 +24,7 @@
     {% if not settings %}
         <label class="fontsampler-radio">
             <input type="radio" name="{{ name }}_use_default" value="1"
-                    {% if value is empty %} checked="checked" {% endif %}>
+                    {% if value is empty or set_uses_defaults == 1 %} checked="checked" {% endif %}>
             <span>Use default:
             <div class="fontsampler-css-color-block"
                  style="background-color: {{ default }};"></div>

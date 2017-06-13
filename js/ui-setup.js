@@ -71,10 +71,11 @@ define(['jquery', 'rangeslider', 'selectric'], function ($) {
 
 
         $wrapper.find(".fontsampler-interface .fontsampler-multiselect").on("click", "button", function () {
-            var $fs = $(this).closest('.fontsampler-interface').find(typeTesterContentSelector),
-                val = $(this).data("value");
+            var $this = $(this),
+                $fs = $this.closest('.fontsampler-interface').find(typeTesterContentSelector),
+                val = $this.data("value");
 
-            switch ($(this).closest('.fontsampler-multiselect').data("name")) {
+            switch ($this.closest('.fontsampler-multiselect').data("name")) {
                 case "alignment":
                     $fs.css("text-align", val);
                     break;
@@ -90,12 +91,16 @@ define(['jquery', 'rangeslider', 'selectric'], function ($) {
                     break;
 
                 case "opentype":
-                    $(this).siblings(".fontsampler-opentype-features").toggleClass("shown");
+                    $this.siblings(".fontsampler-opentype-features").toggleClass("shown");
                     break;
             }
 
-            $(this).siblings("button").removeClass("fontsampler-multiselect-selected");
-            $(this).addClass("fontsampler-multiselect-selected");
+            $this.siblings("button").removeClass("fontsampler-multiselect-selected");
+            if ($this.siblings("button").length === 0) {
+                $this.toggleClass("fontsampler-multiselect-selected");
+            } else {
+                $this.addClass("fontsampler-multiselect-selected");
+            }
         });
 
         // prevent line breaks on single line instances

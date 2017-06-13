@@ -10,6 +10,7 @@
 @css_color_line: #333333;
 @css_color_handle: #333333;
 @css_color_button_background: #efefef;
+@css_color_button_background_inactive: #dfdfdf;
 @css_value_column_gutter: 10px;
 @css_value_row_height: 30px;
 @css_value_row_gutter: 10px;
@@ -39,7 +40,8 @@
 .fontsampler-interface .fontsampler-slider .slider-value,
 .fontsampler-interface .selectric .label,
 .fontsampler-interface .selectric-items li,
-.fontsampler-interface .fontsampler-ui-block-fontpicker .fontsampler-font-label label {
+.fontsampler-interface .fontsampler-ui-block-fontpicker .fontsampler-font-label label,
+.fontsampler-interface .fontsampler-opentype-features {
     color: @css_color_label;
     font-size: @css_value_size_label;
     font-family: @css_value_fontfamily_label;
@@ -95,9 +97,14 @@
 }
 
 /* button backgrounds */
-.fontsampler-interface .fontsampler-ui-block .fontsampler-multiselect > button,
 .fontsampler-interface .selectric > .label,
 .fontsampler-interface .selectric > .button {
+    background: @css_color_button_background;
+}
+.fontsampler-interface .fontsampler-ui-block .fontsampler-multiselect > button {
+    background: @css_color_button_background_inactive;
+}
+.fontsampler-interface .fontsampler-ui-block .fontsampler-multiselect > button.fontsampler-multiselect-selected {
     background: @css_color_button_background;
 }
 

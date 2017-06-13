@@ -109,6 +109,7 @@ class FontsamplerPlugin {
 			'css_value_fontfamily_label'      => 'inherit',
 			'css_value_lineheight_label'    => 'normal',
 			'css_color_button_background' => '#efefef',
+			'css_color_button_background_inactive' => '#dfdfdf',
 			'css_color_highlight'       => '#efefef',
 			'css_color_highlight_hover' => '#dedede',
 			'css_color_line'            => '#333333',
