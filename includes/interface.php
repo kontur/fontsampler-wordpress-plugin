@@ -140,17 +140,18 @@
 
 					case 'buy':
 						if ( $set['buy'] && ! empty( $set['buy_url'] ) ) : ?>
-							<a href="<?php echo $set['buy_url']; ?>" target="_blank">
+							<a href="<?php echo $set['buy_url']; ?>"
+							   target="<?php echo !empty($set['buy_target']) ? $set['buy_target'] : $options['buy_target']; ?>">
 								<?php
 								if ( $set['buy_image'] ):
 									$image_src = wp_get_attachment_image_src( $set['buy_image'], 'full' );
 									?>
 									<img class="fontsampler-interface-link-image"
 									     src="<?php echo $image_src[0]; ?>"
-									     alt="<?php echo $set['buy_label']; ?>">
+									     alt="<?php echo options['buy_label']; ?>">
 								<?php else: ?>
 									<span class="fontsampler-interface-link-text"
-									><?php echo $set['buy_label']; ?></span>
+									><?php echo !empty($set['buy_label']) ? $set['buy_label'] : $options['buy_label']; ?></span>
 								<?php endif; ?>
 							</a>
 						<?php endif;
@@ -158,17 +159,18 @@
 
 					case 'specimen':
 						if ( $set['specimen'] && ! empty( $set['specimen_url'])) : ?>
-							<a href="<?php echo $set['specimen_url']; ?>" target="_blank">
+							<a href="<?php echo $set['specimen_url']; ?>"
+								target="<?php echo !empty($set['specimen_target']) ? $set['specimen_target'] : $options['specimen_target']; ?>">
 								<?php
-								if ( $options['specimen_image'] ):
-									$image_src = wp_get_attachment_image_src( $options['specimen_image'], 'full' );
+								if ( $set['specimen_image'] ):
+									$image_src = wp_get_attachment_image_src( $set['specimen_image'], 'full' );
 									?>
 									<img class="fontsampler-interface-link-image"
 									     src="<?php echo $image_src[0]; ?>"
 									     alt="<?php echo $options['specimen_label']; ?>">
 								<?php else: ?>
 									<span
-										class="fontsampler-interface-link-text"><?php echo $options['specimen_label']; ?></span>
+										class="fontsampler-interface-link-text"><?php echo !empty($set['specimen_label']) ? $set['specimen_label'] : $options['specimen_label']; ?></span>
 								<?php endif; ?>
 							</a>
 						<?php endif;

@@ -2,9 +2,6 @@
 
 {% block content %}
 <h1>Settings</h1>
-<form method="post" action="?page=fontsampler&amp;subpage=settings_reset" class="form-settings fontsampler-settings-reset">
-	{{ submit_button('Restore default settings') }}
-</form>
 
 <form method="post" action="?page=fontsampler&amp;subpage=settings" class="form-settings fontsampler-validate">
 	<input type="hidden" name="action" value="edit_settings">
@@ -29,6 +26,9 @@
 		</small>
 	</label>
 	{{ submit_button('Save') }}
+</form>
+<form method="post" action="?page=fontsampler&amp;subpage=settings_reset" class="form-settings fontsampler-settings-reset">
+	{{ submit_button('Restore default settings', 'delete' ) }}
 </form>
 
 {% endblock %}

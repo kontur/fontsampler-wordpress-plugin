@@ -99,10 +99,12 @@ class FontsamplerDatabase {
 			`buy_image` int( 11 ) unsigned DEFAULT NULL,
 			`buy_url` VARCHAR( 255 ) DEFAULT NULL,
 			`buy_type` VARCHAR( 5 ) NULL DEFAULT 'label',
+			`buy_target` VARCHAR(10) DEFAULT NULL,
 			`specimen_label` VARCHAR(255) DEFAULT NULL,
 			`specimen_image` int( 11 ) unsigned DEFAULT NULL,
 			`specimen_url` VARCHAR( 255 ) DEFAULT NULL,
 			`specimen_type` VARCHAR( 5 ) NULL DEFAULT 'label',
+			`specimen_target` VARCHAR(10) DEFAULT NULL,
 			`fontsize_label` varchar(50) DEFAULT NULL,
 			`fontsize_initial` smallint(5) unsigned DEFAULT NULL,
 			`fontsize_min` smallint(5) unsigned DEFAULT NULL,
@@ -310,6 +312,11 @@ class FontsamplerDatabase {
 				'ALTER TABLE ' . $this->table_settings . " ADD `css_color_button_background` tinytext DEFAULT NULL",
 				'ALTER TABLE ' . $this->table_settings . " ADD `css_value_lineheight_label` tinytext DEFAULT NULL",
 				'UPDATE ' . $this->table_settings . " SET `css_color_button_background` = '#efefef', `css_value_lineheight_label` = 'normal' WHERE `is_default` = 1",
+			),
+			'0.2.6' => array(
+				'ALTER TABLE ' . $this->table_settings . " ADD `buy_target` VARCHAR(10) DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " ADD `specimen_target` VARCHAR(10) DEFAULT NULL",
+				'UPDATE ' . $this->table_settings . " SET `buy_target` = '_blank', `specimen_target` = '_blank' WHERE `is_default` = 1",
 			)
 		);
 

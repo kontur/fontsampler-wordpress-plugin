@@ -92,6 +92,18 @@
                             <span>Url for the buy link</span>
                             <input type="text" name="buy_url" value="{{ set.buy_url }}">
                         </label>
+                        <br>
+                        <label>
+                            <input type="radio" name="buy_target" value="_blank"
+                                {% if set.buy_target is empty or set.buy_target == '_blank' %} checked="checked" {% endif %}>
+                            <span>Open link in new window</span>
+                        </label>
+                        <br>
+                        <label>
+                            <input type="radio" name="buy_target" value="_self"
+                                {% if set.buy_target == '_self' %} checked="checked" {% endif %}>
+                            <span>Open link in same window</span>
+                        </label>
                     </div>
                 </div>
                 {{ include ('partials/options-features-link.twig', {
@@ -115,6 +127,18 @@
                         <label>
                             <span>Url for the specimen link</span>
                             <input type="text" name="specimen_url" value="{{ set.specimen_url }}">
+                        </label>
+                        <br>
+                        <label>
+                            <input type="radio" name="specimen_target" value="_blank"
+                                    {% if set.specimen_target is empty or set.specimen_target == '_blank' %} checked="checked" {% endif %}>
+                            <span>Open link in new window</span>
+                        </label>
+                        <br>
+                        <label>
+                            <input type="radio" name="specimen_target" value="_self"
+                                    {% if set.specimen_target == '_self' %} checked="checked" {% endif %}>
+                            <span>Open link in same window</span>
                         </label>
                     </div>
                 </div>

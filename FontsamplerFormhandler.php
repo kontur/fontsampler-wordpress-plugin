@@ -119,12 +119,12 @@ class FontsamplerFormhandler {
 			$sliders = array( 'fontsize', 'letterspacing', 'lineheight' );
 			foreach ( $sliders as $slider ) {
 				if ( isset( $this->post[ $slider ] ) && intval( $this->post[ $slider ] ) === 1 ) {
-					$settings[ $slider ]              = 1;
-					$settings[ $slider . '_label' ]   = intval( $this->post[ $slider . '_use_default' ] ) === 1 ?
+					$settings[ $slider ]            = 1;
+					$settings[ $slider . '_label' ] = intval( $this->post[ $slider . '_use_default' ] ) === 1 ?
 						null : $this->post[ $slider . '_label' ];
-					$settings[ $slider . '_min' ]     = intval( $this->post[ $slider . '_min_use_default' ] ) === 1 ?
+					$settings[ $slider . '_min' ]   = intval( $this->post[ $slider . '_min_use_default' ] ) === 1 ?
 						null : $this->post[ $slider . '_min' ];
-					$settings[ $slider . '_max' ]     = intval( $this->post[ $slider . '_max_use_default' ] ) === 1 ?
+					$settings[ $slider . '_max' ]   = intval( $this->post[ $slider . '_max_use_default' ] ) === 1 ?
 						null : $this->post[ $slider . '_max' ];
 				}
 				$settings[ $slider . '_initial' ] = intval( $this->post[ $slider . '_initial_use_default' ] ) === 1 ?
@@ -164,8 +164,12 @@ class FontsamplerFormhandler {
 					$settings[ $link . '_url' ] = isset( $this->post[ $link . '_url' ] )
 						? $this->post[ $link . '_url' ] : null;
 
+					// type, either a radio set to either "label" or "image", or "label_default", or "image_default"
 					$type              = $link . '_type';
 					$settings[ $type ] = isset( $this->post[ $type ] ) ? $this->post[ $type ] : null;
+
+					$target              = $link . '_target';
+					$settings[ $target ] = isset( $this->post[ $target ] ) ? $this->post[ $target ] : null;
 
 					if ( false !== strpos( $settings[ $type ], '_default' ) ) {
 						// selected one of the DEFAULT options:
@@ -436,8 +440,10 @@ class FontsamplerFormhandler {
 	function handle_settings_reset() {
 		if ( $this->fontsampler->db->set_default_settings() ) {
 			$this->fontsampler->helpers->write_css_from_settings( $this->fontsampler->db->get_default_settings() );
+
 			return true;
 		}
+
 		return false;
 	}
 }
