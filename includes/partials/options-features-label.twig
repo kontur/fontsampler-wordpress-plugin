@@ -23,7 +23,7 @@
     {% if not settings %}
         <label class="fontsampler-radio">
             <input type="radio" name="{{ label }}_use_default" value="1"
-                {% if use_default %} checked="checked" {% endif %}>
+                {% if use_default or set_uses_defaults == 1 %} checked="checked" {% endif %}>
             <span class="settings-description">Use default: <span class="fontsampler-default-value">{{ default }}</span></span>
         </label>
     {% endif %}

@@ -18,7 +18,8 @@
                 name: f.name,
                 description: f.slider_label,
                 default: (defaults[f.name ~ '_label']),
-                value: set[label ~ '_label']
+                value: set[label ~ '_label'],
+                set_uses_defaults: set.use_defaults
             }) }}
 
             {{ include('partials/options-features-slider.twig', {
@@ -31,7 +32,8 @@
                 slider_default: (defaults[f.name ~ '_min']),
                 slider_min: slider_ranges[f.name][0],
                 slider_max: slider_ranges[f.name][1],
-                slider_group: f.name
+                slider_group: f.name,
+                set_uses_defaults: set.use_defaults
             }) }}
 
             {{ include('partials/options-features-slider.twig', {
@@ -44,7 +46,8 @@
                 slider_default: (defaults[f.name ~ '_initial']),
                 slider_min: slider_ranges[f.name][0],
                 slider_max: slider_ranges[f.name][1],
-                slider_group: f.name
+                slider_group: f.name,
+                set_uses_defaults: set.use_defaults
             }) }}
 
             {{ include('partials/options-features-slider.twig', {
@@ -57,7 +60,8 @@
                 slider_default: (defaults[f.name ~ '_max']),
                 slider_min: slider_ranges[f.name][0],
                 slider_max: slider_ranges[f.name][1],
-                slider_group: f.name
+                slider_group: f.name,
+                set_uses_defaults: set.use_defaults
             }) }}
         </div>
     </div>
@@ -114,6 +118,7 @@
                     'type': set.buy_type is empty ? defaults.buy_type : set.buy_type,
                     'default_label': defaults.buy_label,
                     'default_image': defaults.buy_image,
+                    'set_uses_defaults': set.use_defaults,
                 }) }}
             </div>
         {% endif %}
@@ -150,6 +155,7 @@
                     'type': set.specimen_type is empty ? defaults.specimen_type : set.specimen_type,
                     'default_label': defaults.specimen_label,
                     'default_image': defaults.specimen_image,
+                    'set_uses_defaults': set.use_defaults,
                 }) }}
             </div>
         {% endif %}
