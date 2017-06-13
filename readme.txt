@@ -3,8 +3,8 @@ Contributors: kontur
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LSK5YQHHCGGYS
 Tags: fonts, typeface, preview, shortcode
 Requires at least: 4.0
-Tested up to: 4.7.5
-Stable tag: 0.2.5
+Tested up to: 4.8.0
+Stable tag: 0.2.6
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -84,6 +84,16 @@ detect all available OpenType features from the provided webfont files.
 6. This is how you include a Fontsampler in a page or post: Simply add the shortcode for the created Fontsampler to your text
 
 == Changelog ==
+
+= 0.2.6 =
+* Fixed an issue preventing the set custom initial size of a Fontsampler to work as intended
+* Fixed "Add or replace" and "Delete" buttons not working in the Fonts & Files tab
+* Fixed an issue where the Jquery dependency would not load for some users
+* A Fontsampler with custom settings will by default inherit default styling implicitly rather than explicitly, thus keeping styling as default
+* Implemented option to specify "buy" and "speciment" links' target, i.e. allowing those links to open either in the same or in a new browser window / tab
+* Added a css color option for inactive buttons (e.g. in the alignment multiselect, or inverting multiselect)
+* Added the Opentype dropdown dialog's text to inherit the UI label text css settings
+* Confirmed compatibility for WP core 4.8.x
 
 = 0.2.5 =
 * Hotfix resolving an issue where on-the-fly generation of more than one custom css file would result in faulty custom css files

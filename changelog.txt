@@ -1,3 +1,13 @@
+# 0.2.6
+- Fixed an issue preventing the set custom initial size of a Fontsampler to work as intended
+- Fixed "Add or replace" and "Delete" buttons not working in the Fonts & Files tab
+- Fixed an issue where the Jquery dependency would not load for some users
+- A Fontsampler with custom settings will by default inherit default styling implicitly rather than explicitly, thus keeping styling as default
+- Implemented option to specify "buy" and "speciment" links' target, i.e. allowing those links to open either in the same or in a new browser window / tab
+- Added a css color option for inactive buttons (e.g. in the alignment multiselect, or inverting multiselect)
+- Added the Opentype dropdown dialog's text to inherit the UI label text css settings
+- Confirmed compatibility for WP core 4.8.x
+
 # 0.2.5
 - Hotfix resolving an issue where on-the-fly generation of more than one custom css file would result in faulty custom css files
 - Hotfix to make sure new custom css options added in 0.2.4 will use the default value upon update
