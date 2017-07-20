@@ -279,7 +279,10 @@ define([
                         || font.names.fontFamily
                         ;
         fontFamily = fontFamily.split('-')[0];
-        return fontFamily;
+        fontFamily = typeof this._options.overwrites[fontFamily] === "string" 
+            ? this._options.overwrites[fontFamily] : fontFamily;
+
+        return fontFamily
     };
 
     _p._getOS2FontWeight = function(fontIndex) {
