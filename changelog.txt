@@ -1,3 +1,6 @@
+# 0.2.7
+- Added PHP version check to avoid users running PHP versions lower than 5.6 trying to run Fontsampler
+
 # 0.2.6
 - Fixed an issue preventing the set custom initial size of a Fontsampler to work as intended
 - Fixed "Add or replace" and "Delete" buttons not working in the Fonts & Files tab

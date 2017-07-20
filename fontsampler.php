@@ -11,38 +11,63 @@ Text Domain: fontsampler
 */
 defined( 'ABSPATH' ) or die( 'Access denied.' );
 
-require_once( 'FontsamplerPlugin.php' );
 
-// Convenience subclasses instantiated within the FontsamplerPlugin class
-require_once( 'FontsamplerDatabase.php' );
-require_once( 'FontsamplerFormhandler.php' );
-require_once( 'FontsamplerLayout.php' );
-require_once( 'FontsamplerHelpers.php' );
-require_once( 'FontsamplerPagination.php' );
-require_once( 'FontsamplerMessages.php' );
-require_once( 'FontsamplerNotifications.php' );
+// PHP version check first and foremost
+function displayPhpError() {
+	echo '<section id="fontsampler-admin">';
+	echo '<div class="notice error">Your server is running PHP version ' . PHP_VERSION
+	     . ', <br>Fontsampler requires at least PHP version 5.6 or higher to run.<br><br>'
+		 . 'The <a href="https://wordpress.org/about/requirements/">recommended PHP version '
+		 . 'for Wordpress itself is 7</a> or greater.<br><br>'
+		 . 'While legacy Wordpress support extends to 5.2.4, <strong>Fontsampler requires a minimum '
+		 . 'of PHP 5.6.</strong> Please be in touch with your webserver provider about upgrading or enabling '
+		 . 'a more modern version of PHP.';
+	echo '</section>';
+	exit();
+}
 
-require_once( 'vendor/oyejorge/less.php/lessc.inc.php' );
-require_once( 'vendor/autoload.php' );
+function addMenu() {
+	add_menu_page( 'Fontsampler plugin page', 'Fontsampler', 'manage_options', 'fontsampler', 'displayPhpError', 'dashicons-editor-paragraph' );
+	wp_enqueue_style( 'fontsampler_admin_css', plugin_dir_url( __FILE__ ) . '/admin/css/fontsampler-admin.css', false, '1.0.0' );
+}
 
-$loader = new Twig_Loader_Filesystem( __DIR__ . '/includes' );
-$twig   = new Twig_Environment( $loader );
+if (version_compare(PHP_VERSION, "5.6") < 0) {
+	add_action( 'admin_menu', 'addMenu' );
+} else {
+	// PHP version is good, let's go all bells and whistles...
 
-global $wpdb;
-$f = new FontsamplerPlugin( $wpdb, $twig );
+	require_once( 'FontsamplerPlugin.php' );
 
-// register the shortcode hook
-add_shortcode( 'fontsampler', array( $f, 'fontsampler_shortcode' ) );
+	// Convenience subclasses instantiated within the FontsamplerPlugin class
+	require_once( 'FontsamplerDatabase.php' );
+	require_once( 'FontsamplerFormhandler.php' );
+	require_once( 'FontsamplerLayout.php' );
+	require_once( 'FontsamplerHelpers.php' );
+	require_once( 'FontsamplerPagination.php' );
+	require_once( 'FontsamplerMessages.php' );
+	require_once( 'FontsamplerNotifications.php' );
 
-// backend
-add_action( 'admin_menu', array( $f, 'fontsampler_plugin_setup_menu' ) );
-add_action( 'admin_enqueue_scripts', array( $f, 'fontsampler_admin_enqueues' ) );
-add_action( 'wp_ajax_get_mock_fontsampler', array( $f, 'ajax_get_mock_fontsampler' ) );
-add_filter( 'upload_mimes', array( $f, 'allow_font_upload_types' ) );
-add_filter( 'wp_check_filetype_and_ext', 'common_upload_real_mimes', 10, 4 );
-register_activation_hook( __FILE__, array( $f, 'fontsampler_activate' ) );
-register_uninstall_hook( __FILE__, 'uninstall' );
+	require_once( 'vendor/oyejorge/less.php/lessc.inc.php' );
+	require_once( 'vendor/autoload.php' );
 
+	$loader = new Twig_Loader_Filesystem( __DIR__ . '/includes' );
+	$twig   = new Twig_Environment( $loader );
+
+	global $wpdb;
+	$f = new FontsamplerPlugin( $wpdb, $twig );
+
+	// register the shortcode hook
+	add_shortcode( 'fontsampler', array( $f, 'fontsampler_shortcode' ) );
+
+	// backend
+	add_action( 'admin_menu', array( $f, 'fontsampler_plugin_setup_menu' ) );
+	add_action( 'admin_enqueue_scripts', array( $f, 'fontsampler_admin_enqueues' ) );
+	add_action( 'wp_ajax_get_mock_fontsampler', array( $f, 'ajax_get_mock_fontsampler' ) );
+	add_filter( 'upload_mimes', array( $f, 'allow_font_upload_types' ) );
+	add_filter( 'wp_check_filetype_and_ext', 'common_upload_real_mimes', 10, 4 );
+	register_activation_hook( __FILE__, array( $f, 'fontsampler_activate' ) );
+	register_uninstall_hook( __FILE__, 'uninstall' );
+}
 
 //-------------------------------------------------
 // Fix Upload MIME detection
