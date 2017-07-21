@@ -173,7 +173,7 @@ class FontsamplerHelpers {
 	 * @return bool
 	 */
 	function write_less( $input, $output, $vars, $is_path = true ) {
-		$m = new FontsamplerMessages();
+		$m          = new FontsamplerMessages();
 		$this->less = new Less_Parser( array( 'compress' => true ) );
 		if ( file_exists( $input ) || ! $is_path ) {
 			try {
@@ -324,6 +324,11 @@ class FontsamplerHelpers {
 	}
 
 
+	function hide_changelog() {
+		$plugin = get_plugin_data( realpath( dirname( __FILE__ ) . "/fontsampler.php" ) );
+		$option = update_option( $this->fontsampler::FONTSAMPLER_OPTION_LAST_CHANGELOG, $plugin['Version'] );
+	}
+
 	function extend_twig( $twig ) {
 
 		// mount some helpers to twig
@@ -378,6 +383,18 @@ class FontsamplerHelpers {
 
 		$twig->addFunction( new Twig_SimpleFunction( 'num_notifications', function () {
 			return $this->fontsampler->notifications->get_notifications()['num_notifications'];
+		} ) );
+
+		$twig->addFunction( new Twig_SimpleFunction( 'has_new_changelog', function () {
+			$plugin = get_plugin_data( realpath( dirname( __FILE__ ) . "/fontsampler.php" ) );
+			$option = get_option( $this->fontsampler::FONTSAMPLER_OPTION_LAST_CHANGELOG );
+
+			// if no previous changelog has been marked as viewed, or the previously marked
+			// changelog is smaller than the current fontsampler plugin version, show the changelog
+			if ( false === $option || version_compare( $plugin['Version'], $option) > 0) {
+				return true;
+			}
+			return false;
 		} ) );
 
 		$twig->addFunction( new Twig_SimpleFunction( 'wp_get_attachment_image_src', function ( $id, $option = 'full' ) {

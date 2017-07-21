@@ -1,0 +1,37 @@
+{% extends('layout.twig') %}
+
+{% block content %}
+<h1>Thanks for updating Fontsampler!</h1>
+    <h2>Here is what changed with this latest release:</h2>
+    <ul class="real-list">
+        <li>wefoij</li>
+        <li>wefoijoij</li>
+    </ul>
+    <h2>Feedback, questions, bugs?</h2>
+    <p>In case you have feedback on this plugin or update, found any bugs
+        or encounter any questions, feel free to ask
+        <a href="https://wordpress.org/support/plugin/fontsampler">on the Wordpress support forum</a>
+        or on the <a href="https://github.com/kontur/fontsampler-wordpress-plugin/issues">Github repository page</a>.
+    </p>
+    <p>Before you get in touch, please check the <a href="https://wordpress.org/plugins/fontsampler/#faq">FAQ</a>
+        and <a href="http://fontsampler.johannesneumeier.com/">official website</a> -
+        maybe there already is an answer to your question.
+    </p>
+    <br>
+    <form method="post" action="?page=fontsampler">
+        <input type="hidden" name="action" value="hide_changelog">
+        {{ wp_nonce_field( 'fontsampler-action-hide_changelog' )|raw }}
+        <input type="submit" class="button button-primary" value="Ok, got it"><br><br>
+        <small>And hide this tab until the next update</small>
+    </form>
+    <br>
+    <p>
+        If for some reason you need a previous version of Fontsampler, you can
+        download those as zip files from
+        <a href="https://wordpress.org/plugins/fontsampler/advanced/">the Wordpress plugin registry</a>
+        and manually install them on your server. However, it is highly recommended to keep
+        the plugin up-to-date.
+    </p>
+
+
+{% endblock %}

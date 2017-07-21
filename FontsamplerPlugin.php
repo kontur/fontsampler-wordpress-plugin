@@ -24,6 +24,7 @@ class FontsamplerPlugin {
 	private $forms;
 
 	const FONTSAMPLER_OPTION_DB_VERSION = 'fontsampler_db_version';
+	const FONTSAMPLER_OPTION_LAST_CHANGELOG = 'fontsampler_last_changelog';
 	const FONTSAMPLER_OPTION_HIDE_LEGACY_FORMATS = 'fontsampler_hide_legacy_formats';
 
 	function __construct( $wpdb, $twig ) {
@@ -419,6 +420,9 @@ class FontsamplerPlugin {
 						$this->msg->add_info( 'Settings successfully restored from defaults');
 					}
 					break;
+				case 'hide_changelog':
+					$this->helpers->hide_changelog();
+					break;
 				default:
 					$this->msg->add_notice( 'Form submitted, but no matching action found for ' . $_POST['action'] );
 					break;
@@ -546,6 +550,10 @@ class FontsamplerPlugin {
 
 			case 'settings_reset':
 				echo $this->twig->render( 'settings-reset.twig' );
+				break;
+
+			case 'changelog':
+				echo $this->twig->render( 'changelog.twig' );
 				break;
 
 			case 'about':
