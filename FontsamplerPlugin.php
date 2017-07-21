@@ -295,7 +295,14 @@ class FontsamplerPlugin {
 	 * Add the fontsampler admin menu to the sidebar
 	 */
 	function fontsampler_plugin_setup_menu() {
-		add_menu_page( 'Fontsampler plugin page', 'Fontsampler', 'manage_options', 'fontsampler', array(
+		$numNotifications = $this->notifications->get_notifications()['num_notifications'];
+		$notifications = "";
+		if ($numNotifications > 0) {
+			$notifications = ' <span class="update-plugins count-' . $numNotifications . '">
+				<span class="plugin-count">' . $numNotifications . '</span></span>';
+		}
+
+		add_menu_page( 'Fontsampler plugin page', 'Fontsampler' . $notifications, 'manage_options', 'fontsampler', array(
 			$this,
 			'fontsampler_admin_init',
 		), 'dashicons-editor-paragraph' );
