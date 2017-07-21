@@ -38,10 +38,11 @@ define([
 
         for (var i = 0; i < wrappers.length; i++) {
             var wrapper = wrappers[i],
-                fonts = wrapper.dataset.fonts.split(","),
+                fonts = wrapper.dataset.fonts.indexOf(",") !== 0 ? wrapper.dataset.fonts.split(",") : [ wrapper.dataset.fonts ],
                 initialFont = wrapper.dataset.initialFont,
                 initialFontIndex = fonts.indexOf(initialFont),
-                overwrites = JSON.parse(wrapper.dataset.overwrites);
+                overwrites = wrapper.dataset.overwrites ? JSON.parse(wrapper.dataset.overwrites) : {};
+
 
             // This PubSub instance is the centrally connecting element between
             // all modules. The order in which modules subscribe to PubSub
@@ -58,7 +59,6 @@ define([
                 // All Constructors are given [dom-container, pubsub] as the first two arguments.
                   ['font-lister', FontLister, fontsData]
                 , ['feature-lister', FeatureLister, fontsData]
-                // , ['glyph-table', GlyphTables]
                 , ['font-data', GenericFontData, fontsData]
                 , ['current-font', CurrentWebFont, webFontProvider]
                 , ['type-tester', TypeTester, fontsData]
