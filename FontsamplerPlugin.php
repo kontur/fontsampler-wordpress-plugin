@@ -323,6 +323,17 @@ class FontsamplerPlugin {
 
 
 	/*
+	 * Augment the plugin description links
+	 */
+	function add_action_links ( $links ) {
+		$mylinks = array(
+			'<a href="' . admin_url( 'admin.php?page=fontsampler' ) . '">Settings</a>',
+		);
+		return array_merge( $links, $mylinks );
+	}
+
+
+	/*
 	 * React to the plugin being activated
 	 */
 	function fontsampler_activate() {
