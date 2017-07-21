@@ -40,7 +40,8 @@ define([
             var wrapper = wrappers[i],
                 fonts = wrapper.dataset.fonts.split(","),
                 initialFont = wrapper.dataset.initialFont,
-                initialFontIndex = fonts.indexOf(initialFont);
+                initialFontIndex = fonts.indexOf(initialFont),
+                overwrites = JSON.parse(wrapper.dataset.overwrites);
 
             // This PubSub instance is the centrally connecting element between
             // all modules. The order in which modules subscribe to PubSub
@@ -48,7 +49,7 @@ define([
             // dependant on the state of another module.
             var pubsub = new PubSub()
                 , factories
-                , fontsData = new FontsData(pubsub, {useLaxDetection: true})
+                , fontsData = new FontsData(pubsub, {useLaxDetection: true, overwrites: overwrites })
                 , webFontProvider = new WebFontProvider(window, pubsub, fontsData)
                 ;
 

@@ -193,6 +193,14 @@ class FontsamplerPlugin {
 			// some of these get overwritten from defaults, but list them all here explicitly
 			$options = array_merge( $set, $this->settings_defaults, $this->db->get_settings() );
 			$initialFont = isset( $fonts[ $set['initial_font'] ] ) ? $fonts[ $set['initial_font'] ] : false;
+			if ($initialFont) {
+				$initialFontNameOverwrite = array_pop(array_filter($set['fonts'], function ($item) use ($set) {
+					if ($item['id'] === $set['initial_font']) {
+						return $item;
+					}
+				}))['name'];
+			}
+
 			$settings = $this->db->get_settings();
 			$layout = new FontsamplerLayout();
 			$blocks = $layout->stringToArray( $set['ui_order'], $set );
@@ -207,13 +215,29 @@ class FontsamplerPlugin {
 				}
 			}
 
+			// create an array for fontnames to overwrite
+			$fontNameOverwrites = [];
+			foreach ($set['fonts'] as $font) {
+				foreach ($this->font_formats as $format) {
+					if (!empty($font[$format])) {
+						$fileName = basename($font[$format]);
+						$fontNameOverwrites[$fileName] = $font['name'];
+					}
+				}
+			}
+
 			// buffer output until return
 			ob_start();
+
 			?>
 			<div class='fontsampler-wrapper on-loading'
 			     data-fonts='<?php echo implode( ',', $fonts ); ?>'
 				<?php if ( $initialFont ) : ?>
 					data-initial-font='<?php echo $initialFont; ?>'
+					data-initial-font-name-overwrite='<?php echo $initialFontNameOverwrite; ?>'
+				<?php endif; ?>
+				<?php if (!empty($fontNameOverwrites)): ?>
+					data-overwrites='<?php echo json_encode($fontNameOverwrites); ?>'
 				<?php endif; ?>
 			>
 			<?php
@@ -582,7 +606,8 @@ class FontsamplerPlugin {
 
 			<div class='fontsampler-wrapper on-loading'
 			     data-fonts='<?php echo $font; ?>'
-				 data-initial-font='<?php echo $font; ?>'>
+				 data-initial-font='<?php echo $font; ?>'
+			 >
 				 <?php include( 'includes/interface.php' ); ?>
 			</div>
 				<?php

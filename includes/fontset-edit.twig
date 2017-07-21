@@ -9,8 +9,7 @@
 	<input type="hidden" name="id" value="{% if font.id is empty %}0{% else %}{{ font.id }}{% endif %}">
 
 	<h2>Font name</h2>
-	<p>Supply this mostly to make it able for you to tell different fonts apart for when you pick them
-		into a font sampler. (e.g. "MyFont Regular Italic")</p>
+	<p>This is the font name shown in any dropdowns or font name elements (e.g. "MyFont Regular Italic")</p>
 
 	{{  include('fontset-fonts.twig', { font: font }) }}
 

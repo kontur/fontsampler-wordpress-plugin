@@ -131,7 +131,10 @@ define(['jquery', 'rangeslider', 'selectric'], function ($) {
         // for fontsamplers that only have one font but display the fontpicker label,
         // insert the font family name that opentype.js loaded into the label
         $wrapper.find(".fontsampler-font-label").each(function () {
-            $(this).children('label').html($wrapper.data('initial-font-name'))
+            var name = $wrapper.data('initial-font-name-overwrite')
+                        ? $wrapper.data('initial-font-name-overwrite')
+                        : $wrapper.data('initial-font-name');
+            $(this).children('label').html(name)
         });
     }
 
