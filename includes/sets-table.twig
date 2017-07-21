@@ -1,16 +1,14 @@
 <table>
     <thead>
     <tr>
-        <th>Fonts<br>
+        <th>Fonts preview<br>
             <small>List one or more font sets used in this sampler</small>
-        </th>
-        <th>Preview<br>
-            <small>Font without interface options; Note that this display uses the supplied formats.</small>
         </th>
         <th>Shortcode<br>
             <small>Copy this code including brackets and insert them where you want to render the font sampler
             </small>
         </th>
+        <th>Settings options</th>
         <th>Edit</th>
         <th>Delete</th>
     </tr>
@@ -22,17 +20,10 @@
                 <ul>
                     {% for font in set.fonts %}
                         <li>
-                            <a href="?page=fontsampler&amp;subpage=font_edit&amp;id={{ font.id }}">{{ font.name }}</a>
-                        </li>
-                    {% endfor %}
-                </ul>
-            </td>
-            <td>
-                <ul>
-                    {% for font in set.fonts %}
-                        <li>
-                            <div class="fontsampler-preview"
+                            <a class="fontsampler-list-font-link" href="?page=fontsampler&amp;subpage=font_edit&amp;id={{ font.id }}">
+                                <div class="fontsampler-preview"
                                  data-font-files='{{ fontfiles_json(font) }}'>{{ font.name }}</div>
+                            </a>
                         </li>
                     {% endfor %}
                 </ul>
@@ -45,6 +36,15 @@
                             data-clipboard-target="#fontsampler-copy-clipboard-target-{{ set.id }}"
                     >Copy</button>
                 </div>
+            </td>
+            <td>
+                <small>
+                {% if set.use_defaults == "1" %}
+                    defaults
+                {% else %}
+                    custom
+                {% endif %}
+                </small>
             </td>
             <td>
                 <form method="post" action="?page=fontsampler&amp;subpage=set_edit&amp;id={{ set.id }}"

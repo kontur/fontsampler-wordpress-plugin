@@ -1182,3 +1182,6 @@
 #fontsampler-admin fieldset.fontsampler-fix-default-settings .submit {
   margin: 0;
 }
+#fontsampler-admin .fontsampler-list-font-link {
+  cursor: pointer;
+}
