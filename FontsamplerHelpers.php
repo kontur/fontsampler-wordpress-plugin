@@ -191,8 +191,8 @@ class FontsamplerHelpers {
 			}
 
 			// concat the base styles and the replaced template into the default css file
-			if ( false === $this->check_is_writeable( $output ) ) {
-				$m->error( 'Error: Permission to write to ' . $output . ' denied. Failed to update styles' );
+			if ( false === $this->check_is_writeable( dirname($output) ) ) {
+				$m->error( 'Error: Permission to write to ' . ($output) . ' denied. Failed to update styles' );
 
 				return false;
 			}
