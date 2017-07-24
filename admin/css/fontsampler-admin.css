@@ -917,7 +917,16 @@
 }
 #fontsampler-admin p {
   font-size: inherit;
-  max-width: 40em;
+  max-width: 60em;
+}
+#fontsampler-admin aside {
+  font-size: smaller;
+  font-weight: normal;
+  color: #AAA;
+  max-width: 60em;
+}
+#fontsampler-admin .text-box {
+  max-width: 60em;
 }
 #fontsampler-admin h1,
 #fontsampler-admin h2,
