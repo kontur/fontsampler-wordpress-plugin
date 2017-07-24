@@ -340,6 +340,7 @@ class FontsamplerPlugin {
 	 */
 	function fontsampler_activate() {
 		$this->db->check_and_create_tables();
+		$this->helpers->check_and_create_folders();
 	}
 
 	/*

@@ -249,8 +249,15 @@ class FontsamplerHelpers {
 	}
 
 
+	/**
+	 * Make sure the passed in handle is writeable
+	 *
+	 * @param $handle
+	 *
+	 * @return bool
+	 */
 	function check_is_writeable( $handle ) {
-		if ( ( is_dir( $handle ) || is_file( $handle ) ) && false === is_writeable( $handle ) ) {
+		if ( !( is_dir( $handle ) || is_file( $handle ) ) && false === is_writeable( $handle ) ) {
 			return false;
 		}
 
@@ -304,6 +311,19 @@ class FontsamplerHelpers {
 		}
 
 		return sizeof( $fontsFiltered ) > 0 ? $fontsFiltered : false;
+	}
+
+
+	/**
+	 * @return bool - true if folder exists or has successfully been created
+	 */
+	function check_and_create_folders() {
+		$customCssDir = plugin_dir_path( __FILE__ ) . 'css/custom';
+		$exists = is_dir( $customCssDir );
+		if ( ! $exists ) {
+			$exists = mkdir( $customCssDir );
+		}
+		return $exists;
 	}
 
 
@@ -391,9 +411,10 @@ class FontsamplerHelpers {
 
 			// if no previous changelog has been marked as viewed, or the previously marked
 			// changelog is smaller than the current fontsampler plugin version, show the changelog
-			if ( false === $option || version_compare( $plugin['Version'], $option) > 0) {
+			if ( false === $option || version_compare( $plugin['Version'], $option ) > 0 ) {
 				return true;
 			}
+
 			return false;
 		} ) );
 

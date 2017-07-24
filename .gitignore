@@ -1,5 +1,4 @@
 
-css/custom/*
 css/fontsampler-interface.css
 
 admin/css/*
@@ -7,8 +6,6 @@ admin/css/*
 !admin/css/fontsampler-admin.css
 
 bower_components
-bower.json
-package.json
 node_modules
 
 README.md
