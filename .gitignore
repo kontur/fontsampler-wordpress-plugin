@@ -1,5 +1,6 @@
 
 css/fontsampler-interface.css
+css/custom/*.css
 
 admin/css/*
 !admin/css/*.less
