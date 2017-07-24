@@ -17,11 +17,11 @@ function displayPhpError() {
 	echo '<section id="fontsampler-admin">';
 	echo '<div class="notice error">Your server is running PHP version ' . PHP_VERSION
 	     . ', <br>Fontsampler requires at least PHP version 5.6 or higher to run.<br><br>'
-		 . 'The <a href="https://wordpress.org/about/requirements/">recommended PHP version '
-		 . 'for Wordpress itself is 7</a> or greater.<br><br>'
-		 . 'While legacy Wordpress support extends to 5.2.4, <strong>Fontsampler requires a minimum '
-		 . 'of PHP 5.6.</strong> Please be in touch with your webserver provider about upgrading or enabling '
-		 . 'a more modern version of PHP.';
+	     . 'The <a href="https://wordpress.org/about/requirements/">recommended PHP version '
+	     . 'for Wordpress itself is 7</a> or greater.<br><br>'
+	     . 'While legacy Wordpress support extends to 5.2.4, <strong>Fontsampler requires a minimum '
+	     . 'of PHP 5.6.</strong> Please be in touch with your webserver provider about upgrading or enabling '
+	     . 'a more modern version of PHP.';
 	echo '</section>';
 	exit();
 }
@@ -31,7 +31,7 @@ function addMenu() {
 	wp_enqueue_style( 'fontsampler_admin_css', plugin_dir_url( __FILE__ ) . '/admin/css/fontsampler-admin.css', false, '1.0.0' );
 }
 
-if (version_compare(PHP_VERSION, "5.6") < 0) {
+if ( version_compare( PHP_VERSION, "5.6" ) < 0 ) {
 	add_action( 'admin_menu', 'addMenu' );
 } else {
 	// PHP version is good, let's go all bells and whistles...
@@ -65,7 +65,7 @@ if (version_compare(PHP_VERSION, "5.6") < 0) {
 	add_action( 'wp_ajax_get_mock_fontsampler', array( $f, 'ajax_get_mock_fontsampler' ) );
 	add_filter( 'upload_mimes', array( $f, 'allow_font_upload_types' ) );
 	add_filter( 'wp_check_filetype_and_ext', 'common_upload_real_mimes', 10, 4 );
-	add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), array( $f, 'add_action_links' ) );
+	add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $f, 'add_action_links' ) );
 	register_activation_hook( __FILE__, array( $f, 'fontsampler_activate' ) );
 	register_uninstall_hook( __FILE__, 'uninstall' );
 }
@@ -122,6 +122,10 @@ function uninstall() {
 	}
 
 	if ( get_option( 'fontsampler_hide_legacy_formats' ) ) {
-		delete_options( 'fontsampler_hide_legacy_formats' );
+		delete_option( 'fontsampler_hide_legacy_formats' );
+	}
+
+	if ( get_option( 'fontsampler_last_changelog' ) ) {
+		delete_option( 'fontsampler_last_changelog' );
 	}
 }
