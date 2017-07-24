@@ -82,7 +82,7 @@ class FontsamplerPlugin {
 		);
 		// note: font_formats order matters: most preferred to least preferred
 		// note: so far no feature detection and no fallbacks, so woff2 last until fixed
-		$this->font_formats        = array( 'woff', 'ttf', 'eot', 'woff2' );
+		$this->font_formats        = array( 'woff', 'ttf', 'eot');//, 'woff2' );
 		$this->font_formats_legacy = array( 'eot', 'ttf' );
 
 		$this->settings_defaults = array(
