@@ -410,7 +410,7 @@ class FontsamplerHelpers {
 
 		$twig->addFunction( new Twig_SimpleFunction( 'has_new_changelog', function () {
 			$plugin = get_plugin_data( realpath( dirname( __FILE__ ) . "/fontsampler.php" ) );
-			$option = get_option( $this->fontsampler::FONTSAMPLER_OPTION_LAST_CHANGELOG );
+			$option = get_option( 'fontsampler_last_changelog' );
 
 			// if no previous changelog has been marked as viewed, or the previously marked
 			// changelog is smaller than the current fontsampler plugin version, show the changelog

@@ -109,7 +109,7 @@ to only use limited charset and feature demo web font files.
 
 == Changelog ==
 
-= 0.3.1 =
+= 0.3.1 & 0.3.2 =
 * Hotfix to prevent buggy PHP 5.6 T_PAAMAYIM_NEKUDOTAYIM (::) error
 
 = 0.3.0 =
