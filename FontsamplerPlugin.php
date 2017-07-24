@@ -195,11 +195,12 @@ class FontsamplerPlugin {
 			$options = array_merge( $set, $this->settings_defaults, $this->db->get_settings() );
 			$initialFont = isset( $fonts[ $set['initial_font'] ] ) ? $fonts[ $set['initial_font'] ] : false;
 			if ($initialFont) {
-				$initialFontNameOverwrite = array_pop(array_filter($set['fonts'], function ($item) use ($set) {
+				$firstFont = array_filter($set['fonts'], function ($item) use ($set) {
 					if ($item['id'] === $set['initial_font']) {
 						return $item;
 					}
-				}))['name'];
+				});
+				$initialFontNameOverwrite = array_pop($firstFont)['name'];
 			}
 
 			$settings = $this->db->get_settings();
