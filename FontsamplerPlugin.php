@@ -24,7 +24,7 @@ class FontsamplerPlugin {
 	private $forms;
 
 	const FONTSAMPLER_OPTION_DB_VERSION = 'fontsampler_db_version';
-	const FONTSAMPLER_OPTION_LAST_CHANGELOG = 'fontsampler_last_changelog';
+	const FONTSAMPLER_OPTION_LAST_CHANGELOG = 'fontsampler_last_changelog'; // note, hardcoded also in FontsamplerHelpers.php:351 due to bug
 	const FONTSAMPLER_OPTION_HIDE_LEGACY_FORMATS = 'fontsampler_hide_legacy_formats';
 
 	function __construct( $wpdb, $twig ) {
