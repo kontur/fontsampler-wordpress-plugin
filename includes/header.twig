@@ -1,4 +1,9 @@
 <ul>
+	{% if has_new_changelog() %}
+	<li {{ is_current('changelog') }}>
+		<a class="latest-changes" href="?page=fontsampler&amp;subpage=changelog">Latest changes</a>
+	</li>
+	{% endif %}
 	<li {{ is_current('index,set_edit,set_delete,set_create') }}>
 		<a href="?page=fontsampler">Fontsamplers</a>
 	</li>

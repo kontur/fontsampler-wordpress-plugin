@@ -1,3 +1,17 @@
+# 0.3.0
+- Added a "What's new" tab that is shown after an updated, informing users of recent changes
+- Changed the default behaviour regarding font names. Font names in Fontsamplers will be shown as stored in the admin area, instead of being extracted from the PostScript names in the files themselves
+- Adding a new font file in the admin area will automatically extract the PostScript font name from the file, but let's users store any arbitrary font name when creating the font set
+- Adding a new font file in the admin area will immediately render a preview of the font
+- Added PHP version check to avoid users running PHP versions lower than 5.6 trying to run Fontsampler
+- Fixed permissions check and creation of custom css files for storing Fontsampler custom css settings
+- Added the notifications highlight number also to the Fontsampler sidebar menu to attract attention to potential issues when browsing anywhere in the admin area
+- Changed the display of Fontsamplers in the admin area: The font name is directly rendered in the font, additionally there is a flag showing if a Fontsampler uses custom or default options
+- Updated Opentype.js dependency to fix a Safari specific bug that would fail to detect several different distinct styles of one font family
+- Fixed an issue with the uninstall script that would prevent Fontsampler from being fully uninstalled in some circumstances
+- Temporarily removed Woff2 until the Opentype.js implementation is fully working; any already uploaded and stored woff2 files will still be there once this feature is ready for prime time in an upcoming release
+- Fontsampler is now officially brought to you as an Open Source initiative of Underscore Type - same developer, different name ;)
+
 # 0.2.6
 - Fixed an issue preventing the set custom initial size of a Fontsampler to work as intended
 - Fixed "Add or replace" and "Delete" buttons not working in the Fonts & Files tab

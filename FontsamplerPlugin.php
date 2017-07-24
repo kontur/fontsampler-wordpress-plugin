@@ -24,6 +24,7 @@ class FontsamplerPlugin {
 	private $forms;
 
 	const FONTSAMPLER_OPTION_DB_VERSION = 'fontsampler_db_version';
+	const FONTSAMPLER_OPTION_LAST_CHANGELOG = 'fontsampler_last_changelog';
 	const FONTSAMPLER_OPTION_HIDE_LEGACY_FORMATS = 'fontsampler_hide_legacy_formats';
 
 	function __construct( $wpdb, $twig ) {
@@ -81,7 +82,7 @@ class FontsamplerPlugin {
 		);
 		// note: font_formats order matters: most preferred to least preferred
 		// note: so far no feature detection and no fallbacks, so woff2 last until fixed
-		$this->font_formats        = array( 'woff', 'ttf', 'eot', 'woff2' );
+		$this->font_formats        = array( 'woff', 'ttf', 'eot');//, 'woff2' );
 		$this->font_formats_legacy = array( 'eot', 'ttf' );
 
 		$this->settings_defaults = array(
@@ -193,6 +194,15 @@ class FontsamplerPlugin {
 			// some of these get overwritten from defaults, but list them all here explicitly
 			$options = array_merge( $set, $this->settings_defaults, $this->db->get_settings() );
 			$initialFont = isset( $fonts[ $set['initial_font'] ] ) ? $fonts[ $set['initial_font'] ] : false;
+			if ($initialFont) {
+				$firstFont = array_filter($set['fonts'], function ($item) use ($set) {
+					if ($item['id'] === $set['initial_font']) {
+						return $item;
+					}
+				});
+				$initialFontNameOverwrite = array_pop($firstFont)['name'];
+			}
+
 			$settings = $this->db->get_settings();
 			$layout = new FontsamplerLayout();
 			$blocks = $layout->stringToArray( $set['ui_order'], $set );
@@ -207,13 +217,29 @@ class FontsamplerPlugin {
 				}
 			}
 
+			// create an array for fontnames to overwrite
+			$fontNameOverwrites = [];
+			foreach ($set['fonts'] as $font) {
+				foreach ($this->font_formats as $format) {
+					if (!empty($font[$format])) {
+						$fileName = basename($font[$format]);
+						$fontNameOverwrites[$fileName] = $font['name'];
+					}
+				}
+			}
+
 			// buffer output until return
 			ob_start();
+
 			?>
 			<div class='fontsampler-wrapper on-loading'
 			     data-fonts='<?php echo implode( ',', $fonts ); ?>'
 				<?php if ( $initialFont ) : ?>
 					data-initial-font='<?php echo $initialFont; ?>'
+					data-initial-font-name-overwrite='<?php echo $initialFontNameOverwrite; ?>'
+				<?php endif; ?>
+				<?php if (!empty($fontNameOverwrites)): ?>
+					data-overwrites='<?php echo json_encode($fontNameOverwrites); ?>'
 				<?php endif; ?>
 			>
 			<?php
@@ -271,7 +297,14 @@ class FontsamplerPlugin {
 	 * Add the fontsampler admin menu to the sidebar
 	 */
 	function fontsampler_plugin_setup_menu() {
-		add_menu_page( 'Fontsampler plugin page', 'Fontsampler', 'manage_options', 'fontsampler', array(
+		$numNotifications = $this->notifications->get_notifications()['num_notifications'];
+		$notifications = "";
+		if ($numNotifications > 0) {
+			$notifications = ' <span class="update-plugins count-' . $numNotifications . '">
+				<span class="plugin-count">' . $numNotifications . '</span></span>';
+		}
+
+		add_menu_page( 'Fontsampler plugin page', 'Fontsampler' . $notifications, 'manage_options', 'fontsampler', array(
 			$this,
 			'fontsampler_admin_init',
 		), 'dashicons-editor-paragraph' );
@@ -292,10 +325,22 @@ class FontsamplerPlugin {
 
 
 	/*
+	 * Augment the plugin description links
+	 */
+	function add_action_links ( $links ) {
+		$mylinks = array(
+			'<a href="' . admin_url( 'admin.php?page=fontsampler' ) . '">Settings</a>',
+		);
+		return array_merge( $links, $mylinks );
+	}
+
+
+	/*
 	 * React to the plugin being activated
 	 */
 	function fontsampler_activate() {
 		$this->db->check_and_create_tables();
+		$this->helpers->check_and_create_folders();
 	}
 
 	/*
@@ -376,6 +421,9 @@ class FontsamplerPlugin {
 					if ($this->db->fix_settings_from_defaults()) {
 						$this->msg->add_info( 'Settings successfully restored from defaults');
 					}
+					break;
+				case 'hide_changelog':
+					$this->helpers->hide_changelog();
 					break;
 				default:
 					$this->msg->add_notice( 'Form submitted, but no matching action found for ' . $_POST['action'] );
@@ -506,6 +554,10 @@ class FontsamplerPlugin {
 				echo $this->twig->render( 'settings-reset.twig' );
 				break;
 
+			case 'changelog':
+				echo $this->twig->render( 'changelog.twig' );
+				break;
+
 			case 'about':
 				echo $this->twig->render( 'about.twig' );
 				break;
@@ -582,7 +634,8 @@ class FontsamplerPlugin {
 
 			<div class='fontsampler-wrapper on-loading'
 			     data-fonts='<?php echo $font; ?>'
-				 data-initial-font='<?php echo $font; ?>'>
+				 data-initial-font='<?php echo $font; ?>'
+			 >
 				 <?php include( 'includes/interface.php' ); ?>
 			</div>
 				<?php

@@ -60,10 +60,11 @@ define([
         for(i=0,l=fonts.length;i<l;i++) {
             fontIndex = fonts[i];
             option = this._selectContainer.ownerDocument.createElement('option');
-            option.textContent = [
-                        this._fontsData.getFamilyName(fontIndex)
-                      , this._fontsData.getStyleName(fontIndex)
-                      ].join(' ');
+            // option.textContent = [
+            //             this._fontsData.getFamilyName(fontIndex)
+            //           , this._fontsData.getStyleName(fontIndex)
+            //           ].join(' ');
+            option.textContent = this._fontsData.getFullName(fontIndex)
 
             option.value = fontIndex;
             this._elements.push(option);

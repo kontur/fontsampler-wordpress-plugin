@@ -765,6 +765,10 @@
   border-bottom: 0;
   color: #fff;
 }
+#fontsampler-admin #fontsampler-menu ul li a.latest-changes {
+  background: #E5604E !important;
+  color: #FFFFFF !important;
+}
 #fontsampler-admin #fontsampler-menu ul li.current a {
   background: #008EC2;
   border-bottom: 0;
@@ -913,7 +917,16 @@
 }
 #fontsampler-admin p {
   font-size: inherit;
-  max-width: 40em;
+  max-width: 60em;
+}
+#fontsampler-admin aside {
+  font-size: smaller;
+  font-weight: normal;
+  color: #AAA;
+  max-width: 60em;
+}
+#fontsampler-admin .text-box {
+  max-width: 60em;
 }
 #fontsampler-admin h1,
 #fontsampler-admin h2,
@@ -1181,4 +1194,7 @@
 }
 #fontsampler-admin fieldset.fontsampler-fix-default-settings .submit {
   margin: 0;
+}
+#fontsampler-admin .fontsampler-list-font-link {
+  cursor: pointer;
 }

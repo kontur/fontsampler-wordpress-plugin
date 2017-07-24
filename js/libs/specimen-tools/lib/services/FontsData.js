@@ -279,8 +279,28 @@ define([
                         || font.names.fontFamily
                         ;
         fontFamily = fontFamily.split('-')[0];
-        return fontFamily;
+
+        return fontFamily
     };
+
+    _p._getFullName = function (fontIndex) {
+        var font = this._data[fontIndex].font
+          , fullName = ""
+          , fileName = this.getFileName(fontIndex)
+          ;
+
+        fullName = [this.getFamilyName(fontIndex), this.getStyleName(fontIndex)].join(" ");
+
+        if (fileName.indexOf("/") !== -1) {
+            fileName = fileName.substring(fileName.lastIndexOf("/") + 1);
+        }
+        
+        if (typeof this._options.overwrites === "object" && typeof this._options.overwrites[fileName] === "string") {
+            fullName = this._options.overwrites[fileName];
+        }
+
+        return fullName;
+    }
 
     _p._getOS2FontWeight = function(fontIndex) {
         var font = this._data[fontIndex].font;

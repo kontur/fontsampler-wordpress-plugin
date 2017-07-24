@@ -18,9 +18,10 @@ define(['jquery'], function ($) {
             var frame,
                 addButton = $wrapper.find('.fontsampler-upload-font'),
                 delButton = $wrapper.find('.fontsampler-remove-font'),
-                nameContainer = $wrapper.find('.fontsampler-font-container .filename'),
                 idInput = $wrapper.find('.fontsampler-font-id'),
                 preview = $wrapper.find('.fontsampler-font-upload-preview'),
+                // this one is outside the row wrapper
+                nameContainer = $(".fontsampler-font-set").find('input[name="fontname[]"]'),
                 tools = specimentools;
 
             init();
@@ -51,11 +52,9 @@ define(['jquery'], function ($) {
                 });
 
                 // When an image is selected in the media frame...
-                frame.on('select', function () {
+                frame.on('select', (function () {
                     // Get media attachment details from the frame state
                     var attachment = frame.state().get('selection').first().toJSON();
-
-                    console.log(attachment);
 
                     nameContainer.html(attachment.url);//append('<img src="' + attachment.url + '" alt="" />');
                     idInput.val(attachment.id);
@@ -63,12 +62,19 @@ define(['jquery'], function ($) {
 
                     var file = attachment.filename;
                     var format = file.substr(file.lastIndexOf(".") + 1, file.length);
-                    var json = "{'" + format + "': '" + attachment.url + "'}";
 
-                    preview.html('<div data-font-files="' + json +'" class="fontsampler-wrapper">Preview</div>');
-                    specimentools(window);
+                    preview.html('<div data-fonts="' + attachment.url +'" data-initial-font="' + attachment.url + '" ' +
+                        'class="fontsampler-wrapper">' +
+                        '<div class="type-tester"><div class="fontsampler-interface">' +
+                        '   <div autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"' +
+                            'class="current-font type-tester__content">Preview</div></div></div></div>');
 
-                });
+                    specimentools(window, (function () {
+                        console.log("CALLBACK", $(".fontsampler-wrapper").data("initial-font-name"), nameContainer);
+                        nameContainer.val($(".fontsampler-wrapper").data("initial-font-name"))
+                    }).bind(this));
+
+                }).bind(this));
 
                 // Finally, open the modal on click
                 frame.open();

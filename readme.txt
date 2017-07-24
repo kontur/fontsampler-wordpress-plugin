@@ -3,8 +3,8 @@ Contributors: kontur
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LSK5YQHHCGGYS
 Tags: fonts, typeface, preview, shortcode
 Requires at least: 4.0
-Tested up to: 4.8.0
-Stable tag: 0.2.6
+Tested up to: 4.8.1
+Stable tag: 0.3.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -34,7 +34,7 @@ Features include:
 * Supports (soon: woff2,) woff, eot and ttf files
 * Unlimited Fontsamplers per page
 * Customizable interface layout
-* Customizable interface styling (colors)
+* Customizable interface styling
 
 == Installation ==
 
@@ -44,9 +44,18 @@ Features include:
 
 == Frequently Asked Questions ==
 
+= Is the Fontsampler plugin free? =
+
+Absolutely. Fontsampler is free to use Open Source software developed by Johannes Neumeier of
+[Underscore Type](https://underscoretype.com). You can use it for personal as well as commercial websites.
+A big portion of the initial development has been funded via an IndieGoGo campaign (see the About tab in the plugin)
+and you can support development by donating to the plugin development (there is
+[a link in the plugin page sidebar](https://wordpress.org/plugins/fontsampler/)).
+
 = Can I control which user interface elements are visible? =
 
-Absolutely. You can enable and arrange each interface element for every Fontsampler. You can even style the color theme for each Fontsampler.
+Absolutely. You can enable and arrange each interface element for every Fontsampler. You can set custom styles and options
+for all Fontsamplers on your site, or customize them for each Fontsampler individually.
 
 = Do I have to configure each Fontsampler if I have several? =
 
@@ -63,7 +72,7 @@ Note that Wordpress might not by default accept those file types and you might h
 = Does the plugin support displaying non-latin fonts? =
 
 Absolutely. Right to left scripts are equally supported and improvements to the admin area for Wordpress installations with
-right to left scripts are on the development roadmap.
+right to left scripts are on the development roadmap. You can display your fonts' names in any script you wish to.
 
 = How can I integrate the plugin with my e-commerce solution? =
 
@@ -76,6 +85,19 @@ to a specimen (web link or pdf) as well as a purchase link, for example to an ex
 That is possible, you only need to activate the corresponding user interface element and Fontsampler will automatically
 detect all available OpenType features from the provided webfont files.
 
+= Are there any specific requirements for using Fontsampler? =
+
+Fontsampler works with PHP 5.6 or higher, but PHP 7 is recommended. It is free software and does not require any license
+other than the open source licenses shipped with it.
+
+= Are my web fonts secure when displaying them with Fontsampler? =
+
+Fontsampler uses web font technology to render and display fonts. These font formats are designed for usability, not security.
+And as such, the web font files are loaded onto the users machines just like they would on any other website that uses web fonts.
+Fontsampler makes no attempt at scrambling or obfuscating the web fonts served. Tech savy users can download those web fonts
+and reverse engineer them into working Opentype files. If you are concerned about your intellectual property it is recommended
+to only use limited charset and feature demo web font files.
+
 == Screenshots ==
 
 1. The Fontsampler plugin comes with plenty of customizable options to tweak the appearance and interface of your webfont previews
@@ -86,6 +108,21 @@ detect all available OpenType features from the provided webfont files.
 6. This is how you include a Fontsampler in a page or post: Simply add the shortcode for the created Fontsampler to your text
 
 == Changelog ==
+
+= 0.3.0 =
+* Added a "What's new" tab that is shown after an updated, informing users of recent changes
+* Changed the default behaviour regarding font names. Font names in Fontsamplers will be shown as stored in the admin area, instead of being extracted from the PostScript names in the files themselves
+* Adding a new font file in the admin area will automatically extract the PostScript font name from the file, but let's users store any arbitrary font name when creating the font set
+* Adding a new font file in the admin area will immediately render a preview of the font
+* Added PHP version check to avoid users running PHP versions lower than 5.6 trying to run Fontsampler
+* Fixed permissions check and creation of custom css files for storing Fontsampler custom css settings
+* Added the notifications highlight number also to the Fontsampler sidebar menu to attract attention to potential issues when browsing anywhere in the admin area
+* Changed the display of Fontsamplers in the admin area: The font name is directly rendered in the font, additionally there is a flag showing if a Fontsampler uses custom or default options
+* Updated Opentype.js dependency to fix a Safari specific bug that would fail to detect several different distinct styles of one font family
+* Fixed an issue with the uninstall script that would prevent Fontsampler from being fully uninstalled in some circumstances
+* Temporarily removed Woff2 until the Opentype.js implementation is fully working; any already uploaded and stored woff2 files will still be there once this feature is ready for prime time in an upcoming release
+* Fontsampler is now officially brought to you as an Open Source initiative of Underscore Type - same developer, different name ;)
+
 
 = 0.2.6 =
 * Fixed an issue preventing the set custom initial size of a Fontsampler to work as intended
