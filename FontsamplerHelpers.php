@@ -257,11 +257,11 @@ class FontsamplerHelpers {
 	 * @return bool
 	 */
 	function check_is_writeable( $handle ) {
-		if ( ! ( is_dir( $handle ) || is_file( $handle ) ) && false === is_writeable( $handle ) ) {
-			return false;
+		if ( ( is_dir( $handle ) || is_file( $handle ) ) && true === is_writeable( $handle ) ) {
+			return true;
 		}
 
-		return true;
+		return false;
 	}
 
 
