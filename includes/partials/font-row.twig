@@ -3,7 +3,7 @@
     <option value="0">-pick from existing-</option>
     {#for each dropdown loop print out all fonts and if the current font is in the set, select it#}
     {% for font in fonts %}
-        <option {% if setfont in fonts and setfont.id == font.id %} selected="selected" {% endif %}
+        <option {% if setfont.id == font.id %} selected="selected" {% endif %}
                 value="{{ font.id }}">{{ font.name }}
         </option>
     {% endfor %}
