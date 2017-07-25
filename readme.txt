@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: fonts, typeface, preview, shortcode
 Requires at least: 4.0
 Tested up to: 4.8.1
-Stable tag: 0.3.0
+Stable tag: 0.3.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -108,6 +108,10 @@ to only use limited charset and feature demo web font files.
 6. This is how you include a Fontsampler in a page or post: Simply add the shortcode for the created Fontsampler to your text
 
 == Changelog ==
+
+= 0.3.1, 0.3.2, 0.3.3 =
+* Hotfix to prevent buggy PHP 5.6 T_PAAMAYIM_NEKUDOTAYIM (::) error
+* Hotfix to prevent directory permissions check to detect a false positive
 
 = 0.3.0 =
 * Added a "What's new" tab that is shown after an updated, informing users of recent changes

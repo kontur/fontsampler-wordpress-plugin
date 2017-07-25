@@ -191,8 +191,8 @@ class FontsamplerHelpers {
 			}
 
 			// concat the base styles and the replaced template into the default css file
-			if ( false === $this->check_is_writeable( $output ) ) {
-				$m->error( 'Error: Permission to write to ' . $output . ' denied. Failed to update styles' );
+			if ( false === $this->check_is_writeable( dirname($output) ) ) {
+				$m->error( 'Error: Permission to write to ' . ($output) . ' denied. Failed to update styles' );
 
 				return false;
 			}
@@ -257,7 +257,7 @@ class FontsamplerHelpers {
 	 * @return bool
 	 */
 	function check_is_writeable( $handle ) {
-		if ( !( is_dir( $handle ) || is_file( $handle ) ) && false === is_writeable( $handle ) ) {
+		if ( ! ( is_dir( $handle ) || is_file( $handle ) ) && false === is_writeable( $handle ) ) {
 			return false;
 		}
 
@@ -319,10 +319,11 @@ class FontsamplerHelpers {
 	 */
 	function check_and_create_folders() {
 		$customCssDir = plugin_dir_path( __FILE__ ) . 'css/custom';
-		$exists = is_dir( $customCssDir );
+		$exists       = is_dir( $customCssDir );
 		if ( ! $exists ) {
 			$exists = mkdir( $customCssDir );
 		}
+
 		return $exists;
 	}
 
@@ -346,7 +347,9 @@ class FontsamplerHelpers {
 
 	function hide_changelog() {
 		$plugin = get_plugin_data( realpath( dirname( __FILE__ ) . "/fontsampler.php" ) );
-		$option = update_option( $this->fontsampler::FONTSAMPLER_OPTION_LAST_CHANGELOG, $plugin['Version'] );
+		// this throws obscure error on PHP 5.6
+		//$option = update_option( $this->fontsampler::FONTSAMPLER_OPTION_LAST_CHANGELOG, $plugin['Version'] );
+		$option = update_option( 'fontsampler_last_changelog', $plugin['Version'] );
 	}
 
 	function extend_twig( $twig ) {
@@ -407,7 +410,7 @@ class FontsamplerHelpers {
 
 		$twig->addFunction( new Twig_SimpleFunction( 'has_new_changelog', function () {
 			$plugin = get_plugin_data( realpath( dirname( __FILE__ ) . "/fontsampler.php" ) );
-			$option = get_option( $this->fontsampler::FONTSAMPLER_OPTION_LAST_CHANGELOG );
+			$option = get_option( 'fontsampler_last_changelog' );
 
 			// if no previous changelog has been marked as viewed, or the previously marked
 			// changelog is smaller than the current fontsampler plugin version, show the changelog

@@ -1,3 +1,8 @@
+# 0.3.1, 0.3.2, 0.3.3, 0.3.4
+- Hotfix to prevent buggy PHP 5.6 T_PAAMAYIM_NEKUDOTAYIM (::) error
+- Hotfix to prevent directory permissions check to detect a false positive
+- Hotfix to make admin area Fontsamlpler dropdowns correctly select picked fonts
+
 # 0.3.0
 - Added a "What's new" tab that is shown after an updated, informing users of recent changes
 - Changed the default behaviour regarding font names. Font names in Fontsamplers will be shown as stored in the admin area, instead of being extracted from the PostScript names in the files themselves
