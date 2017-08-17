@@ -1,7 +1,7 @@
 <div class="fontsampler-font-set">
     <label><h2>Font name (mandatory)</h2>
         <input name="fontname[]" type="text" data-validation="length" data-validation-length="3-50"
-                {% if font.name is empty %} placeholder="e.g. MyFont Regular Italic" class="fontsampler-font-set-fontname fontsampler-input-warning"
+                {% if font.name is empty %} placeholder="(Default: Extracted from file)" class="fontsampler-font-set-fontname fontsampler-input-warning"
         {% else %} value="{{ font.name }}"
                 {% endif %}>
     </label>

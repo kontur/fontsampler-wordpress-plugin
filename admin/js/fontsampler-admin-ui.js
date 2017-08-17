@@ -93,6 +93,9 @@ define(['jquery', 'rangeslider', 'selectric', 'validate', 'clipboard'], function
             var $clone = $("#fontsampler-fontset-inline-placeholder").clone().removeAttr("id"),
                 $fontsList = $("#fontsampler-fontset-list");
 
+            // clear any font name from previous row
+            $clone.find("input[name='fontname[]']").val("")
+
             $fontsList.append($clone);
             updateInlineFontIndexes();
             updateFontsOrder();
