@@ -3,8 +3,8 @@ Contributors: kontur
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LSK5YQHHCGGYS
 Tags: fonts, typeface, preview, shortcode
 Requires at least: 4.0
-Tested up to: 4.8.1
-Stable tag: 0.3.5
+Tested up to: 4.8.2
+Stable tag: 0.3.6
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -98,6 +98,16 @@ Fontsampler makes no attempt at scrambling or obfuscating the web fonts served. 
 and reverse engineer them into working Opentype files. If you are concerned about your intellectual property it is recommended
 to only use limited charset and feature demo web font files.
 
+= Why are font styles from the drop down are not switching in the preview =
+
+Fontsampler relies on the information in the uploaded webfont files. As such, it will extract font names, style names and
+weights from the files (even if you set a different display name), and the browser will use these attributes to switch
+the preview font. If you have fonts in the same Fontsampler that are not explicit the browser fails to switch them. Make sure
+font family names, weights and italic flags are set in your font editor when exporting the web fonts. Additionally, some
+special cases like stencil, outline etc. variants might need that you give them a distinct family name from the regular,
+ e.g. "Myfont regular/bold/italic/etc." and "MyfontStencil regular/bold/italic/etc." - you can still overwrite their display
+  name after uploading them.
+
 == Screenshots ==
 
 1. The Fontsampler plugin comes with plenty of customizable options to tweak the appearance and interface of your webfont previews
@@ -108,6 +118,12 @@ to only use limited charset and feature demo web font files.
 6. This is how you include a Fontsampler in a page or post: Simply add the shortcode for the created Fontsampler to your text
 
 == Changelog ==
+
+= 0.3.6 =
+* Implemented a feature that strips pasted text of its original styling
+* Fixed an issue that caused dropdowns to not work on mobile devices
+* Fixed an issue in the admin area that overwrote font names when uploading several fonts at once
+* Fixed several styling and preview issues in the admin area
 
 = 0.3.1, 0.3.2, 0.3.3 =
 * Hotfix to prevent buggy PHP 5.6 T_PAAMAYIM_NEKUDOTAYIM (::) error
