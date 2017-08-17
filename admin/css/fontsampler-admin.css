@@ -569,19 +569,6 @@
 #fontsampler-admin .slider {
   margin: 0.5em 0;
 }
-#fontsampler-admin .rangeslider--horizontal {
-  background: #64CAF0;
-  height: 4px;
-  width: 100%;
-  clear: both;
-}
-#fontsampler-admin .rangeslider--horizontal .rangeslider__fill {
-  background: #008EC2;
-}
-#fontsampler-admin .rangeslider--horizontal .rangeslider__handle {
-  height: 12px;
-  width: 12px;
-}
 #fontsampler-admin .fontsampler-setting-image .fontsampler-upload-wrapper {
   display: inline-block;
 }
@@ -619,6 +606,9 @@
 #fontsampler-admin #fontsampler-admin-ui-wrapper #fontsampler-ui-layout-preview {
   border: 4px solid #F2F2F2;
   padding: 10px;
+}
+#fontsampler-admin #fontsampler-admin-ui-wrapper #fontsampler-ui-layout-preview label {
+  margin: 0;
 }
 #fontsampler-admin #fontsampler-admin-ui-wrapper #fontsampler-ui-layout-preview .fontsampler-interface {
   position: relative;

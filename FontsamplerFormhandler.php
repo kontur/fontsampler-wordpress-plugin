@@ -30,7 +30,7 @@ class FontsamplerFormhandler {
 	function font_edit( $id = null, $offset = 0 ) {
 		$data = array(
 			'woff'  => $this->post['woff'][ $offset ],
-			'woff2' => $this->post['woff2'][ $offset ],
+//			'woff2' => $this->post['woff2'][ $offset ],
 			'eot'   => $this->post['eot'][ $offset ],
 			'ttf'   => $this->post['ttf'][ $offset ],
 			'name'  => $this->post['fontname'][ $offset ]
@@ -252,8 +252,8 @@ class FontsamplerFormhandler {
 				$this->fontsampler->db->save_settings_for_set( $settings, $id );
 				$this->fontsampler->helpers->get_custom_css( $this->fontsampler->db->get_set( $id ) );
 				$this->fontsampler->msg->add_info( 'Created fontsampler with id ' . $id
-				                                   . '. You can now embed it in your posts or pages by adding [fontsampler id='
-				                                   . $id . '].' );
+				                                   . '. You can now embed it by adding this shortcode to your post or page: [fontsampler id='
+				                                   . $id . ']' );
 			} else {
 				$this->fontsampler->msg->add_error( 'Error: Failed to create new fontsampler.' );
 
