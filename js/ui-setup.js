@@ -128,6 +128,23 @@ define(['jquery', 'rangeslider', 'selectric'], function ($) {
                 }
             });
 
+
+        // prevent pasting styled content
+        $wrapper.find('.type-tester__content[contenteditable]').on('paste', function(e) {
+            e.preventDefault();
+            var text = '';
+            if (e.clipboardData || e.originalEvent.clipboardData) {
+                text = (e.originalEvent || e).clipboardData.getData('text/plain');
+            } else if (window.clipboardData) {
+                text = window.clipboardData.getData('Text');
+            }
+            if (document.queryCommandSupported('insertText')) {
+                document.execCommand('insertText', false, text);
+            } else {
+                document.execCommand('paste', false, text);
+            }
+        });
+
         $wrapper.removeClass("on-loading");
 
         // for fontsamplers that only have one font but display the fontpicker label,
