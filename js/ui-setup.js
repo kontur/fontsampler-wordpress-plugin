@@ -65,7 +65,9 @@ define(['jquery', 'rangeslider', 'selectric'], function ($) {
             $(this).selectric({
                 onChange: function (element) {
                     debounce(dispatchVanillaEvent(element, 'change'));
-                }
+                },
+                nativeOnMobile: false,
+                disableOnMobile: false
             }).closest('.selectric-wrapper').addClass('selectric-wide');
         });
 
