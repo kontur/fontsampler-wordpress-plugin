@@ -170,7 +170,7 @@ class FontsamplerPlugin {
 		<?php
 
 		// merge in possibly passed in attributes
-		$attributes = shortcode_atts( array( 'id' => '0' ), $atts );
+		$attributes = shortcode_atts( array( 'id' => '0', 'woff' => NULL, 'woff2' => NULL, 'text' => NULL ), $atts );
 		$id = intval($attributes['id']);
 
 		// do nothing if missing id
@@ -251,6 +251,51 @@ class FontsamplerPlugin {
 			echo '</div>';
 
 			// return all that's been buffered
+			return ob_get_clean();
+		} 
+
+		else if ( $attributes['woff'] !== NULL || $attributes['woff2'] !== NULL) {
+
+
+
+			// some of these get overwritten from defaults, but list them all here explicitly
+			// $set   = $this->db->get_set( $id );
+			$set = $this->db->get_settings();
+			$set['id'] = 0;
+
+			$options = array_merge( $set, $this->settings_defaults, $this->db->get_settings() );
+			$settings = $this->db->get_settings();
+			$layout = new FontsamplerLayout();
+			$blocks = $layout->stringToArray( $set['ui_order'], $set );
+			$initialFont = $attributes['woff'];
+			$data_initial = $settings;
+			$attribute_text = $attributes['text'];
+
+			ob_start();
+
+			$fonts = [$attributes['woff']];
+
+			?>
+
+			<div class='fontsampler-wrapper on-loading'
+			     data-fonts='<?php echo implode( ',', $fonts ); ?>'
+				<?php if ( $initialFont ) : ?>
+					data-initial-font='<?php echo $initialFont; ?>'
+				<?php endif; ?>
+				<?php if (!empty($fontNameOverwrites)): ?>
+					data-overwrites='<?php echo json_encode($fontNameOverwrites); ?>'
+				<?php endif; ?>
+			>
+
+			<?php
+
+
+			// include, aka echo, template with replaced values from $replace above
+			include( 'includes/interface.php' );
+
+			echo '</div>';
+
+
 			return ob_get_clean();
 		}
 	}
