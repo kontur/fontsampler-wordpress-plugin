@@ -170,7 +170,7 @@ class FontsamplerPlugin {
 		<?php
 
 		// merge in possibly passed in attributes
-		$attributes = shortcode_atts( array( 'id' => '0', 'woff' => NULL, 'woff2' => NULL, 'text' => NULL ), $atts );
+		$attributes = shortcode_atts( array( 'id' => '0', 'fonts' => NULL, 'text' => NULL ), $atts );
 		$id = intval($attributes['id']);
 
 		// do nothing if missing id
@@ -254,9 +254,24 @@ class FontsamplerPlugin {
 			return ob_get_clean();
 		} 
 
-		else if ( $attributes['woff'] !== NULL || $attributes['woff2'] !== NULL) {
+		else if ( $attributes['fonts'] !== NULL ) {
+			// you cannot pass in a json encoded string (because the square brackets would
+			// be interpreted as the end of the shortcode), so the json encoded string is
+			// EXPECTED to be a json encoded array, but missing the opening and ending
+			// square brackets
+			$fonts_passed_in = json_decode( "[" . $attributes['fonts'] . "]" );
 
+			$fonts_passed_in = array_map(function ($item, $index) {
+				$item = (array) $item;
+				// the fake font id is needed for fontsampler internals,
+				// but since these are not fonts exising in the DB the 
+				// passed in array index will suffice as ID
+				$item["id"] = $index; 
+				return $item;
+			}, $fonts_passed_in, array_keys($fonts_passed_in));
 
+			// retrieve an array with the must suitable webfont files
+			$fonts = $this->helpers->get_best_file_from_fonts( $fonts_passed_in );
 
 			// some of these get overwritten from defaults, but list them all here explicitly
 			// $set   = $this->db->get_set( $id );
@@ -267,14 +282,31 @@ class FontsamplerPlugin {
 			$settings = $this->db->get_settings();
 			$layout = new FontsamplerLayout();
 			$blocks = $layout->stringToArray( $set['ui_order'], $set );
-			$initialFont = $attributes['woff'];
+
+			$initialFont = array_filter($fonts_passed_in, function ($item) {
+				return isset($item['initial']) && $item['initial'] === true;
+			});
+			$initialFont = array_shift($initialFont) ;
+			$initialFontNameOverwrite = $initialFont['name'];
+			$initialFont = $this->helpers->get_best_file_from_fonts(array($initialFont));
+			$initialFont = array_shift($initialFont);
+
 			$data_initial = $settings;
 			$attribute_text = $attributes['text'];
 
+
+			// create an array for fontnames to overwrite
+			$fontNameOverwrites = [];
+			foreach ($fonts_passed_in as $font) {
+				foreach ($this->font_formats as $format) {
+					if (!empty($font[$format])) {
+						$fileName = basename($font[$format]);
+						$fontNameOverwrites[$fileName] = $font['name'];
+					}
+				}
+			}
+
 			ob_start();
-
-			$fonts = [$attributes['woff']];
-
 			?>
 
 			<div class='fontsampler-wrapper on-loading'
@@ -284,6 +316,7 @@ class FontsamplerPlugin {
 				<?php endif; ?>
 				<?php if (!empty($fontNameOverwrites)): ?>
 					data-overwrites='<?php echo json_encode($fontNameOverwrites); ?>'
+					data-initial-font-name-overwrite='<?php echo $initialFontNameOverwrite; ?>'
 				<?php endif; ?>
 			>
 
