@@ -29,15 +29,35 @@ define(['jquery', 'rangeslider', 'selectric'], function ($) {
         element.dispatchEvent(evt);
     }
 
+
     /**
      * setup function for all those UI components and interactions
      * that require jquery
      */
-    function main(wrapper) {
+    function main(wrapper, pubsub) {
 
         var $wrapper = $(wrapper),
+            FSevents = pubsub,
             typeTesterSelector = ".type-tester",
-            typeTesterContentSelector = ".type-tester__content";
+            typeTesterContentSelector = ".type-tester__content",
+
+            events = {
+                'activatefont': 'fontsampler.event.activatefont',
+                'afterinit': 'fontsampler.event.afterinit',
+            };
+
+
+        function triggerEvent(e) {
+            $wrapper.trigger(e);
+        }
+
+
+        // Trigger various events on the wrapper element when they happen internally
+        // so that library externals can hook into them
+        FSevents.subscribe('activateFont', function () {
+            triggerEvent(events.activatefont);
+        });
+
 
         $wrapper.find(".fontsampler-interface select[name='sample-text']").on('change', function () {
             var $fs = $(this).closest('.fontsampler-interface').find(typeTesterContentSelector),
@@ -145,7 +165,6 @@ define(['jquery', 'rangeslider', 'selectric'], function ($) {
             }
         });
 
-        $wrapper.removeClass("on-loading");
 
         // for fontsamplers that only have one font but display the fontpicker label,
         // insert the font family name that opentype.js loaded into the label
@@ -155,6 +174,10 @@ define(['jquery', 'rangeslider', 'selectric'], function ($) {
                         : $wrapper.data('initial-font-name');
             $(this).children('label').html(name)
         });
+
+
+        $wrapper.removeClass("on-loading");
+        triggerEvent(events.afterinit);
     }
 
     return main;
