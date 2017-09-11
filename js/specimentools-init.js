@@ -43,6 +43,11 @@ define([
                 initialFontIndex = fonts.indexOf(initialFont),
                 overwrites = wrapper.dataset.overwrites ? JSON.parse(wrapper.dataset.overwrites) : {};
 
+            // if this wrapper has already been initialized, skip to next loop
+            if (wrapper.classList.contains("initialized")) {
+                continue;
+            }
+
 
             // This PubSub instance is the centrally connecting element between
             // all modules. The order in which modules subscribe to PubSub
@@ -86,6 +91,8 @@ define([
             }.bind(instance));
 
             loadFonts.fromUrl(pubsub, fonts);
+
+            wrapper.className += " initialized";
         }
     }
 

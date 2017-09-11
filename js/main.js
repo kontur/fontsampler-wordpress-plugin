@@ -40,5 +40,9 @@ require([
     'js/specimentools-init',
     'js/ui-setup'
 ], function(main, setup) {
+    // store this method globally, so it can be called again
+    window.fontsamplerSetup = function () {
+        main(window, setup);
+    }
     main(window, setup);
 });
