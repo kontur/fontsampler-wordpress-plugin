@@ -289,7 +289,7 @@ class FontsamplerPlugin {
 			$initialFont = array_shift($initialFont) ;
 			$initialFontNameOverwrite = $initialFont['name'];
 			$initialFont = $this->helpers->get_best_file_from_fonts(array($initialFont));
-			$initialFont = array_shift($initialFont);
+			$initialFont = is_array($initialFont) ? array_shift($initialFont) : "";
 
 			$data_initial = $settings;
 			$attribute_text = $attributes['text'];
