@@ -1,16 +1,16 @@
 define([
-    'specimenTools/loadFonts'
-    , 'specimenTools/initDocumentWidgets'
-    , 'specimenTools/services/PubSub'
-    , 'specimenTools/services/FontsData'
-    , 'specimenTools/services/WebfontProvider'
-    // , 'specimenTools/widgets/GlyphTables'
-    // , 'specimenTools/widgets/FamilyChooser'
-    , 'specimenTools/widgets/GenericFontData'
-    , 'specimenTools/widgets/CurrentWebFont'
-    , 'specimenTools/widgets/TypeTester'
-    , 'specimenTools/widgets/FontLister'
-    , 'specimenTools/widgets/FeatureLister'
+    'libs/specimen-tools/lib/loadFonts'
+    , 'libs/specimen-tools/lib/initDocumentWidgets'
+    , 'libs/specimen-tools/lib/services/PubSub'
+    , 'libs/specimen-tools/lib/services/FontsData'
+    , 'libs/specimen-tools/lib/services/WebfontProvider'
+    // , 'libs/specimen-tools/lib/widgets/GlyphTables'
+    // , 'libs/specimen-tools/lib/widgets/FamilyChooser'
+    , 'libs/specimen-tools/lib/widgets/GenericFontData'
+    , 'libs/specimen-tools/lib/widgets/CurrentWebFont'
+    , 'libs/specimen-tools/lib/widgets/TypeTester'
+    , 'libs/specimen-tools/lib/widgets/FontLister'
+    , 'libs/specimen-tools/lib/widgets/FeatureLister'
 ], function(
     loadFonts
     , initDocumentWidgets

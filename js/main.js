@@ -10,15 +10,15 @@ define('jquery', [], function () {
 require.config({
     'baseUrl': fontsamplerBaseUrl,
     'paths': {
-        'opentype': 'js/libs/opentype.js/dist/opentype',
-        'Atem-CPS-whitelisting': 'js/libs/Atem-CPS-whitelisting/lib',
-        'Atem-Errors': 'js/libs/Atem-Errors/lib',
-        'Atem-Math-Tools': 'js/libs/Atem-Math-Tools/lib',
-        'Atem-Pen-Case': 'js/libs/Atem-Pen-Case/lib',
-        'require/text': 'js/libs/requirejs-text/text',
-        'specimenTools': 'js/libs/specimen-tools/lib',
-        'rangeslider': 'js/libs/rangeslider.js/dist/rangeslider',
-        'selectric': 'js/libs/jquery-selectric/public/jquery.selectric',
+        'opentype': 'libs/opentype.js/dist/opentype',
+        'Atem-CPS-whitelisting': 'libs/Atem-CPS-whitelisting/lib',
+        'Atem-Errors': 'libs/Atem-Errors/lib',
+        'Atem-Math-Tools': 'libs/Atem-Math-Tools/lib',
+        'Atem-Pen-Case': 'libs/Atem-Pen-Case/lib',
+        'require/text': 'libs/requirejs-text/text',
+        'specimenTools': 'libs/specimen-tools/lib',
+        'rangeslider': 'libs/rangeslider.js/dist/rangeslider',
+        'selectric': 'libs/jquery-selectric/public/jquery.selectric',
     },
 
 
@@ -37,8 +37,8 @@ require.config({
 });
 
 require([
-    'js/specimentools-init',
-    'js/ui-setup'
+    'specimentools-init',
+    'ui-setup'
 ], function(main, setup) {
     main(window, setup);
 });
