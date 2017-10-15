@@ -1,7 +1,7 @@
 /**
  * All the jquery components dealing with file uploads on the admin side
  */
-define(['jquery'], function ($) {
+define('fontsampler-admin-upload', ['jquery'], function ($) {
 
     function main() {
 

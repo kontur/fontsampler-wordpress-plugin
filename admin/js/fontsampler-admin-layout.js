@@ -2,7 +2,7 @@
  * All the jquery components dealing with manipulating the
  * UI layout of fontsamplers in the admin area
  */
-define(['jquery'], function ($) {
+define('fontsampler-admin-layout', ['jquery'], function ($) {
 
     function main(specimentools, setup) {
 

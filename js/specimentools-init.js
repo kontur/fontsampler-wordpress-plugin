@@ -1,16 +1,16 @@
-define([
-    'libs/specimen-tools/lib/loadFonts'
-    , 'libs/specimen-tools/lib/initDocumentWidgets'
-    , 'libs/specimen-tools/lib/services/PubSub'
-    , 'libs/specimen-tools/lib/services/FontsData'
-    , 'libs/specimen-tools/lib/services/WebfontProvider'
-    // , 'libs/specimen-tools/lib/widgets/GlyphTables'
-    // , 'libs/specimen-tools/lib/widgets/FamilyChooser'
-    , 'libs/specimen-tools/lib/widgets/GenericFontData'
-    , 'libs/specimen-tools/lib/widgets/CurrentWebFont'
-    , 'libs/specimen-tools/lib/widgets/TypeTester'
-    , 'libs/specimen-tools/lib/widgets/FontLister'
-    , 'libs/specimen-tools/lib/widgets/FeatureLister'
+define('specimentools-init', [
+    'js/libs/specimen-tools/lib/loadFonts'
+    , 'js/libs/specimen-tools/lib/initDocumentWidgets'
+    , 'js/libs/specimen-tools/lib/services/PubSub'
+    , 'js/libs/specimen-tools/lib/services/FontsData'
+    , 'js/libs/specimen-tools/lib/services/WebfontProvider'
+    // , 'js/libs/specimen-tools/lib/widgets/GlyphTables'
+    // , 'js/libs/specimen-tools/lib/widgets/FamilyChooser'
+    , 'js/libs/specimen-tools/lib/widgets/GenericFontData'
+    , 'js/libs/specimen-tools/lib/widgets/CurrentWebFont'
+    , 'js/libs/specimen-tools/lib/widgets/TypeTester'
+    , 'js/libs/specimen-tools/lib/widgets/FontLister'
+    , 'js/libs/specimen-tools/lib/widgets/FeatureLister'
 ], function(
     loadFonts
     , initDocumentWidgets

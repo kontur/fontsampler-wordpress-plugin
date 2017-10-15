@@ -276,8 +276,9 @@ class FontsamplerPlugin {
                 return;
         }
 
-		wp_enqueue_script( 'require-js', plugin_dir_url( __FILE__ ) . 'js/libs/requirejs/require.js', array(), false, true);
-		wp_enqueue_script( 'fontsampler-admin-main-js', plugin_dir_url( __FILE__ ) . 'admin/js/fontsampler-admin-main.js', array(
+		// wp_enqueue_script( 'require-js', plugin_dir_url( __FILE__ ) . 'js/libs/requirejs/require.js', array(), false, true);
+		// wp_enqueue_script( 'fontsampler-admin-main-js', plugin_dir_url( __FILE__ ) . 'admin/js/fontsampler-admin-main.js', array(
+		wp_enqueue_script( 'fontsampler-admin-main-js', plugin_dir_url( __FILE__ ) . 'admin/js/bundle.js', array(
 			'wp-color-picker',
 			'jquery-ui-sortable',
 			'jquery-ui-accordion',

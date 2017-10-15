@@ -1,4 +1,4 @@
-define(['jquery', 'rangeslider', 'selectric'], function ($) {
+define('ui-setup', ['jquery', 'rangeslider', 'selectric'], function ($) {
 
     function debounce(fn, debounceDuration) {
         debounceDuration = debounceDuration || 100;
