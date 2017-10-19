@@ -6,7 +6,7 @@
   "scripts": {
     "test": "libs",
     "build": "node r.js -o build.js",
-    "build-admiN": "node r.js -o build-admin.js"
+    "build-admin": "node r.js -o build-admin.js"
   },
   "repository": {
     "type": "git",

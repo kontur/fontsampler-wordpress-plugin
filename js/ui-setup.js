@@ -1,4 +1,4 @@
-define('ui-setup', ['jquery', 'rangeslider', 'selectric'], function ($) {
+define(['jquery', 'rangeslider', 'selectric'], function ($) {
 
     function debounce(fn, debounceDuration) {
         debounceDuration = debounceDuration || 100;
@@ -176,6 +176,7 @@ define('ui-setup', ['jquery', 'rangeslider', 'selectric'], function ($) {
         });
 
 
+        
         $wrapper.removeClass("on-loading");
         triggerEvent(events.afterinit);
     }

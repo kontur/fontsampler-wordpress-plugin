@@ -25,6 +25,6 @@
         }
     },
     name: "admin/js/fontsampler-admin-main",
-    out: "admin/js/bundle.js",
+    out: "admin/js/fontsampler-admin.js",
     include: "requireLib"
 })
