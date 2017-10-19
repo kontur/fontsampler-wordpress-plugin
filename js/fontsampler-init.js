@@ -1,5 +1,5 @@
 jQuery(function () {
-	var $ = jQuery;
+	var $ = jQuery; 
 	$(".fontsampler").each(function () {
 		var file = $(this).data('fontfile'),
 			options = $(this).data('options');
