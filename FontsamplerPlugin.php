@@ -274,10 +274,13 @@ class FontsamplerPlugin {
                 return;
         }
 
+		wp_enqueue_script( 'fontsampler-clipboard', plugin_dir_url( __FILE__ ) . 'admin/js/clipboard.min.js');
 		wp_enqueue_script( 'fontsampler-admin-main-js', plugin_dir_url( __FILE__ ) . 'admin/js/fontsampler-admin.js', array(
+			'jquery',
 			'wp-color-picker',
 			'jquery-ui-sortable',
 			'jquery-ui-accordion',
+			'fontsampler-clipboard', // make clipboard a global requirement
 		), false, true);
 
 		wp_enqueue_style( 'wp-color-picker' );

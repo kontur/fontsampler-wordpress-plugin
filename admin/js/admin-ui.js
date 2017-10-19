@@ -2,7 +2,8 @@
  * All the jquery components dealing with manipulating the
  * various admin side interactions
  */
-define(['jquery', 'rangeslider', 'selectric', 'validate', 'clipboard', 'fontsampler'], function ($, r, s, v, clipboard, fs) {
+define(['jquery', 'rangeslider', 'selectric', 'validate', 'fontsampler'], 
+    function ($, r, s, v, c, fs) {
 
     $.validate = v;
     $.fontSampler = fs;
@@ -404,9 +405,12 @@ define(['jquery', 'rangeslider', 'selectric', 'validate', 'clipboard', 'fontsamp
     }
 
 
+    // Due to clipboard's funny transpiling in combinition with requirejs' optimizer's
+    // namespace rename this module can't be properly included. Alas, it's a global.
+
     // add "copy to clipboard" functionality to fontsampler listing table
-    var cb = new clipboard(".fontsampler-copy-clipboard");
-    cb.on('success', function(e) {
+    var clip = new Clipboard(".fontsampler-copy-clipboard");
+    clip.on('success', function(e) {
         e.clearSelection();
         $(e.trigger).addClass('success');
         setTimeout(function () {

@@ -9,13 +9,13 @@
         'specimenTools': 'bower_components/specimen-tools/lib',
         'rangeslider': 'bower_components/rangeslider.js/dist/rangeslider',
         'selectric': 'bower_components/jquery-selectric/public/jquery.selectric',
-        'requireLib': 'bower_components/requirejs/require',
-        'clipboard': 'bower_components/clipboard/dist/clipboard',
         'validate': 'bower_components/jquery-validation/dist/jquery.validate',
-        'fontsampler': 'bower_components/jquery-fontsampler/dist/jquery.fontsampler'
+        'fontsampler': 'bower_components/jquery-fontsampler/dist/jquery.fontsampler',
+        'requireLib': 'bower_components/requirejs/require',
     },
     name: "admin/js/admin-main",
     out: "admin/js/fontsampler-admin.js",
     include: "requireLib",
+    namespace: "fs",
     // optimize: "none",
 })
