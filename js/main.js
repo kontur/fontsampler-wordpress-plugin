@@ -10,6 +10,6 @@ define('jquery', [], function () {
 require([
     'js/specimentools-init',
     'js/ui-setup'
-], function(main, setup) {
-    main(window, setup);
+], function(init, fontsamplerUI) {
+    init(window, fontsamplerUI);
 });

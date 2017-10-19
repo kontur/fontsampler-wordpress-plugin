@@ -2,9 +2,9 @@
  * All the jquery components dealing with manipulating the
  * UI layout of fontsamplers in the admin area
  */
-define('fontsampler-admin-layout', ['jquery'], function ($) {
+define(['jquery'], function ($) {
 
-    function main(specimentools, setup) {
+    function main(specimentools, specimenttoolsUI) {
 
         var $admin = $("#fontsampler-admin"),
             $list = $("#fontsampler-ui-blocks-list"),
@@ -124,8 +124,8 @@ define('fontsampler-admin-layout', ['jquery'], function ($) {
             $.post(ajaxurl, data, function (response) {
                 $preview.html(response);
 
-                specimentools(window, function () {
-                    setup(".fontsampler-wrapper");
+                specimentools(window, function (wrapper, pubsub) {
+                    specimenttoolsUI( wrapper, pubsub );
                     $preview.find('.fontsampler-wrapper').removeClass("on-loading");
 
                     $(".fontsampler-interface").sortable({

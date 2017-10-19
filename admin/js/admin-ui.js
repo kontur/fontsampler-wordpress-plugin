@@ -2,7 +2,10 @@
  * All the jquery components dealing with manipulating the
  * various admin side interactions
  */
-define('fontsampler-admin-ui', ['jquery', 'rangeslider', 'selectric', 'validate', 'clipboard'], function ($, r, s, v, clipboard) {
+define(['jquery', 'rangeslider', 'selectric', 'validate', 'clipboard', 'fontsampler'], function ($, r, s, v, clipboard, fs) {
+
+    $.validate = v;
+    $.fontSampler = fs;
 
     function main(fontupload, specimentools) {
 

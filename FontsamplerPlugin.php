@@ -280,8 +280,6 @@ class FontsamplerPlugin {
 			'jquery-ui-accordion',
 		), false, true);
 
-		wp_enqueue_script( 'fontsampler-js', plugin_dir_url( __FILE__ ) . 'js/libs/jquery-fontsampler/dist/jquery.fontsampler.js', array( 'jquery' ) );
-
 		wp_enqueue_style( 'wp-color-picker' );
 		wp_enqueue_style( 'jquery-ui-accordion' );
 		wp_enqueue_style( 'fontsampler-css', $this->helpers->get_css_file() );

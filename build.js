@@ -1,5 +1,4 @@
 ({
-    // baseUrl: "./js",
     paths: {
         'opentype': 'bower_components/opentype.js/dist/opentype',
         'Atem-CPS-whitelisting': 'bower_components/Atem-CPS-whitelisting/lib',
@@ -14,5 +13,6 @@
     },
     name: "js/main",
     out: "js/fontsampler.js",
-    include: "requireLib"
+    include: "requireLib",
+    // optimize: "none",
 })
