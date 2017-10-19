@@ -173,6 +173,12 @@ class FontsamplerPlugin {
 		$attributes = shortcode_atts( array( 'id' => '0', 'fonts' => NULL, 'text' => NULL ), $atts );
 		$id = intval($attributes['id']);
 
+		// store any text that was passed in as part of the shortcode
+		// this will overwrite the text defined in the settings of this fontsampler
+		// or if only fonts are passed in as part of the shortcode the fontsampler
+		// will used that text
+		$attribute_text = $attributes['text'];
+
 		// do nothing if missing id
 		if ( 0 != $id ) {
 			$set   = $this->db->get_set( $id );
@@ -292,7 +298,6 @@ class FontsamplerPlugin {
 			$initialFont = is_array($initialFont) ? array_shift($initialFont) : "";
 
 			$data_initial = $settings;
-			$attribute_text = $attributes['text'];
 
 
 			// create an array for fontnames to overwrite
