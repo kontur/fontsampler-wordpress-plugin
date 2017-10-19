@@ -74,6 +74,7 @@ define(['jquery', 'rangeslider', 'selectric'], function ($) {
             polyfill: false,
             onSlide: function (position, element) {
                 debounce(dispatchVanillaEvent(this.$element[0], 'input'), 250);
+                closeOpenOTModal();
             },
             onSlideEnd: function (position, element) {
                 debounce(dispatchVanillaEvent(this.$element[0], 'input'), 250);
@@ -86,13 +87,16 @@ define(['jquery', 'rangeslider', 'selectric'], function ($) {
                 onChange: function (element) {
                     debounce(dispatchVanillaEvent(element, 'change'));
                 },
+                onBeforeOpen: function () {
+                    closeOpenOTModal();
+                },
                 nativeOnMobile: false,
                 disableOnMobile: false
             }).closest('.selectric-wrapper').addClass('selectric-wide');
         });
 
 
-        $wrapper.find(".fontsampler-interface .fontsampler-multiselect").on("click", "button", function () {
+        $wrapper.find(".fontsampler-interface .fontsampler-multiselect").on("click", "button", function (e) {
             var $this = $(this),
                 $fs = $this.closest('.fontsampler-interface').find(typeTesterContentSelector),
                 val = $this.data("value");
@@ -113,7 +117,13 @@ define(['jquery', 'rangeslider', 'selectric'], function ($) {
                     break;
 
                 case "opentype":
-                    $this.siblings(".fontsampler-opentype-features").toggleClass("shown");
+                    // kind of an edge case, but close already open OT modals
+                    // of OTHER fontsamplers on the page when opening a new modal
+                    $(".fontsampler-opentype-features.shown")
+                        .not($this.siblings(".fontsampler-opentype-features"))
+                        .removeClass("shown")
+                    
+                    $this.siblings(".fontsampler-opentype-features").toggleClass("shown")
                     break;
             }
 
@@ -124,6 +134,21 @@ define(['jquery', 'rangeslider', 'selectric'], function ($) {
                 $this.addClass("fontsampler-multiselect-selected");
             }
         });
+
+        // add opentype close functionality on any interaction outside the OT modual
+        // once it has been opened
+        $(document).on("click", closeOpenOTModal);
+        function closeOpenOTModal (e) {
+            if (typeof e === "undefined") {
+                $(".fontsampler-opentype-features.shown").removeClass("shown")
+            } else {
+                // if this top most clicked element was inside an OT wrapper
+                if ($(e.target).parents(".fontsampler-opentype").length === 0) {
+                    //click outside OT modal
+                    $wrapper.find(".fontsampler-opentype-features").removeClass("shown");
+                }
+            }
+        }
 
         // prevent line breaks on single line instances
         $wrapper.find(typeTesterContentSelector + '.fontsampler-is-singleline')
