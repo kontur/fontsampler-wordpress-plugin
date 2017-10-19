@@ -25,6 +25,22 @@ You can also pass in fonts dynamically (i.e. without actually defining a Fontsam
 
 Essentially the fonts attribute takes a `json_encode`ed array without the opening and closing brackets (since these would break the shortcode).
 
+### Reacting to events
+If you are a developer wanting to interact with Fontsampler instances you can react to the following javascript events being triggered on the Fontsampler wrappers.
+
+**fontsampler.events.afterinit**
+Called when all fonts are loaded and the Fontsampler is active.
+
+**fontssampler.events.activatefont**
+Called when a font is activated or switched.
+
+You can listen to those events with jQuery like so:
+
+```
+$("body").on("fontsampler.event.afterinit", ".fontsampler-wrapper", function () {
+    // do something
+});
+```
 
 ## Current status
 The plugin is hosted on the [Wordpress plugin directory](https://wordpress.org/plugins/fontsampler/) and you can install 

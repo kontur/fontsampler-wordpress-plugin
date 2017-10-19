@@ -1,6 +1,9 @@
 # 0.3.7
-- Now serving all frontend javascript assets as one minified file (previously 20+ file calls)
-- Now serving all backend javascript assets as one minified file (previously 30+ file calls)
+- Implemented shortcode attribute to overwrite or dynamically set the default text
+- Implemented shortcode attribute to overwrite or dynamically set the fonts and font files
+- Implemented events called on the wrapper after initialisation and font change
+- Now serving all frontend javascript assets as one minified file (previously 20+ dynamic file calls)
+- Now serving all backend javascript assets as one minified file (previously 30+ dynamic file calls)
 - Fixed a compability issue arising from other plugins using the same javascript dependency manager
 
 # 0.3.6
