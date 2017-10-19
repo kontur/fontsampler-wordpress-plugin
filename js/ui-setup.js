@@ -176,6 +176,7 @@ define(['jquery', 'rangeslider', 'selectric'], function ($) {
         });
 
 
+        
         $wrapper.removeClass("on-loading");
         triggerEvent(events.afterinit);
     }

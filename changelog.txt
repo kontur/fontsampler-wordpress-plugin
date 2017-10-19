@@ -1,3 +1,8 @@
+# 0.3.7
+- Now serving all frontend javascript assets as one minified file (previously 20+ file calls)
+- Now serving all backend javascript assets as one minified file (previously 30+ file calls)
+- Fixed a compability issue arising from other plugins using the same javascript dependency manager
+
 # 0.3.6
 - Implemented a feature that strips pasted text of its original styling
 - Fixed an issue that caused dropdowns to not work on mobile devices

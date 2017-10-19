@@ -4,7 +4,9 @@
   "description": "Wordpress plugin for testing webfonts; dev dependencies",
   "main": "gulpfile.js",
   "scripts": {
-    "test": "libs"
+    "test": "libs",
+    "build": "node r.js -o build.js",
+    "build-admin": "node r.js -o build-admin.js"
   },
   "repository": {
     "type": "git",
