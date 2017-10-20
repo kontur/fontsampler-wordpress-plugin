@@ -1,6 +1,6 @@
 {
   "name": "fontsampler",
-  "version": "0.3.6",
+  "version": "0.3.7",
   "description": "Wordpress plugin for testing webfonts; dev dependencies",
   "main": "js/main.js",
   "scripts": {
