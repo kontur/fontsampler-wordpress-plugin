@@ -29,15 +29,35 @@ define(['jquery', 'rangeslider', 'selectric'], function ($) {
         element.dispatchEvent(evt);
     }
 
+
     /**
      * setup function for all those UI components and interactions
      * that require jquery
      */
-    function main(wrapper) {
+    function main(wrapper, pubsub) {
 
         var $wrapper = $(wrapper),
+            FSevents = pubsub,
             typeTesterSelector = ".type-tester",
-            typeTesterContentSelector = ".type-tester__content";
+            typeTesterContentSelector = ".type-tester__content",
+
+            events = {
+                'activatefont': 'fontsampler.event.activatefont',
+                'afterinit': 'fontsampler.event.afterinit',
+            };
+
+
+        function triggerEvent(e) {
+            $wrapper.trigger(e);
+        }
+
+
+        // Trigger various events on the wrapper element when they happen internally
+        // so that library externals can hook into them
+        FSevents.subscribe('activateFont', function () {
+            triggerEvent(events.activatefont);
+        });
+
 
         $wrapper.find(".fontsampler-interface select[name='sample-text']").on('change', function () {
             var $fs = $(this).closest('.fontsampler-interface').find(typeTesterContentSelector),
@@ -54,6 +74,7 @@ define(['jquery', 'rangeslider', 'selectric'], function ($) {
             polyfill: false,
             onSlide: function (position, element) {
                 debounce(dispatchVanillaEvent(this.$element[0], 'input'), 250);
+                closeOpenOTModal();
             },
             onSlideEnd: function (position, element) {
                 debounce(dispatchVanillaEvent(this.$element[0], 'input'), 250);
@@ -66,13 +87,16 @@ define(['jquery', 'rangeslider', 'selectric'], function ($) {
                 onChange: function (element) {
                     debounce(dispatchVanillaEvent(element, 'change'));
                 },
+                onBeforeOpen: function () {
+                    closeOpenOTModal();
+                },
                 nativeOnMobile: false,
                 disableOnMobile: false
             }).closest('.selectric-wrapper').addClass('selectric-wide');
         });
 
 
-        $wrapper.find(".fontsampler-interface .fontsampler-multiselect").on("click", "button", function () {
+        $wrapper.find(".fontsampler-interface .fontsampler-multiselect").on("click", "button", function (e) {
             var $this = $(this),
                 $fs = $this.closest('.fontsampler-interface').find(typeTesterContentSelector),
                 val = $this.data("value");
@@ -93,7 +117,13 @@ define(['jquery', 'rangeslider', 'selectric'], function ($) {
                     break;
 
                 case "opentype":
-                    $this.siblings(".fontsampler-opentype-features").toggleClass("shown");
+                    // kind of an edge case, but close already open OT modals
+                    // of OTHER fontsamplers on the page when opening a new modal
+                    $(".fontsampler-opentype-features.shown")
+                        .not($this.siblings(".fontsampler-opentype-features"))
+                        .removeClass("shown")
+                    
+                    $this.siblings(".fontsampler-opentype-features").toggleClass("shown")
                     break;
             }
 
@@ -104,6 +134,21 @@ define(['jquery', 'rangeslider', 'selectric'], function ($) {
                 $this.addClass("fontsampler-multiselect-selected");
             }
         });
+
+        // add opentype close functionality on any interaction outside the OT modual
+        // once it has been opened
+        $(document).on("click", closeOpenOTModal);
+        function closeOpenOTModal (e) {
+            if (typeof e === "undefined") {
+                $(".fontsampler-opentype-features.shown").removeClass("shown")
+            } else {
+                // if this top most clicked element was inside an OT wrapper
+                if ($(e.target).parents(".fontsampler-opentype").length === 0) {
+                    //click outside OT modal
+                    $wrapper.find(".fontsampler-opentype-features").removeClass("shown");
+                }
+            }
+        }
 
         // prevent line breaks on single line instances
         $wrapper.find(typeTesterContentSelector + '.fontsampler-is-singleline')
@@ -145,7 +190,6 @@ define(['jquery', 'rangeslider', 'selectric'], function ($) {
             }
         });
 
-        $wrapper.removeClass("on-loading");
 
         // for fontsamplers that only have one font but display the fontpicker label,
         // insert the font family name that opentype.js loaded into the label
@@ -155,6 +199,11 @@ define(['jquery', 'rangeslider', 'selectric'], function ($) {
                         : $wrapper.data('initial-font-name');
             $(this).children('label').html(name)
         });
+
+
+        
+        $wrapper.removeClass("on-loading");
+        triggerEvent(events.afterinit);
     }
 
     return main;

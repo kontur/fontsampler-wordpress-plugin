@@ -1,10 +1,33 @@
 {
   "name": "fontsampler",
-  "version": "0.1.0",
+  "version": "0.3.7",
   "description": "Wordpress plugin for testing webfonts; dev dependencies",
-  "main": "gulpfile.js",
+  "main": "js/main.js",
   "scripts": {
-    "test": "libs"
+    "test": "libs",
+    "build": "node r.js -o build.js",
+    "build-admin": "node r.js -o build-admin.js",
+    "less": "lessc css/fontsampler-css.less css/fontsampler-css.css",
+    "less-admin": "lessc admin/css/fontsampler-admin.less admin/css/fontsampler-admin.css",
+    "watch": "npm-watch"
+  },
+  "watch": {
+    "build": {
+      "patterns": "js",
+      "ignore": "js/fontsampler.js"
+    },
+    "build-admin": {
+      "patterns": "admin/js",
+      "ignore": "admin/js/fontsampler-admin.js"
+    },
+    "less": {
+      "patterns": ["css"],
+      "extensions": ["less"]
+    },
+    "less-admin": {
+      "patterns": ["admin/css"],
+      "extensions": ["less"]
+    }
   },
   "repository": {
     "type": "git",
@@ -17,8 +40,8 @@
   },
   "homepage": "https://github.com/kontur/fontsampler-wordpress-plugin",
   "devDependencies": {
-    "gulp": "^3.9.1",
-    "gulp-batch": "^1.0.5",
-    "gulp-watch": "^4.3.10"
+    "npm-watch": "^0.3.0"
+  },
+  "dependencies": {
   }
 }

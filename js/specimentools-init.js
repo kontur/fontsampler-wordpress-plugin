@@ -23,7 +23,7 @@ define([
     , CurrentWebFont
     , TypeTester
     , FontLister
-    , FeatureLister
+    , FeatureLister 
 ) {
     "use strict";
 
@@ -42,6 +42,11 @@ define([
                 initialFont = wrapper.dataset.initialFont,
                 initialFontIndex = fonts.indexOf(initialFont),
                 overwrites = wrapper.dataset.overwrites ? JSON.parse(wrapper.dataset.overwrites) : {};
+
+            // if this wrapper has already been initialized, skip to next loop
+            if (wrapper.classList.contains("initialized")) {
+                continue;
+            }
 
 
             // This PubSub instance is the centrally connecting element between
@@ -81,11 +86,13 @@ define([
                 this.pubsub.publish('activateFont', this.initialFont);
                 this.wrapper.dataset['initialFontName'] = this.fontsData.getFont(this.initialFont).names.fullName.en;
                 if (typeof callback === "function") {
-                    callback(this.wrapper);
+                    callback(this.wrapper, this.pubsub);
                 }
             }.bind(instance));
 
             loadFonts.fromUrl(pubsub, fonts);
+
+            wrapper.className += " initialized";
         }
     }
 

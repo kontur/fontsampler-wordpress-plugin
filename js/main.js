@@ -7,38 +7,13 @@ define('jquery', [], function () {
     return jQuery;
 });
 
-require.config({
-    'baseUrl': fontsamplerBaseUrl,
-    'paths': {
-        'opentype': 'js/libs/opentype.js/dist/opentype',
-        'Atem-CPS-whitelisting': 'js/libs/Atem-CPS-whitelisting/lib',
-        'Atem-Errors': 'js/libs/Atem-Errors/lib',
-        'Atem-Math-Tools': 'js/libs/Atem-Math-Tools/lib',
-        'Atem-Pen-Case': 'js/libs/Atem-Pen-Case/lib',
-        'require/text': 'js/libs/requirejs-text/text',
-        'specimenTools': 'js/libs/specimen-tools/lib',
-        'rangeslider': 'js/libs/rangeslider.js/dist/rangeslider',
-        'selectric': 'js/libs/jquery-selectric/public/jquery.selectric',
-    },
-
-
-    // these shims tell require that when loading these libraries it needs to make
-    // sure to FIRST load the "deps", i.e. jquery
-    'shim': {
-        'rangeslider': {
-            deps: ['jquery'],
-            exports: 'jQuery.fn.rangeslider'
-        },
-        'selectric': {
-            deps: ['jquery'],
-            exports: 'jQuery.fn.selectric'
-        }
-    }
-});
-
 require([
     'js/specimentools-init',
     'js/ui-setup'
-], function(main, setup) {
-    main(window, setup);
+], function(init, fontsamplerUI) {
+    // store this method globally, so it can be called again
+    window.fontsamplerSetup = function () {
+        init(window, fontsamplerUI);
+    }
+    init(window, fontsamplerUI);
 });

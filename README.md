@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-# Fontsampler Wordpress Plugin (v 0.2.6)
-=======
-# Fontsampler Wordpress Plugin (v 0.3.5)
->>>>>>> dev
+# Fontsampler Wordpress Plugin (v 0.3.7)
 This plugin allows Wordpress users to embed interactive webfont previews in their websites.
 
 ## How does it work?
@@ -11,8 +7,40 @@ embedded in any Wordpress Page or Post with a simple shortcode like so:
 
 > [fontsampler id=123]
 
-In the place of the shortcode the plugin will render the appropriate interface for previewing and manipulating the 
-font.
+In the place of the shortcode the plugin will render the appropriate interface for previewing and manipulating the font. Each Fontsampler instance can be fully configured:
+* Features available to the user
+* Styling and layout order
+* Fonts used in this instance
+
+### Advanced shortcode use
+Aside from defining the Fontsampler settings in the admin area, you can also use the following shortcode attributes. This is mostly useful for developers using the plugin to dynamically create Fontsamplers with Wordpress' `do_shortcode()` method:
+
+This will set or overwrite the Fontsampler's initial text:
+
+> [fontsampler text="Lorem ipsum"]
+
+You can also pass in fonts dynamically (i.e. without actually defining a Fontsampler in the admin area). This Fontsampler will use the default settings.
+
+> [fontsampler fonts="{"woff":"json-encoded\/path-to\/fontfile.woff", "name":"Display name of the font", "initial":true},{"woff":"json-encoded\/path-to\/another-fontfile.woff", "name":"Display name of the other font", "initial":false}"]
+
+Essentially the fonts attribute takes a `json_encode`ed array without the opening and closing brackets (since these would break the shortcode).
+
+### Reacting to events
+If you are a developer wanting to interact with Fontsampler instances you can react to the following javascript events being triggered on the Fontsampler wrappers.
+
+**fontsampler.events.afterinit**
+Called when all fonts are loaded and the Fontsampler is active.
+
+**fontssampler.events.activatefont**
+Called when a font is activated or switched.
+
+You can listen to those events with jQuery like so:
+
+```
+$("body").on("fontsampler.event.afterinit", ".fontsampler-wrapper", function () {
+    // do something
+});
+```
 
 ## Current status
 The plugin is hosted on the [Wordpress plugin directory](https://wordpress.org/plugins/fontsampler/) and you can install 

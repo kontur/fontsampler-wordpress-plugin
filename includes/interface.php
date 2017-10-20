@@ -185,6 +185,11 @@
 						} else {
 							$initial_text = preg_replace( '/\n/', ' ', $initial_text_db );
 						}
+
+						// if the shortcode had a [ text=""] attribute passed in, use that overwrite
+						if (isset($attribute_text) && $attribute_text !== NULL) {
+							$initial_text = $attribute_text;
+						}
 						?>
 						<div autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
 						     class="current-font type-tester__content <?php

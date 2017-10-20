@@ -39,7 +39,7 @@ class FontsamplerPlugin {
 		// keep track of db versions and migrations via this
 		// simply set this to the current PLUGIN VERSION number when bumping it
 		// i.e. a database update always bumps the version number of the plugin as well
-		$this->fontsampler_db_version = '0.2.6';
+		$this->fontsampler_db_version = '0.3.7';
 		$current_db_version           = get_option( self::FONTSAMPLER_OPTION_DB_VERSION );
 
 		// if no previous db version has been registered assume new install and set
@@ -170,8 +170,14 @@ class FontsamplerPlugin {
 		<?php
 
 		// merge in possibly passed in attributes
-		$attributes = shortcode_atts( array( 'id' => '0' ), $atts );
+		$attributes = shortcode_atts( array( 'id' => '0', 'fonts' => NULL, 'text' => NULL ), $atts );
 		$id = intval($attributes['id']);
+
+		// store any text that was passed in as part of the shortcode
+		// this will overwrite the text defined in the settings of this fontsampler
+		// or if only fonts are passed in as part of the shortcode the fontsampler
+		// will used that text
+		$attribute_text = $attributes['text'];
 
 		// do nothing if missing id
 		if ( 0 != $id ) {
@@ -252,6 +258,83 @@ class FontsamplerPlugin {
 
 			// return all that's been buffered
 			return ob_get_clean();
+		} 
+
+		else if ( $attributes['fonts'] !== NULL ) {
+			// you cannot pass in a json encoded string (because the square brackets would
+			// be interpreted as the end of the shortcode), so the json encoded string is
+			// EXPECTED to be a json encoded array, but missing the opening and ending
+			// square brackets
+			$fonts_passed_in = json_decode( "[" . $attributes['fonts'] . "]" );
+
+			$fonts_passed_in = array_map(function ($item, $index) {
+				$item = (array) $item;
+				// the fake font id is needed for fontsampler internals,
+				// but since these are not fonts exising in the DB the 
+				// passed in array index will suffice as ID
+				$item["id"] = $index; 
+				return $item;
+			}, $fonts_passed_in, array_keys($fonts_passed_in));
+
+			// retrieve an array with the must suitable webfont files
+			$fonts = $this->helpers->get_best_file_from_fonts( $fonts_passed_in );
+
+			// some of these get overwritten from defaults, but list them all here explicitly
+			// $set   = $this->db->get_set( $id );
+			$set = $this->db->get_settings();
+			$set['id'] = 0;
+
+			$options = array_merge( $set, $this->settings_defaults, $this->db->get_settings() );
+			$settings = $this->db->get_settings();
+			$layout = new FontsamplerLayout();
+			$blocks = $layout->stringToArray( $set['ui_order'], $set );
+
+			$initialFont = array_filter($fonts_passed_in, function ($item) {
+				return isset($item['initial']) && $item['initial'] === true;
+			});
+			$initialFont = array_shift($initialFont) ;
+			$initialFontNameOverwrite = $initialFont['name'];
+			$initialFont = $this->helpers->get_best_file_from_fonts(array($initialFont));
+			$initialFont = is_array($initialFont) ? array_shift($initialFont) : "";
+
+			$data_initial = $settings;
+
+
+			// create an array for fontnames to overwrite
+			$fontNameOverwrites = [];
+			foreach ($fonts_passed_in as $font) {
+				foreach ($this->font_formats as $format) {
+					if (!empty($font[$format])) {
+						$fileName = basename($font[$format]);
+						$fontNameOverwrites[$fileName] = $font['name'];
+					}
+				}
+			}
+
+			ob_start();
+			?>
+
+			<div class='fontsampler-wrapper on-loading'
+			     data-fonts='<?php echo implode( ',', $fonts ); ?>'
+				<?php if ( $initialFont ) : ?>
+					data-initial-font='<?php echo $initialFont; ?>'
+				<?php endif; ?>
+				<?php if (!empty($fontNameOverwrites)): ?>
+					data-overwrites='<?php echo json_encode($fontNameOverwrites); ?>'
+					data-initial-font-name-overwrite='<?php echo $initialFontNameOverwrite; ?>'
+				<?php endif; ?>
+			>
+
+			<?php
+
+
+			// include, aka echo, template with replaced values from $replace above
+			include( 'includes/interface.php' );
+
+			echo '</div>';
+
+
+			return ob_get_clean();
 		}
 	}
 
@@ -260,8 +343,7 @@ class FontsamplerPlugin {
 	 * Register all script and styles needed in the front end
 	 */
 	function fontsampler_interface_enqueues() {
-		wp_enqueue_script( 'require-js', plugin_dir_url( __FILE__ ) . 'js/libs/requirejs/require.js', array(), false, true );
-		wp_enqueue_script( 'main-js', plugin_dir_url( __FILE__ ) . 'js/main.js', array('jquery'), false, true );
+		wp_enqueue_script( 'main-js', plugin_dir_url( __FILE__ ) . 'js/fontsampler.js', array('jquery'), false, true );
 		wp_enqueue_style( 'fontsampler-css', $this->helpers->get_css_file() );
 	}
 
@@ -275,14 +357,14 @@ class FontsamplerPlugin {
                 return;
         }
 
-		wp_enqueue_script( 'require-js', plugin_dir_url( __FILE__ ) . 'js/libs/requirejs/require.js', array(), false, true);
-		wp_enqueue_script( 'fontsampler-admin-main-js', plugin_dir_url( __FILE__ ) . 'admin/js/fontsampler-admin-main.js', array(
+		wp_enqueue_script( 'fontsampler-clipboard', plugin_dir_url( __FILE__ ) . 'admin/js/clipboard.min.js');
+		wp_enqueue_script( 'fontsampler-admin-main-js', plugin_dir_url( __FILE__ ) . 'admin/js/fontsampler-admin.js', array(
+			'jquery',
 			'wp-color-picker',
 			'jquery-ui-sortable',
 			'jquery-ui-accordion',
+			'fontsampler-clipboard', // make clipboard a global requirement
 		), false, true);
-
-		wp_enqueue_script( 'fontsampler-js', plugin_dir_url( __FILE__ ) . 'js/libs/jquery-fontsampler/dist/jquery.fontsampler.js', array( 'jquery' ) );
 
 		wp_enqueue_style( 'wp-color-picker' );
 		wp_enqueue_style( 'jquery-ui-accordion' );
