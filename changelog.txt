@@ -5,6 +5,8 @@
 - Now serving all frontend javascript assets as one minified file (previously 20+ dynamic file calls)
 - Now serving all backend javascript assets as one minified file (previously 30+ dynamic file calls)
 - Fixed a compability issue arising from other plugins using the same javascript dependency manager
+- Fixed an issue where OpenType features that are enabled by default did not have their UI elements reflect that correctly
+- Fixed an issue where switching fonts would revert selections made in the OpenType modal
 
 # 0.3.6
 - Implemented a feature that strips pasted text of its original styling

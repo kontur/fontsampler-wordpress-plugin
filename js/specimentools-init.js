@@ -23,7 +23,7 @@ define([
     , CurrentWebFont
     , TypeTester
     , FontLister
-    , FeatureLister
+    , FeatureLister 
 ) {
     "use strict";
 
