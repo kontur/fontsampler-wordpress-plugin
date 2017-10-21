@@ -140,12 +140,20 @@ define(['jquery', 'rangeslider', 'selectric'], function ($) {
         $(document).on("click", closeOpenOTModal);
         function closeOpenOTModal (e) {
             if (typeof e === "undefined") {
-                $(".fontsampler-opentype-features.shown").removeClass("shown")
+                $(".fontsampler-opentype-features.shown").each(function () {
+                    $(this).removeClass("shown");
+                    $(this).siblings(".fontsampler-opentype-toggle")
+                        .removeClass("fontsampler-multiselect-selected");
+                });
             } else {
                 // if this top most clicked element was inside an OT wrapper
                 if ($(e.target).parents(".fontsampler-opentype").length === 0) {
                     //click outside OT modal
-                    $wrapper.find(".fontsampler-opentype-features").removeClass("shown");
+                    $wrapper.find(".fontsampler-opentype-features").each(function () {
+                        $(this).removeClass("shown");
+                        $(this).siblings(".fontsampler-opentype-toggle")
+                            .removeClass("fontsampler-multiselect-selected");
+                    });
                 }
             }
         }

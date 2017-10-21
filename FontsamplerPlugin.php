@@ -39,7 +39,7 @@ class FontsamplerPlugin {
 		// keep track of db versions and migrations via this
 		// simply set this to the current PLUGIN VERSION number when bumping it
 		// i.e. a database update always bumps the version number of the plugin as well
-		$this->fontsampler_db_version = '0.3.7';
+		$this->fontsampler_db_version = '0.3.8';
 		$current_db_version           = get_option( self::FONTSAMPLER_OPTION_DB_VERSION );
 
 		// if no previous db version has been registered assume new install and set

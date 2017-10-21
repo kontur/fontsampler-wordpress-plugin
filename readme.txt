@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: fonts, typeface, preview, shortcode
 Requires at least: 4.0
 Tested up to: 4.8.2
-Stable tag: 0.3.7
+Stable tag: 0.3.8
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -118,6 +118,16 @@ special cases like stencil, outline etc. variants might need that you give them 
 6. This is how you include a Fontsampler in a page or post: Simply add the shortcode for the created Fontsampler to your text
 
 == Changelog ==
+
+= 0.3.7 & 0.3.8 =
+- Implemented shortcode attribute to overwrite or dynamically set the default text
+- Implemented shortcode attribute to overwrite or dynamically set the fonts and font files
+- Implemented events called on the wrapper after initialisation and font change
+- Now serving all frontend javascript assets as one minified file (previously 20+ dynamic file calls)
+- Now serving all backend javascript assets as one minified file (previously 30+ dynamic file calls)
+- Fixed a compability issue arising from other plugins using the same javascript dependency manager
+- Fixed an issue where OpenType features that are enabled by default did not have their UI elements reflect that correctly
+- Fixed an issue where switching fonts would revert selections made in the OpenType modal
 
 = 0.3.6 =
 * Implemented a feature that strips pasted text of its original styling

@@ -1,4 +1,4 @@
-# 0.3.7
+# 0.3.7 & 0.3.8
 - Implemented shortcode attribute to overwrite or dynamically set the default text
 - Implemented shortcode attribute to overwrite or dynamically set the fonts and font files
 - Implemented events called on the wrapper after initialisation and font change

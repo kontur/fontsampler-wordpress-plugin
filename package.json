@@ -1,6 +1,6 @@
 {
   "name": "fontsampler",
-  "version": "0.3.7",
+  "version": "0.3.8",
   "description": "Wordpress plugin for testing webfonts; dev dependencies",
   "main": "js/main.js",
   "scripts": {
@@ -21,12 +21,20 @@
       "ignore": "admin/js/fontsampler-admin.js"
     },
     "less": {
-      "patterns": ["css"],
-      "extensions": ["less"]
+      "patterns": [
+        "css"
+      ],
+      "extensions": [
+        "less"
+      ]
     },
     "less-admin": {
-      "patterns": ["admin/css"],
-      "extensions": ["less"]
+      "patterns": [
+        "admin/css"
+      ],
+      "extensions": [
+        "less"
+      ]
     }
   },
   "repository": {
@@ -42,6 +50,5 @@
   "devDependencies": {
     "npm-watch": "^0.3.0"
   },
-  "dependencies": {
-  }
+  "dependencies": {}
 }
