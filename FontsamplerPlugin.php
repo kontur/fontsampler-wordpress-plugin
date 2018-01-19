@@ -28,13 +28,19 @@ class FontsamplerPlugin {
 	const FONTSAMPLER_OPTION_HIDE_LEGACY_FORMATS = 'fontsampler_hide_legacy_formats';
 
 	function __construct( $wpdb, $twig ) {
+		$this->wpdb = $wpdb;
+		$this->twig = $twig;
+	}	
 
+	/**
+	 * Make sure to defer initialization until text domain is loaded for translations
+	 */
+	function init() {
 		// instantiate all needed helper subclasses
 		$this->msg     = new FontsamplerMessages();
 		$this->helpers = new FontsamplerHelpers( $this );
-		$this->db      = new FontsamplerDatabase( $wpdb, $this );
+		$this->db      = new FontsamplerDatabase( $this->wpdb, $this );
 		$this->notifications = new FontsamplerNotifications( $this );
-		$this->twig    = $twig;
 
 		// keep track of db versions and migrations via this
 		// simply set this to the current PLUGIN VERSION number when bumping it
@@ -150,8 +156,7 @@ class FontsamplerPlugin {
 			'initial'                   => null // initial fontset_id
 		);
 
-		$this->helpers->extend_twig( $twig );
-
+		$this->helpers->extend_twig( $this->twig );
 	}
 
 
@@ -421,6 +426,7 @@ class FontsamplerPlugin {
 	 */
 	function fontsampler_load_text_domain() {
 		load_plugin_textdomain( 'fontsampler', false, dirname( plugin_basename(__FILE__) ) . '/lang/' );
+		$this->init();
 	}
 
 
