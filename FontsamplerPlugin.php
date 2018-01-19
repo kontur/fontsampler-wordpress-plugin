@@ -352,8 +352,15 @@ class FontsamplerPlugin {
 	 * Register scripts and styles needed in the admin panel
 	 */
 	function fontsampler_admin_enqueues($hook) {
+
 		// Load only on ?page=mypluginname
-        if($hook != 'toplevel_page_fontsampler') {
+		if ( !in_array( $hook, 
+			array( 
+				'toplevel_page_fontsampler', 
+				'fontsampler_page_fontsampler-new',
+				'fontsampler_page_fontsampler-view',
+				'fontsampler_page_fontsampler-settings',
+			))) {
                 return;
         }
 
@@ -379,6 +386,7 @@ class FontsamplerPlugin {
 	 * Add the fontsampler admin menu to the sidebar
 	 */
 	function fontsampler_plugin_setup_menu() {
+
 		$numNotifications = $this->notifications->get_notifications()['num_notifications'];
 		$notifications = "";
 		if ($numNotifications > 0) {
@@ -386,10 +394,25 @@ class FontsamplerPlugin {
 				<span class="plugin-count">' . $numNotifications . '</span></span>';
 		}
 
-		add_menu_page( 'Fontsampler plugin page', 'Fontsampler' . $notifications, 'manage_options', 'fontsampler', array(
-			$this,
-			'fontsampler_admin_init',
-		), 'dashicons-editor-paragraph' );
+		add_menu_page( 'Fontsampler plugin page', 'Fontsampler' . $notifications, 
+			'manage_options', 'fontsampler', array(
+				$this,
+				'fontsampler_admin_init',
+			), 'dashicons-editor-paragraph' );
+
+		add_submenu_page( 'fontsampler', 'New Fontsampler', 'New Fontsampler', 
+			'manage_options', 'fontsampler-new', 
+			array( $this, 'fontsampler_admin_init' )
+		);
+
+		add_submenu_page( 'fontsampler', 'Settings',  'Settings', 
+			'manage_options', 'fontsampler-settings', 
+			array( $this, 'fontsampler_admin_init' )
+		);
+
+		// replace default entry label for main Fontsampler menu entry 
+		global $submenu;
+		$submenu['fontsampler'][0][0] = "All Fontsamplers";
 	}
 
 
@@ -441,6 +464,16 @@ class FontsamplerPlugin {
 	 * Rendering the admin interface and dealing for form interactions
 	 */
 	function fontsampler_admin_init() {
+		global $title;
+
+		// if entering this hook from the submenu callbacks, load different subpages
+		if ( $title === "Settings" ) {
+			$_GET['subpage'] = "settings";
+		}
+
+		if ( $title === "New Fontsampler" ) {
+			$_GET['subpage'] = "set_create";
+		}
 
 		echo '<section id="fontsampler-admin" class="';
 		echo $this->admin_hide_legacy_formats
