@@ -393,6 +393,14 @@ class FontsamplerPlugin {
 	}
 
 
+	/**
+	 * Register the text deomain for translations
+	 */
+	function fontsampler_load_text_domain() {
+		load_plugin_textdomain( 'fontsampler', false, dirname( plugin_basename(__FILE__) ) . '/lang/' );
+	}
+
+
 	/*
 	 * Expand allowed upload types to include font files
 	 */

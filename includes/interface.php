@@ -81,7 +81,7 @@
 						$samples = explode( "\n", $options['sample_texts'] );
 						if ( $set['sampletexts'] ) : ?>
 							<select name="sample-text">
-								<option value="Select a sample text">Select a sample text</option>
+								<option value="<?php _e("Select a sample text", "fontsampler"); ?>"><?php _e("Select a sample text", "fontsampler"); ?></option>
 								<?php foreach ( $samples as $sample ) : ?>
 									<option value="<?php echo $sample; ?>"><?php echo $sample; ?></option>
 								<?php endforeach; ?>
