@@ -927,12 +927,14 @@ class FontsamplerDatabase {
 		unset( $settings['is_default'] );
 
 		$problems = array();
-		foreach ( $settings as $key => $value ) {
-			$value_empty       = null === $value || "" === $value;
-			$default_not_empty = in_array( $key, $this->fontsampler->settings_defaults )
-			                     && null !== $this->fontsampler->settings_defaults[ $key ];
-			if ( $value_empty && $default_not_empty ) {
-				array_push( $problems, $key );
+		if ($settings) {
+			foreach ( $settings as $key => $value ) {
+				$value_empty       = null === $value || "" === $value;
+				$default_not_empty = in_array( $key, $this->fontsampler->settings_defaults )
+									&& null !== $this->fontsampler->settings_defaults[ $key ];
+				if ( $value_empty && $default_not_empty ) {
+					array_push( $problems, $key );
+				}
 			}
 		}
 

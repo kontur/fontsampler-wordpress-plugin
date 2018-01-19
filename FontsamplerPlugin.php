@@ -151,6 +151,7 @@ class FontsamplerPlugin {
 		);
 
 		$this->helpers->extend_twig( $twig );
+
 	}
 
 
