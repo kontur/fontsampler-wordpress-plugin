@@ -353,14 +353,8 @@ class FontsamplerPlugin {
 	 */
 	function fontsampler_admin_enqueues($hook) {
 
-		// Load only on ?page=mypluginname
-		if ( !in_array( $hook, 
-			array( 
-				'toplevel_page_fontsampler', 
-				'fontsampler_page_fontsampler-new',
-				'fontsampler_page_fontsampler-view',
-				'fontsampler_page_fontsampler-settings',
-			))) {
+		// Load only on fontsampler plugin page hooks
+		if ( preg_match("/fontsampler/i", $hook) === 0 ) {
                 return;
         }
 
