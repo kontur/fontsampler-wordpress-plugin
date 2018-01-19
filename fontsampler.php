@@ -6,7 +6,7 @@ Description: Create interactive webfont previews via shortcodes. Create and edit
 Version:     0.3.8
 Author:      Johannes Neumeier
 Author URI:  http://johannesneumeier.com
-Copyright:   Copyright 2016-2017 Johannes Neumeier
+Copyright:   Copyright 2016-2018 Johannes Neumeier
 Text Domain: fontsampler
 */
 defined( 'ABSPATH' ) or die( 'Access denied.' );

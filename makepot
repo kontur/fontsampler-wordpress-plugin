@@ -1,0 +1,1 @@
+php ../../../tools/i18n/makepot.php wp-plugin . lang/fontsampler.pot

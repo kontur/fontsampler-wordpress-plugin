@@ -86,17 +86,20 @@ class FontsamplerPlugin {
 		$this->font_formats_legacy = array( 'eot', 'ttf' );
 
 		$this->settings_defaults = array(
-			'fontsize_label'           => 'Size',
+			/* translators: Default label for font size slider in the front end */
+			'fontsize_label'           => __('Size', 'fontsampler'),
 			'fontsize_min'             => '8',
 			'fontsize_max'             => '96',
 			'fontsize_initial'         => '14',
 			'fontsize_unit'            => 'px',
-			'letterspacing_label'      => 'Letter spacing',
+			/* translators: Default label for letter spacing slider in the front end */
+			'letterspacing_label'      => __('Letter spacing', 'fontsampler'),
 			'letterspacing_min'        => '-5',
 			'letterspacing_max'        => '5',
 			'letterspacing_initial'    => '0',
 			'letterspacing_unit'       => 'px',
-			'lineheight_label'         => 'Line height',
+			/* translators: Default label for the line height slider in the front end */
+			'lineheight_label'         => __('Line height', 'fontsampler'),
 			'lineheight_min'           => '70',
 			'lineheight_max'           => '300',
 			'lineheight_initial'       => '110',
@@ -106,10 +109,10 @@ class FontsamplerPlugin {
 			'css_color_text'            => '#333333',
 			'css_color_background'      => '#ffffff',
 			'css_color_label'           => '#333333',
-			'css_value_size_label'            => 'inherit',
-			'css_value_fontfamily_label'      => 'inherit',
-			'css_value_lineheight_label'    => 'normal',
-			'css_color_button_background' => '#efefef',
+			'css_value_size_label'       	=> 'inherit',
+			'css_value_fontfamily_label' 	=> 'inherit',
+			'css_value_lineheight_label' 	=> 'normal',
+			'css_color_button_background'	=> '#efefef',
 			'css_color_button_background_inactive' => '#dfdfdf',
 			'css_color_highlight'       => '#efefef',
 			'css_color_highlight_hover' => '#dedede',
@@ -129,12 +132,14 @@ class FontsamplerPlugin {
 			'fontpicker'                => 0,
 			'buy'                       => 0,
 			'specimen'                  => 0,
-			'buy_label'                 => 'Buy',
+			/* translators: Default label for the buy button in the front end */
+			'buy_label'                 => __('Buy', 'fontsampler'),
 			'buy_image'                 => null,
 			'buy_url'                   => null,
 			'buy_type'                  => 'label',
 			'buy_target'                => '_blank',
-			'specimen_label'            => 'Specimen',
+			/* translators: Default label for the specimen download button in the front end */
+			'specimen_label'            => __('Specimen', 'fontsampler'),
 			'specimen_image'            => null,
 			'specimen_url'              => null,
 			'specimen_type'             => 'label',
@@ -272,7 +277,7 @@ class FontsamplerPlugin {
 				// the fake font id is needed for fontsampler internals,
 				// but since these are not fonts exising in the DB the 
 				// passed in array index will suffice as ID
-				$item["id"] = $index; 
+				$item["id"] = $index;
 				return $item;
 			}, $fonts_passed_in, array_keys($fonts_passed_in));
 
