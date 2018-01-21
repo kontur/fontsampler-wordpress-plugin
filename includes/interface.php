@@ -39,8 +39,10 @@
 					case 'fontsize':
 						if ( $set['fontsize'] ) : ?>
 							<label class="fontsampler-slider">
-								<span class="slider-label"><?php echo !empty( $set['fontsize_label'] ) ? $set['fontsize_label'] : $options['fontsize_label']; ?></span>
-								<span class="slider-value type-tester__label" data-target-property="font-size"></span>
+								<span class="fontsampler-slider-header">
+									<span class="slider-label"><?php echo !empty( $set['fontsize_label'] ) ? $set['fontsize_label'] : $options['fontsize_label']; ?></span>
+									<span class="slider-value type-tester__label" data-target-property="font-size"></span>
+								</span>
 								<div class="type-tester__slider" data-target-property="font-size"></div>
 							</label>
 						<?php endif;
@@ -49,9 +51,10 @@
 					case 'letterspacing':
 						if ( $set['letterspacing'] ) : ?>
 							<label class="fontsampler-slider">
-								<span class="slider-label"><?php echo !empty( $set['letterspacing_label'] ) ? $set['letterspacing_label'] : $options['letterspacing_label']; ?></span>
-								<span class="slider-value type-tester__label"
-								      data-target-property="letter-spacing"></span>
+								<span class="fontsampler-slider-header">
+									<span class="slider-label"><?php echo !empty( $set['letterspacing_label'] ) ? $set['letterspacing_label'] : $options['letterspacing_label']; ?></span>
+									<span class="slider-value type-tester__label" data-target-property="letter-spacing"></span>
+								</span>
 								<div class="type-tester__slider" data-target-property="letter-spacing"></div>
 							</label>
 						<?php endif;
@@ -60,8 +63,10 @@
 					case 'lineheight':
 						if ( $set['lineheight'] ) : ?>
 							<label class="fontsampler-slider">
-								<span class="slider-label"><?php echo !empty( $set['lineheight_label'] ) ? $set['lineheight_label'] : $options['lineheight_label']; ?></span>
-								<span class="slider-value type-tester__label" data-target-property="line-height"></span>
+								<span class="fontsampler-slider-header">
+									<span class="slider-label"><?php echo !empty( $set['lineheight_label'] ) ? $set['lineheight_label'] : $options['lineheight_label']; ?></span>
+									<span class="slider-value type-tester__label" data-target-property="line-height"></span>
+								</span>
 								<div class="type-tester__slider" data-target-property="line-height"></div>
 							</label>
 						<?php endif;

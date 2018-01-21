@@ -472,7 +472,6 @@
   right: 5px;
   top: 0;
   text-align: right;
-  direction: ltr !important;
 }
 .fontsampler-wrapper .fontsampler-interface .fontsampler-ui-block-fontpicker .fontsampler-font-label {
   height: 100%;

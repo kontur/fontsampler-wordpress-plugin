@@ -169,7 +169,7 @@
   float: left;
   background: #B8E986;
   border: 3px solid #CBCBCB;
-  border-left: 0;
+  border-left-width: 0;
   border-radius: 0 5px 5px 0;
   color: #222222;
   font-weight: bold;
@@ -810,6 +810,26 @@
   display: block;
   height: 12.5%;
   width: 100%;
+}
+body.rtl #fontsampler-admin table,
+body.rtl #fontsampler-admin thead,
+body.rtl #fontsampler-admin tbody,
+body.rtl #fontsampler-admin tr,
+body.rtl #fontsampler-admin th,
+body.rtl #fontsampler-admin td {
+  text-align: right;
+}
+body.rtl #fontsampler-admin code.fontsampler-clipboard,
+body.rtl #fontsampler-admin .fontsampler-copy-clipboard {
+  float: right;
+}
+body.rtl #fontsampler-admin code.fontsampler-clipboard {
+  border-radius: 0 5px 5px 0;
+}
+body.rtl #fontsampler-admin .fontsampler-copy-clipboard {
+  border-radius: 5px 0 0 5px;
+  border-left-width: 3px !important;
+  border-right-width: 0;
 }
 /*
  * Scope all css to be contained only within the fontsampler wrapper
