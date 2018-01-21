@@ -421,6 +421,8 @@
 #fontsampler-admin .fontsampler-options-row {
   clear: both;
   overflow: auto;
+  display: flex;
+  justify-content: space-between;
 }
 #fontsampler-admin .fontsampler-options-row:nth-of-type(2n + 1) {
   background: #F2F2F2;
@@ -435,13 +437,16 @@
   font-weight: normal;
 }
 #fontsampler-admin .fontsampler-options-row > strong {
+  box-sizing: border-box;
   padding: 0.75em 1em;
-  width: 20%;
+  flex-basis: 20%;
+  flex-shrink: 0;
 }
 #fontsampler-admin .fontsampler-options-row > div {
   box-sizing: border-box;
   padding: 0.5em;
-  width: 39%;
+  flex-basis: 40%;
+  flex-shrink: 1;
 }
 #fontsampler-admin .fontsampler-options-row > div:nth-of-type(1) {
   border-left: 5px solid #FFFFFF;
@@ -831,6 +836,16 @@ body.rtl #fontsampler-admin .fontsampler-copy-clipboard {
   border-left-width: 3px !important;
   border-right-width: 0;
 }
+body.rtl #fontsampler-admin .fontsampler-settings-reset {
+  float: left;
+}
+body.rtl #fontsampler-admin footer li {
+  float: right;
+}
+body.rtl #fontsampler-admin .fontsampler-options.default-text-alignment > div label {
+  margin-right: 0;
+  margin-left: 2em;
+}
 /*
  * Scope all css to be contained only within the fontsampler wrapper
  */
@@ -1063,11 +1078,12 @@ body.rtl #fontsampler-admin .fontsampler-copy-clipboard {
 }
 #fontsampler-admin .fontsampler-admin-column-wrapper {
   clear: both;
+  display: flex;
+  justify-content: space-between;
   overflow: auto;
+  width: 100%;
 }
 #fontsampler-admin .fontsampler-admin-column-half {
-  float: left;
-  margin-right: 5%;
   width: 45%;
 }
 #fontsampler-admin .selectric .button {

@@ -3,6 +3,10 @@
 {% block content %}
 <h1>Settings</h1>
 
+<p>These settings are applied to all Fontsamplers on the site. You can set sensible defaults here, 
+and if needed overwrite a specific option in a Fontsampler's unique settings.</p>
+<p>Updating the default settings will update all Fontsamplers that use default settings.</p>
+
 <form method="post" action="?page=fontsampler&amp;subpage=settings" class="form-settings fontsampler-validate">
 	<input type="hidden" name="action" value="edit_settings">
 	{{ wp_nonce_field( 'fontsampler-action-edit_settings' )|raw }}
