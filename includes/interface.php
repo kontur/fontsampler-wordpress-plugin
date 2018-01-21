@@ -81,6 +81,7 @@
 						$samples = explode( "\n", $options['sample_texts'] );
 						if ( $set['sampletexts'] ) : ?>
 							<select name="sample-text">
+								<?php /* translators: The first and visible entry in the sample text drop down in the frontend */ ?>
 								<option value="<?php _e("Select a sample text", "fontsampler"); ?>"><?php _e("Select a sample text", "fontsampler"); ?></option>
 								<?php foreach ( $samples as $sample ) : ?>
 									<option value="<?php echo $sample; ?>"><?php echo $sample; ?></option>

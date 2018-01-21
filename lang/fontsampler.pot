@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Fontsampler 0.3.8\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/fontsampler\n"
-"POT-Creation-Date: 2018-01-19 13:39:12+00:00\n"
+"POT-Creation-Date: 2018-01-21 10:48:15+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -13,38 +13,36 @@ msgstr ""
 "Language-Team: LANGUAGE <LL@li.org>\n"
 
 #. translators: Default label for font size slider in the front end
-
-#: FontsamplerPlugin.php:90
+#: FontsamplerPlugin.php:62
 msgid "Size"
 msgstr ""
 
 #. translators: Default label for letter spacing slider in the front end
-
-#: FontsamplerPlugin.php:96
+#: FontsamplerPlugin.php:68
 msgid "Letter spacing"
 msgstr ""
 
 #. translators: Default label for the line height slider in the front end
-
-#: FontsamplerPlugin.php:102
+#: FontsamplerPlugin.php:74
 msgid "Line height"
 msgstr ""
 
 #. translators: Default label for the buy button in the front end
-
-#: FontsamplerPlugin.php:136
+#: FontsamplerPlugin.php:108
 msgid "Buy"
 msgstr ""
 
 #. translators: Default label for the specimen download button in the front end
-
-#: FontsamplerPlugin.php:142
+#: FontsamplerPlugin.php:114
 msgid "Specimen"
 msgstr ""
 
-#: includes/interface.php:84
+#. translators: The first and visible entry in the sample text drop down in the
+#. frontend
+#: includes/interface.php:85
 msgid "Select a sample text"
 msgstr ""
+
 #. Plugin Name of the plugin/theme
 msgid "Fontsampler"
 msgstr ""
@@ -54,7 +52,9 @@ msgid "https://fontsampler.johannesneumeier.com"
 msgstr ""
 
 #. Description of the plugin/theme
-msgid "Create interactive webfont previews via shortcodes. Create and edit previews from the &para; Fontsampler sidebar menu or click \"Settings\" on the left."
+msgid ""
+"Create interactive webfont previews via shortcodes. Create and edit previews "
+"from the &para; Fontsampler sidebar menu or click \"Settings\" on the left."
 msgstr ""
 
 #. Author of the plugin/theme
