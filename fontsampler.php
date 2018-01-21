@@ -35,7 +35,6 @@ if ( version_compare( PHP_VERSION, "5.6" ) < 0 ) {
 	add_action( 'admin_menu', 'addMenu' );
 } else {
 	// PHP version is good, let's go all bells and whistles...
-
 	require_once( 'FontsamplerPlugin.php' );
 
 	// Convenience subclasses instantiated within the FontsamplerPlugin class
@@ -50,10 +49,15 @@ if ( version_compare( PHP_VERSION, "5.6" ) < 0 ) {
 	require_once( 'vendor/oyejorge/less.php/lessc.inc.php' );
 	require_once( 'vendor/autoload.php' );
 
+	// hook all plugin classes init to when Wordpress is ready
+	add_action( 'init', "fontsampler_init" );
+}
+
+function fontsampler_init() {
+	global $wpdb;
+
 	$loader = new Twig_Loader_Filesystem( __DIR__ . '/includes' );
 	$twig   = new Twig_Environment( $loader );
-
-	global $wpdb;
 	$f = new FontsamplerPlugin( $wpdb, $twig );
 
 	// register the shortcode hook

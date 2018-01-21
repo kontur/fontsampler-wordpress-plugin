@@ -30,12 +30,6 @@ class FontsamplerPlugin {
 	function __construct( $wpdb, $twig ) {
 		$this->wpdb = $wpdb;
 		$this->twig = $twig;
-	}	
-
-	/**
-	 * Make sure to defer initialization until text domain is loaded for translations
-	 */
-	function init() {
 
 		// TODO combined default_features and boolean options as array of objects
 		// with "isBoolean" attribute
@@ -428,7 +422,6 @@ class FontsamplerPlugin {
 	 */
 	function fontsampler_load_text_domain() {
 		load_plugin_textdomain( 'fontsampler', false, dirname( plugin_basename(__FILE__) ) . '/lang/' );
-		$this->init();
 	}
 
 

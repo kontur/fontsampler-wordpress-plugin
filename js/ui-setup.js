@@ -66,19 +66,25 @@ define(['jquery', 'rangeslider', 'selectric'], function ($) {
             $fs.html(val);
         });
 
-        $wrapper.find('.fontsampler-interface input[type="range"]').rangeslider({
-            // Feature detection the default is `true`.
-            // Set this to `false` if you want to use
-            // the polyfill also in Browsers which support
-            // the native <input type="range"> element.
-            polyfill: false,
-            onSlide: function (position, element) {
-                debounce(dispatchVanillaEvent(this.$element[0], 'input'), 250);
-                closeOpenOTModal();
-            },
-            onSlideEnd: function (position, element) {
-                debounce(dispatchVanillaEvent(this.$element[0], 'input'), 250);
-            }
+        $wrapper.find('.fontsampler-interface input[type="range"]').each(function () {
+            // since specimentools only creates the input element, hand down the RTL 
+            // if set on the parent
+            $(this).attr("data-direction", $(this).parent().data("direction"));
+
+            $(this).rangeslider({
+                // Feature detection the default is `true`.
+                // Set this to `false` if you want to use
+                // the polyfill also in Browsers which support
+                // the native <input type="range"> element.
+                polyfill: false,
+                onSlide: function (position, element) {
+                    debounce(dispatchVanillaEvent(this.$element[0], 'input'), 250);
+                    closeOpenOTModal();
+                },
+                onSlideEnd: function (position, element) {
+                    debounce(dispatchVanillaEvent(this.$element[0], 'input'), 250);
+                }
+            });
         });
 
         // transform select dropdowns

@@ -393,6 +393,9 @@
   float: left;
   line-height: 1.2;
 }
+.rtl .fontsampler-wrapper .fontsampler-interface .fontsampler-ui-block {
+  float: right;
+}
 .fontsampler-wrapper .fontsampler-interface .fontsampler-ui-block.fontsampler-ui-block-fontsampler {
   height: auto;
   width: 100%;
@@ -402,6 +405,9 @@
   float: left;
   padding-right: 5px;
   height: 100%;
+}
+.rtl .fontsampler-wrapper .fontsampler-interface .fontsampler-multiselect {
+  float: right;
 }
 .fontsampler-wrapper .fontsampler-interface .fontsampler-multiselect.one-item {
   width: 30px;
@@ -428,6 +434,7 @@
   font-size: inherit;
   font-family: inherit;
   color: #333;
+  cursor: pointer;
   font-weight: inherit;
   height: 100%;
   line-height: 4px;
@@ -460,17 +467,15 @@
   height: 100%;
   width: 100%;
 }
+.fontsampler-wrapper .fontsampler-interface label.fontsampler-slider .fontsampler-slider-header {
+  display: flex;
+  justify-content: space-between;
+}
 .fontsampler-wrapper .fontsampler-interface label.fontsampler-slider .slider-label {
-  padding-right: 3em;
-  width: 100%;
-  display: block;
   height: 90%;
   overflow: hidden;
 }
 .fontsampler-wrapper .fontsampler-interface label.fontsampler-slider .slider-value {
-  position: absolute;
-  right: 5px;
-  top: 0;
   text-align: right;
 }
 .fontsampler-wrapper .fontsampler-interface .fontsampler-ui-block-fontpicker .fontsampler-font-label {

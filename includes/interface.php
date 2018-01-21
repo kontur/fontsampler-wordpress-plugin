@@ -43,7 +43,8 @@
 									<span class="slider-label"><?php echo !empty( $set['fontsize_label'] ) ? $set['fontsize_label'] : $options['fontsize_label']; ?></span>
 									<span class="slider-value type-tester__label" data-target-property="font-size"></span>
 								</span>
-								<div class="type-tester__slider" data-target-property="font-size"></div>
+								<div class="type-tester__slider" data-target-property="font-size" 
+									<?php if ( is_rtl() ): ?> data-direction="rtl" <?php endif; ?>></div>
 							</label>
 						<?php endif;
 						break;
@@ -55,7 +56,8 @@
 									<span class="slider-label"><?php echo !empty( $set['letterspacing_label'] ) ? $set['letterspacing_label'] : $options['letterspacing_label']; ?></span>
 									<span class="slider-value type-tester__label" data-target-property="letter-spacing"></span>
 								</span>
-								<div class="type-tester__slider" data-target-property="letter-spacing"></div>
+								<div class="type-tester__slider" data-target-property="letter-spacing" 
+									<?php if ( is_rtl() ): ?> data-direction="rtl" <?php endif; ?>></div>
 							</label>
 						<?php endif;
 						break;
@@ -67,7 +69,8 @@
 									<span class="slider-label"><?php echo !empty( $set['lineheight_label'] ) ? $set['lineheight_label'] : $options['lineheight_label']; ?></span>
 									<span class="slider-value type-tester__label" data-target-property="line-height"></span>
 								</span>
-								<div class="type-tester__slider" data-target-property="line-height"></div>
+								<div class="type-tester__slider" data-target-property="line-height" 
+									<?php if ( is_rtl() ): ?> data-direction="rtl" <?php endif; ?>></div>
 							</label>
 						<?php endif;
 						break;
