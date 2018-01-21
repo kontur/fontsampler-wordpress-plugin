@@ -30,7 +30,10 @@ class FontsamplerPlugin {
 	function __construct( $wpdb, $twig ) {
 		$this->wpdb = $wpdb;
 		$this->twig = $twig;
+	}
 
+	function init() {
+		
 		// TODO combined default_features and boolean options as array of objects
 		// with "isBoolean" attribute
 		$this->default_features = array(
