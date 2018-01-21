@@ -36,40 +36,6 @@ class FontsamplerPlugin {
 	 * Make sure to defer initialization until text domain is loaded for translations
 	 */
 	function init() {
-		// instantiate all needed helper subclasses
-		$this->msg     = new FontsamplerMessages();
-		$this->helpers = new FontsamplerHelpers( $this );
-		$this->db      = new FontsamplerDatabase( $this->wpdb, $this );
-		$this->notifications = new FontsamplerNotifications( $this );
-
-		// keep track of db versions and migrations via this
-		// simply set this to the current PLUGIN VERSION number when bumping it
-		// i.e. a database update always bumps the version number of the plugin as well
-		$this->fontsampler_db_version = '0.3.8';
-		$current_db_version           = get_option( self::FONTSAMPLER_OPTION_DB_VERSION );
-
-		// if no previous db version has been registered assume new install and set
-		// to current version
-		if ( ! $current_db_version ) {
-			add_option( self::FONTSAMPLER_OPTION_DB_VERSION, $this->fontsampler_db_version );
-			$current_db_version = $this->fontsampler_db_version;
-		}
-		if ( version_compare( $current_db_version, $this->fontsampler_db_version ) < 0 ) {
-			$this->db->migrate_db();
-		}
-
-
-		// check if to display legacy formats or not
-		$option_legacy_formats = get_option( self::FONTSAMPLER_OPTION_HIDE_LEGACY_FORMATS );
-
-		// set the option in the db, if it's unset; default to hiding the legacy formats
-		if ( $option_legacy_formats === false ) {
-			add_option( self::FONTSAMPLER_OPTION_HIDE_LEGACY_FORMATS, '1' );
-			$this->admin_hide_legacy_formats = 1;
-		} else {
-			$this->admin_hide_legacy_formats = $option_legacy_formats;
-		}
-
 
 		// TODO combined default_features and boolean options as array of objects
 		// with "isBoolean" attribute
@@ -156,6 +122,42 @@ class FontsamplerPlugin {
 			'initial'                   => null // initial fontset_id
 		);
 
+		// instantiate all needed helper subclasses
+		$this->msg     = new FontsamplerMessages();
+		$this->helpers = new FontsamplerHelpers( $this );
+		$this->db      = new FontsamplerDatabase( $this->wpdb, $this );
+		$this->notifications = new FontsamplerNotifications( $this );
+
+		// keep track of db versions and migrations via this
+		// simply set this to the current PLUGIN VERSION number when bumping it
+		// i.e. a database update always bumps the version number of the plugin as well
+		$this->fontsampler_db_version = '0.3.8';
+		$current_db_version           = get_option( self::FONTSAMPLER_OPTION_DB_VERSION );
+
+		// if no previous db version has been registered assume new install and set
+		// to current version
+		if ( ! $current_db_version ) {
+			add_option( self::FONTSAMPLER_OPTION_DB_VERSION, $this->fontsampler_db_version );
+			$current_db_version = $this->fontsampler_db_version;
+		}
+		if ( version_compare( $current_db_version, $this->fontsampler_db_version ) < 0 ) {
+			$this->db->migrate_db();
+		}
+
+
+		// check if to display legacy formats or not
+		$option_legacy_formats = get_option( self::FONTSAMPLER_OPTION_HIDE_LEGACY_FORMATS );
+
+		// set the option in the db, if it's unset; default to hiding the legacy formats
+		if ( $option_legacy_formats === false ) {
+			add_option( self::FONTSAMPLER_OPTION_HIDE_LEGACY_FORMATS, '1' );
+			$this->admin_hide_legacy_formats = 1;
+		} else {
+			$this->admin_hide_legacy_formats = $option_legacy_formats;
+		}
+
+		// hoist some of those settings defaults to the twig engine, so some things
+		// are available globally in all twig templates
 		$this->helpers->extend_twig( $this->twig );
 	}
 

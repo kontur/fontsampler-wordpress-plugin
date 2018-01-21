@@ -402,7 +402,13 @@ define(['jquery', 'rangeslider', 'selectric', 'validate', 'fontsampler'],
                 .find("input[name*='use_default']").attr('checked', 'checked');
         });
 
-    }
+        $("#fontsampler-admin").on("click", "input.fontsampler-admin-feature-label-reset", function (e) {
+            e.preventDefault();
+            $(this).closest(".fontsampler-options-row")
+                .find(".fontsampler-admin-slider-label").val($(this).data("default"));
+        });
+
+    } // end main
 
 
     // Due to clipboard's funny transpiling in combinition with requirejs' optimizer's

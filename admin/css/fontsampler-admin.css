@@ -309,6 +309,16 @@
 #fontsampler-admin .fontsampler-settings-reset p {
   margin: 0;
 }
+#fontsampler-admin .fontsampler-admin-feature-label-reset {
+  border-width: 2px;
+  color: #CBCBCB;
+  cursor: pointer;
+}
+#fontsampler-admin .fontsampler-admin-feature-label-reset:hover,
+#fontsampler-admin .fontsampler-admin-feature-label-reset:focus {
+  border-color: #DDAA33;
+  color: #DDAA33;
+}
 #fontsampler-admin #fontsampler-fontset-list .fontsampler-font-set {
   background: #F2F2F2;
   padding: 0.5em;

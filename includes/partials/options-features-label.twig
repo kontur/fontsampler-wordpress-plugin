@@ -20,7 +20,13 @@
 {% endblock %}
 
 {% block default %}
-    {% if not settings %}
+    {% if settings %}
+        {% if f.label_installation_default and (use_default ? default : value) != label_installation_default %}
+            <label>
+                <input class="fontsampler-admin-feature-label-reset" type="button" value="Reset to default" data-default="{{ label_installation_default }}">
+            </label>
+        {% endif %}
+    {% else %}
         <label class="fontsampler-radio">
             <input type="radio" name="{{ label }}_use_default" value="1"
                 {% if use_default or set_uses_defaults == 1 %} checked="checked" {% endif %}>

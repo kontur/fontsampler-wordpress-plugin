@@ -25,6 +25,7 @@ class FontsamplerHelpers {
 				'slider_initial_label' => 'Initial px',
 				'slider_min_label'     => 'Min px',
 				'slider_max_label'     => 'Max px',
+				'label_installation_default' => $this->fontsampler->settings_defaults['fontsize_label'],
 			),
 			'letterspacing' => array(
 				'name'                 => 'letterspacing',
@@ -33,6 +34,7 @@ class FontsamplerHelpers {
 				'slider_initial_label' => 'Initial px',
 				'slider_min_label'     => 'Min px',
 				'slider_max_label'     => 'Max px',
+				'label_installation_default' => $this->fontsampler->settings_defaults['letterspacing_label'],
 			),
 			'lineheight'    => array(
 				'name'                 => 'lineheight',
@@ -41,6 +43,7 @@ class FontsamplerHelpers {
 				'slider_initial_label' => 'Initial %',
 				'slider_min_label'     => 'Min %',
 				'slider_max_label'     => 'Max %',
+				'label_installation_default' => $this->fontsampler->settings_defaults['lineheight_label'],
 			)
 		);
 		$this->additional_features = array(
