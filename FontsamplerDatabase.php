@@ -123,6 +123,8 @@ class FontsamplerDatabase {
 			`alignment_initial` varchar(50) DEFAULT NULL,
 			`sample_texts` text DEFAULT NULL,
 			`sample_texts_default_option` VARCHAR(255) DEFAULT NULL,
+			`locl` tinyint(1) unsigned DEFAULT NULL,
+			`locl_options` text DEFAULT NULL,
 			`css_color_text` tinytext DEFAULT NULL,
 			`css_color_background` tinytext DEFAULT NULL,
 			`css_color_label` tinytext DEFAULT NULL,
@@ -327,6 +329,11 @@ class FontsamplerDatabase {
 				// add default text for the sample texts dropdown, which can now also be overwritten
 				'ALTER TABLE ' . $this->table_settings . " ADD `sample_texts_default_option` VARCHAR(255) DEFAULT NULL",
 				'UPDATE ' . $this->table_settings . " SET `sample_texts_default_option` = 'Select a sample text' WHERE `is_default` = 1",
+
+				// language dropdown for locl feature display
+				'ALTER TABLE ' . $this->table_settings . " ADD `locl` tinyint(1) unsigned DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " ADD `locl_options` text DEFAULT NULL",
+				'UPDATE ' . $this->table_settings . " SET `locl` = 0 WHERE `is_default` = 1"
 			)
 		);
 

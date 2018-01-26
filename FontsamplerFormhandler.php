@@ -138,6 +138,7 @@ class FontsamplerFormhandler {
 				'alignment',
 				'invert',
 				'opentype',
+				'locl',
 				'multiline',
 				'buy',
 				'specimen'
@@ -160,8 +161,14 @@ class FontsamplerFormhandler {
 					} else {
 						$settings['sample_texts_default_option'] = $this->post['sample_texts_default_option'];
 					}
+				}
 
-					// TODO add sample_text_default
+				if ( $checkbox === 'locl' ) {
+					if ( intval( $this->post['locl_use_default'] ) === 1 ) {
+						$settings['locl_options'] = null;
+					} else {
+						$settings['locl_options'] = $this->post['locl_options'];
+					}
 				}
 			}
 

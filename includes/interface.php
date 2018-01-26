@@ -98,6 +98,22 @@
 						<?php endif;
 						break;
 
+					case 'locl':
+						$locl_options = !empty( $set['locl_options'] ) ? $set['locl_options'] : $options['locl_options'];
+						$locales = explode( "\n", $locl_options );
+						if ( !empty( $locales ) ) {
+							$locales = array_map(function ($item) {
+								return explode("|", $item);
+							}, $locales); ?>
+
+							<select name="locl-select">
+								<option selected="selected" value="">-</option>
+								<?php foreach ( $locales as $locl ) : ?>
+									<option value="<?php echo trim($locl[0]); ?>"><?php echo trim($locl[1]); ?></option>
+								<?php endforeach; ?>
+							</select>							
+					<?php }
+
 					case 'alignment':
 						if ( $set['alignment'] ) :
 							$is_ltr = isset( $set['is_ltr'] ) && $set['is_ltr'] == "1";

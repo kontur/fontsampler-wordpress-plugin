@@ -79,6 +79,13 @@
             <span>{{ description }}</span>
         </label>
 
+        {% if label == 'locl' %}
+            {% include 'partials/button-details.twig' %}
+            <div class="fontsampler-options-features-details">
+                {% include 'partials/options-features-locl.twig' %}
+            </div>
+        {% endif %}
+
         {% if label == 'sampletexts' %}
             {% include 'partials/button-details.twig' %}
             <div class="fontsampler-options-features-details">

@@ -52,6 +52,7 @@ class FontsamplerHelpers {
 			'alignment'   => 'Alignment controls',
 			'invert'      => 'Allow inverting the text field to display negative text',
 			'opentype'    => 'Display OpenType feature controls (automatic detection)',
+			'locl'		  => 'Add dropdown for switching language (activates locl features)',
 			'multiline'   => 'Allow line breaks',
 			'buy'         => 'Display a link to buy these fonts',
 			'specimen'    => 'Display a link to a specimen',

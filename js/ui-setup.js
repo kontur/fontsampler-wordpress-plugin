@@ -59,6 +59,19 @@ define(['jquery', 'rangeslider', 'selectric'], function ($) {
         });
 
 
+        // language switcher to activate locl features
+        $wrapper.find(".fontsampler-interface select[name='locl-select']").on("change", function () {
+            var $tester = $(this).closest(".fontsampler-interface").find(".type-tester__content"),
+                val = $(this).val();
+
+            if (val) {
+                $tester.attr("lang", $(this).val())
+            } else {
+                $tester.removeAttr("lang")
+            }
+        })
+
+
         $wrapper.find(".fontsampler-interface select[name='sample-text']").on('change', function () {
             var $fs = $(this).closest('.fontsampler-interface').find(typeTesterContentSelector),
                 val = $(this).val();

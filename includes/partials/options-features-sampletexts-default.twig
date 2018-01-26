@@ -5,8 +5,8 @@
 {% block custom %}
     {% if not settings %}
         <label class="fontsampler-radio">
-            <input type="radio" name="sampletexts_use_default_label" value="0"
-                {% if set['sample_texts_default_option'] is not empty %} checked="checked" {% endif %}>
+            {% if not settings %}<input type="radio" name="sampletexts_use_default_label" value="0"
+                {% if set['sample_texts_default_option'] is not empty %} checked="checked" {% endif %}>{% endif %}
             <span class="settings-description">Sample texts dropdown default option
             <small>(the text that the dropdown reads when no option is selected yet)</small></span>
             <input name="sample_texts_default_option" value="{{ set['sample_texts_default_option'] }}">
