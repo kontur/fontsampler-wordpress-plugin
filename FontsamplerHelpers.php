@@ -451,6 +451,8 @@ class FontsamplerHelpers {
 		$twig->addGlobal( 'slider_ranges', $this->slider_ranges );
 
 		$twig->addGlobal( 'is_rtl', is_rtl() );
+
+		$twig->addGlobal( 'settings_defaults', $this->fontsampler->settings_defaults );
 	}
 
 }

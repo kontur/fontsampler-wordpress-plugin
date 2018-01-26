@@ -154,6 +154,14 @@ class FontsamplerFormhandler {
 					} else {
 						$settings['sample_texts'] = $this->post['sample_texts'];
 					}
+
+					if ( intval( $this->post['sampletexts_use_default_label'] ) === 1 ) {
+						$settings['sample_texts_default_option'] = null;
+					} else {
+						$settings['sample_texts_default_option'] = $this->post['sample_texts_default_option'];
+					}
+
+					// TODO add sample_text_default
 				}
 			}
 
@@ -389,7 +397,7 @@ class FontsamplerFormhandler {
 			foreach ( $settings_fields as $field ) {
 				if ( in_array( $field, $checkbox_features ) ) {
 					$data[ $field ] = ( isset( $this->post[ $field ] ) && $this->post[ $field ] == 1 ) ? 1 : 0;
-				} else {
+				} else {					
 					if ( isset( $this->post[ $field ] ) ) {
 						$data[ $field ] = trim( $this->post[ $field ] );
 					} else {

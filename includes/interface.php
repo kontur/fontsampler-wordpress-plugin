@@ -90,7 +90,7 @@
 						if ( $set['sampletexts'] ) : ?>
 							<select name="sample-text">
 								<?php /* translators: The first and visible entry in the sample text drop down in the frontend */ ?>
-								<option value="<?php _e("Select a sample text", "fontsampler"); ?>"><?php _e("Select a sample text", "fontsampler"); ?></option>
+								<option selected="selected"><?php echo !empty( $set['sample_texts_default_option'] ) ? $set['sample_texts_default_option'] : $options['sample_texts_default_option']; ?></option>
 								<?php foreach ( $samples as $sample ) : ?>
 									<option value="<?php echo $sample; ?>"><?php echo $sample; ?></option>
 								<?php endforeach; ?>
