@@ -31,3 +31,8 @@ msgstr "Esimerkki"
 #: includes/interface.php:84
 msgid "Select a sample text"
 msgstr "Valitse"
+
+#. translators: Default selection in the language (locl feature) dropdown
+#: FontsamplerPlugin.php:83
+msgid "Valitse kieli"
+msgstr ""

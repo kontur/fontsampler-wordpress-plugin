@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Fontsampler 0.3.8\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/fontsampler\n"
-"POT-Creation-Date: 2018-01-21 10:48:15+00:00\n"
+"POT-Creation-Date: 2018-01-26 22:55:53+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -13,34 +13,38 @@ msgstr ""
 "Language-Team: LANGUAGE <LL@li.org>\n"
 
 #. translators: Default label for font size slider in the front end
-#: FontsamplerPlugin.php:62
+#: FontsamplerPlugin.php:60
 msgid "Size"
 msgstr ""
 
 #. translators: Default label for letter spacing slider in the front end
-#: FontsamplerPlugin.php:68
+#: FontsamplerPlugin.php:66
 msgid "Letter spacing"
 msgstr ""
 
 #. translators: Default label for the line height slider in the front end
-#: FontsamplerPlugin.php:74
+#: FontsamplerPlugin.php:72
 msgid "Line height"
 msgstr ""
 
+#. translators: Default selection in the sample text dropdown
+#: FontsamplerPlugin.php:80
+msgid "Select a sample text"
+msgstr ""
+
+#. translators: Default selection in the language (locl feature) dropdown
+#: FontsamplerPlugin.php:83
+msgid "Select a language"
+msgstr ""
+
 #. translators: Default label for the buy button in the front end
-#: FontsamplerPlugin.php:108
+#: FontsamplerPlugin.php:112
 msgid "Buy"
 msgstr ""
 
 #. translators: Default label for the specimen download button in the front end
-#: FontsamplerPlugin.php:114
+#: FontsamplerPlugin.php:118
 msgid "Specimen"
-msgstr ""
-
-#. translators: The first and visible entry in the sample text drop down in the
-#. frontend
-#: includes/interface.php:85
-msgid "Select a sample text"
 msgstr ""
 
 #. Plugin Name of the plugin/theme
