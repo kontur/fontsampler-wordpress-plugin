@@ -1,3 +1,11 @@
+# 0.4.0
+- Implemented langauge locale picker, which allows previewing Opentype locl substitutions
+- Implemented default translations for frontend strings
+- Included translations: English, German, Finnish, Persian
+- Improved rendering for right-to-left languages in frontend and backend
+- ! Deprecating Specimen and Link UI fields; those will get removed with 0.5.0 and replaced with hooks to enable customising
+- ! Deprecating "Legacy formats" now still included (hidden by default) in the admin area; those will get removed with 0.5.0
+
 # 0.3.7 & 0.3.8
 - Implemented shortcode attribute to overwrite or dynamically set the default text
 - Implemented shortcode attribute to overwrite or dynamically set the fonts and font files
