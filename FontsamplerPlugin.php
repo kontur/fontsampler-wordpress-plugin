@@ -76,8 +76,11 @@ class FontsamplerPlugin {
 			'lineheight_unit'          => '%',
 			'alignment_initial'         => 'left',
 			'sample_texts'              => "hamburgerfontstiv\nabcdefghijklmnopqrstuvwxyz\nABCDEFGHIJKLMNOPQRSTUVWXYZ\nThe quick brown fox jumps over the lazy cat",
+			/* translators: Default selection in the sample text dropdown */
 			"sample_texts_default_option" => __("Select a sample text", "fontsampler"),
 			'locl_options'				=> '',
+			/* translators: Default selection in the language (locl feature) dropdown */
+			'locl_default_option'		=> __("Select a language", "fontsampler"),
 			'css_color_text'            => '#333333',
 			'css_color_background'      => '#ffffff',
 			'css_color_label'           => '#333333',

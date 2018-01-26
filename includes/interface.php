@@ -107,7 +107,7 @@
 							}, $locales); ?>
 
 							<select name="locl-select">
-								<option selected="selected" value="">-</option>
+								<option selected="selected" value=""><?php echo !empty( $set['locl_default_option'] ) ? $set['locl_default_option'] : $options['locl_default_option']; ?></option>
 								<?php foreach ( $locales as $locl ) : ?>
 									<option value="<?php echo trim($locl[0]); ?>"><?php echo trim($locl[1]); ?></option>
 								<?php endforeach; ?>

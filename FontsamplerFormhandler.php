@@ -169,6 +169,12 @@ class FontsamplerFormhandler {
 					} else {
 						$settings['locl_options'] = $this->post['locl_options'];
 					}
+
+					if ( intval( $this->post['locl_use_default_label'] ) === 1 ) {
+						$settings['locl_default_option'] = null;
+					} else {
+						$settings['locl_default_option'] = $this->post['locl_default_option'];
+					}
 				}
 			}
 
