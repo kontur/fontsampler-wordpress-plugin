@@ -34,7 +34,7 @@ define(['jquery', 'rangeslider', 'selectric'], function ($) {
      * setup function for all those UI components and interactions
      * that require jquery
      */
-    function main(wrapper, pubsub) {
+    function main(wrapper, pubsub, fontsData) {
 
         var $wrapper = $(wrapper),
             FSevents = pubsub,
@@ -44,7 +44,50 @@ define(['jquery', 'rangeslider', 'selectric'], function ($) {
             events = {
                 'activatefont': 'fontsampler.event.activatefont',
                 'afterinit': 'fontsampler.event.afterinit',
-            };
+            },
+
+            currentFontIndex = 0;
+            currentFontGlyphUnicodes = getFontGlyphs(currentFontIndex);
+
+
+        function getFontGlyphs(fontIndex) {
+            console.log("compile new glyphs list from font index", fontIndex)
+            var glyphs = fontsData._data[currentFontIndex].font.glyphs.glyphs,
+                glyphsArray = []
+
+            // glyphs is an array-like object with {0: contents, 1: contents ...} 
+            // for each glyph
+            for (var index in glyphs) {
+                var glyph = glyphs[index]
+                if (typeof glyph.unicode !== "undefined") {
+                    glyphsArray.push( glyph.unicode );
+                }
+            }
+
+            console.log(glyphsArray);
+
+            return glyphsArray;
+        }
+
+
+        /**
+         * Listen to keypress events and crosscheck current font for existiance
+         * of pressed glyph's unicode
+         */
+        $wrapper.find(".type-tester__content").on("keypress", function (event) {
+            var found = false;
+
+            if (event.charCode) {
+                try {
+                    found = currentFontGlyphUnicodes.indexOf(event.charCode) !== -1;
+
+                } catch (error) {
+                    console.log("couldn't load font glyph data", error.msg);
+                }
+            }
+
+            console.log(event.key, "in font glyphs?", found);
+        })
 
 
         function triggerEvent(e) {
@@ -54,7 +97,9 @@ define(['jquery', 'rangeslider', 'selectric'], function ($) {
 
         // Trigger various events on the wrapper element when they happen internally
         // so that library externals can hook into them
-        FSevents.subscribe('activateFont', function () {
+        FSevents.subscribe('activateFont', function (fontIndex) {
+            currentFontIndex = fontIndex;
+            currentFontGlyphUnicodes = getFontGlyphs( currentFontIndex )
             triggerEvent(events.activatefont);
         });
 

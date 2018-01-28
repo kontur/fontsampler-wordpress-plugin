@@ -86,7 +86,7 @@ define([
                 this.pubsub.publish('activateFont', this.initialFont);
                 this.wrapper.dataset['initialFontName'] = this.fontsData.getFont(this.initialFont).names.fullName.en;
                 if (typeof callback === "function") {
-                    callback(this.wrapper, this.pubsub);
+                    callback(this.wrapper, this.pubsub, this.fontsData);
                 }
             }.bind(instance));
 
