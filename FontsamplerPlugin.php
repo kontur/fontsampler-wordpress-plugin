@@ -123,6 +123,7 @@ class FontsamplerPlugin {
 			'ui_columns'                => 3,
 			'ui_order'                  => null,
 			'is_ltr'                    => 1,
+			'notdef'					=> 0,
 			'initial'                   => null // initial fontset_id
 		);
 

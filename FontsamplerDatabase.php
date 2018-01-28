@@ -126,6 +126,7 @@ class FontsamplerDatabase {
 			`locl` tinyint(1) unsigned DEFAULT NULL,
 			`locl_options` text DEFAULT NULL,
 			`locl_default_option` VARCHAR(255) DEFAULT NULL,
+			`notdef` smallint(5) DEFAULT NULL,
 			`css_color_text` tinytext DEFAULT NULL,
 			`css_color_background` tinytext DEFAULT NULL,
 			`css_color_label` tinytext DEFAULT NULL,
@@ -337,6 +338,9 @@ class FontsamplerDatabase {
 				'UPDATE ' . $this->table_settings . " SET `locl` = 0 WHERE `is_default` = 1",
 				'ALTER TABLE ' . $this->table_settings . " ADD `locl_default_option` VARCHAR(255) DEFAULT NULL",
 				'UPDATE ' . $this->table_settings . " SET `locl_default_option` = 'Select language' WHERE `is_default` = 1",
+
+				'ALTER TABLE ' . $this->table_settings . " ADD `notdef` smallint(5) DEFAULT NULL",
+				'UPDATE ' . $this->table_settings . " SET `notdef` = 0 WHERE `is_default` = 1",
 			)
 		);
 

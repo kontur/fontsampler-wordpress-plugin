@@ -57,6 +57,12 @@ class FontsamplerHelpers {
 			'buy'         => 'Display a link to buy these fonts',
 			'specimen'    => 'Display a link to a specimen',
 		);
+		$this->notdef_options = array(
+			"Do nothing (renders fallback font)",
+			"Highlight visually (renders fallback font)",
+			"Render .notdef instead (of font or else of fallback)",
+			"Block rendering",
+		);
 		// the default admin slider ranges for each field
 		$this->slider_ranges = array(
 			'fontsize'      => array( 0, 255 ), // pixels
@@ -454,6 +460,8 @@ class FontsamplerHelpers {
 		$twig->addGlobal( 'is_rtl', is_rtl() );
 
 		$twig->addGlobal( 'settings_defaults', $this->fontsampler->settings_defaults );
+
+		$twig->addGlobal( 'notdef', $this->notdef_options );
 	}
 
 }
