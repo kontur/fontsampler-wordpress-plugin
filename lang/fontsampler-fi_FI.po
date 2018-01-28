@@ -34,5 +34,5 @@ msgstr "Valitse"
 
 #. translators: Default selection in the language (locl feature) dropdown
 #: FontsamplerPlugin.php:83
-msgid "Valitse kieli"
-msgstr ""
+msgid "Select a language"
+msgstr "Valitse kieli"

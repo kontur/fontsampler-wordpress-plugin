@@ -26,3 +26,8 @@ msgstr "نمونه‌نوشته"
 #: includes/interface.php:84
 msgid "Select a sample text"
 msgstr "انتخاب یک متن نمونه"
+
+#. translators: Default selection in the language (locl feature) dropdown
+#: FontsamplerPlugin.php:83
+msgid "Select a language"
+msgstr "انتخاب یک زبان"

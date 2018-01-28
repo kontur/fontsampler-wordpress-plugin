@@ -34,5 +34,5 @@ msgstr "Beispieltext auswählen"
 
 #. translators: Default selection in the language (locl feature) dropdown
 #: FontsamplerPlugin.php:83
-msgid "Sprache auswählen"
-msgstr ""
+msgid "Select a language"
+msgstr "Sprache auswählen"
