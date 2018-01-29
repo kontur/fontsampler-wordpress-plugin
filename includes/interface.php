@@ -217,20 +217,22 @@
 						}
 						?>
 						<div autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
-						     class="current-font type-tester__content <?php
-						     if ( ! isset( $set['multiline'] ) ||
+						    class="current-font type-tester__content <?php
+						    if ( ! isset( $set['multiline'] ) ||
 						          ( isset( $set['multiline'] ) && $set['multiline'] != "1" )
-						     ) :
-							     echo ' fontsampler-is-singleline';
+						    ) :
+							    echo ' fontsampler-is-singleline';
 
-						     endif; ?>"
-						     contenteditable="true"
+						    endif; ?>"
+						    contenteditable="true"
 							<?php if ( ! $set['is_ltr'] ): echo ' dir="rtl" '; endif; ?>
 
-							 style="text-align: <?php echo $set['alignment_initial']; ?>;
+							style="text-align: <?php echo $set['alignment_initial']; ?>;
 								    font-size: <?php echo $data_initial['fontsize_initial'] . $data_initial['fontsize_unit']; ?>;
 								    letter-spacing: <?php echo $data_initial['letterspacing_initial'] . $data_initial['letterspacing_unit']; ?>;
 								    line-height: <?php echo $data_initial['lineheight_initial'] . $data_initial['lineheight_unit']; ?>;"
+							data-notdef="<?php echo $set['notdef'] !== null ? $set['notdef'] : $options['notdef']; ?>"
+						
 						><?php echo $initial_text; ?></div>
 
 						<?php
