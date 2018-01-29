@@ -1,0 +1,39 @@
+#. translators: Default label for font size slider in the front end
+
+#: FontsamplerPlugin.php:90
+msgid "Size"
+msgstr "Corpsgrootte"
+
+#. translators: Default label for letter spacing slider in the front end
+
+#: FontsamplerPlugin.php:96
+msgid "Letter spacing"
+msgstr "Spatiëring"
+
+#. translators: Default label for the line height slider in the front end
+
+#: FontsamplerPlugin.php:102
+msgid "Line height"
+msgstr "Interlinie"
+
+#. translators: Default label for the buy button in the front end
+
+#: FontsamplerPlugin.php:136
+msgid "Buy"
+msgstr "Koop"
+
+#. translators: Default label for the specimen download button in the front end
+
+#: FontsamplerPlugin.php:142
+msgid "Specimen"
+msgstr "Proef"
+
+#: includes/interface.php:84
+msgid "Select a sample text"
+msgstr "Selecteer een voorbeeldtekst"
+
+#. translators: Default selection in the language (locl feature) dropdown
+
+#: FontsamplerPlugin.php:83
+msgid "Select a language"
+msgstr "Selecteer een taal"
