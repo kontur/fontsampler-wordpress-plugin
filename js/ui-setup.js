@@ -42,13 +42,25 @@ define(['jquery', 'rangeslider', 'selectric'], function ($) {
             typeTesterContentSelector = ".type-tester__content",
 
             events = {
-                'activatefont': 'fontsampler.event.activatefont',
-                'afterinit': 'fontsampler.event.afterinit',
+                'activatefont':        'fontsampler.event.activatefont',
+                'afterinit':           'fontsampler.event.afterinit',
+                'activateopentype':    'fontsampler.event.activateopentype',
+                'activatealignment':   'fontsampler.event.activatealignment',
+                'activateinvert':      'fontsampler.event.activateinvert',
+                'activatefontpicker':  'fontsampler.event.activatefontpicker',
+                'activatesampletexts': 'fontsampler.event.activatesampletexts', 
+                'changefontsize':      'fontsampler.event.changefontsize',
+                'changelineheight':    'fontsampler.event.changelineheight',
+                'changeletterspacing': 'fontsampler.event.changeletterspacing',
             };
 
 
-        function triggerEvent(e) {
-            $wrapper.trigger(e);
+        function triggerEvent(e, params) {
+            if (typeof params !== "undefined" && params.length > 0) {
+                $wrapper.trigger(e, params);
+            } else {
+                $wrapper.trigger(e);
+            }
         }
 
 
@@ -96,6 +108,12 @@ define(['jquery', 'rangeslider', 'selectric'], function ($) {
                 },
                 onSlideEnd: function (position, element) {
                     debounce(dispatchVanillaEvent(this.$element[0], 'input'), 250);
+                    try {
+                        var block = this.$element.closest(".fontsampler-ui-block").data("block");
+                        triggerEvent(events[ "change" + block ], [this.value]);
+                    } catch (error) {
+                        console.warn(error)
+                    }
                 }
             });
         });
@@ -106,8 +124,14 @@ define(['jquery', 'rangeslider', 'selectric'], function ($) {
                 onChange: function (element) {
                     debounce(dispatchVanillaEvent(element, 'change'));
                 },
-                onBeforeOpen: function () {
+                onBeforeOpen: function (element, selectric) {
                     closeOpenOTModal();
+                    try {
+                        var block = selectric.$element.closest(".fontsampler-ui-block").data("block");
+                        triggerEvent(events["activate" + block], [selectric]);
+                    } catch (error) {
+                        console.warn(error)
+                    }
                 },
                 nativeOnMobile: false,
                 disableOnMobile: false
@@ -122,10 +146,12 @@ define(['jquery', 'rangeslider', 'selectric'], function ($) {
 
             switch ($this.closest('.fontsampler-multiselect').data("name")) {
                 case "alignment":
+                    triggerEvent(events.activatealignment, [val]);
                     $fs.css("text-align", val);
                     break;
 
                 case "invert":
+                    triggerEvent(events.activateinvert, [val]);
                     if (val == "positive") {
                         $fs.removeClass("invert");
                         $("body").removeClass("fontsampler-inverted");
@@ -142,7 +168,9 @@ define(['jquery', 'rangeslider', 'selectric'], function ($) {
                         .not($this.siblings(".fontsampler-opentype-features"))
                         .removeClass("shown")
                     
+                    triggerEvent(events.activateopentype, [$this.siblings(".fontsampler-opentype-features")])
                     $this.siblings(".fontsampler-opentype-features").toggleClass("shown")
+
                     break;
             }
 
