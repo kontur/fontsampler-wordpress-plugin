@@ -108,6 +108,7 @@ class FontsamplerPlugin {
 			'fontpicker'                => 0,
 			'buy'                       => 0,
 			'specimen'                  => 0,
+			'notdef'					=> 0,
 			/* translators: Default label for the buy button in the front end */
 			'buy_label'                 => __('Buy', 'fontsampler'),
 			'buy_image'                 => null,

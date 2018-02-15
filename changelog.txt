@@ -1,4 +1,5 @@
 # 0.4.0
+- Implemented fix that prevents the same font file being loaded several times when used in several different Fontsamplers on the same page, potentially resulting in a MASSIVE performance improvement
 - Implemented langauge locale picker, which allows previewing Opentype locl substitutions
 - Implemented default translations for frontend strings
 - Included translations: English, German, Finnish, Persian
