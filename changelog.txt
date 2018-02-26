@@ -5,6 +5,7 @@
 - Implemented default translations for frontend strings
 - Included translations: English, German, Finnish, Persian
 - Improved rendering for right-to-left languages in frontend and backend
+- Fixed an issue where settings overwrites for the sample texts dropdown would incorrectly render the default settings' sample texts
 - ! Deprecating Specimen and Link UI fields; those will get removed with 0.5.0 and replaced with hooks to enable customising
 - ! Deprecating "Legacy formats" now still included (hidden by default) in the admin area; those will get removed with 0.5.0
 
