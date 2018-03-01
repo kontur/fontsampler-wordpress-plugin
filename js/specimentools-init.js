@@ -34,7 +34,8 @@ define([
 
     function main(window, callback) {
 
-        var wrappers = window.document.getElementsByClassName("fontsampler-wrapper");
+        var wrappers = window.document.getElementsByClassName("fontsampler-wrapper"),
+            instances = [];
 
         for (var i = 0; i < wrappers.length; i++) {
             var wrapper = wrappers[i],
@@ -80,6 +81,7 @@ define([
                 wrapper: wrapper,
                 fontsData: fontsData,
                 initialFont: initialFontIndex > -1 ? initialFontIndex : 0,
+                webFontProvider: webFontProvider
             };
 
             pubsub.subscribe('allFontsLoaded', function () {
@@ -93,7 +95,11 @@ define([
             loadFonts.fromUrl(pubsub, fonts);
 
             wrapper.className += " initialized";
+
+            instances.push( instance );
         }
+
+        return instances;
     }
 
     return main;
