@@ -154,15 +154,33 @@
 #fontsampler-admin .button.delete i.icon {
   background: #C0402F;
 }
+#fontsampler-admin .button.wp-color-result {
+  padding: 0 0 0 30px;
+  border: 1px solid #CBCBCB;
+  border-radius: 3px;
+}
+#fontsampler-admin .wp-picker-input-wrap {
+  display: inline-block;
+}
+#fontsampler-admin .wp-picker-input-wrap label {
+  display: inline-block !important;
+  margin: 0 1em !important;
+}
 #fontsampler-admin table + .button {
   margin-top: 1em !important;
 }
 #fontsampler-admin .wp-picker-default {
   background: lightgrey;
-  top: -0.1em;
   position: relative;
   height: 2em;
   line-height: 1em !important;
+  opacity: 0.5;
+  transition: opacity 0.2s ease-out;
+  pointer-events: none;
+}
+#fontsampler-admin .wp-picker-container.wp-picker-active .wp-picker-default {
+  opacity: 1;
+  pointer-events: all;
 }
 #fontsampler-admin .fontsampler-copy-clipboard {
   position: relative;

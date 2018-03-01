@@ -92,7 +92,11 @@ define([
                 }
             }.bind(instance));
 
-            loadFonts.fromUrl(pubsub, fonts);
+            var globalCache = window.xhrFontCache;
+            if(!globalCache) {
+                globalCache = window.xhrFontCache = {};
+            }
+            loadFonts.fromUrl(pubsub, fonts, globalCache);
 
             wrapper.className += " initialized";
 
