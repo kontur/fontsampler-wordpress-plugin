@@ -45,6 +45,7 @@ define(['jquery', 'rangeslider', 'selectric'], function ($) {
                 'activatefont':        'fontsampler.event.activatefont',
                 'afterinit':           'fontsampler.event.afterinit',
                 'activateopentype':    'fontsampler.event.activateopentype',
+                'openedopentype':      'fontsampler.event.openedopentype',
                 'activatealignment':   'fontsampler.event.activatealignment',
                 'activateinvert':      'fontsampler.event.activateinvert',
                 'activatefontpicker':  'fontsampler.event.activatefontpicker',
@@ -170,6 +171,7 @@ define(['jquery', 'rangeslider', 'selectric'], function ($) {
                     
                     triggerEvent(events.activateopentype, [$this.siblings(".fontsampler-opentype-features")])
                     $this.siblings(".fontsampler-opentype-features").toggleClass("shown")
+                    triggerEvent(events.openedopentype, [$this.siblings(".fontsampler-opentype-features")])
 
                     break;
             }
