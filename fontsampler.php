@@ -60,8 +60,14 @@ if ( version_compare( PHP_VERSION, "5.6" ) < 0 ) {
 }
 
 function fontsampler_init() {
-	global $fontsampler;
+	global $wpdb, $fontsampler;
 
+	// It's not entirely clear why $fontsampler is not available form the previous init above,
+	// but using the wp CLI not re-initializing the instance causes nasty errors
+	// hook all plugin classes init to when Wordpress is ready
+	$loader 	 = new Twig_Loader_Filesystem( __DIR__ . '/includes' );
+	$twig   	 = new Twig_Environment( $loader );
+	$fontsampler = new FontsamplerPlugin( $wpdb, $twig );
 	$fontsampler->init();
 
 	// register the shortcode hook
