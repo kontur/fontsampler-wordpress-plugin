@@ -96,6 +96,7 @@ class FontsamplerPlugin {
 			'css_value_column_gutter'   => '10px',
 			'css_value_row_height'      => '30px',
 			'css_value_row_gutter'      => '10px',
+			'css_color_notdef'			=> '#dedede',
 			'fontsize'                  => 1,
 			'letterspacing'             => 1,
 			'lineheight'                => 1,

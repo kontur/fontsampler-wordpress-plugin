@@ -142,6 +142,7 @@ class FontsamplerDatabase {
 			`css_value_column_gutter` tinytext DEFAULT NULL,
 			`css_value_row_height` tinytext DEFAULT NULL,
 			`css_value_row_gutter` tinytext DEFAULT NULL,
+			`css_color_notdef` tinytext DEFAULT NULL,
 			PRIMARY KEY (`settings_id`)
 			) DEFAULT CHARSET=utf8";
 		$this->wpdb->query( $sql );
@@ -339,8 +340,13 @@ class FontsamplerDatabase {
 				'ALTER TABLE ' . $this->table_settings . " ADD `locl_default_option` VARCHAR(255) DEFAULT NULL",
 				'UPDATE ' . $this->table_settings . " SET `locl_default_option` = 'Select language' WHERE `is_default` = 1",
 
+				// option for notdef characters
 				'ALTER TABLE ' . $this->table_settings . " ADD `notdef` smallint(5) DEFAULT NULL",
 				'UPDATE ' . $this->table_settings . " SET `notdef` = 0 WHERE `is_default` = 1",
+
+				// color highlight for notdef characters
+				'ALTER TABLE ' . $this->table_settings . " ADD `css_color_notdef` tinytext DEFAULT NULL",
+				'UPDATE ' . $this->table_settings . " SET `css_color_notdef` = '#dedede' WHERE `is_default` = 1",
 			)
 		);
 
