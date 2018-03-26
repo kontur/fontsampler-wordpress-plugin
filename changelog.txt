@@ -1,4 +1,5 @@
 # 0.4.0
+- FEATURE: Implemented option for handling notdef glyphs
 - Implemented langauge locale picker, which allows previewing Opentype locl substitutions
 - Implemented default translations for frontend strings
 - Included translations: English, German, Finnish, Persian

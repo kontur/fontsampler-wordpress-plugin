@@ -173,7 +173,7 @@
 									?>
 									<img class="fontsampler-interface-link-image"
 									     src="<?php echo $image_src[0]; ?>"
-									     alt="<?php echo options['buy_label']; ?>">
+									     alt="<?php echo $options['buy_label']; ?>">
 								<?php else: ?>
 									<span class="fontsampler-interface-link-text"
 									><?php echo !empty($set['buy_label']) ? $set['buy_label'] : $options['buy_label']; ?></span>
@@ -233,7 +233,7 @@
 								    line-height: <?php echo $data_initial['lineheight_initial'] . $data_initial['lineheight_unit']; ?>;"
 							data-notdef="<?php echo $set['notdef'] !== null ? $set['notdef'] : $options['notdef']; ?>"
 						
-						><?php echo $initial_text; ?></div>
+						><?php echo $options['notdef']; ?>∑<?php echo $initial_text; ?></div>
 
 						<?php
 						break;

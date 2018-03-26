@@ -678,3 +678,6 @@
 .fontsampler-interface .selectric > .button {
   color: #333;
 }
+.fontsampler-interface .fontsampler-glyph-highlight {
+  color: #dedede;
+}

@@ -1,9 +1,9 @@
 === Plugin Name ===
 Contributors: kontur
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LSK5YQHHCGGYS
-Tags: fonts, typeface, preview, shortcode
+Tags: fonts, font, typeface, preview, shortcode
 Requires at least: 4.0
-Tested up to: 4.8.2
+Tested up to: 5.0
 Stable tag: 0.3.8
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html

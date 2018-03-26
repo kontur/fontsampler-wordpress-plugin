@@ -1,4 +1,4 @@
-define(['jquery', 'rangeslider', 'selectric'], function ($) {
+define(['jquery', 'js/selection', 'rangeslider', 'selectric'], function ($, selection) {
 
     function debounce(fn, debounceDuration) {
         debounceDuration = debounceDuration || 100;
@@ -44,27 +44,29 @@ define(['jquery', 'rangeslider', 'selectric'], function ($) {
             events = {
                 'activatefont': 'fontsampler.event.activatefont',
                 'afterinit': 'fontsampler.event.afterinit',
+                'notdef': 'fontsampler.event.notdef'
             },
 
-            currentFontIndex = 0;
-            currentFontGlyphUnicodes = getFontGlyphs(currentFontIndex);
+            currentFontIndex = 0,
+            currentFontGlyphUnicodes = getFontGlyphs(currentFontIndex),
+            notdef = parseInt($wrapper.find(typeTesterContentSelector).data("notdef"));
 
 
         function getFontGlyphs(fontIndex) {
-            console.log("compile new glyphs list from font index", fontIndex)
             var glyphs = fontsData._data[currentFontIndex].font.glyphs.glyphs,
-                glyphsArray = []
+                glyphsArray = [];
 
             // glyphs is an array-like object with {0: contents, 1: contents ...} 
             // for each glyph
             for (var index in glyphs) {
-                var glyph = glyphs[index]
+                var glyph = glyphs[index];
+                // if (typeof glyph.name !== "undefined" && glyph.name === ".notdef") {
+                //     notdefGlyph = glyph;
+                // }
                 if (typeof glyph.unicode !== "undefined") {
                     glyphsArray.push( glyph.unicode );
                 }
             }
-
-            console.log(glyphsArray);
 
             return glyphsArray;
         }
@@ -74,20 +76,47 @@ define(['jquery', 'rangeslider', 'selectric'], function ($) {
          * Listen to keypress events and crosscheck current font for existiance
          * of pressed glyph's unicode
          */
-        $wrapper.find(".type-tester__content").on("keypress", function (event) {
-            var found = false;
+        $wrapper.find(".type-tester__content").on("input propertychange", highlightNotdef);
 
-            if (event.charCode) {
-                try {
-                    found = currentFontGlyphUnicodes.indexOf(event.charCode) !== -1;
+        // call once on load
+        highlightNotdef();
 
-                } catch (error) {
-                    console.log("couldn't load font glyph data", error.msg);
+        function highlightNotdef() {
+            var $input = $wrapper.find(".type-tester__content"),
+                text = $input.text(),
+                newText = [],
+                cursor = selection.getCaret($input[0]),
+                cursorEnd = cursor;
+
+            // 0 = do nothing
+            // 1 = highlight (fallback)
+            // 2 = notdef (font or fallback)
+            // 3 = block
+            if (notdef) {
+                for (var i=0; i<text.length; i++) {
+                    if (currentFontGlyphUnicodes.indexOf( text.charCodeAt(i) ) === -1) {
+                        switch (notdef) {
+                            case 1:
+                                newText.push("<span class='fontsampler-glyph-highlight'>" + text[i] + "</span>");
+                                break;
+
+                            case 2:
+                                newText.push("<span class='fontsampler-glyph-notdef'>\uFFFF</span>");
+                                break;
+
+                            case 3:
+                                cursorEnd = cursor -1;
+                                break;
+                        }
+                        triggerEvent(events.notdef);
+                    } else {
+                        newText.push(text[i]);
+                    }
                 }
+                $input.html(newText.join(""));
+                selection.setCaret($input[0], cursor, cursorEnd);
             }
-
-            console.log(event.key, "in font glyphs?", found);
-        })
+        }
 
 
         function triggerEvent(e) {
@@ -99,7 +128,8 @@ define(['jquery', 'rangeslider', 'selectric'], function ($) {
         // so that library externals can hook into them
         FSevents.subscribe('activateFont', function (fontIndex) {
             currentFontIndex = fontIndex;
-            currentFontGlyphUnicodes = getFontGlyphs( currentFontIndex )
+            currentFontGlyphUnicodes = getFontGlyphs( currentFontIndex );
+            highlightNotdef();
             triggerEvent(events.activatefont);
         });
 
@@ -110,11 +140,11 @@ define(['jquery', 'rangeslider', 'selectric'], function ($) {
                 val = $(this).val();
 
             if (val) {
-                $tester.attr("lang", $(this).val())
+                $tester.attr("lang", $(this).val());
             } else {
-                $tester.removeAttr("lang")
+                $tester.removeAttr("lang");
             }
-        })
+        });
 
 
         $wrapper.find(".fontsampler-interface select[name='sample-text']").on('change', function () {
@@ -185,9 +215,9 @@ define(['jquery', 'rangeslider', 'selectric'], function ($) {
                     // of OTHER fontsamplers on the page when opening a new modal
                     $(".fontsampler-opentype-features.shown")
                         .not($this.siblings(".fontsampler-opentype-features"))
-                        .removeClass("shown")
+                        .removeClass("shown");
                     
-                    $this.siblings(".fontsampler-opentype-features").toggleClass("shown")
+                    $this.siblings(".fontsampler-opentype-features").toggleClass("shown");
                     break;
             }
 
@@ -235,12 +265,12 @@ define(['jquery', 'rangeslider', 'selectric'], function ($) {
                     // allow other events, filter any html with $.text() and replace linebreaks
                     // TODO fix paste event from setting the caret to the front of the non-input non-textarea
                     var $this = $(this),
-                        text = $this.text(),
-                        hasLinebreaks = text.indexOf("\n"),
-                        numChildren = $this.children().length;
+                        text = $this.html(),
+                        hasLinebreaks = text.indexOf("\n");
 
-                    if (-1 !== hasLinebreaks || 0 !== numChildren) {
+                    if (-1 !== hasLinebreaks) {
                         $(this).html(text.replace('/\n/gi', ''));
+                        selection.setCaret($(this)[0], $(this).text().length, 0);
                     }
                 }
             });
@@ -266,10 +296,10 @@ define(['jquery', 'rangeslider', 'selectric'], function ($) {
         // for fontsamplers that only have one font but display the fontpicker label,
         // insert the font family name that opentype.js loaded into the label
         $wrapper.find(".fontsampler-font-label").each(function () {
-            var name = $wrapper.data('initial-font-name-overwrite')
-                        ? $wrapper.data('initial-font-name-overwrite')
-                        : $wrapper.data('initial-font-name');
-            $(this).children('label').html(name)
+            var name = $wrapper.data('initial-font-name-overwrite') ? 
+                       $wrapper.data('initial-font-name-overwrite') : 
+                       $wrapper.data('initial-font-name');
+            $(this).children('label').html(name);
         });
 
 
