@@ -87,8 +87,9 @@ detect all available OpenType features from the provided webfont files.
 
 = Are there any specific requirements for using Fontsampler? =
 
-Fontsampler works with PHP 5.6 or higher, but PHP 7 is recommended. It is free software and does not require any license
-other than the open source licenses shipped with it.
+Fontsampler works with PHP 5.6.33 or higher, but PHP 7 is recommended. It is free software and does not require any license
+other than the open source licenses shipped with it. Those versions of PHP are also required for security reasons aside from 
+Fontsampler, so keeping those up to date is a good idea either way.
 
 = Are my web fonts secure when displaying them with Fontsampler? =
 

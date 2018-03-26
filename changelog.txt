@@ -1,9 +1,9 @@
 # 0.4.0
-<<<<<<< HEAD
 - FEATURE: Implemented option for handling notdef glyphs
 - FEATURE: Implemented langauge locale picker, which allows previewing Opentype locl substitutions
 - FEATURE: Implemented default translations for frontend strings
 - FEATURE: Included translations: English, German, Finnish, Persian
+- FEATURE: Added more Javascript events for various UI operations, making it easier to customise and extend the plugin
 - TWEAK: Improved rendering for right-to-left languages in frontend and backend
 - TWEAK: Fixed the warning about the minimum PHP version required for Fontsampler to be 5.6.33
 - FIX: Fixed an issue where settings overwrites for the sample texts dropdown would incorrectly render the default settings' sample texts
