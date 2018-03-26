@@ -1252,3 +1252,10 @@ body.rtl #fontsampler-admin .fontsampler-options.default-text-alignment > div la
 #fontsampler-admin .fontsampler-list-font-link {
   cursor: pointer;
 }
+#fontsampler-admin .ui-sortable-handle {
+  cursor: grab;
+  padding: 5px 10px;
+}
+#fontsampler-admin .ui-sortable-helper {
+  background: #64CAF0;
+}

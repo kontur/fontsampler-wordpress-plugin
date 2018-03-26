@@ -124,6 +124,7 @@ class FontsamplerPlugin {
 			'ui_columns'                => 3,
 			'ui_order'                  => null,
 			'is_ltr'                    => 1,
+			'notdef'					=> 0, // by default do nothing on notdef glyph input
 			'initial'                   => null // initial fontset_id
 		);
 
