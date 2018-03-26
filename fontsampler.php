@@ -16,11 +16,11 @@ defined( 'ABSPATH' ) or die( 'Access denied.' );
 function displayPhpError() {
 	echo '<section id="fontsampler-admin">';
 	echo '<div class="notice error">Your server is running PHP version ' . PHP_VERSION
-	     . ', <br>Fontsampler requires at least PHP version 5.6 or higher to run.<br><br>'
+	     . ', <br>Fontsampler requires at least PHP version 5.6.33 or higher to run.<br><br>'
 	     . 'The <a href="https://wordpress.org/about/requirements/">recommended PHP version '
 	     . 'for Wordpress itself is 7</a> or greater.<br><br>'
 	     . 'While legacy Wordpress support extends to 5.2.4, <strong>Fontsampler requires a minimum '
-	     . 'of PHP 5.6.</strong> Please be in touch with your webserver provider about upgrading or enabling '
+	     . 'of PHP 5.6.33.</strong> Please be in touch with your webserver provider about upgrading or enabling '
 	     . 'a more modern version of PHP.';
 	echo '</section>';
 	exit();
@@ -31,7 +31,7 @@ function addMenu() {
 	wp_enqueue_style( 'fontsampler_admin_css', plugin_dir_url( __FILE__ ) . '/admin/css/fontsampler-admin.css', false, '1.0.0' );
 }
 
-if ( version_compare( PHP_VERSION, "5.6" ) < 0 ) {
+if ( version_compare( PHP_VERSION, "5.6.33" ) < 0 ) {
 	add_action( 'admin_menu', 'addMenu' );
 } else {
 	// PHP version is good, let's go all bells and whistles...

@@ -112,6 +112,12 @@ class FontsamplerHelpers {
 			return substr( $item, 0, 4 ) === 'css_';
 		}, ARRAY_FILTER_USE_KEY );
 
+		// catch 5.6.30 errors about ARRAY_FILTER_USE_KEY, 5.6.33 check should
+		// catch those in the future
+		if (!is_array($css)) {
+			return false;
+		}
+
 		$supplemented = array();
 		foreach ( $css as $key => $value ) {
 			if ( null === $value ) {
@@ -339,9 +345,11 @@ class FontsamplerHelpers {
 	 */
 	function settings_array_css_to_less( $row ) {
 		$vars = array();
-		foreach ( $row as $key => $value ) {
-			if ( false !== strpos( $key, 'css_' ) ) {
-				$vars[ $key ] = $value;
+		if (is_array($row)) {
+			foreach ( $row as $key => $value ) {
+				if ( false !== strpos( $key, 'css_' ) ) {
+					$vars[ $key ] = $value;
+				}
 			}
 		}
 
