@@ -13,5 +13,5 @@
     out: "admin/js/fontsampler-admin.js",
     include: "requireLib",
     namespace: "fs",
-    optimize: "none",
+    // optimize: "none",
 })

@@ -208,6 +208,8 @@ class FontsamplerPlugin {
 			$css   = $this->helpers->get_custom_css( $set ); // returns false or link to generated custom css
 			$fonts = $this->helpers->get_best_file_from_fonts( $this->db->get_fontset_for_set( intval( $attributes['id'] ) ) );
 
+            var_dump($fonts);
+
 			if ( false !== $css ) {
 				wp_enqueue_style( 'fontsampler-interface-' . $id, $css, array(), false );
 			}
@@ -348,7 +350,6 @@ class FontsamplerPlugin {
 			>
 
 			<?php
-
 
 			// include, aka echo, template with replaced values from $replace above
 			include( 'includes/interface.php' );

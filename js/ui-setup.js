@@ -58,7 +58,6 @@ define(['jquery', 'js/selection', 'rangeslider', 'selectric'], function ($, sele
 
             notdef = parseInt($wrapper.find(typeTesterContentSelector).data("notdef"));
 
-        console.log(typeof fontsData);
         if (typeof fontsData !== "undefined") {
             var currentFontIndex = 0,
             currentFontGlyphUnicodes = getFontGlyphs(currentFontIndex);

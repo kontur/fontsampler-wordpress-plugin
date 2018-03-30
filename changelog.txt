@@ -5,6 +5,7 @@
 - FEATURE: Included translations: English, German, Finnish, Persian
 - FEATURE: Added more Javascript events for various UI operations, making it easier to customise and extend the plugin
 - FEATURE: Added 'fontsampler_enqueue_styles' filter hook to programatically trigger enqueuing the fontsampler styles (e.g. if you have programatically triggered the shortcode and want to ensure the styles are loaded in the head tag)
+- FEATURE: Implemented automatic detection and rewrite for mixed content problems when serving a site over https, but font files are stored in the media gallery with http
 - TWEAK: Improved shortcode detection and outputting of fontsampler styles to the header of pages on which the fontsampler shortcode is detected 
 - TWEAK: Improved rendering for right-to-left languages in frontend and backend
 - TWEAK: Fixed the warning about the minimum PHP version required for Fontsampler to be 5.6.33
