@@ -56,9 +56,13 @@ define(['jquery', 'js/selection', 'rangeslider', 'selectric'], function ($, sele
                 'notdef': 'fontsampler.event.notdef'
             },
 
-            currentFontIndex = 0,
-            currentFontGlyphUnicodes = getFontGlyphs(currentFontIndex),
             notdef = parseInt($wrapper.find(typeTesterContentSelector).data("notdef"));
+
+        console.log(typeof fontsData);
+        if (typeof fontsData !== "undefined") {
+            var currentFontIndex = 0,
+            currentFontGlyphUnicodes = getFontGlyphs(currentFontIndex);
+        }
 
 
         function getFontGlyphs(fontIndex) {
@@ -91,6 +95,9 @@ define(['jquery', 'js/selection', 'rangeslider', 'selectric'], function ($, sele
         highlightNotdef();
 
         function highlightNotdef() {
+            if (!currentFontGlyphUnicodes) {
+                return;
+            }
             var $input = $wrapper.find(".type-tester__content"),
                 text = $input.text(),
                 newText = [],

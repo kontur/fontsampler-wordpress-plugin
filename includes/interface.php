@@ -86,17 +86,14 @@
 						break;
 
 					case 'sampletexts':
-                        $samples = !empty($set['sample_texts']) ? $set['sample_texts'] : $options['sample_texts'];
-						if ($samples) {
-							$samples = explode( "\n", $samples );
-						}						
+						$samples = explode( "\n", $options['sample_texts'] );
 						if ( $set['sampletexts'] ) : ?>
 							<select name="sample-text">
 								<?php /* translators: The first and visible entry in the sample text drop down in the frontend */ ?>
 								<option selected="selected"><?php echo !empty( $set['sample_texts_default_option'] ) ? $set['sample_texts_default_option'] : $options['sample_texts_default_option']; ?></option>
-								<?php if ($samples): foreach ( $samples as $sample ) : ?>
+								<?php foreach ( $samples as $sample ) : ?>
 									<option value="<?php echo $sample; ?>"><?php echo $sample; ?></option>
-								<?php endforeach; endif; ?>
+								<?php endforeach; ?>
 							</select>
 						<?php endif;
 						break;
@@ -236,7 +233,7 @@
 								    line-height: <?php echo $data_initial['lineheight_initial'] . $data_initial['lineheight_unit']; ?>;"
 							data-notdef="<?php echo $set['notdef'] !== null ? $set['notdef'] : $options['notdef']; ?>"
 						
-						><?php echo $options['notdef']; ?>∑<?php echo $initial_text; ?></div>
+						><?php echo $initial_text; ?></div>
 
 						<?php
 						break;

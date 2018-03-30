@@ -15,7 +15,11 @@ require([
 ], function (init, fontsamplerUI, adminUI, adminLayout, adminUpload, adminFontupload) {
     // init any fontsampler instance on the page, i.e. when editing a fontsampler and
     // there is a preview layout rendered at the bottom
-    init(window, fontsamplerUI);
+    window.fontsamplerSetup = function () {
+        init(window, fontsamplerUI);
+    };
+    
+    window.fontsamplers = init(window, fontsamplerUI);
     
     // in the adminUI the font upload instantiates a specimentools for uploaded fonts
     // but doesn't render anything; just used for extracting the font name from the OTF

@@ -184,11 +184,6 @@ class FontsamplerPlugin {
 		// instead of: $this->fontsampler_interface_enqueues(); this:
 		add_action( 'wp_footer', array( $this, 'fontsampler_interface_enqueues' ) );
 
-		$script_url = preg_replace( "/^http\:\/\/[^\/]*/", "", plugin_dir_url( __FILE__ ) );
-		?>
-		<script> var fontsamplerBaseUrl = '<?php echo $script_url; ?>'; </script>
-		<?php
-
 		// merge in possibly passed in attributes
 		$attributes = shortcode_atts( array( 'id' => '0', 'fonts' => NULL, 'text' => NULL ), $atts );
 		$id = intval($attributes['id']);
@@ -493,12 +488,6 @@ class FontsamplerPlugin {
 			? 'fontsampler-admin-hide-legacy-formats'
 			: 'fontsampler-admin-show-legacy-formats';
 		echo '">';
-
-		// output base url for javascript loading fontsamplers in the admin area
-		$script_url = preg_replace( "/^http\:\/\/[^\/]*/", "", plugin_dir_url( __FILE__ ) );
-		?>
-		<script> var fontsamplerBaseUrl = '<?php echo $script_url; ?>'; </script>
-		<?php
 
 		$this->db->check_and_create_tables();
 
