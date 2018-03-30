@@ -6,6 +6,7 @@
 - FEATURE: Added more Javascript events for various UI operations, making it easier to customise and extend the plugin
 - TWEAK: Improved rendering for right-to-left languages in frontend and backend
 - TWEAK: Fixed the warning about the minimum PHP version required for Fontsampler to be 5.6.33
+- TWEAK: Warning and error messages now use the default Wordpress styling
 - FIX: Fixed an issue where settings overwrites for the sample texts dropdown would incorrectly render the default settings' sample texts
 - FIX: Fixed the appearance of color picker buttons in the Fontsampler admin area
 - FIX: fix that prevents the same font file being loaded several times when used in several different Fontsamplers on the same page, potentially resulting in a MASSIVE performance improvement

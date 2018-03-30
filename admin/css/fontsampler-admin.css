@@ -748,7 +748,7 @@
 }
 #fontsampler-admin header {
   background: white;
-  margin: 0 1.5em 0 0;
+  margin: 1.5em 1.5em 0 0;
   padding: 1em 1em;
 }
 #fontsampler-admin #fontsampler-menu ul {
@@ -874,6 +874,9 @@ body.rtl #fontsampler-admin .fontsampler-options.default-text-alignment > div la
   background: white;
   margin: 0 1.5em 0 0;
   padding: 1em 2em;
+}
+#fontsampler-admin .notice {
+  margin: 1em 0;
 }
 #fontsampler-admin fieldset label,
 #fontsampler-admin label.fontsampler-admin-label-block {
@@ -1005,12 +1008,6 @@ body.rtl #fontsampler-admin .fontsampler-options.default-text-alignment > div la
   margin-top: 0.5em;
   margin-bottom: 0.5em;
 }
-#fontsampler-admin .notice {
-  border: 1px solid #eee;
-  padding: 1em;
-  margin: 0 1.5em 2em 0;
-  box-shadow: none;
-}
 #fontsampler-admin code {
   border: 3px solid #CBCBCB;
   font-family: monospace;
@@ -1045,20 +1042,6 @@ body.rtl #fontsampler-admin .fontsampler-options.default-text-alignment > div la
 #fontsampler-admin td .fileformat {
   display: inline-block;
   width: 4em;
-}
-#fontsampler-admin .info,
-#fontsampler-admin .note,
-#fontsampler-admin .error {
-  display: block;
-}
-#fontsampler-admin .info {
-  color: #008EC2;
-}
-#fontsampler-admin .note {
-  color: #DDAA33;
-}
-#fontsampler-admin .error {
-  color: #C0402F;
 }
 #fontsampler-admin .fontsampler-num-notifications {
   border-radius: 100%;

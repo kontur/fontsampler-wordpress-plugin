@@ -58,14 +58,14 @@ class FontsamplerMessages {
 	 * Render different confirmation messages
 	 */
 	public static function info( $message ) {
-		echo '<strong class="info">' . $message . '</strong>';
+		echo '<div class="notice notice-info"><p>' . $message . '</p></div>';
 	}
 
 	public static function notice( $message ) {
-		echo '<strong class="note">' . $message . '</strong>';
+		echo '<div class="notice notice-warning"><p>' . $message . '</p></div>';
 	}
 
 	public static function error( $message ) {
-		echo '<strong class="error">' . $message . '</strong>';
+		echo '<div class="notice notice-error"><p>' . $message . '</p></div>';
 	}
 }
