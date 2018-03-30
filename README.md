@@ -25,6 +25,12 @@ You can also pass in fonts dynamically (i.e. without actually defining a Fontsam
 
 Essentially the fonts attribute takes a `json_encode`ed array without the opening and closing brackets (since these would break the shortcode).
 
+### Hooks
+More action and filter hooks are planned, but for now there is:
+
+**filter: fontsampler_enqueue_styles(false)**
+Fontsampler styles are automatically added to any pages that have the fontsampler shortcode on them. If you executing the shortcode programatically and want the fontsampler styles to correctly load in the header, you can use this filter hook to return true (on those specific pages).
+
 ### Reacting to Javascript events in your theme
 If you are a developer wanting to interact with Fontsampler instances you can react to the following javascript events being triggered on the Fontsampler wrappers.
 

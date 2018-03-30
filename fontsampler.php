@@ -73,6 +73,14 @@ function fontsampler_init() {
 	// register the shortcode hook
 	add_shortcode( 'fontsampler', array( $fontsampler, 'fontsampler_shortcode' ) );
 
+	// register front end styles and scripts, but don't load them yet
+	wp_register_script( 'fontsampler-js', plugin_dir_url( __FILE__ ) . 'js/fontsampler.js', array('jquery'), false, false );
+
+	// register hook to check if a shortcode is present and attempt to enqueue styles
+	// then; scripts can be enqueued in the shortcode itself, since they are okay to 
+	// be in the footer
+	add_action( 'wp', array( $fontsampler, 'check_shortcodes_enqueue_styles' ));
+    
 	// backend	
 	add_action( 'admin_menu', array( $fontsampler, 'fontsampler_plugin_setup_menu' ) );
 	add_action( 'admin_enqueue_scripts', array( $fontsampler, 'fontsampler_admin_enqueues' ) );

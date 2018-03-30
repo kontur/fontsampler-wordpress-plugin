@@ -178,11 +178,19 @@ class FontsamplerPlugin {
 	 * Register the [fontsampler id=XX] hook for use in pages and posts
 	 */
 	function fontsampler_shortcode( $atts ) {
-		// Not an ideal solution, but for the majority of conflicts from requirejs
-		// delaying trying to enqueue the fontsampler javascript ins the wp_footer
-		// hook seems to push it to the end of the enqueue stack
-		// instead of: $this->fontsampler_interface_enqueues(); this:
-		add_action( 'wp_footer', array( $this, 'fontsampler_interface_enqueues' ) );
+		global $wp_styles;
+		
+		// on printing the shortcode enqueue the scripts to be output to the footer
+		wp_enqueue_script('fontsampler-js');
+
+		// when the shortcode was detected already in the header the styles should
+		// be added already; if the styles are not enqueued (for example if called
+		// via do_shortcode()) then add them now, regardless of them getting added
+		// to the html body, which is less ideal
+		if (!in_array('fontsampler-css', array_keys($wp_styles->registered))) {
+            echo "shortcode called, but styles not present";
+            $this->enqueue_styles();
+		}
 
 		// merge in possibly passed in attributes
 		$attributes = shortcode_atts( array( 'id' => '0', 'fonts' => NULL, 'text' => NULL ), $atts );
@@ -352,15 +360,24 @@ class FontsamplerPlugin {
 		}
 	}
 
-
 	/**
-	 * Register all script and styles needed in the front end
+	 * To output the plugin styles only on pages that have the shortcode check
+	 * in the 'wp' action hook if this page seems to have the shortcode and enqueue
+	 * the styles if so
 	 */
-	function fontsampler_interface_enqueues() {
-		wp_enqueue_script( 'main-js', plugin_dir_url( __FILE__ ) . 'js/fontsampler.js', array('jquery'), false, true );
-		wp_enqueue_style( 'fontsampler-css', $this->helpers->get_css_file() );
+	function check_shortcodes_enqueue_styles() {
+		global $post;
+		if ( has_shortcode( $post->post_content, 'fontsampler') || apply_filters('fontsampler_enqueue_styles', false) ) {
+            $this->enqueue_styles();
+		}
 	}
 
+	/**
+	 * The actual style enqueue
+	 */
+	function enqueue_styles() {
+		wp_enqueue_style( 'fontsampler-css', $this->helpers->get_css_file() );
+	}
 
 	/*
 	 * Register scripts and styles needed in the admin panel
@@ -383,7 +400,7 @@ class FontsamplerPlugin {
 
 		wp_enqueue_style( 'wp-color-picker' );
 		wp_enqueue_style( 'jquery-ui-accordion' );
-		wp_enqueue_style( 'fontsampler-css', $this->helpers->get_css_file() );
+		wp_enqueue_style( 'fontsampler-css-admin', $this->helpers->get_css_file() );
 		wp_enqueue_style( 'fontsampler_admin_css', plugin_dir_url( __FILE__ ) . '/admin/css/fontsampler-admin.css', false, '1.0.0' );
 
 		wp_enqueue_media();
@@ -653,7 +670,7 @@ class FontsamplerPlugin {
 				break;
 
 			case 'settings':
-				$this->helpers->check_is_writeable( plugin_dir_path( __FILE__ ) . 'css/fontsampler-css.css', true );
+				// $this->helpers->check_is_writeable( plugin_dir_path( __FILE__ ) . 'css/fontsampler-css.css', true );
 				$settings = $this->db->get_default_settings();
 
 				// generate all necessary info for the live layout preview
