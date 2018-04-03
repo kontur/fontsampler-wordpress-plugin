@@ -470,6 +470,11 @@
   border-left: 5px solid #FFFFFF;
   border-right: 3px solid #FFFFFF;
 }
+#fontsampler-admin .fontsampler-options-row > div .settings-description small code {
+  padding: 0.5em !important;
+  white-space: nowrap;
+  line-height: 2em;
+}
 #fontsampler-admin .fontsampler-options-row > div .settings-description + input[type=text] {
   margin-left: 1.75em;
   margin-bottom: 0.5em;

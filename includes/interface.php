@@ -100,8 +100,9 @@
 
 					case 'locl':
 						$locl_options = !empty( $set['locl_options'] ) ? $set['locl_options'] : $options['locl_options'];
-						$locales = explode( "\n", $locl_options );
-						if ( !empty( $locales ) ) {
+						
+						if ( !empty( $locl_options ) ) {
+							$locales = explode( "\n", $locl_options );						
 							$locales = array_map(function ($item) {
 								return explode("|", $item);
 							}, $locales); ?>
