@@ -798,41 +798,84 @@
   color: #FFFFFF;
 }
 #fontsampler-admin footer {
-  margin: 1.5em 1.5em 0 0;
+  margin: 1em 1.5em 1em 0;
+}
+#fontsampler-admin footer .fontsampler-logos {
+  margin: 1em 0;
   padding: 1em 2em 0.5em;
   background: white;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  box-sizing: border-box;
 }
-#fontsampler-admin footer ul {
+#fontsampler-admin footer .fontsampler-logos .fontsampler-creators {
+  text-align: right;
+}
+#fontsampler-admin footer .fontsampler-logos .fontsampler-creators strong a {
+  padding: 0;
+  width: auto;
+}
+#fontsampler-admin footer .fontsampler-logos .fontsampler-creators a {
+  display: inline-block;
+  padding: 20px 0;
+  width: 160px;
+}
+#fontsampler-admin footer .fontsampler-logos .fontsampler-creators a img {
+  width: 100%;
+  height: auto;
+}
+#fontsampler-admin footer .fontsampler-logos strong {
+  display: block;
+}
+#fontsampler-admin footer .fontsampler-logos a {
+  display: block;
+}
+#fontsampler-admin footer .fontsampler-logos img {
+  display: block;
+}
+#fontsampler-admin footer .fontsampler-logos .fontsampler-supporters ul {
   overflow: auto;
 }
-#fontsampler-admin footer li {
+#fontsampler-admin footer .fontsampler-logos .fontsampler-supporters li {
   box-sizing: border-box;
   display: inline-block;
-  float: left;
   padding-right: 1em;
-  width: 20%;
-  max-width: 120px;
+  width: 120px;
 }
-#fontsampler-admin footer li > a {
-  display: block;
+#fontsampler-admin footer .fontsampler-logos .fontsampler-supporters li > a {
   height: 0;
   padding-top: 62.5%;
   position: relative;
   text-align: center;
   width: 100%;
 }
-#fontsampler-admin footer li > a img {
-  display: block;
+#fontsampler-admin footer .fontsampler-logos .fontsampler-supporters li > a img {
   height: 100%;
   top: 0;
   left: 0;
   right: 0;
   position: absolute;
 }
-#fontsampler-admin footer li > img {
+#fontsampler-admin footer .fontsampler-logos .fontsampler-supporters li > img {
   display: block;
   height: 12.5%;
   width: 100%;
+}
+#fontsampler-admin footer .fontsampler-donate {
+  padding: 0 2em 1.5em;
+  margin: 1em 0;
+  background: white;
+  text-align: left;
+  font-weight: bold;
+}
+#fontsampler-admin footer .fontsampler-donate form {
+  display: inline-block;
+  position: relative;
+  top: 0.85em;
+}
+#fontsampler-admin footer .fontsampler-donate input {
+  border: 0;
 }
 body.rtl #fontsampler-admin table,
 body.rtl #fontsampler-admin thead,
@@ -1241,4 +1284,16 @@ body.rtl #fontsampler-admin .fontsampler-options.default-text-alignment > div la
 }
 #fontsampler-admin .ui-sortable-helper {
   background: #64CAF0;
+}
+.fontsampler-changelog-fix strong {
+  color: #DDAA33;
+}
+.fontsampler-changelog-tweak strong {
+  color: #7ED321;
+}
+.fontsampler-changelog-feature strong {
+  color: #008EC2;
+}
+.fontsampler-changelog-notice strong {
+  color: #C0402F;
 }
