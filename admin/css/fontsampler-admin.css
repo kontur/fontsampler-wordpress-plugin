@@ -154,22 +154,40 @@
 #fontsampler-admin .button.delete i.icon {
   background: #C0402F;
 }
+#fontsampler-admin .button.wp-color-result {
+  padding: 0 0 0 30px;
+  border: 1px solid #CBCBCB;
+  border-radius: 3px;
+}
+#fontsampler-admin .wp-picker-input-wrap {
+  display: inline-block;
+}
+#fontsampler-admin .wp-picker-input-wrap label {
+  display: inline-block !important;
+  margin: 0 1em !important;
+}
 #fontsampler-admin table + .button {
   margin-top: 1em !important;
 }
 #fontsampler-admin .wp-picker-default {
   background: lightgrey;
-  top: -0.1em;
   position: relative;
   height: 2em;
   line-height: 1em !important;
+  opacity: 0.5;
+  transition: opacity 0.2s ease-out;
+  pointer-events: none;
+}
+#fontsampler-admin .wp-picker-container.wp-picker-active .wp-picker-default {
+  opacity: 1;
+  pointer-events: all;
 }
 #fontsampler-admin .fontsampler-copy-clipboard {
   position: relative;
   float: left;
   background: #B8E986;
   border: 3px solid #CBCBCB;
-  border-left: 0;
+  border-left-width: 0;
   border-radius: 0 5px 5px 0;
   color: #222222;
   font-weight: bold;
@@ -309,6 +327,16 @@
 #fontsampler-admin .fontsampler-settings-reset p {
   margin: 0;
 }
+#fontsampler-admin .fontsampler-admin-feature-label-reset {
+  border-width: 2px;
+  color: #CBCBCB;
+  cursor: pointer;
+}
+#fontsampler-admin .fontsampler-admin-feature-label-reset:hover,
+#fontsampler-admin .fontsampler-admin-feature-label-reset:focus {
+  border-color: #DDAA33;
+  color: #DDAA33;
+}
 #fontsampler-admin #fontsampler-fontset-list .fontsampler-font-set {
   background: #F2F2F2;
   padding: 0.5em;
@@ -411,9 +439,14 @@
 #fontsampler-admin .fontsampler-options-row {
   clear: both;
   overflow: auto;
+  display: flex;
+  justify-content: space-between;
 }
 #fontsampler-admin .fontsampler-options-row:nth-of-type(2n + 1) {
   background: #F2F2F2;
+}
+#fontsampler-admin .fontsampler-options-row:nth-of-type(2n) {
+  background: #FFFFFF;
 }
 #fontsampler-admin .fontsampler-options-row > * {
   box-sizing: border-box;
@@ -425,17 +458,25 @@
   font-weight: normal;
 }
 #fontsampler-admin .fontsampler-options-row > strong {
+  box-sizing: border-box;
   padding: 0.75em 1em;
-  width: 20%;
+  flex-basis: 20%;
+  flex-shrink: 0;
 }
 #fontsampler-admin .fontsampler-options-row > div {
   box-sizing: border-box;
   padding: 0.5em;
-  width: 39%;
+  flex-basis: 40%;
+  flex-shrink: 1;
 }
 #fontsampler-admin .fontsampler-options-row > div:nth-of-type(1) {
   border-left: 5px solid #FFFFFF;
   border-right: 3px solid #FFFFFF;
+}
+#fontsampler-admin .fontsampler-options-row > div .settings-description small code {
+  padding: 0.5em !important;
+  white-space: nowrap;
+  line-height: 2em;
 }
 #fontsampler-admin .fontsampler-options-row > div .settings-description + input[type=text] {
   margin-left: 1.75em;
@@ -715,7 +756,7 @@
 }
 #fontsampler-admin header {
   background: white;
-  margin: 0 1.5em 0 0;
+  margin: 1.5em 1.5em 0 0;
   padding: 1em 1em;
 }
 #fontsampler-admin #fontsampler-menu ul {
@@ -765,41 +806,114 @@
   color: #FFFFFF;
 }
 #fontsampler-admin footer {
-  margin: 1.5em 1.5em 0 0;
+  margin: 1em 1.5em 1em 0;
+}
+#fontsampler-admin footer .fontsampler-logos {
+  margin: 1em 0;
   padding: 1em 2em 0.5em;
   background: white;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  box-sizing: border-box;
 }
-#fontsampler-admin footer ul {
+#fontsampler-admin footer .fontsampler-logos .fontsampler-creators {
+  text-align: right;
+}
+#fontsampler-admin footer .fontsampler-logos .fontsampler-creators strong a {
+  padding: 0;
+  width: auto;
+}
+#fontsampler-admin footer .fontsampler-logos .fontsampler-creators a {
+  display: inline-block;
+  padding: 20px 0;
+  width: 160px;
+}
+#fontsampler-admin footer .fontsampler-logos .fontsampler-creators a img {
+  width: 100%;
+  height: auto;
+}
+#fontsampler-admin footer .fontsampler-logos strong {
+  display: block;
+}
+#fontsampler-admin footer .fontsampler-logos a {
+  display: block;
+}
+#fontsampler-admin footer .fontsampler-logos img {
+  display: block;
+}
+#fontsampler-admin footer .fontsampler-logos .fontsampler-supporters ul {
   overflow: auto;
 }
-#fontsampler-admin footer li {
+#fontsampler-admin footer .fontsampler-logos .fontsampler-supporters li {
   box-sizing: border-box;
   display: inline-block;
-  float: left;
   padding-right: 1em;
-  width: 20%;
-  max-width: 120px;
+  width: 120px;
 }
-#fontsampler-admin footer li > a {
-  display: block;
+#fontsampler-admin footer .fontsampler-logos .fontsampler-supporters li > a {
   height: 0;
   padding-top: 62.5%;
   position: relative;
   text-align: center;
   width: 100%;
 }
-#fontsampler-admin footer li > a img {
-  display: block;
+#fontsampler-admin footer .fontsampler-logos .fontsampler-supporters li > a img {
   height: 100%;
   top: 0;
   left: 0;
   right: 0;
   position: absolute;
 }
-#fontsampler-admin footer li > img {
+#fontsampler-admin footer .fontsampler-logos .fontsampler-supporters li > img {
   display: block;
   height: 12.5%;
   width: 100%;
+}
+#fontsampler-admin footer .fontsampler-donate {
+  padding: 0 2em 1.5em;
+  margin: 1em 0;
+  background: white;
+  text-align: left;
+  font-weight: bold;
+}
+#fontsampler-admin footer .fontsampler-donate form {
+  display: inline-block;
+  position: relative;
+  top: 0.85em;
+}
+#fontsampler-admin footer .fontsampler-donate input {
+  border: 0;
+}
+body.rtl #fontsampler-admin table,
+body.rtl #fontsampler-admin thead,
+body.rtl #fontsampler-admin tbody,
+body.rtl #fontsampler-admin tr,
+body.rtl #fontsampler-admin th,
+body.rtl #fontsampler-admin td {
+  text-align: right;
+}
+body.rtl #fontsampler-admin code.fontsampler-clipboard,
+body.rtl #fontsampler-admin .fontsampler-copy-clipboard {
+  float: right;
+}
+body.rtl #fontsampler-admin code.fontsampler-clipboard {
+  border-radius: 0 5px 5px 0;
+}
+body.rtl #fontsampler-admin .fontsampler-copy-clipboard {
+  border-radius: 5px 0 0 5px;
+  border-left-width: 3px !important;
+  border-right-width: 0;
+}
+body.rtl #fontsampler-admin .fontsampler-settings-reset {
+  float: left;
+}
+body.rtl #fontsampler-admin footer li {
+  float: right;
+}
+body.rtl #fontsampler-admin .fontsampler-options.default-text-alignment > div label {
+  margin-right: 0;
+  margin-left: 2em;
 }
 /*
  * Scope all css to be contained only within the fontsampler wrapper
@@ -811,6 +925,9 @@
   background: white;
   margin: 0 1.5em 0 0;
   padding: 1em 2em;
+}
+#fontsampler-admin .notice {
+  margin: 1em 0;
 }
 #fontsampler-admin fieldset label,
 #fontsampler-admin label.fontsampler-admin-label-block {
@@ -942,12 +1059,6 @@
   margin-top: 0.5em;
   margin-bottom: 0.5em;
 }
-#fontsampler-admin .notice {
-  border: 1px solid #eee;
-  padding: 1em;
-  margin: 0 1.5em 2em 0;
-  box-shadow: none;
-}
 #fontsampler-admin code {
   border: 3px solid #CBCBCB;
   font-family: monospace;
@@ -982,20 +1093,6 @@
 #fontsampler-admin td .fileformat {
   display: inline-block;
   width: 4em;
-}
-#fontsampler-admin .info,
-#fontsampler-admin .note,
-#fontsampler-admin .error {
-  display: block;
-}
-#fontsampler-admin .info {
-  color: #008EC2;
-}
-#fontsampler-admin .note {
-  color: #DDAA33;
-}
-#fontsampler-admin .error {
-  color: #C0402F;
 }
 #fontsampler-admin .fontsampler-num-notifications {
   border-radius: 100%;
@@ -1033,11 +1130,12 @@
 }
 #fontsampler-admin .fontsampler-admin-column-wrapper {
   clear: both;
+  display: flex;
+  justify-content: space-between;
   overflow: auto;
+  width: 100%;
 }
 #fontsampler-admin .fontsampler-admin-column-half {
-  float: left;
-  margin-right: 5%;
   width: 45%;
 }
 #fontsampler-admin .selectric .button {
@@ -1187,4 +1285,23 @@
 }
 #fontsampler-admin .fontsampler-list-font-link {
   cursor: pointer;
+}
+#fontsampler-admin .ui-sortable-handle {
+  cursor: grab;
+  padding: 5px 10px;
+}
+#fontsampler-admin .ui-sortable-helper {
+  background: #64CAF0;
+}
+.fontsampler-changelog-fix strong {
+  color: #DDAA33;
+}
+.fontsampler-changelog-tweak strong {
+  color: #7ED321;
+}
+.fontsampler-changelog-feature strong {
+  color: #008EC2;
+}
+.fontsampler-changelog-notice strong {
+  color: #C0402F;
 }

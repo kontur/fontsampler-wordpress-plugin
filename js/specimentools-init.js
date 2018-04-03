@@ -34,7 +34,8 @@ define([
 
     function main(window, callback) {
 
-        var wrappers = window.document.getElementsByClassName("fontsampler-wrapper");
+        var wrappers = window.document.getElementsByClassName("fontsampler-wrapper"),
+            instances = [];
 
         for (var i = 0; i < wrappers.length; i++) {
             var wrapper = wrappers[i],
@@ -80,20 +81,29 @@ define([
                 wrapper: wrapper,
                 fontsData: fontsData,
                 initialFont: initialFontIndex > -1 ? initialFontIndex : 0,
+                webFontProvider: webFontProvider
             };
 
             pubsub.subscribe('allFontsLoaded', function () {
                 this.pubsub.publish('activateFont', this.initialFont);
                 this.wrapper.dataset['initialFontName'] = this.fontsData.getFont(this.initialFont).names.fullName.en;
                 if (typeof callback === "function") {
-                    callback(this.wrapper, this.pubsub);
+                    callback(this.wrapper, this.pubsub, this.fontsData);
                 }
             }.bind(instance));
 
-            loadFonts.fromUrl(pubsub, fonts);
+            var globalCache = window.xhrFontCache;
+            if(!globalCache) {
+                globalCache = window.xhrFontCache = {};
+            }
+            loadFonts.fromUrl(pubsub, fonts, globalCache);
 
             wrapper.className += " initialized";
+
+            instances.push( instance );
         }
+
+        return instances;
     }
 
     return main;

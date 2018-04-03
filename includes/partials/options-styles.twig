@@ -128,3 +128,11 @@
 	default: defaults['css_value_row_height'],
 	set_uses_defaults: set.use_defaults
 }) }}
+{{  include( 'partials/styles-color-field.twig', {
+	label: 'Notdef glyphs highlight',
+	name: 'css_color_notdef',
+	description: 'Highlight color of any glpyhs that are not defined in the current font',
+	value: set['css_color_notdef'],
+	default: defaults['css_color_notdef'],
+	set_uses_defaults: set.use_defaults
+}) }}

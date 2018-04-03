@@ -14,6 +14,7 @@ require([
     // store this method globally, so it can be called again
     window.fontsamplerSetup = function () {
         init(window, fontsamplerUI);
-    }
-    init(window, fontsamplerUI);
+    } ;
+    
+    window.fontsamplers = init(window, fontsamplerUI);
 });

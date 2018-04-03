@@ -105,12 +105,15 @@ class FontsamplerFormhandler {
 			// set these basic submitted infos
 			$settings['set_id']            = $id;
 			$settings['is_ltr']            = $this->post['is_ltr'];
-			$settings['alignment_initial'] = $this->post['alignment_initial'] === 'default' ?
-				null : $this->post['alignment_initial'];
+			$settings['alignment_initial'] = $this->post['alignment_initial'] === 'default' 
+				? null : $this->post['alignment_initial'];
 			$settings['initial']           = $this->post['initial'];
 			$settings['ui_order']          = $this->post['ui_order'];
 			$settings['ui_columns']        = $this->post['ui_columns'] == 'default'
 				? null : intval( $this->post['ui_columns'] );
+			$settings['notdef'] 		   = $this->post['notdef'] === "default" 
+				? null : intval( $this->post['notdef'] );
+
 
 			// loop through the first 3 options that have more detailed sliders associated with them
 			// which in turn can rely on using defaults or adapt a custom setting as well
@@ -138,6 +141,7 @@ class FontsamplerFormhandler {
 				'alignment',
 				'invert',
 				'opentype',
+				'locl',
 				'multiline',
 				'buy',
 				'specimen'
@@ -153,6 +157,26 @@ class FontsamplerFormhandler {
 						$settings['sample_texts'] = null;
 					} else {
 						$settings['sample_texts'] = $this->post['sample_texts'];
+					}
+
+					if ( intval( $this->post['sampletexts_use_default_label'] ) === 1 ) {
+						$settings['sample_texts_default_option'] = null;
+					} else {
+						$settings['sample_texts_default_option'] = $this->post['sample_texts_default_option'];
+					}
+				}
+
+				if ( $checkbox === 'locl' ) {
+					if ( intval( $this->post['locl_use_default'] ) === 1 ) {
+						$settings['locl_options'] = null;
+					} else {
+						$settings['locl_options'] = $this->post['locl_options'];
+					}
+
+					if ( intval( $this->post['locl_use_default_label'] ) === 1 ) {
+						$settings['locl_default_option'] = null;
+					} else {
+						$settings['locl_default_option'] = $this->post['locl_default_option'];
 					}
 				}
 			}
@@ -389,7 +413,7 @@ class FontsamplerFormhandler {
 			foreach ( $settings_fields as $field ) {
 				if ( in_array( $field, $checkbox_features ) ) {
 					$data[ $field ] = ( isset( $this->post[ $field ] ) && $this->post[ $field ] == 1 ) ? 1 : 0;
-				} else {
+				} else {					
 					if ( isset( $this->post[ $field ] ) ) {
 						$data[ $field ] = trim( $this->post[ $field ] );
 					} else {

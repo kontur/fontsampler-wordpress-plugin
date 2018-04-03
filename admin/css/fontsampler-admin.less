@@ -11,6 +11,8 @@
 @import "admin-header.less"; 
 @import "admin-footer.less";
 
+@import "admin-rtl.less";
+
 /*
  * Scope all css to be contained only within the fontsampler wrapper
  */
@@ -24,15 +26,14 @@
         padding: 1em 2em;
     }
 
+    .notice {
+        margin: 1em 0;
+    }
+
     fieldset label, label.fontsampler-admin-label-block {
         display: block;
         color: @fs_color_text_medium;
         margin: 0.5em 0;
-
-        &:hover, &:focus {
-            input, select {
-            }
-        }
     }
 
     .submit {
@@ -159,14 +160,6 @@
         margin-bottom: 0.5em;
     }
 
-    // block at the top for displaying messages
-    .notice {
-        border: 1px solid #eee;
-        padding: 1em;
-        margin: 0 1.5em 2em 0;
-        box-shadow: none;
-    }
-
     code {
         border: 3px solid @fs_color_medium;
         font-family: monospace;
@@ -208,28 +201,6 @@
     td .fileformat {
         display: inline-block;
         width: 4em;
-    }
-
-    label {
-        span.input-description {
-        }
-
-        span.input-description + input[type="text"] {
-        }
-    }
-
-    // different default type of messages in a <strong>
-    .info, .note, .error {
-        display: block;
-    }
-    .info {
-        color: @fs_color_ok;
-    }
-    .note {
-        color: @fs_color_warning;
-    }
-    .error {
-        color: @fs_color_delete;
     }
 
     .fontsampler-num-notifications {
@@ -278,12 +249,13 @@
 
     .fontsampler-admin-column-wrapper {
         clear: both;
+        display: flex;
+        justify-content: space-between;
         overflow: auto;
+        width: 100%;
     }
 
     .fontsampler-admin-column-half {
-        float: left;
-        margin-right: 5%;
         width: 45%;
     }
 
@@ -328,8 +300,6 @@
     &.fontsampler-admin-hide-legacy-formats {
         .fontsampler-admin-legacy-format {
             display: none;
-        }
-        .fontsampler-admin-format {
         }
     }
 
@@ -481,4 +451,29 @@
     .fontsampler-list-font-link {
         cursor: pointer;
     }
+
+    .ui-sortable-handle {
+        cursor: grab;
+        padding: 5px 10px;
+    }
+
+    .ui-sortable-helper {
+        background: @fs_color_ok_light;
+    }
+}
+
+
+.fontsampler-changelog-fix strong {
+    color: @fs_color_warning;
+}
+
+.fontsampler-changelog-tweak strong {
+    color: @fs_color_add;
+}
+
+.fontsampler-changelog-feature strong {
+    color: @fs_color_ok;
+}
+.fontsampler-changelog-notice strong {
+    color: @fs_color_delete;
 }

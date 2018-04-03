@@ -1,41 +1,97 @@
 
 #fontsampler-admin {
     footer {
-        margin: 1.5em 1.5em 0 0;
-        padding: 1em 2em 0.5em;
-        background: white;
-        ul {
-            overflow: auto;
-        }
-        li {
+        margin: 1em 1.5em 1em 0;
+
+        .fontsampler-logos {
+            margin: 1em 0;
+            padding: 1em 2em 0.5em;
+            background: white;
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
             box-sizing: border-box;
-            display: inline-block;
-            float: left;
-            padding-right: 1em;
-            width: 20%;
-            max-width: 120px;
 
-            > a {
-                display: block;
-                height: 0;
-                padding-top: 150/240*100%;
-                position: relative;
-                text-align: center;
-                width: 100%;
+            .fontsampler-creators {
+                text-align: right;
+                strong {
+                    a {
+                        padding: 0;
+                        width: auto;
+                    }
+                }
 
-                img {
-                    display: block;
-                    height: 100%;
-                    top: 0;
-                    left: 0;
-                    right: 0;
-                    position: absolute;
+                a {
+                    display: inline-block;
+                    padding: 20px 0;
+                    width: 160px;
+                    img {
+                        width: 100%;
+                        height: auto;
+                    }
                 }
             }
-            > img {
+
+            strong {
                 display: block;
-                height: 150/240*100/5%;
-                width: 100%;
+            }
+
+            a {
+                display: block;
+            }
+
+            img {
+                display: block;
+            }
+
+            .fontsampler-supporters {
+                ul {
+                    overflow: auto;
+                }
+                li {
+                    box-sizing: border-box;
+                    display: inline-block;
+                    padding-right: 1em;
+                    width: 120px;
+
+                    > a {
+                        height: 0;
+                        padding-top: 150/240*100%;
+                        position: relative;
+                        text-align: center;
+                        width: 100%;
+
+                        img {
+                            height: 100%;
+                            top: 0;
+                            left: 0;
+                            right: 0;
+                            position: absolute;
+                        }
+                    }
+                    > img {
+                        display: block;
+                        height: 150/240*100/5%;
+                        width: 100%;
+                    }
+                }
+            }
+        }
+
+        .fontsampler-donate {
+            padding: 0 2em 1.5em;
+            margin: 1em 0;
+            background: white;
+            text-align: left;
+            font-weight: bold;
+
+            form {
+                display: inline-block;
+                position: relative;
+                top: 0.85em;
+            }
+            input {
+                border: 0;
             }
         }
     }

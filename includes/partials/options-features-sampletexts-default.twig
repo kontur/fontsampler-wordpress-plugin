@@ -1,0 +1,37 @@
+{% extends 'partials/options-row.twig' %}
+
+{% block label %}Sample dropdown default{% endblock %}
+
+{% block custom %}
+    {% if not settings %}
+        <label class="fontsampler-radio">
+            {% if not settings %}<input type="radio" name="sampletexts_use_default_label" value="0"
+                {% if set['sample_texts_default_option'] is not empty %} checked="checked" {% endif %}>{% endif %}
+            <span class="settings-description">Sample texts dropdown default option
+            <small>(the text that the dropdown reads when no option is selected yet)</small></span>
+            <input name="sample_texts_default_option" value="{{ set['sample_texts_default_option'] }}">
+        </label>
+    {% endif %}
+    {% if settings %}
+        <label class="fontsampler-options-row-values">
+            <input type="text" name="sample_texts_default_option" class="fontsampler-admin-slider-label"
+                value="{{ set.sample_texts_default_option is empty ? defaults.sample_texts_default_option : set.sample_texts_default_option }}" >
+        </label>
+    {% endif %}
+{% endblock %}
+
+{% block default %}
+    {% if settings %}
+        <label>
+            <input class="fontsampler-admin-feature-label-reset" type="button" value="Reset to default" 
+                data-default="{{ settings_defaults.sample_texts_default_option }}">
+        </label>
+    {% endif %}
+    {% if not settings %}
+        <label class="fontsampler-radio">
+            <input type="radio" name="sampletexts_use_default_label" value="1"
+                {% if set['sample_texts_default_option'] is empty %} checked="checked" {% endif %}>
+            <span>Use default: <input disabled="disabled" value="{{ defaults.sample_texts_default_option }}"></span>
+        </label>
+    {% endif %}
+{% endblock %}

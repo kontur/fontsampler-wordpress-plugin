@@ -1,7 +1,5 @@
 {% if has_messages() %}
-    <header class="notice">
-        {{ get_messages()|raw }}
-    </header>
+    {{ get_messages()|raw }}
 {% endif %}
 
 <header id="fontsampler-menu">

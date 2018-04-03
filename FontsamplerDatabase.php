@@ -122,6 +122,11 @@ class FontsamplerDatabase {
 			`lineheight_unit` varchar(50) DEFAULT NULL,
 			`alignment_initial` varchar(50) DEFAULT NULL,
 			`sample_texts` text DEFAULT NULL,
+			`sample_texts_default_option` VARCHAR(255) DEFAULT NULL,
+			`locl` tinyint(1) unsigned DEFAULT NULL,
+			`locl_options` text DEFAULT NULL,
+			`locl_default_option` VARCHAR(255) DEFAULT NULL,
+			`notdef` smallint(5) DEFAULT NULL,
 			`css_color_text` tinytext DEFAULT NULL,
 			`css_color_background` tinytext DEFAULT NULL,
 			`css_color_label` tinytext DEFAULT NULL,
@@ -137,6 +142,7 @@ class FontsamplerDatabase {
 			`css_value_column_gutter` tinytext DEFAULT NULL,
 			`css_value_row_height` tinytext DEFAULT NULL,
 			`css_value_row_gutter` tinytext DEFAULT NULL,
+			`css_color_notdef` tinytext DEFAULT NULL,
 			PRIMARY KEY (`settings_id`)
 			) DEFAULT CHARSET=utf8";
 		$this->wpdb->query( $sql );
@@ -321,6 +327,26 @@ class FontsamplerDatabase {
 
 				'ALTER TABLE ' . $this->table_settings . " ADD `css_color_button_background_inactive` tinytext DEFAULT NULL",
 				'UPDATE ' . $this->table_settings . " SET `css_color_button_background_inactive` = '#dfdfdf' WHERE `is_default` = 1",
+			),
+			'0.4.0' => array(
+				// add default text for the sample texts dropdown, which can now also be overwritten
+				'ALTER TABLE ' . $this->table_settings . " ADD `sample_texts_default_option` VARCHAR(255) DEFAULT NULL",
+				'UPDATE ' . $this->table_settings . " SET `sample_texts_default_option` = 'Select a sample text' WHERE `is_default` = 1",
+
+				// language dropdown for locl feature display
+				'ALTER TABLE ' . $this->table_settings . " ADD `locl` tinyint(1) unsigned DEFAULT NULL",
+				'ALTER TABLE ' . $this->table_settings . " ADD `locl_options` text DEFAULT NULL",
+				'UPDATE ' . $this->table_settings . " SET `locl` = 0 WHERE `is_default` = 1",
+				'ALTER TABLE ' . $this->table_settings . " ADD `locl_default_option` VARCHAR(255) DEFAULT NULL",
+				'UPDATE ' . $this->table_settings . " SET `locl_default_option` = 'Select language' WHERE `is_default` = 1",
+
+				// option for notdef characters
+				'ALTER TABLE ' . $this->table_settings . " ADD `notdef` smallint(5) DEFAULT NULL",
+				'UPDATE ' . $this->table_settings . " SET `notdef` = 0 WHERE `is_default` = 1",
+
+				// color highlight for notdef characters
+				'ALTER TABLE ' . $this->table_settings . " ADD `css_color_notdef` tinytext DEFAULT NULL",
+				'UPDATE ' . $this->table_settings . " SET `css_color_notdef` = '#dedede' WHERE `is_default` = 1",
 			)
 		);
 
@@ -927,12 +953,14 @@ class FontsamplerDatabase {
 		unset( $settings['is_default'] );
 
 		$problems = array();
-		foreach ( $settings as $key => $value ) {
-			$value_empty       = null === $value || "" === $value;
-			$default_not_empty = in_array( $key, $this->fontsampler->settings_defaults )
-			                     && null !== $this->fontsampler->settings_defaults[ $key ];
-			if ( $value_empty && $default_not_empty ) {
-				array_push( $problems, $key );
+		if ($settings) {
+			foreach ( $settings as $key => $value ) {
+				$value_empty       = null === $value || "" === $value;
+				$default_not_empty = in_array( $key, $this->fontsampler->settings_defaults )
+									&& null !== $this->fontsampler->settings_defaults[ $key ];
+				if ( $value_empty && $default_not_empty ) {
+					array_push( $problems, $key );
+				}
 			}
 		}
 

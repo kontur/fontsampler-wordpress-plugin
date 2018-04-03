@@ -54,3 +54,16 @@
         {% endif %}
     </div>
 </div>
+
+<div class="fontsampler-options fontsampler-options-missing-glyphs">
+    <strong>Treatment of missing glyphs:</strong>
+    <p>What should happen when a user types a character that the currently selected webfont
+    does not include.</p>
+    <select name="notdef">
+        {% if not settings %}<option value="default" {% if set.notdef is empty %}selected="selected"{% endif %}>Use default settings: ({{ notdef[defaults.notdef] }})</option>{% endif %}
+        <option value="0" {% if (settings and defaults.notdef == "0") or (not settings and set.notdef == "0") %}selected="selected"{% endif %}>{{ notdef[0] }}</option>
+        <option value="1" {% if (settings and defaults.notdef == "1") or (not settings and set.notdef == "1") %}selected="selected"{% endif %}>{{ notdef[1] }}</option>
+        <option value="2" {% if (settings and defaults.notdef == "2") or (not settings and set.notdef == "2") %}selected="selected"{% endif %}>{{ notdef[2] }}</option>
+        <option value="3" {% if (settings and defaults.notdef == "3") or (not settings and set.notdef == "3") %}selected="selected"{% endif %}>{{ notdef[3] }}</option>
+    </select>
+</div>

@@ -118,10 +118,16 @@
     .fontsampler-options-row {
         clear: both;
         overflow: auto;
+        display: flex;
+        justify-content: space-between;
 
         // every second row with background
         &:nth-of-type(2n + 1) {
             background: @fs_color_light;
+        }
+
+        &:nth-of-type(2n) {
+            background: @fs_color_white;
         }
 
         // all children in one row: label, settings, default
@@ -137,18 +143,27 @@
         }
 
         & > strong {
+            box-sizing: border-box;
             padding: 0.75em 1em;
-            width: 20%;
+            flex-basis: 20%;
+            flex-shrink: 0;
         }
 
         & > div {
             box-sizing: border-box;
             padding: 0.5em;
-            width: 39%;
+            flex-basis: 40%;
+            flex-shrink: 1;
 
             &:nth-of-type(1) {
                 border-left: 5px solid @fs_color_white;
                 border-right: 3px solid @fs_color_white;
+            }
+
+            .settings-description small code {
+                padding: 0.5em !important;
+                white-space: nowrap;
+                line-height: 2em;
             }
 
             .settings-description + input[type=text] {
@@ -225,21 +240,6 @@
     .slider {
         margin: 0.5em 0;
     }
-    //.rangeslider--horizontal {
-    //    background: @fs_color_ok_light;
-    //    height: 4px;
-    //    width: 100%;
-    //    clear: both;
-    //
-    //    .rangeslider__fill {
-    //        background: @fs_color_ok;
-    //    }
-    //
-    //    .rangeslider__handle {
-    //        height: 12px;
-    //        width: 12px;
-    //    }
-    //}
 
     // the wrapper element for inline uploads, like for the buy and specimen link images
     .fontsampler-setting-image {

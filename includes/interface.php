@@ -39,9 +39,12 @@
 					case 'fontsize':
 						if ( $set['fontsize'] ) : ?>
 							<label class="fontsampler-slider">
-								<span class="slider-label"><?php echo !empty( $set['fontsize_label'] ) ? $set['fontsize_label'] : $options['fontsize_label']; ?></span>
-								<span class="slider-value type-tester__label" data-target-property="font-size"></span>
-								<div class="type-tester__slider" data-target-property="font-size"></div>
+								<span class="fontsampler-slider-header">
+									<span class="slider-label"><?php echo !empty( $set['fontsize_label'] ) ? $set['fontsize_label'] : $options['fontsize_label']; ?></span>
+									<span class="slider-value type-tester__label" data-target-property="font-size"></span>
+								</span>
+								<div class="type-tester__slider" data-target-property="font-size" 
+									<?php if ( is_rtl() ): ?> data-direction="rtl" <?php endif; ?>></div>
 							</label>
 						<?php endif;
 						break;
@@ -49,10 +52,12 @@
 					case 'letterspacing':
 						if ( $set['letterspacing'] ) : ?>
 							<label class="fontsampler-slider">
-								<span class="slider-label"><?php echo !empty( $set['letterspacing_label'] ) ? $set['letterspacing_label'] : $options['letterspacing_label']; ?></span>
-								<span class="slider-value type-tester__label"
-								      data-target-property="letter-spacing"></span>
-								<div class="type-tester__slider" data-target-property="letter-spacing"></div>
+								<span class="fontsampler-slider-header">
+									<span class="slider-label"><?php echo !empty( $set['letterspacing_label'] ) ? $set['letterspacing_label'] : $options['letterspacing_label']; ?></span>
+									<span class="slider-value type-tester__label" data-target-property="letter-spacing"></span>
+								</span>
+								<div class="type-tester__slider" data-target-property="letter-spacing" 
+									<?php if ( is_rtl() ): ?> data-direction="rtl" <?php endif; ?>></div>
 							</label>
 						<?php endif;
 						break;
@@ -60,9 +65,12 @@
 					case 'lineheight':
 						if ( $set['lineheight'] ) : ?>
 							<label class="fontsampler-slider">
-								<span class="slider-label"><?php echo !empty( $set['lineheight_label'] ) ? $set['lineheight_label'] : $options['lineheight_label']; ?></span>
-								<span class="slider-value type-tester__label" data-target-property="line-height"></span>
-								<div class="type-tester__slider" data-target-property="line-height"></div>
+								<span class="fontsampler-slider-header">
+									<span class="slider-label"><?php echo !empty( $set['lineheight_label'] ) ? $set['lineheight_label'] : $options['lineheight_label']; ?></span>
+									<span class="slider-value type-tester__label" data-target-property="line-height"></span>
+								</span>
+								<div class="type-tester__slider" data-target-property="line-height" 
+									<?php if ( is_rtl() ): ?> data-direction="rtl" <?php endif; ?>></div>
 							</label>
 						<?php endif;
 						break;
@@ -81,13 +89,31 @@
 						$samples = explode( "\n", $options['sample_texts'] );
 						if ( $set['sampletexts'] ) : ?>
 							<select name="sample-text">
-								<option value="Select a sample text">Select a sample text</option>
+								<?php /* translators: The first and visible entry in the sample text drop down in the frontend */ ?>
+								<option selected="selected"><?php echo !empty( $set['sample_texts_default_option'] ) ? $set['sample_texts_default_option'] : $options['sample_texts_default_option']; ?></option>
 								<?php foreach ( $samples as $sample ) : ?>
 									<option value="<?php echo $sample; ?>"><?php echo $sample; ?></option>
 								<?php endforeach; ?>
 							</select>
 						<?php endif;
 						break;
+
+					case 'locl':
+						$locl_options = !empty( $set['locl_options'] ) ? $set['locl_options'] : $options['locl_options'];
+						
+						if ( !empty( $locl_options ) ) {
+							$locales = explode( "\n", $locl_options );						
+							$locales = array_map(function ($item) {
+								return explode("|", $item);
+							}, $locales); ?>
+
+							<select name="locl-select">
+								<option selected="selected" value=""><?php echo !empty( $set['locl_default_option'] ) ? $set['locl_default_option'] : $options['locl_default_option']; ?></option>
+								<?php foreach ( $locales as $locl ) : ?>
+									<option value="<?php echo trim($locl[0]); ?>"><?php echo trim($locl[1]); ?></option>
+								<?php endforeach; ?>
+							</select>							
+					<?php }
 
 					case 'alignment':
 						if ( $set['alignment'] ) :
@@ -148,7 +174,7 @@
 									?>
 									<img class="fontsampler-interface-link-image"
 									     src="<?php echo $image_src[0]; ?>"
-									     alt="<?php echo options['buy_label']; ?>">
+									     alt="<?php echo $options['buy_label']; ?>">
 								<?php else: ?>
 									<span class="fontsampler-interface-link-text"
 									><?php echo !empty($set['buy_label']) ? $set['buy_label'] : $options['buy_label']; ?></span>
@@ -192,20 +218,22 @@
 						}
 						?>
 						<div autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
-						     class="current-font type-tester__content <?php
-						     if ( ! isset( $set['multiline'] ) ||
+						    class="current-font type-tester__content <?php
+						    if ( ! isset( $set['multiline'] ) ||
 						          ( isset( $set['multiline'] ) && $set['multiline'] != "1" )
-						     ) :
-							     echo ' fontsampler-is-singleline';
+						    ) :
+							    echo ' fontsampler-is-singleline';
 
-						     endif; ?>"
-						     contenteditable="true"
+						    endif; ?>"
+						    contenteditable="true"
 							<?php if ( ! $set['is_ltr'] ): echo ' dir="rtl" '; endif; ?>
 
-							 style="text-align: <?php echo $set['alignment_initial']; ?>;
+							style="text-align: <?php echo $set['alignment_initial']; ?>;
 								    font-size: <?php echo $data_initial['fontsize_initial'] . $data_initial['fontsize_unit']; ?>;
 								    letter-spacing: <?php echo $data_initial['letterspacing_initial'] . $data_initial['letterspacing_unit']; ?>;
 								    line-height: <?php echo $data_initial['lineheight_initial'] . $data_initial['lineheight_unit']; ?>;"
+							data-notdef="<?php echo $set['notdef'] !== null ? $set['notdef'] : $options['notdef']; ?>"
+						
 						><?php echo $initial_text; ?></div>
 
 						<?php

@@ -7,24 +7,32 @@
         <label class="fontsampler-radio">
             <input type="radio" name="{{ label }}_use_default" value="0"
                    class="fontsampler-checkbox-ui-block"
-                   {% if not use_default %} checked="checked" {% endif %}
-            >
+                   {% if not use_default %} checked="checked" {% endif %} >
             <span class="settings-description">Use custom slider label:</span>
         </label>
     {% endif %}
     <label class="fontsampler-options-row-values">
         {#<span class="settings-description">{{ description }}</span>#}
         <input type="text" name="{{ name }}_label" class="fontsampler-admin-slider-label"
-               value="{{ use_default ? default : value }}"/>
+               value="{{ use_default ? default : value }}" >
     </label>
 {% endblock %}
 
 {% block default %}
-    {% if not settings %}
+    {% if settings %}
+        {% if f.label_installation_default and (use_default ? default : value) != label_installation_default %}
+            <label>
+                <input class="fontsampler-admin-feature-label-reset" type="button" value="Reset to default" 
+                    data-default="{{ label_installation_default }}">
+            </label>
+        {% endif %}
+    {% else %}
         <label class="fontsampler-radio">
             <input type="radio" name="{{ label }}_use_default" value="1"
                 {% if use_default or set_uses_defaults == 1 %} checked="checked" {% endif %}>
-            <span class="settings-description">Use default: <span class="fontsampler-default-value">{{ default }}</span></span>
+            <span class="settings-description">Use default: 
+                <span class="fontsampler-default-value">{{ default }}</span>
+            </span>
         </label>
     {% endif %}
 {% endblock %}

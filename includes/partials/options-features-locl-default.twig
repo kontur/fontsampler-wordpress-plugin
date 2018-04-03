@@ -1,0 +1,37 @@
+{% extends 'partials/options-row.twig' %}
+
+{% block label %}Languages dropdown default{% endblock %}
+
+{% block custom %}
+    {% if not settings %}
+        <label class="fontsampler-radio">
+            {% if not settings %}<input type="radio" name="locl_use_default_label" value="0"
+                {% if set['locl_default_option'] is not empty %} checked="checked" {% endif %}>{% endif %}
+            <span class="settings-description">Language dropdown default option
+            <small>(the text that the dropdown reads when no option is selected yet)</small></span>
+            <input name="locl_default_option" value="{{ set['locl_default_option'] }}">
+        </label>
+    {% endif %}
+    {% if settings %}
+        <label class="fontsampler-options-row-values">
+            <input type="text" name="locl_default_option" class="fontsampler-admin-slider-label"
+                value="{{ set.locl_default_option is empty ? defaults.locl_default_option : set.locl_default_option }}" >
+        </label>
+    {% endif %}
+{% endblock %}
+
+{% block default %}
+    {% if settings %}
+        <label>
+            <input class="fontsampler-admin-feature-label-reset" type="button" value="Reset to default" 
+                data-default="{{ settings_defaults.locl_default_option }}">
+        </label>
+    {% endif %}
+    {% if not settings %}
+        <label class="fontsampler-radio">
+            <input type="radio" name="locl_use_default_label" value="1"
+                {% if set['locl_default_option'] is empty %} checked="checked" {% endif %}>
+            <span>Use default: <input disabled="disabled" value="{{ defaults.locl_default_option }}"></span>
+        </label>
+    {% endif %}
+{% endblock %}

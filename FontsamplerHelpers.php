@@ -25,6 +25,7 @@ class FontsamplerHelpers {
 				'slider_initial_label' => 'Initial px',
 				'slider_min_label'     => 'Min px',
 				'slider_max_label'     => 'Max px',
+				'label_installation_default' => $this->fontsampler->settings_defaults['fontsize_label'],
 			),
 			'letterspacing' => array(
 				'name'                 => 'letterspacing',
@@ -33,6 +34,7 @@ class FontsamplerHelpers {
 				'slider_initial_label' => 'Initial px',
 				'slider_min_label'     => 'Min px',
 				'slider_max_label'     => 'Max px',
+				'label_installation_default' => $this->fontsampler->settings_defaults['letterspacing_label'],
 			),
 			'lineheight'    => array(
 				'name'                 => 'lineheight',
@@ -41,6 +43,7 @@ class FontsamplerHelpers {
 				'slider_initial_label' => 'Initial %',
 				'slider_min_label'     => 'Min %',
 				'slider_max_label'     => 'Max %',
+				'label_installation_default' => $this->fontsampler->settings_defaults['lineheight_label'],
 			)
 		);
 		$this->additional_features = array(
@@ -49,9 +52,16 @@ class FontsamplerHelpers {
 			'alignment'   => 'Alignment controls',
 			'invert'      => 'Allow inverting the text field to display negative text',
 			'opentype'    => 'Display OpenType feature controls (automatic detection)',
+			'locl'		  => 'Add dropdown for switching language (activates locl features)',
 			'multiline'   => 'Allow line breaks',
 			'buy'         => 'Display a link to buy these fonts',
 			'specimen'    => 'Display a link to a specimen',
+		);
+		$this->notdef_options = array(
+			"Do nothing (renders fallback font)",
+			"Highlight visually (renders fallback font)",
+			"Render .notdef instead (of font or else of fallback)",
+			"Block rendering",
 		);
 		// the default admin slider ranges for each field
 		$this->slider_ranges = array(
@@ -107,6 +117,12 @@ class FontsamplerHelpers {
 		$css      = array_filter( $set, function ( $item ) {
 			return substr( $item, 0, 4 ) === 'css_';
 		}, ARRAY_FILTER_USE_KEY );
+
+		// catch 5.6.30 errors about ARRAY_FILTER_USE_KEY, 5.6.33 check should
+		// catch those in the future
+		if (!is_array($css)) {
+			return false;
+		}
 
 		$supplemented = array();
 		foreach ( $css as $key => $value ) {
@@ -306,6 +322,9 @@ class FontsamplerHelpers {
 				}
 			}
 			if ( false !== $best ) {
+                if (is_ssl() && substr($best, 0, 7) === "http://") {
+                    $best = str_replace("http://", "https://", $best);
+				}
 				$fontsFiltered[ $font['id'] ] = $best;
 			}
 		}
@@ -335,9 +354,11 @@ class FontsamplerHelpers {
 	 */
 	function settings_array_css_to_less( $row ) {
 		$vars = array();
-		foreach ( $row as $key => $value ) {
-			if ( false !== strpos( $key, 'css_' ) ) {
-				$vars[ $key ] = $value;
+		if (is_array($row)) {
+			foreach ( $row as $key => $value ) {
+				if ( false !== strpos( $key, 'css_' ) ) {
+					$vars[ $key ] = $value;
+				}
 			}
 		}
 
@@ -446,6 +467,12 @@ class FontsamplerHelpers {
 		$twig->addGlobal( 'formats', $this->fontsampler->font_formats );
 
 		$twig->addGlobal( 'slider_ranges', $this->slider_ranges );
+
+		$twig->addGlobal( 'is_rtl', is_rtl() );
+
+		$twig->addGlobal( 'settings_defaults', $this->fontsampler->settings_defaults );
+
+		$twig->addGlobal( 'notdef', $this->notdef_options );
 	}
 
 }

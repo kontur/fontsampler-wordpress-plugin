@@ -1,0 +1,70 @@
+# Copyright (C) 2018 Fontsampler
+# This file is distributed under the same license as the Fontsampler package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Fontsampler 0.3.8\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/fontsampler\n"
+"POT-Creation-Date: 2018-01-26 22:55:53+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2018-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+
+#. translators: Default label for font size slider in the front end
+#: FontsamplerPlugin.php:60
+msgid "Size"
+msgstr ""
+
+#. translators: Default label for letter spacing slider in the front end
+#: FontsamplerPlugin.php:66
+msgid "Letter spacing"
+msgstr ""
+
+#. translators: Default label for the line height slider in the front end
+#: FontsamplerPlugin.php:72
+msgid "Line height"
+msgstr ""
+
+#. translators: Default selection in the sample text dropdown
+#: FontsamplerPlugin.php:80
+msgid "Select a sample text"
+msgstr ""
+
+#. translators: Default selection in the language (locl feature) dropdown
+#: FontsamplerPlugin.php:83
+msgid "Select a language"
+msgstr ""
+
+#. translators: Default label for the buy button in the front end
+#: FontsamplerPlugin.php:112
+msgid "Buy"
+msgstr ""
+
+#. translators: Default label for the specimen download button in the front end
+#: FontsamplerPlugin.php:118
+msgid "Specimen"
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "Fontsampler"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "https://fontsampler.johannesneumeier.com"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid ""
+"Create interactive webfont previews via shortcodes. Create and edit previews "
+"from the &para; Fontsampler sidebar menu or click \"Settings\" on the left."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "Johannes Neumeier"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "http://johannesneumeier.com"
+msgstr ""

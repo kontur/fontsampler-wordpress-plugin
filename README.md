@@ -1,4 +1,4 @@
-# Fontsampler Wordpress Plugin (v 0.3.7)
+# Fontsampler Wordpress Plugin (v 0.3.8)
 This plugin allows Wordpress users to embed interactive webfont previews in their websites.
 
 ## How does it work?
@@ -25,19 +25,59 @@ You can also pass in fonts dynamically (i.e. without actually defining a Fontsam
 
 Essentially the fonts attribute takes a `json_encode`ed array without the opening and closing brackets (since these would break the shortcode).
 
-### Reacting to events
+### Hooks
+More action and filter hooks are planned, but for now there is:
+
+**filter: fontsampler_enqueue_styles(false)**
+Fontsampler styles are automatically added to any pages that have the fontsampler shortcode on them. If you executing the shortcode programatically and want the fontsampler styles to correctly load in the header, you can use this filter hook to return true (on those specific pages).
+
+### Reacting to Javascript events in your theme
 If you are a developer wanting to interact with Fontsampler instances you can react to the following javascript events being triggered on the Fontsampler wrappers.
 
 **fontsampler.events.afterinit**
 Called when all fonts are loaded and the Fontsampler is active.
+Params: Object event
 
 **fontssampler.events.activatefont**
 Called when a font is activated or switched.
+Params: Object event
+
+**fontsampler.event.activateopentype**
+Called when the modular dialog for opentype features is opened.
+Params: Object event, jQuery object $element
+
+**fontsampler.event.activatealignment**
+Called when the alignment button is pressed
+Params: Object event, String "alignment" (one of: "left", "right" or "center")
+
+**fontsampler.event.activateinvert**
+Called when the invert button is pressed
+Params: Object event, String "state" (one of: "positive", "negative")
+
+**fontsampler.event.activatefontpicker**
+Callend when the font picker dropdown is activated
+Params: Object event, Object Selectric
+
+**fontsampler.event.activatesampletexts'**
+Callend when the sample texts dropdown is activated
+Params: Object event, Object Selectric
+
+**fontsampler.event.changefontsize**
+Called when the font size is changed (on slide end)
+Params: Object event, int size
+
+**fontsampler.event.changelineheight**
+Called when the line height is changed (on slide end)
+Params: Object event, int line height
+
+**fontsampler.event.changeletterspacing**
+Called when the letter spacing is changed (on slide end)
+Params: Object event, int letter spacing
 
 You can listen to those events with jQuery like so:
 
 ```
-$("body").on("fontsampler.event.afterinit", ".fontsampler-wrapper", function () {
+$("body").on("fontsampler.event.afterinit", ".fontsampler-wrapper", function (event [, additional]) {
     // do something
 });
 ```

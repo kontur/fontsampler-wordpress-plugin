@@ -1,0 +1,23 @@
+{% extends 'partials/options-row.twig' %}
+
+{% block label %}Languages{% endblock %}
+
+{% block custom %}
+    <label class="fontsampler-radio">
+        {% if not settings %}<input type="radio" name="locl_use_default" value="0"
+            {% if set['locl_options'] is not empty %} checked="checked" {% endif %}>{% endif %}
+        <span class="settings-description">Languages (locl)
+        <small>Add supported languages, one per line, <code><a href="https://www.w3schools.com/tags/ref_language_codes.asp" target="_blank">locale</a>|label</code>, <br>For example <code>en_GB|British English</code><br><br>Note that these only take effect if there is a locl feature for that language defined in the font file.</small></span>
+        <textarea name="locl_options" class="fontsampler-locl">{{ set['locl_options'] }}</textarea>
+    </label>
+{% endblock %}
+
+{% block default %}
+    {% if not settings %}
+        <label class="fontsampler-radio">
+            <input type="radio" name="locl_use_default" value="1"
+                {% if set['locl_options'] is empty %} checked="checked" {% endif %}>
+            <span>Use default: <textarea disabled class="fontsampler-locl">{{ defaults['locl_options'] }}</textarea></span>
+        </label>
+    {% endif %}
+{% endblock %}
