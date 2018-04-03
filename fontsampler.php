@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Fontsampler
-Plugin URI:  https://fontsampler.johannesneumeier.com
+Plugin URI:  http://fontsampler.johannesneumeier.com
 Description: Create interactive webfont previews via shortcodes. Create and edit previews from the &para; Fontsampler sidebar menu or click "Settings" on the left.
 Version:     0.4.0
 Author:      Underscore
@@ -34,6 +34,7 @@ function addMenu() {
 if ( version_compare( PHP_VERSION, "5.6.33" ) < 0 ) {
 	add_action( 'admin_menu', 'addMenu' );
 } else {
+    global $wpdb;
 	// PHP version is good, let's go all bells and whistles...
 	require_once( 'FontsamplerPlugin.php' );
 
@@ -57,6 +58,7 @@ if ( version_compare( PHP_VERSION, "5.6.33" ) < 0 ) {
 	// load translations, then kick off actual Fontsampler setup and hooks
 	add_action( 'plugins_loaded', array( $fontsampler, 'fontsampler_load_text_domain' ) );
 	add_action( 'init', "fontsampler_init" );
+	register_activation_hook( __FILE__, array( $fontsampler, 'fontsampler_activate' ) );
 }
 
 function fontsampler_init() {
@@ -88,7 +90,6 @@ function fontsampler_init() {
 	add_filter( 'upload_mimes', array( $fontsampler, 'allow_font_upload_types' ) );
 	add_filter( 'wp_check_filetype_and_ext', 'common_upload_real_mimes', 10, 4 );
 	add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $fontsampler, 'add_action_links' ) );
-	register_activation_hook( __FILE__, array( $fontsampler, 'fontsampler_activate' ) );
 }
 
 //-------------------------------------------------
