@@ -445,6 +445,9 @@
 #fontsampler-admin .fontsampler-options-row:nth-of-type(2n + 1) {
   background: #F2F2F2;
 }
+#fontsampler-admin .fontsampler-options-row:nth-of-type(2n) {
+  background: #FFFFFF;
+}
 #fontsampler-admin .fontsampler-options-row > * {
   box-sizing: border-box;
   display: inline-block;
