@@ -1140,6 +1140,8 @@ body.rtl #fontsampler-admin .fontsampler-options.default-text-alignment > div la
 }
 #fontsampler-admin .selectric .button {
   border: none;
+  display: block;
+  position: absolute;
 }
 #fontsampler-admin #fontsampler-fontset-from {
   max-width: 50em;
