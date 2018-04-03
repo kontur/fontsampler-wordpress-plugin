@@ -28,10 +28,8 @@ class FontsamplerPlugin {
 
     public function __construct($wpdb, $twig) {
         $this->wpdb = $wpdb;
-        $this->twig = $twig;
-    }
-
-    public function init() {
+		$this->twig = $twig;
+		
         // TODO combined default_features and boolean options as array of objects
         // with "isBoolean" attribute
         $this->default_features = array(
@@ -126,6 +124,9 @@ class FontsamplerPlugin {
             'notdef' => 0, // by default do nothing on notdef glyph input
             'initial' => null // initial fontset_id
         );
+    }
+
+    public function init() {
 
         // instantiate all needed helper subclasses
         $this->msg = new FontsamplerMessages();
