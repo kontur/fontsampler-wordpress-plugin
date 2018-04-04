@@ -355,8 +355,10 @@ class FontsamplerPlugin {
      */
     public function check_shortcodes_enqueue_styles() {
         global $post;
-        if (has_shortcode($post->post_content, 'fontsampler') || apply_filters('fontsampler_enqueue_styles', false)) {
-            $this->enqueue_styles();
+        if ($post) {
+            if (has_shortcode($post->post_content, 'fontsampler') || apply_filters('fontsampler_enqueue_styles', false)) {
+                $this->enqueue_styles();
+            }
         }
     }
 
