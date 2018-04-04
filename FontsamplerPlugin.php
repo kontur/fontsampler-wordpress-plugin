@@ -184,7 +184,6 @@ class FontsamplerPlugin {
         // via do_shortcode()) then add them now, regardless of them getting added
         // to the html body, which is less ideal
         if (!in_array('fontsampler-css', array_keys($wp_styles->registered))) {
-            echo 'shortcode called, but styles not present';
             $this->enqueue_styles();
         }
 
