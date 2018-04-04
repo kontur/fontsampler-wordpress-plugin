@@ -1,3 +1,6 @@
+# 0.4.1 
+- TWEAK: Hotfix to suppress a debug message
+
 # 0.4.0
 - FEATURE: Implemented option for handling notdef glyphs
 - FEATURE: Implemented language locale picker, which allows previewing Opentype locl substitutions
