@@ -299,7 +299,7 @@
 #fontsampler-admin .form-settings label span.styling-description {
   float: left;
 }
-#fontsampler-admin .form-settings label div.slider {
+#fontsampler-admin .form-settings label div.fontsampler-admin-slider {
   display: inline-block;
   width: 20em;
 }
@@ -329,7 +329,7 @@
 }
 #fontsampler-admin .fontsampler-admin-feature-label-reset {
   border-width: 2px;
-  color: #CBCBCB;
+  color: #DDAA33;
   cursor: pointer;
 }
 #fontsampler-admin .fontsampler-admin-feature-label-reset:hover,
@@ -607,8 +607,10 @@
   margin-top: 0.25em;
   margin-bottom: 0.25em;
 }
-#fontsampler-admin .slider {
+#fontsampler-admin .fontsampler-admin-slider {
   margin: 0.5em 0;
+  width: 10rem;
+  display: block;
 }
 #fontsampler-admin .fontsampler-setting-image .fontsampler-upload-wrapper {
   display: inline-block;

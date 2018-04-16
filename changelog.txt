@@ -1,3 +1,7 @@
+# 0.4.3
+- TWEAK: Improved admin interface slider responsivness and sanity checks
+- TWEAK: Fixed compability with misc plugins (css class conflicts)
+
 # 0.4.1 & 0.4.2
 - TWEAK: Hotfix to suppress a debug message
 

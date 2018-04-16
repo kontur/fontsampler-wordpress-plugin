@@ -3,31 +3,15 @@
 {% block content %}
 <h1>Thanks for updating Fontsampler!</h1>
     <div class="text-box">
-        <div class="notice notice-warning">
-            <p><strong>CSS &amp; HTML changes:</strong> For most users this update does not require any action! If you have overwritten some CSS in your Wordpress theme be advised that the default styling for Fontsampler switched to flex-box based layout formatting. <br><strong>Please review your site after the update to make sure everything looks like it should.</strong></p>
+        <div class="notice notice-info">
+            <p>This update only includes minor improvements to the admin interface. No action required, hurray!</p>
         </div>
     </div>
-    <h2>Here is what changed with this latest release (0.4.0, 0.4.1 &amp; 0.4.2):</h2>
+    <h2>Here is what changed with this latest release 0.4.3:</h2>
     <div class="text-box">
         <ul class="real-list">
-            <li class="fontsampler-changelog-feature"><strong>FEATURE:</strong> Implemented option for handling notdef glyphs</li>
-            <li class="fontsampler-changelog-feature"><strong>FEATURE:</strong> Implemented language locale picker, which allows previewing Opentype locl substitutions</li>
-            <li class="fontsampler-changelog-feature"><strong>FEATURE:</strong> Implemented default translations for frontend strings</li>
-            <li class="fontsampler-changelog-feature"><strong>FEATURE:</strong> Included translations: English, German, Finnish, Persian</li>
-            <li class="fontsampler-changelog-feature"><strong>FEATURE:</strong> Added more Javascript events for various UI operations, making it easier to customise and extend the plugin</li>
-            <li class="fontsampler-changelog-feature"><strong>FEATURE:</strong> Added 'fontsampler_enqueue_styles' filter hook to programatically trigger enqueuing the fontsampler styles (e.g. if you have programatically triggered the shortcode and want to ensure the styles are loaded in the head tag)</li>
-            <li class="fontsampler-changelog-feature"><strong>FEATURE:</strong> Implemented automatic detection and rewrite for mixed content problems when serving a site over https, but font files are stored in the media gallery with http</li>
-            <li class="fontsampler-changelog-tweak"><strong>TWEAK:</strong> The Fontsampler UI CSS and HTML structure has changed slightly (mainly: using flex-box display)</li>
-            <li class="fontsampler-changelog-tweak"><strong>TWEAK:</strong> Improved shortcode detection and outputting of fontsampler styles to the header of pages on which the fontsampler shortcode is detected </li>
-            <li class="fontsampler-changelog-tweak"><strong>TWEAK:</strong> Improved rendering for right-to-left languages in frontend and backend</li>
-            <li class="fontsampler-changelog-tweak"><strong>TWEAK:</strong> Fixed the warning about the minimum PHP version required for Fontsampler to be 5.6.33</li>
-            <li class="fontsampler-changelog-tweak"><strong>TWEAK:</strong> Warning and error messages now use the default Wordpress styling</li>
-            <li class="fontsampler-changelog-fix"><strong>FIX:</strong> Fixed an issue where settings overwrites for the sample texts dropdown would incorrectly render the default settings' sample texts</li>
-            <li class="fontsampler-changelog-fix"><strong>FIX:</strong> Fixed the appearance of color picker buttons in the Fontsampler admin area</li>
-            <li class="fontsampler-changelog-fix"><strong>FIX:</strong> Improvement that prevents the same font file being loaded several times when used in several different Fontsamplers on the same page, potentially resulting in a MASSIVE performance improvement</li>
-            <li class="fontsampler-changelog-fix"><strong>FIX:</strong> Implemented a fix that prevented "Oblique" styles from being detected as different than their roman counter-part </li>
-            <li class="fontsampler-changelog-notice"><strong>NOTICE:</strong> Deprecating Specimen and Link UI fields; those will get removed with 0.5.0 and replaced with hooks to enable customising</li>
-            <li class="fontsampler-changelog-notice"><strong>NOTICE:</strong> Deprecating "Legacy formats" now still included (hidden by default) in the admin area; those will get removed with 0.5.0</li>
+            <li class="fontsampler-changelog-tweak"><strong>TWEAK:</strong> Improved admin interface slider responsivness and sanity checks</li>
+            <li class="fontsampler-changelog-tweak"><strong>TWEAK:</strong> Fixed compability with misc plugins (css class conflicts)</li>
         </ul>
     </div>
     <br>

@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: fonts, font, typeface, preview, shortcode
 Requires at least: 4.0
 Tested up to: 5.0
-Stable tag: 0.4.2
+Stable tag: 0.4.3
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -107,6 +107,10 @@ The [Github repository](https://github.com/kontur/fontsampler-wordpress-plugin) 
 
 == Changelog ==
 
+= 0.4.3 =
+* TWEAK: Improved admin interface slider responsivness and sanity checks
+* TWEAK: Fixed compability with misc plugins (css class conflicts)
+
 = 0.4.1 & 0.4.2 =
 * TWEAK: Hotfix to suppress a debug message
 
@@ -163,59 +167,5 @@ The [Github repository](https://github.com/kontur/fontsampler-wordpress-plugin) 
 * Fixed an issue with the uninstall script that would prevent Fontsampler from being fully uninstalled in some circumstances
 * Temporarily removed Woff2 until the Opentype.js implementation is fully working; any already uploaded and stored woff2 files will still be there once this feature is ready for prime time in an upcoming release
 * Fontsampler is now officially brought to you as an Open Source initiative of Underscore Type - same developer, different name ;)
-
-= 0.2.6 =
-* Fixed an issue preventing the set custom initial size of a Fontsampler to work as intended
-* Fixed "Add or replace" and "Delete" buttons not working in the Fonts & Files tab
-* Fixed an issue where the Jquery dependency would not load for some users
-* A Fontsampler with custom settings will by default inherit default styling implicitly rather than explicitly, thus keeping styling as default
-* Implemented option to specify "buy" and "speciment" links' target, i.e. allowing those links to open either in the same or in a new browser window / tab
-* Added a css color option for inactive buttons (e.g. in the alignment multiselect, or inverting multiselect)
-* Added the Opentype dropdown dialog's text to inherit the UI label text css settings
-* Confirmed compatibility for WP core 4.8.x
-
-= 0.2.5 =
-* Hotfix resolving an issue where on-the-fly generation of more than one custom css file would result in faulty custom css files
-* Hotfix to make sure new custom css options added in 0.2.4 will use the default value upon update
-
-= 0.2.4 =
-* Fixed a database issue that prevented per Fontsampler custom settings from being saved
-* Fixed an issue that prevented backend sliders from working properly
-* Fixed an issue that prevented the invert button to work properly for per Fontsampler custom styling
-* Automatically re-generate the reset CSS after resetting settings to the defaults
-* Added (back) the possibility to set the font size, line height or letter spacing of a Fontsampler even though the respective user interface slider is disabled
-* Added automatic sanity check to admin min, initial and max sliders to avoid impossible overlap
-* Added more css options and tweaks to how some are applied to allow better customization
-
-= 0.2.3 =
-* All font files are now handled via the WP media gallery popup in the admin area
-* Added option to delete all linked media gallery files when deleting a fontset
-* Added option to selected existing webfont file from media gallery for several fontsets
-* Added file and folder permissions check and notification to the admin area
-* Fixed an issue where removing one file would remove all files of a fontset
-* Fixed an issue where the initially selected font of a Fontsampler would not get saved
-* Fixed an issue where a setting in the server's php.ini would limit the amount of inline fonts that could be uploaded inline while adding a new Fontsampler
-
-= 0.2.2 =
-* Hotfix fixing missing default setting units for font size, line height and letterspacing sliders after saving settings
-* Implemented further checks for ensuring the default settings are valid
-* Implemented "Fix from defaults" action in case some default settings were invalid
-
-= 0.2.1 =
-* Hotfix for Fontsampler sliders not working in the user-facing frontend
-* Small fix to prevent unnecessarily breaking older versions of PHP
-
-= 0.2.0 =
-* Complete style overhaul for the admin area
-* Supporting fully customisable settings on a per Fontsampler basis
-* Color themes can be customised for each Fontsampler
-* Added "Notifications" tab to admin area informing of any detected problems
-* Implemented sorting and storing a default Fontsampler layout order in the settings
-* Implemented action to reset the settings to the shipped defaults (in case you get carried away tweaking the settings ;) )
-* Implemented copy-to-clipboard button in admin area for improved ease of use
-* Fixed iOS 8 javascript errors from an included library
-* Updated sponsors (Yay, thanks!)
-* Internally restructured the database and templating system for more modular future development
-* Improved the database migration routine to give better error messages to admin users
 
 See the changelog tab to review the changes in prior updates.

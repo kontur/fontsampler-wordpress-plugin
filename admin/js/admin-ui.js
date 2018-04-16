@@ -164,6 +164,7 @@ define(['jquery', 'rangeslider', 'selectric', 'validate', 'fontsampler'],
         }
 
 
+        isSlideEvent = true;
         // setting sliders
         $('#fontsampler-admin input[type="range"]').rangeslider({
             // Feature detection the default is `true`.
@@ -171,48 +172,78 @@ define(['jquery', 'rangeslider', 'selectric', 'validate', 'fontsampler'],
             // the polyfill also in Browsers which support
             // the native <input type="range"> element.
             polyfill: false,
-            onSlide: function () {
+            onSlide: function (position, value) {
                 var $input = this.$element.closest("label").find(".current-value"),
-                    before = $input.val();
+                    $slider = this.$element;
 
-                $input.val(this.$element.val());
-                if (!checkSliderRange(this.$element)) {
-                    $input.val(before);
-                    this.$element.val(before).change();
+                if (isSlideEvent) {
+                    setSlider($slider, $input, parseInt(value), false);
+                    isSlideEvent = true;
                 }
             }
         });
 
+        
+        var keyupCB = null;
         $("#fontsampler-admin input.current-value").on("keyup", function () {
-            var $sliderInput = $(this).closest("label").find("input[name='" + $(this).data("name") + "']"),
-                min = $sliderInput.attr("min"),
-                max = $sliderInput.attr("max"),
-                intval = parseInt($(this).val()),
-                constrainedValue = Math.min(Math.max(intval, min), max),
-                before = $(this).val();
+            var $input = $(this),
+                $slider = $input.closest("label").find("input[name='" + $input.data("name") + "']");
 
-            // prevent blocking the type input while also updating it should the value have been beyond the limits
-            if (intval !== constrainedValue && !isNaN(constrainedValue)) {
-                $(this).val(constrainedValue);
-            }
-
-            // update only when the keyup resulted in a different number than what is currently displayed
-            // this prevents resetting the cursor to the end when only an arrow is pressed to change caret position
-            if (constrainedValue !== parseInt($sliderInput.val())) {
-                if (checkSliderRange($sliderInput)) {
-                    $sliderInput.val(constrainedValue).change();
-                    $(this).val(before);
-                }
-            }
+            clearTimeout(keyupCB);
+            keyupCB = setTimeout(function () {            
+                setSlider($slider, $input, parseInt($input.val()), true);
+                clearTimeout(keyupCB);
+            }, 250);
         });
 
-        /**
-         * Function to help restrain the 3-part sliders to not exceed their bounds
-         * @param $elem
-         * @returns {boolean}
-         */
-        function checkSliderRange($elem) {
-            var group = $elem.data("group");
+        function setSlider($slider, $input, val, isInputEvent) {
+            var clamped = Math.min(Math.max(val, $slider.attr("min")), $slider.attr("max")),
+                constraints = getSliderConstraints($slider, isInputEvent),
+                type = $slider.data("type");
+
+            if (["min", "initial", "max"].indexOf(type) === -1) {
+                return;
+            }
+
+            $slider.closest(".fontsampler-options-row-values").siblings(".fontsampler-radio").find("input[type='radio']").attr("checked", "checked");
+
+            switch (type) {
+                case "min":
+                    if (clamped < constraints.min) {
+                        val = constraints.min;
+                    }
+                    if (val > constraints.ini) {
+                        val = constraints.ini;
+                    }
+                break;
+
+                case "initial":
+                    if (clamped < constraints.min) {
+                        val = constraints.min;
+                    }
+                    if (clamped > constraints.max) {
+                        val = constraints.max;
+                    }
+                break;
+
+                case "max":
+                    if (clamped > constraints.max) {
+                        val = constraints.max
+                    }
+                    if (val < constraints.ini) {
+                        val = constraints.ini;
+                    }
+                break;
+            }
+
+            isSlideEvent = isInputEvent ? true : false;
+            $input.val(val);
+            $slider.val(val).change();
+                        
+        }
+
+        function getSliderConstraints($slider, isInputEvent) {
+            var group = $slider.data("group");
 
             // only apply to the three 3-part sliders:
             if (["fontsize", "lineheight", "letterspacing"].indexOf(group) === -1) {
@@ -222,33 +253,33 @@ define(['jquery', 'rangeslider', 'selectric', 'validate', 'fontsampler'],
             var min_use_default = parseInt($("input[name='" + group + "_min_use_default']:checked").val()) === 1,
                 min_default = parseInt($("input[name='" + group + "_min_use_default'][value='1']").siblings(".settings-description").find(".fontsampler-default-value").html()),
                 min_slider = parseInt($("input[name='"+ group+ "_min']").val()),
-                min = min_use_default ? min_default : min_slider,
+                min_input = parseInt($("input[data-name='" + group + "_min").val()),
+                min = min_use_default ? min_default : (isInputEvent === true ? min_input : min_slider),
 
                 ini_use_default = parseInt($("input[name='" + group + "_initial_use_default']:checked").val()) === 1,
                 ini_default = parseInt($("input[name='" + group + "_initial_use_default'][value='1']").siblings(".settings-description").find(".fontsampler-default-value").html()),
                 ini_slider = parseInt($("input[name='"+ group+ "_initial']").val()),
-                ini = ini_use_default ? ini_default : ini_slider,
+                ini_input = parseInt($("input[data-name='" + group + "_initial").val()),
+                ini = ini_use_default ? ini_default : (isInputEvent === true ? ini_input : ini_slider),
 
                 max_use_default = parseInt($("input[name='" + group + "_max_use_default']:checked").val()) === 1,
                 max_default = parseInt($("input[name='" + group + "_max_use_default'][value='1']").siblings(".settings-description").find(".fontsampler-default-value").html()),
                 max_slider = parseInt($("input[name='"+ group+ "_max']").val()),
-                max = max_use_default ? max_default : max_slider;
-
-            if (max <= min || min > ini || max < ini) {
-                return false;
+                max_input = parseInt($("input[data-name='" + group + "_max").val()),
+                max = max_use_default ? max_default : (isInputEvent === true ? max_input : max_slider);
+            
+            return {
+                min: min,
+                ini: ini,
+                max: max
             }
-
-            return true;
         }
-
-
 
 
         // interface
         $("#fontsampler-admin .form-settings input[type=range]").on('change, input', function () {
-            var $display = $(this).closest('label').find('code.current-value');
-            val = $(this).val(),
-                unit = $(this).data('unit');
+            var $display = $(this).closest('label').find('code.current-value'),
+                val = $(this).val();
 
             $display.html(val);
         });
