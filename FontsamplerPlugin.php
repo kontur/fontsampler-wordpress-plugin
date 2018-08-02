@@ -247,7 +247,7 @@ class FontsamplerPlugin {
                 foreach ($this->font_formats as $format) {
                     if (!empty($font[$format])) {
                         $fileName = basename($font[$format]);
-                        $fontNameOverwrites[$fileName] = $font['name'];
+                        $fontNameOverwrites[$font[$format]] = $font['name'];
                     }
                 }
             }
@@ -319,7 +319,7 @@ class FontsamplerPlugin {
                 foreach ($this->font_formats as $format) {
                     if (!empty($font[$format])) {
                         $fileName = basename($font[$format]);
-                        $fontNameOverwrites[$fileName] = $font['name'];
+                        $fontNameOverwrites[$font[$format]] = $font['name'];
                     }
                 }
             }

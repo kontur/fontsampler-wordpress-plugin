@@ -9,4 +9,6 @@ admin/css/*
 bower_components
 node_modules
 
+.vscode
+
 README.md
