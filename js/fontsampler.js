@@ -17836,8 +17836,11 @@ fs.define('js/specimentools-init',[
                     },
                     'transforms': {
                         '_getFullName': function (str) {
-                            // remove the last word of the full name, which will be the forced "Regular"
-                            var lastIndex = str.lastIndexOf(" ");
+                            // The regular _getFullName function will return a combination of
+                            // family + style + italic?
+                            // Overwrite this to remove everything after the forced "Regular", 
+                            // including the optional italic
+                            var lastIndex = str.lastIndexOf(" Regular");
                             return lastIndex !== -1 ? str.substring(0, lastIndex) : str;
                         }
                     }
