@@ -11,5 +11,5 @@
     out: "js/fontsampler.js",
     include: "requireLib",
     namespace: "fs",
-    // optimize: "none",
+    optimize: "none",
 })

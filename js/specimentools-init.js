@@ -57,6 +57,13 @@ define([
                       'os2': {
                         'usWeightClass': 400
                       }
+                    },
+                    'transforms': {
+                        '_getFullName': function (str) {
+                            // remove the last word of the full name, which will be the forced "Regular"
+                            var lastIndex = str.lastIndexOf(" ");
+                            return lastIndex !== -1 ? str.substring(0, lastIndex) : str;
+                        }
                     }
                 }
             }            
