@@ -24,6 +24,14 @@
 
     .fontsampler-interface {
         clear: both;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+
+        .fsjs-block {
+            margin-left: 0;
+            margin-right: 0;
+        }
 
         // make the wrapper span around all floated content blocks
         &:after {
@@ -81,9 +89,7 @@
         // generic class for "paired" up toggle buttons
         .fontsampler-multiselect {
             box-sizing: border-box;
-            float: left;
-            padding-right: 5px;
-            height: 100%;
+            display: flex;
 
             .rtl & {
                 float: right;
@@ -110,34 +116,16 @@
             }
 
             > button {
-                background: #fff;
-                border: 0;
-                border-bottom: 1px solid #333;
-                font-size: inherit;
-                font-family: inherit;
-                color: #333;
-                cursor: pointer;
                 font-weight: inherit;
-                height: 100%;
-                line-height: 4px;
+                // height: 100%;
                 text-transform: none;
-                border-radius: 0;
-                display: block;
-                float: left;
-                padding: 0 2px;
-                margin: 0;
-                text-align: center;
+                // border-radius: 0;
+                // text-align: center;
                 outline: none;
-
-                img {
-                    display: block;
-                    max-width: 15px;
-                    max-height: 15px;
-                    margin: 0 auto;
-                }
             }
 
-            .fontsampler-multiselect-selected {
+            .fontsampler-multiselect-selected,
+            .fsjs-button-selected {
                 opacity: 1;
             }
         }
@@ -160,15 +148,15 @@
             }
 
             // the label above the slider
-            .slider-label {
-                height: 90%;
-                overflow: hidden;
-            }
+            // .slider-label {
+            //     height: 90%;
+            //     overflow: hidden;
+            // }
 
             // the value above the slider
-            .slider-value {
-                text-align: right;
-            }
+            // .slider-value {
+            //     text-align: right;
+            // }
         }
 
         // several specific blocks:
@@ -180,40 +168,19 @@
             .fontsampler-font-label {
                 height: 100%;
 
-                label {
-                    display: block;
-                    height: 100%;
-                    overflow: hidden;
-                }
+                // label {
+                //     display: block;
+                //     height: 100%;
+                //     overflow: hidden;
+                // }
             }
 
             // multiple fonts: display dropdown
-            .font-lister {
-                height: 100%;
-            }
+            // .font-lister {
+            //     height: 100%;
+            // }
         }
 
-        // links for buy and specimen download
-        .fontsampler-ui-block-buy,
-        .fontsampler-ui-block-specimen {
-            a {
-                box-shadow: none;
-                display: inline-block;
-                height: 100%;
-                width: auto;
-                text-decoration: none !Important;
-
-                img {
-                    display: block;
-                    max-height: 100%;
-                    width: auto;
-                }
-
-                .fontsampler-interface-link-text {
-                    display: block;
-                }
-            }
-        }
 
         // the actual container of the type sample
         .fontsampler, .type-tester__content {
@@ -240,14 +207,8 @@
             }
         }
 
-        .fontsampler-ui-block-opentype {
-            &.feature-lister__features-empty {
-                display: none;
-            }
-
-            .fontsampler-opentype {
-                position: relative;
-            }
+        .fontsampler-opentype {
+            position: relative;
 
             .fontsampler-opentype-toggle img {
                 max-height: 20px;
@@ -258,13 +219,13 @@
                 display: none;
                 position: absolute;
                 left: 0;
-                top: 35px;
+                top: 100%;
                 text-align: right;
                 background: #ffffff;
                 height: auto;
                 text-align: left;
                 padding: 5px;
-                width: 30em;
+                width: 100%;
                 z-index: 10;
 
                 &.shown {
@@ -319,12 +280,13 @@
 .blocks(@cols) {
     .fontsampler-ui-block {
         &.column {
-            width: 100% / @cols;
+            width: 100% / @cols !important;
         }
         &.inline {
+            width: auto !important;
         }
         &.full {
-            width: 100%;
+            width: 100%; // the .fsjs-block default
         }
     }
 }

@@ -5,6 +5,7 @@
   "main": "js/main.js",
   "scripts": {
     "test": "libs",
+    "js": "watchify js/main.js -o 'uglifyjs > js/fontsampler.js' -v -s 'Fontsampler'",
     "build": "node r.js -o build.js",
     "build-admin": "node r.js -o build-admin.js",
     "less": "lessc css/fontsampler-css.less css/fontsampler-css.css",
@@ -12,14 +13,6 @@
     "watch": "npm-watch"
   },
   "watch": {
-    "build": {
-      "patterns": "js",
-      "ignore": "js/fontsampler.js"
-    },
-    "build-admin": {
-      "patterns": "admin/js",
-      "ignore": "admin/js/fontsampler-admin.js"
-    },
     "less": {
       "patterns": [
         "css"
@@ -48,7 +41,10 @@
   },
   "homepage": "https://github.com/kontur/fontsampler-wordpress-plugin",
   "devDependencies": {
-    "npm-watch": "^0.3.0"
+    "browserify": "^16.2.3",
+    "fontsampler-js": "git+https://github.com/kontur/fontsampler-js.git",
+    "npm-watch": "^0.3.0",
+    "uglify-js": "^3.5.3"
   },
   "dependencies": {}
 }

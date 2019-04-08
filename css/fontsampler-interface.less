@@ -1,4 +1,7 @@
-
+/**
+ * The base less file that gets augmented/overwritten with variables from
+ * the plaugin settings
+ */
 @css_color_text: #333;
 @css_color_background: #fff;
 @css_color_label: #333;
@@ -68,7 +71,7 @@
 .fontsampler-interface .fontsampler-ui-block-fontpicker .fontsampler-font-label label,
 .fontsampler-interface .fontsampler-ui-block-buy a,
 .fontsampler-interface .fontsampler-ui-block-specimen a {
-    border-bottom: 1px solid @css_color_line;
+    // border-bottom: 1px solid @css_color_line;
 }
 
 .fontsampler-interface .rangeslider {
@@ -105,7 +108,8 @@
 .fontsampler-interface .fontsampler-ui-block .fontsampler-multiselect > button {
     background: @css_color_button_background_inactive;
 }
-.fontsampler-interface .fontsampler-ui-block .fontsampler-multiselect > button.fontsampler-multiselect-selected {
+.fontsampler-interface .fontsampler-ui-block .fontsampler-multiselect > button.fontsampler-multiselect-selected,
+.fontsampler-interface .fontsampler-ui-block .fontsampler-multiselect > button.fsjs-button-selected {
     background: @css_color_button_background;
 }
 
