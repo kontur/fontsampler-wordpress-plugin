@@ -5,7 +5,7 @@
   "main": "js/main.js",
   "scripts": {
     "test": "libs",
-    "js": "watchify js/main.js -o 'uglifyjs > js/fontsampler.js' -v -s 'Fontsampler'",
+    "js": "watchify js/main.js -o 'uglifyjs -c > js/fontsampler.js' -v -s 'Fontsampler'",
     "build": "node r.js -o build.js",
     "build-admin": "node r.js -o build-admin.js",
     "less": "lessc css/fontsampler-css.less css/fontsampler-css.css",
@@ -44,7 +44,7 @@
     "browserify": "^16.2.3",
     "fontsampler-js": "git+https://github.com/kontur/fontsampler-js.git",
     "npm-watch": "^0.3.0",
-    "uglify-js": "^3.5.3"
+    "uglify-js": "^3.5.4"
   },
   "dependencies": {}
 }

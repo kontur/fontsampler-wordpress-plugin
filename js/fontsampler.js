@@ -1,1 +1,0 @@
-console.error("Error: SyntaxError: Unexpected token < in JSON at position 184 while parsing json file /Users/johannes/Sites/fontsampler.test/wp-content/plugins/fontsampler/package.json");

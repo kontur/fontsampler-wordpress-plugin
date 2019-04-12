@@ -334,13 +334,15 @@
   color: white;
   padding: 1em;
 }
-.fontsampler-wrapper.on-loading > * {
+.fontsampler-wrapper {
   opacity: 0;
   transition: opacity 0s;
 }
-.fontsampler-wrapper > * {
+.fontsampler-wrapper.fsjs-initialized {
   opacity: 1;
-  transition: opacity 0.2s ease-in-out;
+}
+.fontsampler-wrapper.fsjs-loading .tester {
+  opacity: 0;
 }
 .fontsampler-wrapper .fontsampler-interface {
   clear: both;
@@ -429,20 +431,11 @@
 .rtl .fontsampler-wrapper .fontsampler-interface .fontsampler-multiselect {
   float: right;
 }
-.fontsampler-wrapper .fontsampler-interface .fontsampler-multiselect.one-item {
-  width: 30px;
-}
 .fontsampler-wrapper .fontsampler-interface .fontsampler-multiselect.one-item > button {
   width: 100%;
 }
-.fontsampler-wrapper .fontsampler-interface .fontsampler-multiselect.two-items {
-  width: 60px;
-}
 .fontsampler-wrapper .fontsampler-interface .fontsampler-multiselect.two-items > button {
   width: 50%;
-}
-.fontsampler-wrapper .fontsampler-interface .fontsampler-multiselect.three-items {
-  width: 90px;
 }
 .fontsampler-wrapper .fontsampler-interface .fontsampler-multiselect.three-items > button {
   width: 33%;
@@ -474,26 +467,22 @@
 .fontsampler-wrapper .fontsampler-interface .fontsampler-ui-block-fontpicker .fontsampler-font-label {
   height: 100%;
 }
-.fontsampler-wrapper .fontsampler-interface .fontsampler,
-.fontsampler-wrapper .fontsampler-interface .type-tester__content {
+.fontsampler-wrapper .fontsampler-interface .tester {
   clear: both;
   margin-bottom: 20px;
   margin-top: 0.25em;
-  transition: all 0.2s ease-out;
   padding: 0.25em 0.15em;
+  transition: all 0.2s ease-out;
 }
-.fontsampler-wrapper .fontsampler-interface .fontsampler:focus,
-.fontsampler-wrapper .fontsampler-interface .type-tester__content:focus {
+.fontsampler-wrapper .fontsampler-interface .tester:focus {
   outline: none;
 }
-.fontsampler-wrapper .fontsampler-interface .fontsampler.fontsampler-is-singleline,
-.fontsampler-wrapper .fontsampler-interface .type-tester__content.fontsampler-is-singleline {
+.fontsampler-wrapper .fontsampler-interface .tester.fontsampler-is-singleline {
   overflow-x: hidden;
   overflow-y: visible;
   white-space: nowrap;
 }
-.fontsampler-wrapper .fontsampler-interface .fontsampler.invert,
-.fontsampler-wrapper .fontsampler-interface .type-tester__content.invert {
+.fontsampler-wrapper .fontsampler-interface .tester.invert {
   color: #eee;
   background: #333;
 }

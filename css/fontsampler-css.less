@@ -9,18 +9,21 @@
 }
 
 .fontsampler-wrapper {
+    opacity: 0;
+    transition: opacity 0s;
 
-    &.on-loading {
-        > * {
-            opacity: 0;
-            transition: opacity 0s;
-        }
-    }
-
-    > * {
+    &.fsjs-initialized {
         opacity: 1;
-        transition: opacity 0.2s ease-in-out;
     }
+
+    &.fsjs-loading .tester {
+        opacity: 0;
+    }
+
+    // > * {
+    //     opacity: 1;
+    //     transition: opacity 0.2s ease-in-out;
+    // }
 
     .fontsampler-interface {
         clear: both;
@@ -96,20 +99,17 @@
             }
 
             &.one-item {
-                width: 30px;
                 > button {
                     width: 100%;
                 }
             }
 
             &.two-items {
-                width: 60px;
                 > button {
                     width: 50%;
                 }
             }
             &.three-items {
-                width: 90px;
                 > button {
                     width: 33%;
                 }
@@ -117,10 +117,7 @@
 
             > button {
                 font-weight: inherit;
-                // height: 100%;
                 text-transform: none;
-                // border-radius: 0;
-                // text-align: center;
                 outline: none;
             }
 
@@ -146,17 +143,6 @@
                 display: flex;
                 justify-content: space-between;
             }
-
-            // the label above the slider
-            // .slider-label {
-            //     height: 90%;
-            //     overflow: hidden;
-            // }
-
-            // the value above the slider
-            // .slider-value {
-            //     text-align: right;
-            // }
         }
 
         // several specific blocks:
@@ -167,28 +153,17 @@
             // single font: just display a label
             .fontsampler-font-label {
                 height: 100%;
-
-                // label {
-                //     display: block;
-                //     height: 100%;
-                //     overflow: hidden;
-                // }
             }
-
-            // multiple fonts: display dropdown
-            // .font-lister {
-            //     height: 100%;
-            // }
         }
 
 
         // the actual container of the type sample
-        .fontsampler, .type-tester__content {
+        .tester {
             clear: both;
             margin-bottom: 20px;
             margin-top: 0.25em;
-            transition: all 0.2s ease-out;
             padding: 0.25em 0.15em;
+            transition: all 0.2s ease-out;
 
             &:focus {
                 outline: none;
@@ -264,15 +239,6 @@
                     }
                 }
             }
-        }
-
-        .fontsampler-ui-block-invert {
-            //button[data-value="positive"] img {
-            //    background: #fff;
-            //}
-            //button[data-value="negative"] img {
-            //    background: #333;
-            //}
         }
     }
 }

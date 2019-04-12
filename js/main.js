@@ -1,38 +1,16 @@
-var Fontsampler = require("fontsampler-js/dist/fontsampler")
-var FontsamplerSkin = require("fontsampler-js/dist/fontsampler-skin")
+var Fontsampler = require("../node_modules/fontsampler-js/dist/fontsampler")
+var FontsamplerSkin = require("../node_modules/fontsampler-js/dist/fontsampler-skin")
 
 window.addEventListener("load", function () {
 
     var fontsamplers = document.querySelectorAll(".fontsampler-wrapper")
-    var options = {
-        rootClass: "fontsampler-wrapper",
-        generate: false,
-        lazyload: true,
-        ui: {
-            alignment: {
-                label: false
-            }, 
-            fontfamily: {
-                label: false
-            },
-            language: {
-                label: false
-            },
-            opentype: {
-                label: false
-            }, 
-            tester: {
-                label: false 
-            }
-        }
-    }
 
  
     // store this method globally, so it can be called again
     window.fontsamplers = []
     window.fontsamplerSetup = function (node) {
         // return
-        var fs = new Fontsampler(node, false, options).init()
+        var fs = new Fontsampler(node, false)
             FontsamplerSkin(fs)
             fs.init() 
 

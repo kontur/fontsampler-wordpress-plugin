@@ -273,20 +273,77 @@ class FontsamplerPlugin {
                     $data_initial[$key] = $options[$key];
                 }
             }
+            echo '<pre>';
+            var_dump($data_initial['fontsize']);
+            echo '</pre>';
 
             $fsoptions = array(
+                'multiline' => (bool)$data_initial['multiline'],
                 'ui' => array(
                     'fontfamily' => array(
-                        'init' => $initial
-                    )
+                        'init' => $initial ? $initial : false,
+                        'render' => (bool)$data_initial['fontpicker'],
+                    ),
+                    'fontsize' => array(
+                        'min' => $data_initial['fontsize_min'],
+                        'max' => $data_initial['fontsize_max'],
+                        'unit' => $data_initial['fontsize_unit'],
+                        'init' => $data_initial['fontsize_initial'],
+                        'step' => "1", // TODO editable via backend
+                        'render' => (bool)$data_initial['fontsize'],
+                    ),
+                    'letterspacing' => array(
+                        "min" => $data_initial['letterspacing_min'],
+                        "max" => $data_initial['letterspacing_max'],
+                        "unit" => $data_initial['letterspacing_unit'],
+                        "init" => $data_initial['letterspacing_initial'],
+                        "step" => "1", // TODO editable via backend
+                        'render' => (bool)$data_initial['letterspacing'],
+                    ),
+                    'lineheight' => array(
+                        "min" => $data_initial['lineheight_min'],
+                        "max" => $data_initial['lineheight_max'],
+                        "unit" => $data_initial['lineheight_unit'],
+                        "init" => $data_initial['lineheight_initial'],
+                        "step" => 1, // TODO editable via backend
+                        'render' => false,
+                    ),
+                    // alignment: {
+                    //     choices: ["left|Left", "center|Centered", "right|Right"],
+                    //     init: "left",
+                    //     label: "Alignment",
+                    //     render: true,
+                    // },
+                    // direction: {
+                    //     choices: ["ltr|Left to right", "rtl|Right to left"],
+                    //     init: "ltr",
+                    //     label: "Direction",
+                    //     render: true,
+                    // },
+                    // language: {
+                    //     choices: ["en-GB|English", "de-De|Deutsch", "nl-NL|Dutch"],
+                    //     init: "en-Gb",
+                    //     label: "Language",
+                    //     render: true,
+                    // },
+                    // opentype: {
+                    //     choices: ["liga|Ligatures", "frac|Fractions"],
+                    //     init: ["liga"],
+                    //     label: "Opentype features",
+                    //     render: true,
+                    // },
                 )
             );
+ 
+            // echo '<pre>';
+            // var_dump(json_encode($fsoptions['ui']['lineheight']));
+            // echo '</pre>';       
 
             // buffer output until return
             ob_start(); ?>
 			<div class='fontsampler-wrapper'
 			    data-fonts='<?php echo json_encode($fonts); ?>'
-                <?php if ($initial): ?> data-options='<?php echo json_encode($fsoptions); ?>' <?php endif; ?>
+                data-options='<?php echo json_encode($fsoptions); ?>'
 			>
 			<?php
 
