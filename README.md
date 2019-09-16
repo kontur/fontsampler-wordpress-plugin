@@ -44,11 +44,11 @@ Fontsampler styles are automatically added to any pages that have the fontsample
 ### Reacting to Javascript events in your theme
 If you are a developer wanting to interact with Fontsampler instances you can react to the following javascript events being triggered on the Fontsampler wrappers.
 
-**fontsampler.events.afterinit**
+**fontsampler.event.afterinit**
 Called when all fonts are loaded and the Fontsampler is active.
 Params: Object event
 
-**fontssampler.events.activatefont**
+**fontssampler.event.activatefont**
 Called when a font is activated or switched.
 Params: Object event
 
