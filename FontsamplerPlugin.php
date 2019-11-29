@@ -183,7 +183,7 @@ class FontsamplerPlugin {
         // be added already; if the styles are not enqueued (for example if called
         // via do_shortcode()) then add them now, regardless of them getting added
         // to the html body, which is less ideal
-        if (!in_array('fontsampler-css', array_keys($wp_styles->registered))) {
+        if (is_null($wp_styles) || !in_array('fontsampler-css', array_keys($wp_styles->registered))) {
             $this->enqueue_styles();
         }
 
