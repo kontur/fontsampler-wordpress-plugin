@@ -2,9 +2,9 @@
 Contributors: kontur
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LSK5YQHHCGGYS
 Tags: fonts, font, typeface, preview, shortcode
-Requires at least: 4.0
-Tested up to: 5.0
-Stable tag: 0.4.4
+Requires at least: 4.8
+Tested up to: 5.3.2
+Stable tag: 0.4.5
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -106,6 +106,11 @@ The [Github repository](https://github.com/kontur/fontsampler-wordpress-plugin) 
 6. This is how you include a Fontsampler in a page or post: Simply add the shortcode for the created Fontsampler to your text
 
 == Changelog ==
+
+= 0.4.5 =
+* FEATURE: Introduced site-wide toggle setting to proxy file URLs, so that the physical file location is not exposed
+* FIX: Fixed overwriting sample text dropdown texts not getting displayed correctly in the front end
+* FIX: Various minor code improvements to avoid PHP notices and warnings
 
 = 0.4.4 =
 * FIX: Made 'init' and 'fina' Opentype Features available in the context menu for fonts that support them

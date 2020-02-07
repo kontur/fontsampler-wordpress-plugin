@@ -1,4 +1,4 @@
-# Fontsampler Wordpress Plugin (v 0.4.4)
+# Fontsampler Wordpress Plugin (v 0.4.5)
 This plugin allows Wordpress users to embed interactive webfont previews in their websites.
 
 ## How does it work?
@@ -125,4 +125,4 @@ This code is distributed under the GNU General Public License v3.0.
 
 [Read a simplified version of what this license means](http://choosealicense.com/licenses/gpl-3.0/#)
 
-(c) 2016-2018 Johannes Neumeier
+(c) 2016-2020 Johannes Neumeier
