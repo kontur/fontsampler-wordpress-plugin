@@ -32,4 +32,8 @@ if ( get_option( 'fontsampler_last_changelog' ) ) {
 	delete_option( 'fontsampler_last_changelog' );
 }
 
+if ( get_option( 'fontsampler_proxy_urls' ) ) {
+	delete_option( 'fontsampler_proxy_urls' );
+}
+
 flush_rewrite_rules();
