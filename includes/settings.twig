@@ -23,6 +23,7 @@ and if needed overwrite a specific option in a Fontsampler's unique settings.</p
 		<span class="settings-description">Rewrite the loaded webfont file paths.</span>
 		<small>By default the webfonts in the fontsamplers are loaded from their WP media gallery upload locations. Check if you wish to rewrite those paths on the fly.<br>
 		Note that this does only hide the location of the files on the server, but does not stop the files from being downloadable.</small> 
+		{% if admin_no_permalinks() %} <small style="color: #f30;" >NOTE: This setting will not work with 'plain' permalink structure. To use this feature, change your permalink settings under Settings > Permalinks.</small>{% endif %}
 	</label>
 		
 	<h2>Admin interface customizations</h2>

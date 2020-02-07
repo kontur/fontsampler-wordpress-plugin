@@ -425,6 +425,10 @@ class FontsamplerHelpers {
             return get_option($this->fontsampler::FONTSAMPLER_OPTION_PROXY_URLS);
 		} ) );
 
+		$twig->addFunction( new Twig_SimpleFunction( 'admin_no_permalinks', function () {
+            return empty( get_option( 'permalink_structure' ) );
+		} ) );
+
 		$twig->addFunction( new Twig_SimpleFunction( 'image', function ( $src ) {
 			return plugin_dir_url( __FILE__ ) . $src;
 		} ) );

@@ -58,7 +58,7 @@ if ( version_compare( PHP_VERSION, "5.6.33" ) < 0 ) {
 	// load translations, then kick off actual Fontsampler setup and hooks
 	add_action( 'plugins_loaded', array( $fontsampler, 'fontsampler_load_text_domain' ) );
 	add_action( 'init', "fontsampler_init" );
-    if (get_option($fontsampler::FONTSAMPLER_OPTION_PROXY_URLS)) {
+    if (get_option($fontsampler::FONTSAMPLER_OPTION_PROXY_URLS) && !empty(get_option( 'permalink_structure' ))) {
         add_action('template_redirect', array($fontsampler, 'fontsampler_template_redirect'));
         add_filter('query_vars', array($fontsampler, 'fontsampler_query_vars'));
     }
@@ -78,10 +78,10 @@ function fontsampler_init() {
 
 	// register the shortcode hook
 	add_shortcode( 'fontsampler', array( $fontsampler, 'fontsampler_shortcode' ) );
-
-    if (get_option($fontsampler::FONTSAMPLER_OPTION_PROXY_URLS)) {
+	
+    if (get_option($fontsampler::FONTSAMPLER_OPTION_PROXY_URLS) && !empty(get_option( 'permalink_structure' ))) {
         // register an endpoint for custom webfont URLs, if enabled
-        add_rewrite_rule('^' . $fontsampler::FONTSAMPLER_PROXY_URL . '/(\d+)', 'index.php?' . $fontsampler::FONTSAMPLER_PROXY_QUERY_VAR . '=$matches[1]', 'top');
+		add_rewrite_rule('^' . $fontsampler::FONTSAMPLER_PROXY_URL . '/(\d+)', 'index.php?' . $fontsampler::FONTSAMPLER_PROXY_QUERY_VAR . '=$matches[1]', 'top');
     }
 
 	// register front end styles and scripts, but don't load them yet

@@ -513,8 +513,6 @@ class FontsamplerPlugin {
             $path = get_attached_file($id);
             if ($post && is_file($path) && is_readable($path)) {
                 $file = file_get_contents($path);
-                $this->init($wpdb);
-                $set = $this->db->get_fontset_raw($id);
                 header('Content-Type: ' . $post->post_mime_type);
                 header('Content-Length: ' . filesize($path));
                 echo $file;

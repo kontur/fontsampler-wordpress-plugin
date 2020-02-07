@@ -1,5 +1,5 @@
 # 0.4.5
-- FEATURE: Introduced site-wide toggle setting to proxy file URLs, so that the physical file location is not exposed
+- FEATURE: Introduced site-wide toggle setting to proxy file URLs, so that the physical file location is not exposed (requires using non-plain permalink setting)
 - FIX: Fixed overwriting sample text dropdown texts not getting displayed correctly in the front end
 - FIX: Various minor code improvements to avoid PHP notices and warnings
 
