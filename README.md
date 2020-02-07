@@ -25,6 +25,16 @@ You can also pass in fonts dynamically (i.e. without actually defining a Fontsam
 
 Essentially the fonts attribute takes a `json_encode`ed array without the opening and closing brackets (since these would break the shortcode).
 
+To use and print the shortcode in any of your templates, use it with Wordpress’ `do_shortcode()` function like this:
+
+```
+<?php
+echo do_shortcode('[fontsampler id=1']);
+?>
+```
+
+But the real benefit of this is dynamically loading fonts based on your template data with the above `fonts` attribute passed to the shortcode.
+
 ### Hooks
 More action and filter hooks are planned, but for now there is:
 
@@ -34,11 +44,11 @@ Fontsampler styles are automatically added to any pages that have the fontsample
 ### Reacting to Javascript events in your theme
 If you are a developer wanting to interact with Fontsampler instances you can react to the following javascript events being triggered on the Fontsampler wrappers.
 
-**fontsampler.events.afterinit**
+**fontsampler.event.afterinit**
 Called when all fonts are loaded and the Fontsampler is active.
 Params: Object event
 
-**fontssampler.events.activatefont**
+**fontssampler.event.activatefont**
 Called when a font is activated or switched.
 Params: Object event
 
