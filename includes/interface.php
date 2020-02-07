@@ -84,18 +84,21 @@
 						<?php endif;
                         break;
 
-                    case 'sampletexts':
-                        $samples = explode("\n", $options['sample_texts']);
-                        if ($set['sampletexts']) : ?>
+					case 'sampletexts':
+						$samples = !empty($set['sample_texts']) ? $set['sample_texts'] : $options['sample_texts'];
+						if ($samples) {
+							$samples = explode( "\n", $samples );
+						}						
+						if ( $set['sampletexts'] ) : ?>
 							<select name="sample-text">
 								<?php /* translators: The first and visible entry in the sample text drop down in the frontend */ ?>
-								<option selected="selected"><?php echo !empty($set['sample_texts_default_option']) ? $set['sample_texts_default_option'] : $options['sample_texts_default_option']; ?></option>
-								<?php foreach ($samples as $sample) : ?>
+								<option selected="selected"><?php echo !empty( $set['sample_texts_default_option'] ) ? $set['sample_texts_default_option'] : $options['sample_texts_default_option']; ?></option>
+								<?php if ($samples): foreach ( $samples as $sample ) : ?>
 									<option value="<?php echo $sample; ?>"><?php echo $sample; ?></option>
-								<?php endforeach; ?>
+								<?php endforeach; endif; ?>
 							</select>
 						<?php endif;
-                        break;
+						break;
 
                     case 'locl':
                         $locl_options = !empty($set['locl_options']) ? $set['locl_options'] : $options['locl_options'];
