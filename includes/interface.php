@@ -236,7 +236,7 @@
 								    font-size: <?php echo $data_initial['fontsize_initial'] . $data_initial['fontsize_unit']; ?>;
 								    letter-spacing: <?php echo $data_initial['letterspacing_initial'] . $data_initial['letterspacing_unit']; ?>;
 								    line-height: <?php echo $data_initial['lineheight_initial'] . $data_initial['lineheight_unit']; ?>;"
-							data-notdef="<?php echo $set['notdef'] !== null ? $set['notdef'] : $options['notdef']; ?>"
+							data-notdef="<?php echo isset($set['notdef']) && $set['notdef'] !== null ? $set['notdef'] : $options['notdef']; ?>"
 						
 						><?php echo $initial_text; ?></div>
 

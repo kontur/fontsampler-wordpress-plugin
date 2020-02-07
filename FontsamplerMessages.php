@@ -15,7 +15,7 @@ class FontsamplerMessages {
 
 	public function get_messages( $asString = false ) {
 		if ( $asString === true ) {
-			return implode( $this->messages, "\n" );
+			return implode( "\n", $this->messages );
 		}
 
 		return $this->messages;
