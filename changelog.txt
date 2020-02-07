@@ -1,3 +1,6 @@
+# 0.4.4
+- FIX: Made 'init' and 'fina' Opentype Features available in the context menu for fonts that support them
+
 # 0.4.3
 - TWEAK: Improved admin interface slider responsivness and sanity checks
 - TWEAK: Fixed compability with misc plugins (css class conflicts)

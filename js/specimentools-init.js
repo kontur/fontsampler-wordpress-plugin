@@ -44,6 +44,33 @@ define([
                 initialFontIndex = fonts.indexOf(initialFont),
                 overwrites = wrapper.dataset.overwrites ? JSON.parse(wrapper.dataset.overwrites) : {};
 
+            for (var o in overwrites) {
+                // let's utilize overwrites to force unique font names and 
+                // make them render regardless of font meta data weight class
+                overwrites[o] = {
+                    'names': {
+                      'postScriptName':  {
+                        'en': overwrites[o]
+                      }
+                    },
+                    'tables': {
+                      'os2': {
+                        'usWeightClass': 400
+                      }
+                    },
+                    'transforms': {
+                        '_getFullName': function (str) {
+                            // The regular _getFullName function will return a combination of
+                            // family + style + italic?
+                            // Overwrite this to remove everything after the forced "Regular", 
+                            // including the optional italic
+                            var lastIndex = str.lastIndexOf(" Regular");
+                            return lastIndex !== -1 ? str.substring(0, lastIndex) : str;
+                        }
+                    }
+                }
+            }            
+
             // if this wrapper has already been initialized, skip to next loop
             if (wrapper.classList.contains("initialized")) {
                 continue;
