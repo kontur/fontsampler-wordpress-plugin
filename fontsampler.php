@@ -10,7 +10,7 @@ Copyright:   Copyright 2016-2018 Johannes Neumeier
 Text Domain: fontsampler
 */
 defined( 'ABSPATH' ) or die( 'Access denied.' );
-
+error_reporting(E_ALL);
 
 // PHP version check first and foremost
 function displayPhpError() {
@@ -58,6 +58,10 @@ if ( version_compare( PHP_VERSION, "5.6.33" ) < 0 ) {
 	// load translations, then kick off actual Fontsampler setup and hooks
 	add_action( 'plugins_loaded', array( $fontsampler, 'fontsampler_load_text_domain' ) );
 	add_action( 'init', "fontsampler_init" );
+    if (get_option($fontsampler::FONTSAMPLER_OPTION_PROXY_URLS)) {
+        add_action('template_redirect', array($fontsampler, 'fontsampler_template_redirect'));
+        add_filter('query_vars', array($fontsampler, 'fontsampler_query_vars'));
+    }
 	register_activation_hook( __FILE__, array( $fontsampler, 'fontsampler_activate' ) );
 }
 
@@ -74,6 +78,11 @@ function fontsampler_init() {
 
 	// register the shortcode hook
 	add_shortcode( 'fontsampler', array( $fontsampler, 'fontsampler_shortcode' ) );
+
+    if (get_option($fontsampler::FONTSAMPLER_OPTION_PROXY_URLS)) {
+        // register an endpoint for custom webfont URLs, if enabled
+        add_rewrite_rule('^' . $fontsampler::FONTSAMPLER_PROXY_URL . '/(\d+)', 'index.php?' . $fontsampler::FONTSAMPLER_PROXY_QUERY_VAR . '=$matches[1]', 'top');
+    }
 
 	// register front end styles and scripts, but don't load them yet
 	wp_register_script( 'fontsampler-js', plugin_dir_url( __FILE__ ) . 'js/fontsampler.js', array('jquery'), false, false );

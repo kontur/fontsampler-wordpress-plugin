@@ -31,3 +31,5 @@ if ( get_option( 'fontsampler_hide_legacy_formats' ) ) {
 if ( get_option( 'fontsampler_last_changelog' ) ) {
 	delete_option( 'fontsampler_last_changelog' );
 }
+
+flush_rewrite_rules();

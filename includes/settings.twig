@@ -15,6 +15,16 @@ and if needed overwrite a specific option in a Fontsampler's unique settings.</p
 
 	{{ include('partials/preview.twig', { 'settings': true }) }}
 
+
+	<h2>Font file URL paths</h2>
+	<label>
+		<input type="checkbox" name="admin_proxy_urls" value="1" 
+		{% if admin_proxy_urls() %} checked="checked" {% endif %}>
+		<span class="settings-description">Rewrite the loaded webfont file paths.</span>
+		<small>By default the webfonts in the fontsamplers are loaded from their WP media gallery upload locations. Check if you wish to rewrite those paths on the fly.<br>
+		Note that this does only hide the location of the files on the server, but does not stop the files from being downloadable.</small> 
+	</label>
+		
 	<h2>Admin interface customizations</h2>
 	<label>
 		<input type="checkbox"

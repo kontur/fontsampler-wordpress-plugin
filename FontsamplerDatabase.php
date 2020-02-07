@@ -659,8 +659,13 @@ class FontsamplerDatabase {
 
 		$sql = 'SELECT f.id, f.name, ';
 		foreach ( $this->fontsampler->font_formats as $format ) {
-			$sql .= ' ( SELECT guid FROM ' . $this->wpdb->prefix . 'posts p 
+			if (!get_option($this->fontsampler::FONTSAMPLER_OPTION_PROXY_URLS)) {
+                $sql .= ' ( SELECT guid FROM ' . $this->wpdb->prefix . 'posts p 
 					WHERE p.ID = f.' . $format . ' ) AS ' . $format . ',';
+            } else {
+				$sql .= ' ( SELECT CONCAT("/' . $this->fontsampler::FONTSAMPLER_PROXY_URL . '/", id) FROM ' . $this->wpdb->prefix . 'posts p 
+				WHERE p.ID = f.' . $format . ' ) AS ' . $format . ',';
+			}
 		}
 		$sql = substr( $sql, 0, - 1 );
 		$sql .= ' FROM ' . $this->table_sets . ' s
@@ -717,8 +722,13 @@ class FontsamplerDatabase {
 	function get_fontset_for_set( $set_id ) {
 		$sql = 'SELECT f.id, f.name, ';
 		foreach ( $this->fontsampler->font_formats as $format ) {
-			$sql .= ' ( SELECT guid FROM ' . $this->wpdb->prefix . 'posts p 
+            if (!get_option($this->fontsampler::FONTSAMPLER_OPTION_PROXY_URLS)) {
+                $sql .= ' ( SELECT guid FROM ' . $this->wpdb->prefix . 'posts p 
 					WHERE p.ID = f.' . $format . ' ) AS ' . $format . ',';
+            } else {
+				$sql .= ' ( SELECT CONCAT("/' . $this->fontsampler::FONTSAMPLER_PROXY_URL . '/", id) FROM ' . $this->wpdb->prefix . 'posts p 
+				WHERE p.ID = f.' . $format . ' ) AS ' . $format . ',';
+			}
 		}
 		$sql = substr( $sql, 0, - 1 );
 		$sql .= ' FROM ' . $this->table_fonts . ' f

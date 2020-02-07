@@ -407,6 +407,15 @@ class FontsamplerFormhandler {
 				$this->fontsampler->admin_hide_legacy_formats = 0;
 			}
 
+			if ( isset( $this->post['admin_proxy_urls'] ) ) {
+				$val = intval($this->post['admin_proxy_urls']);
+				update_option( constant( get_class( $this->fontsampler ) . "::FONTSAMPLER_OPTION_PROXY_URLS" ), $val );
+				flush_rewrite_rules();
+			} else {
+				update_option( constant( get_class( $this->fontsampler ) . "::FONTSAMPLER_OPTION_PROXY_URLS" ), 0 );
+				flush_rewrite_rules();
+			}
+
 			$settings_fields   = array_keys( $this->fontsampler->db->get_default_settings() );
 			$checkbox_features = $this->fontsampler->helpers->get_checkbox_features();
 

@@ -25,11 +25,14 @@ class FontsamplerPlugin {
     const FONTSAMPLER_OPTION_DB_VERSION = 'fontsampler_db_version';
     const FONTSAMPLER_OPTION_LAST_CHANGELOG = 'fontsampler_last_changelog'; // note, hardcoded also in FontsamplerHelpers.php:351 due to bug
     const FONTSAMPLER_OPTION_HIDE_LEGACY_FORMATS = 'fontsampler_hide_legacy_formats';
+    const FONTSAMPLER_OPTION_PROXY_URLS = 'fontsampler_proxy_urls';
+    const FONTSAMPLER_PROXY_URL = 'fontsamplerfile';
+    const FONTSAMPLER_PROXY_QUERY_VAR = 'fontsamplerfile';
 
     public function __construct($wpdb, $twig) {
         $this->wpdb = $wpdb;
-		$this->twig = $twig;
-		
+        $this->twig = $twig;
+
         // TODO combined default_features and boolean options as array of objects
         // with "isBoolean" attribute
         $this->default_features = array(
@@ -127,7 +130,6 @@ class FontsamplerPlugin {
     }
 
     public function init() {
-
         // instantiate all needed helper subclasses
         $this->msg = new FontsamplerMessages();
         $this->helpers = new FontsamplerHelpers($this);
@@ -159,6 +161,17 @@ class FontsamplerPlugin {
             $this->admin_hide_legacy_formats = 1;
         } else {
             $this->admin_hide_legacy_formats = $option_legacy_formats;
+        }
+
+        // check if to proxy files urls or not
+        $option_proxy_urls = get_option(self::FONTSAMPLER_OPTION_PROXY_URLS);
+
+        // set the option in the db, if it's unset; default to no
+        if ($option_proxy_urls === false) {
+            add_option(self::FONTSAMPLER_OPTION_PROXY_URLS, '0');
+            $this->admin_hide_legacy_formats = 0;
+        } else {
+            $this->admin_hide_legacy_formats = $option_proxy_urls;
         }
 
         // hoist some of those settings defaults to the twig engine, so some things
@@ -246,7 +259,6 @@ class FontsamplerPlugin {
             foreach ($set['fonts'] as $font) {
                 foreach ($this->font_formats as $format) {
                     if (!empty($font[$format])) {
-                        $fileName = basename($font[$format]);
                         $fontNameOverwrites[$font[$format]] = $font['name'];
                     }
                 }
@@ -318,7 +330,6 @@ class FontsamplerPlugin {
             foreach ($fonts_passed_in as $font) {
                 foreach ($this->font_formats as $format) {
                     if (!empty($font[$format])) {
-                        $fileName = basename($font[$format]);
                         $fontNameOverwrites[$font[$format]] = $font['name'];
                     }
                 }
@@ -475,19 +486,50 @@ class FontsamplerPlugin {
      * React to the plugin being activated
      */
     public function fontsampler_activate() {
-		// If this is a new install the changelog doesnot need to be shown, set the "viewed" option
+        // If this is a new install the changelog doesnot need to be shown, set the "viewed" option
         if (false === get_option('fontsampler_last_changelog')) {
             // this throws obscure error on PHP 5.6
             //$option = update_option( $this->fontsampler::FONTSAMPLER_OPTION_LAST_CHANGELOG, $plugin['Version'] );
             $plugin = get_plugin_data(realpath(dirname(__FILE__) . '/fontsampler.php'));
 
             update_option('fontsampler_last_changelog', $plugin['Version']);
-		}
-		$this->db = new FontsamplerDatabase($this->wpdb, $this);
-		$this->helpers = new FontsamplerHelpers($this);
-		
+        }
+        $this->db = new FontsamplerDatabase($this->wpdb, $this);
+        $this->helpers = new FontsamplerHelpers($this);
+
         $this->db->check_and_create_tables();
         $this->helpers->check_and_create_folders();
+
+        flush_rewrite_rules();
+    }
+
+    /**
+     * Rewriting the custom proxy endpoint to serve a files
+     */
+    public function fontsampler_template_redirect() {        
+        $id = get_query_var($this::FONTSAMPLER_PROXY_QUERY_VAR);
+        if ($id) {
+            $post = get_post($id);
+            $path = get_attached_file($id);
+            if ($post && is_file($path) && is_readable($path)) {
+                $file = file_get_contents($path);
+                $this->init($wpdb);
+                $set = $this->db->get_fontset_raw($id);
+                header('Content-Type: ' . $post->post_mime_type);
+                header('Content-Length: ' . filesize($path));
+                echo $file;
+                exit();
+            }
+        }
+    }
+
+    /**
+     * Add the rewrite query var to the allowed vars
+     */
+    function fontsampler_query_vars($vars) {
+        $vars[] = $this::FONTSAMPLER_PROXY_QUERY_VAR;
+    
+        return $vars;
     }
 
     /*
