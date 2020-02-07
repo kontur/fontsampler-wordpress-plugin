@@ -1,3 +1,7 @@
+# 0.4.5
+- FIX: Fixed overwriting sample text dropdown texts not getting displayed correctly in the front end
+- FIX: Various minor code improvements to avoid PHP notices and warnings
+
 # 0.4.4
 - FIX: Made 'init' and 'fina' Opentype Features available in the context menu for fonts that support them
 

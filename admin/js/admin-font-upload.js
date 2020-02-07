@@ -2,7 +2,6 @@
  * All the jquery components dealing with file uploads on the admin side
  */
 define(['jquery'], function ($) {
-
     function main(specimentools) {
 
         var that = this,
@@ -16,7 +15,6 @@ define(['jquery'], function ($) {
         function MediaUploader($wrapper) {
 
             var frame,
-                addButton = $wrapper.find('.fontsampler-upload-font'),
                 delButton = $wrapper.find('.fontsampler-remove-font'),
                 idInput = $wrapper.find('.fontsampler-font-id'),
                 preview = $wrapper.find('.fontsampler-font-upload-preview'),
