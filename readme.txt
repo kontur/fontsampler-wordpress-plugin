@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: fonts, font, typeface, preview, shortcode
 Requires at least: 4.8
 Tested up to: 5.3.2
-Stable tag: 0.4.5
+Stable tag: 0.4.6
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -82,7 +82,7 @@ That is possible, you only need to activate the corresponding user interface ele
 
 = Are there any specific requirements for using Fontsampler? =
 
-Fontsampler works with PHP 5.6.33 or higher, but PHP 7 is recommended. PHP is free software and does not require any license other than the open source licenses shipped with it. Those versions of PHP are also required for security reasons aside from Fontsampler, so keeping those up to date is a good idea either way.
+Fontsampler works with PHP 7.0.0 or higher. PHP is free software and does not require any license other than the open source licenses shipped with it. Those versions of PHP are also required for security reasons aside from Fontsampler, so keeping those up to date is a good idea either way.
 
 = Are my web fonts secure when displaying them with Fontsampler? =
 
@@ -106,6 +106,9 @@ The [Github repository](https://github.com/kontur/fontsampler-wordpress-plugin) 
 6. This is how you include a Fontsampler in a page or post: Simply add the shortcode for the created Fontsampler to your text
 
 == Changelog ==
+
+= 0.4.6 =
+* TWEAK: Bumped the PHP version requirement of Fontsampler itself to PHP 7.0.0. Do not upgrade Fontsampler unless your server supports at least PHP version 7.0.0!
 
 = 0.4.5 =
 * FEATURE: Introduced site-wide toggle setting to proxy file URLs, so that the physical file location is not exposed (requires using non-plain permalink setting)

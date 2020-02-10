@@ -1,3 +1,6 @@
+# 0.4.6
+- TWEAK: Bumped the PHP version requirement of Fontsampler itself to PHP 7.0.0. Do not upgrade Fontsampler unless your server supports at least PHP version 7.0.0!
+
 # 0.4.5
 - FEATURE: Introduced site-wide toggle setting to proxy file URLs, so that the physical file location is not exposed (requires using non-plain permalink setting)
 - FIX: Fixed overwriting sample text dropdown texts not getting displayed correctly in the front end

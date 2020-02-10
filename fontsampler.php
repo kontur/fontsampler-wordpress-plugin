@@ -3,7 +3,7 @@
 Plugin Name: Fontsampler
 Plugin URI:  http://fontsampler.johannesneumeier.com
 Description: Create interactive webfont previews via shortcodes. Create and edit previews from the &para; Fontsampler sidebar menu or click "Settings" on the left.
-Version:     0.4.5
+Version:     0.4.6
 Author:      Underscore
 Author URI:  https://underscoretype.com
 Copyright:   Copyright 2016-2020 Johannes Neumeier
@@ -15,24 +15,26 @@ error_reporting(E_ALL);
 // PHP version check first and foremost
 function displayPhpError() {
 	echo '<section id="fontsampler-admin">';
-	echo '<div class="notice error">Your server is running PHP version ' . PHP_VERSION
-	     . ', <br>Fontsampler requires at least PHP version 5.6.33 or higher to run.<br><br>'
-	     . 'The <a href="https://wordpress.org/about/requirements/">recommended PHP version '
-	     . 'for Wordpress itself is 7</a> or greater.<br><br>'
-	     . 'While legacy Wordpress support extends to 5.2.4, <strong>Fontsampler requires a minimum '
-	     . 'of PHP 5.6.33.</strong> Please be in touch with your webserver provider about upgrading or enabling '
-	     . 'a more modern version of PHP.';
+	echo '<div class="notice error"><strong>Your server is running an outdated PHP version ' . PHP_VERSION
+	     . '</strong>, <br>Fontsampler requires at least PHP version 7.0.0 or higher to run.<br><br>'
+	     . 'The recommended PHP version for Wordpress itself is 7.0.0</a> or greater.<br><br>'
+	     . 'While legacy Wordpress support extends to 5.6.20+, <strong>Fontsampler requires a minimum '
+		 . 'of PHP 7.0.0.</strong> Please <a href="https://wordpress.org/about/requirements/">follow the instractions for requirements</a> '
+		 . 'and be in touch with your webserver provider about upgrading or enabling '
+		 . 'a more modern version of PHP.<br><br>'
+		 . 'As a last resort you can also try <a href="https://wordpress.org/plugins/fontsampler/advanced/">manually download a zip archive</a> of an older, but outdated, '
+		 . 'version of Fontsampler (try 0.4.4) to run with your server’s PHP version.';
 	echo '</section>';
 	exit();
 }
 
-function addMenu() {
+function addMenuWithWarning() {
 	add_menu_page( 'Fontsampler plugin page', 'Fontsampler', 'manage_options', 'fontsampler', 'displayPhpError', 'dashicons-editor-paragraph' );
 	wp_enqueue_style( 'fontsampler_admin_css', plugin_dir_url( __FILE__ ) . '/admin/css/fontsampler-admin.css', false, '1.0.0' );
 }
 
-if ( version_compare( PHP_VERSION, "5.6.33" ) < 0 ) {
-	add_action( 'admin_menu', 'addMenu' );
+if ( version_compare( PHP_VERSION, "7.0.0" ) < 0 ) {
+	add_action( 'admin_menu', 'addMenuWithWarning' );
 } else {
     global $wpdb;
 	// PHP version is good, let's go all bells and whistles...
