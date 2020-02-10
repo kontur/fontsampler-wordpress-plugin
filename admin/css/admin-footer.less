@@ -46,32 +46,32 @@
 
             .fontsampler-supporters {
                 ul {
-                    overflow: auto;
+                    display: flex;
+                    justify-content: flex-start;
+                    padding: 20px 0;
+                    flex-wrap: wrap;
+                    margin: 0;
                 }
                 li {
                     box-sizing: border-box;
                     display: inline-block;
-                    padding-right: 1em;
+                    margin-right: 1em;
+                    margin-bottom: 1em;
                     width: 120px;
 
+                    &.logo-square {
+                        width: 75px;
+                    }
+
                     > a {
-                        height: 0;
-                        padding-top: 150/240*100%;
                         position: relative;
                         text-align: center;
-                        width: 100%;
-
-                        img {
-                            height: 100%;
-                            top: 0;
-                            left: 0;
-                            right: 0;
-                            position: absolute;
-                        }
-                    }
-                    > img {
                         display: block;
-                        height: 150/240*100/5%;
+                        width: 100%;
+                    }
+                    img {
+                        display: block;
+                        height: auto;
                         width: 100%;
                     }
                 }

@@ -845,31 +845,31 @@
   display: block;
 }
 #fontsampler-admin footer .fontsampler-logos .fontsampler-supporters ul {
-  overflow: auto;
+  display: flex;
+  justify-content: flex-start;
+  padding: 20px 0;
+  flex-wrap: wrap;
+  margin: 0;
 }
 #fontsampler-admin footer .fontsampler-logos .fontsampler-supporters li {
   box-sizing: border-box;
   display: inline-block;
-  padding-right: 1em;
+  margin-right: 1em;
+  margin-bottom: 1em;
   width: 120px;
 }
+#fontsampler-admin footer .fontsampler-logos .fontsampler-supporters li.logo-square {
+  width: 75px;
+}
 #fontsampler-admin footer .fontsampler-logos .fontsampler-supporters li > a {
-  height: 0;
-  padding-top: 62.5%;
   position: relative;
   text-align: center;
+  display: block;
   width: 100%;
 }
-#fontsampler-admin footer .fontsampler-logos .fontsampler-supporters li > a img {
-  height: 100%;
-  top: 0;
-  left: 0;
-  right: 0;
-  position: absolute;
-}
-#fontsampler-admin footer .fontsampler-logos .fontsampler-supporters li > img {
+#fontsampler-admin footer .fontsampler-logos .fontsampler-supporters li img {
   display: block;
-  height: 12.5%;
+  height: auto;
   width: 100%;
 }
 #fontsampler-admin footer .fontsampler-donate {
