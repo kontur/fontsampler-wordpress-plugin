@@ -650,9 +650,9 @@ class FontsamplerDatabase {
 		if ( ! $including_fonts ) {
 			// generate order array with rows of arrays of ui fields, remove any fields from the ui_order string that
 			// are in fact not enabled in this set
-			$set['ui_order_parsed'] = $this->parse_ui_order(
-				$this->prune_ui_order( $set['ui_order'], $set )
-			);
+			// $set['ui_order_parsed'] = $this->parse_ui_order(
+			// 	$this->prune_ui_order( $set['ui_order'], $set )
+			// );
 
 			return $set;
 		}
@@ -984,11 +984,13 @@ class FontsamplerDatabase {
 		return $res ? $this->wpdb->insert_id : false;
 	}
 
+
 	function update_font( $data, $id ) {
 		$res = $this->wpdb->update( $this->table_fonts, $data, array( 'id' => $id ) );
 
 		return $res !== false ? true : false;
 	}
+
 
 	function delete_font( $id ) {
 		$this->wpdb->delete( $this->table_fonts, array( 'id' => $id ) );
@@ -1003,11 +1005,13 @@ class FontsamplerDatabase {
 		return $res ? $this->wpdb->insert_id : false;
 	}
 
+
 	function update_set( $data, $id ) {
 		$res = $this->wpdb->update( $this->table_sets, $data, array( 'id' => $id ) );
 
 		return $res !== false ? true : false;
 	}
+
 
 	function delete_set( $id ) {
 		$this->wpdb->delete( $this->table_join, array( 'set_id' => $id ) );
@@ -1023,6 +1027,7 @@ class FontsamplerDatabase {
 		return $res ? $this->wpdb->insert_id : false;
 	}
 
+
 	function delete_join( $data ) {
 		$this->wpdb->delete( $this->table_join, $data );
 
@@ -1032,5 +1037,46 @@ class FontsamplerDatabase {
 
 	function get_insert_id() {
 		return $this->wpdb->insert_id;
+	}
+
+	
+	function duplicate_set($id) {
+		if (!intval($id)) {
+
+            return false;
+		}
+		// Duplicate the set row
+		$sql = "INSERT INTO " . $this->table_sets . " (initial_font, use_defaults)
+			SELECT initial_font, use_defaults FROM " . $this->table_sets . "
+			WHERE id = " . $id;
+		$this->wpdb->query($sql);
+        $new = $this->wpdb->insert_id;
+		
+		if (!$new) {
+
+            return false;
+		}
+
+		// Duplicate the fonts used
+        $sql = 'SELECT * FROM ' . $this->table_join . ' WHERE set_id = ' . $id;
+		$rows = $this->wpdb->get_results($sql, ARRAY_A);
+		foreach ($rows as $r) {
+			$r['set_id'] = $new;
+            $this->wpdb->insert($this->table_join, $r);
+		}
+
+		// Get the inserted, check if settings also need to be duplicated or if
+		// this set used the defaults
+		$row = $this->wpdb->get_row("SELECT * FROM " . $this->table_sets . " 
+			WHERE id = " . $new);
+        if ($row->use_defaults != 1) {
+			$sql = "SELECT * FROM " . $this->table_settings . "
+				WHERE set_id = " . $id;
+			$setting = $this->wpdb->get_row($sql, ARRAY_A);
+			$setting['set_id'] = $new;
+            unset($setting['settings_id']);
+		}
+
+        return $new;
 	}
 }

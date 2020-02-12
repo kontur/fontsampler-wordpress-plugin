@@ -76,7 +76,7 @@
 
                     case 'fontpicker':
                         if ($set['fontpicker']) :
-                            if (sizeof($fonts) > 1) : ?>
+                            if (is_array($fonts) && sizeof($fonts) > 1) : ?>
 								<div class="font-lister"></div>
 							<?php else: ?>
 								<div class="fontsampler-font-label"><label></label></div>

@@ -623,6 +623,19 @@ class FontsamplerPlugin {
                         $this->forms->handle_font_edit($id);
                     }
                     break;
+                case 'duplicate_set':
+                    $id = $id = isset($_GET['id']) && intval($_GET['id']) > 0 ? intval($_GET['id']) : null;
+                    if (isset($id)) {
+                        $new = $this->forms->handle_duplicate_set($id);
+                        if ($new) {
+                            // Redirect to same admin address, but new set id
+                            $_GET['id'] = $new;
+                            $args = http_build_query($_GET);
+                            wp_safe_redirect($_SERVER['REQUEST_URI'] . '?' . $args);
+                            exit();
+                        }
+                    }
+                    break;
                 case 'delete_font':
                     $this->forms->handle_font_delete($id);
                     break;

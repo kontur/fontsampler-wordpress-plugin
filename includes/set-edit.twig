@@ -1,7 +1,7 @@
 {% extends('layout.twig') %}
 
 {% block content %}
-<h1>{% if set.id is empty %}New fontsampler{% else %}Edit fontsampler {{ set.id }}{% endif %}</h1>
+<h1>{% if set.id is empty %}New fontsampler{% else %}Edit fontsampler&nbsp;{{ set.id }}{% endif %}</h1>
 
 <p>Once you save the fontsampler, it will be saved with an ID you use to embed it on your wordpress pages</p>
 <form method="post" enctype="multipart/form-data" action="?page=fontsampler" id="fontsampler-edit-sample">

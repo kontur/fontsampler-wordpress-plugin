@@ -10,6 +10,7 @@
         </th>
         <th>Settings options</th>
         <th>Edit</th>
+        <th>Duplicate</th>
         <th>Delete</th>
     </tr>
     </thead>
@@ -50,6 +51,16 @@
                 <form method="post" action="?page=fontsampler&amp;subpage=set_edit&amp;id={{ set.id }}"
                       style="display: inline-block;">
                     {{ submit_button('Edit set') }}
+                </form>
+            </td>
+            </td>
+            <td>
+                <form method="post" action="?page=fontsampler&amp;subpage=set_edit&amp;id={{ set.id }}"
+                      style="display: inline-block;">
+                    <input type="hidden" name="action" value="duplicate_set">
+                    {{ wp_nonce_field( 'fontsampler-action-duplicate_set' )|raw }}
+	
+                    {{ submit_button('Duplicate') }}
                 </form>
             </td>
             <td>

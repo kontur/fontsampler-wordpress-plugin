@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: fonts, font, typeface, preview, shortcode
 Requires at least: 4.8
 Tested up to: 5.3.2
-Stable tag: 0.4.6
+Stable tag: 0.4.7
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -106,6 +106,10 @@ The [Github repository](https://github.com/kontur/fontsampler-wordpress-plugin) 
 6. This is how you include a Fontsampler in a page or post: Simply add the shortcode for the created Fontsampler to your text
 
 == Changelog ==
+
+= 0.4.7 =
+* FEATURE: Added 'Duplicate' button to admin UI for cloning Fontsamplers
+* FIX: Fixed an issue with Media Gallery uploads prevented by Fontsampler mime type filters
 
 = 0.4.6 =
 * TWEAK: Bumped the PHP version requirement of Fontsampler itself to PHP 7.0.0. Do not upgrade Fontsampler unless your server supports at least PHP version 7.0.0!

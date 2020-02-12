@@ -27,6 +27,15 @@ class FontsamplerFormhandler {
 		$this->font_edit( $id );
 	}
 
+	function handle_duplicate_set( $id = null ) {
+		check_admin_referer('fontsampler-action-duplicate_set');
+        return $this->duplicate_set( $id );
+	}
+
+	function duplicate_set( $id = null ) {
+        return $this->fontsampler->db->duplicate_set( $id );
+	}
+
 	function font_edit( $id = null, $offset = 0 ) {
 		$data = array(
 			'woff'  => $this->post['woff'][ $offset ],

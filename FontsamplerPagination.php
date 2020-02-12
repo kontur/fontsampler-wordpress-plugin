@@ -33,7 +33,7 @@ class FontsamplerPagination {
 			$page        = $i + 1;
 			$first_label = $this->items[ $first ]['label'];
 			$last_label  = $i === $this->pages_total - 1 ? $this->items[ ( sizeof( $this->items ) - 1 ) ]['label'] : $this->items[ $last - 1 ]['label'];
-			$label       = $this->pagenumbers_as_labels ? $i : $first_label . ' &ndash; ' . $last_label;
+			$label       = $this->pagenumbers_as_labels ? $i + 1 : $first_label . ' &ndash; ' . $last_label;
 
 			$url = str_replace(
 				array( '###first###', '###items###' ),
