@@ -1,4 +1,4 @@
-# 0.4.7
+# 0.4.7 & 0.4.8
 - FEATURE: Added 'Duplicate' button to admin UI for cloning Fontsamplers
 - FIX: Fixed an issue with Media Gallery uploads prevented by Fontsampler mime type filters
 

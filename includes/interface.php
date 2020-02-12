@@ -1,24 +1,24 @@
 <div class="type-tester"
-     data-min-font-size="<?php echo $data_initial['fontsize_min']; ?>"
-     data-max-font-size="<?php echo $data_initial['fontsize_max']; ?>"
-     data-unit-font-size="<?php echo $data_initial['fontsize_unit']; ?>"
-     data-value-font-size="<?php echo $data_initial['fontsize_initial']; ?>"
+     data-min-font-size="<?php echo isset($data_initial['fontsize_min']) ? $data_initial['fontsize_min'] : ''; ?>"
+     data-max-font-size="<?php echo isset($data_initial['fontsize_max']) ? $data_initial['fontsize_max'] : ''; ?>"
+     data-unit-font-size="<?php echo isset($data_initial['fontsize_unit']) ? $data_initial['fontsize_unit'] : ''; ?>"
+     data-value-font-size="<?php echo isset($data_initial['fontsize_initial']) ? $data_initial['fontsize_initial'] : ''; ?>"
      data-step-font-size="1"
 
-     data-min-letter-spacing="<?php echo $data_initial['letterspacing_min']; ?>"
-     data-max-letter-spacing="<?php echo $data_initial['letterspacing_max']; ?>"
-     data-unit-letter-spacing="<?php echo $data_initial['letterspacing_unit']; ?>"
-     data-value-letter-spacing="<?php echo $data_initial['letterspacing_initial']; ?>"
+     data-min-letter-spacing="<?php echo isset($data_initial['letterspacing_min']) ? $data_initial['letterspacing_min'] : ''; ?>"
+     data-max-letter-spacing="<?php echo isset($data_initial['letterspacing_max']) ? $data_initial['letterspacing_max'] : ''; ?>"
+     data-unit-letter-spacing="<?php echo isset($data_initial['letterspacing_unit']) ? $data_initial['letterspacing_unit'] : ''; ?>"
+     data-value-letter-spacing="<?php echo isset($data_initial['letterspacing_initial']) ? $data_initial['letterspacing_initial'] : ''; ?>"
      data-step-letter-spacing="1"
 
-     data-min-line-height="<?php echo $data_initial['lineheight_min']; ?>"
-     data-max-line-height="<?php echo $data_initial['lineheight_max']; ?>"
-     data-unit-line-height="<?php echo $data_initial['lineheight_unit']; ?>"
-     data-value-line-height="<?php echo $data_initial['lineheight_initial']; ?>"
+     data-min-line-height="<?php echo isset($data_initial['lineheight_min']) ? $data_initial['lineheight_min'] : ''; ?>"
+     data-max-line-height="<?php echo isset($data_initial['lineheight_max']) ? $data_initial['lineheight_max'] : ''; ?>"
+     data-unit-line-height="<?php echo isset($data_initial['lineheight_unit']) ? $data_initial['lineheight_unit'] : ''; ?>"
+     data-value-line-height="<?php echo isset($data_initial['lineheight_initial']) ? $data_initial['lineheight_initial'] : ''; ?>"
      data-step-line-height="1">
 
 	<div class="fontsampler-interface columns-<?php echo $set['ui_columns'];
-    echo ' fontsampler-id-' . $set['id']; ?>">
+    echo isset($set['id']) ? ' fontsampler-id-' . $set['id'] : 'fontsampler-id-unknown'; ?>">
 
 		<?php
 
@@ -76,7 +76,7 @@
 
                     case 'fontpicker':
                         if ($set['fontpicker']) :
-                            if (is_array($fonts) && sizeof($fonts) > 1) : ?>
+                            if (isset($fonts) && is_array($fonts) && sizeof($fonts) > 1) : ?>
 								<div class="font-lister"></div>
 							<?php else: ?>
 								<div class="fontsampler-font-label"><label></label></div>
@@ -232,10 +232,12 @@
 						    contenteditable="true"
 							<?php if (!$set['is_ltr']): echo ' dir="rtl" '; endif; ?>
 
-							style="text-align: <?php echo $set['alignment_initial']; ?>;
+							style="text-align: <?php echo isset($set['alignment_initial']) ? $set['alignment_initial'] : ''; ?>;
+								<?php if (isset($data_initial)): ?>
 								    font-size: <?php echo $data_initial['fontsize_initial'] . $data_initial['fontsize_unit']; ?>;
 								    letter-spacing: <?php echo $data_initial['letterspacing_initial'] . $data_initial['letterspacing_unit']; ?>;
 								    line-height: <?php echo $data_initial['lineheight_initial'] . $data_initial['lineheight_unit']; ?>;"
+								<?php endif; ?>
 							data-notdef="<?php echo isset($set['notdef']) && $set['notdef'] !== null ? $set['notdef'] : $options['notdef']; ?>"
 						
 						><?php echo $initial_text; ?></div>

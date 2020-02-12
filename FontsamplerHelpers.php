@@ -414,7 +414,11 @@ class FontsamplerHelpers {
 		} ) );
 
 		$twig->addFunction( new Twig_SimpleFunction( 'image_src', function ( $image_id ) {
-			return wp_get_attachment_image_src( $image_id, 'full' )[0];
+            if ($image_id) {
+                return wp_get_attachment_image_src($image_id, 'full')[0];
+			}
+
+            return '';
 		} ) );
 
 		$twig->addFunction( new Twig_SimpleFunction( 'admin_hide_legacy_formats', function () {
