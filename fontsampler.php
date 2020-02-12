@@ -98,7 +98,7 @@ function fontsampler_init() {
 	add_action( 'admin_menu', array( $fontsampler, 'fontsampler_plugin_setup_menu' ) );
 	add_action( 'admin_enqueue_scripts', array( $fontsampler, 'fontsampler_admin_enqueues' ) );
 	add_action( 'wp_ajax_get_mock_fontsampler', array( $fontsampler, 'ajax_get_mock_fontsampler' ) );
-	add_filter( 'wp_check_filetype_and_ext', 'common_upload_real_mimes', 10, 4 );
+	add_filter( 'upload_mimes', array( $fontsampler, 'allow_font_upload_types' ) );
+	add_filter( 'wp_check_filetype_and_ext', array( $fontsampler, 'check_upload_extension' ), 10, 4 );
 	add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $fontsampler, 'add_action_links' ) );
 }
-

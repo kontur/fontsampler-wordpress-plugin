@@ -463,13 +463,50 @@ class FontsamplerPlugin {
      * Expand allowed upload types to include font files
      */
     public function allow_font_upload_types($existing_mimes = array()) {
-        $existing_mimes['woff'] = 'application/font-woff';
-        $existing_mimes['woff2'] = 'application/font-woff2';
-        $existing_mimes['eot'] = 'application/eot';
-        $existing_mimes['ttf'] = 'application/ttf';
+        // $existing_mimes['woff'] = 'application/font-woff';
+        // $existing_mimes['woff2'] = 'application/font-woff2';
+        // $existing_mimes['eot'] = 'application/eot';
+        // $existing_mimes['ttf'] = 'application/ttf';
+
+        $existing_mimes['woff'] = 'font/woff';
+        $existing_mimes['woff2'] = 'font/woff2';
+        $existing_mimes['ttf'] = 'font/truetype';
+        $existing_mimes['otf'] = 'font/opentype';
 
         return $existing_mimes;
     }
+
+
+    /**
+     * Fix Upload MIME detection
+     *
+     * A workaround needed in addition to adding upload_mimes since 4.7.1
+     * Still required in 5.3.x
+     * 
+     * After adding the font mime types to allowed mimes in the check for validity
+     * of a file check here explicitly if the file extension of the file is listed
+     * in the allowed mime types (which it is after we added it)
+     *
+     * @param checked [ext, type, proper_filename]
+     * @param file
+     * @param filename
+     * @param mimes
+     */
+    function check_upload_extension($checked, $file, $filename, $mimes) {
+        if (false === $checked['ext'] && false === $checked['type'] && false === $checked['proper_filename']) {
+            $filetype = wp_check_filetype($filename);
+            $wp_mimes = get_allowed_mime_types();
+            if (in_array($filetype['ext'], array_keys($wp_mimes))) {
+                $checked['ext'] = true;
+                $checked['type'] = true;
+
+                return $checked;
+            }
+        }
+
+        return $checked;
+    }
+    
 
     /*
      * Augment the plugin description links
