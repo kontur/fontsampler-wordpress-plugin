@@ -48,7 +48,7 @@ If you are a developer wanting to interact with Fontsampler instances you can re
 Called when all fonts are loaded and the Fontsampler is active.
 Params: Object event
 
-**fontssampler.event.activatefont**
+**fontsampler.event.activatefont**
 Called when a font is activated or switched.
 Params: Object event
 
