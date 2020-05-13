@@ -676,7 +676,17 @@ class FontsamplerDatabase {
 				WHERE j.set_id = ' . intval( $id ) . '
 				ORDER BY j.`order` ASC';
 
-		$set['fonts'] = $this->wpdb->get_results( $sql, ARRAY_A );
+		$fonts = $this->wpdb->get_results( $sql, ARRAY_A );
+		if ($fonts) {
+			$fonts = array_map(function ($font) {
+				foreach ($font as $key => $val) {
+					$font[$key] = str_replace(array('http:', 'https:'), '', $val);
+				}
+
+                return $font;
+			}, $fonts);
+		}
+		$set['fonts'] = $fonts;
 
 		if ( sizeof( $set['fonts'] ) > 1 ) {
 			$set['fontpicker'] = 1;

@@ -322,9 +322,7 @@ class FontsamplerHelpers {
 				}
 			}
 			if ( false !== $best ) {
-                if (is_ssl() && substr($best, 0, 7) === "http://") {
-                    $best = str_replace("http://", "https://", $best);
-				}
+                $best = str_replace(array('https:', 'http:'), '', $best);
 				$fontsFiltered[ $font['id'] ] = $best;
 			}
 		}
