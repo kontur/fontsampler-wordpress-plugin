@@ -3,8 +3,8 @@ Contributors: kontur
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LSK5YQHHCGGYS
 Tags: fonts, font, typeface, preview, shortcode
 Requires at least: 4.8
-Tested up to: 5.3.2
-Stable tag: 0.4.8
+Tested up to: 5.4.1
+Stable tag: 0.4.9
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -107,7 +107,11 @@ The [Github repository](https://github.com/kontur/fontsampler-wordpress-plugin) 
 
 == Changelog ==
 
-= 0.4.7 =
+= 0.4.9 =
+* FIX: Fixed an issue where a hyphen in a font name would prevent the style from rendering correctly
+* FIX: Made all font file resource requests protocol agnostic to avoid mixed content problems on misconfigured WP sites where the http/s setting differs from the saved Media Gallery file URL protocols
+
+= 0.4.7 & 0.4.8 =
 * FEATURE: Added 'Duplicate' button to admin UI for cloning Fontsamplers
 * FIX: Fixed an issue with Media Gallery uploads prevented by Fontsampler mime type filters
 

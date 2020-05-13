@@ -10,9 +10,8 @@
     <h2>Here is what changed with this latest release:</h2>
     <div class="text-box">
         <ul class="real-list">
-            <li class="fontsampler-changelog-feature"><strong>FEATURE:</strong> Added a button to the admin interface to simplify duplicating an entire Fontsampler.</li>
-            <li class="fontsampler-changelog-feature"><strong>FEATURE:</strong> Added a general settings option to hide the webfont paths used in Fontsampler. While this does not protect the files from download, it obfuscates their physical location on the server.</li>
-            <li class="fontsampler-changelog-fix"><strong>FIX:</strong> Eliminated a problem where Fontsamplers settings interfered with the Media Gallery upload file type permissions.</li>
+            <li class="fontsampler-changelog-fix"><strong>FIX:</strong> Fixed an issue where a hyphen in a font name would prevent the style from rendering correctly</li>
+            <li class="fontsampler-changelog-fix"><strong>FIX:</strong> Made all font file resource requests protocol agnostic to avoid mixed content problems on misconfigured WP sites where the http/s setting differs from the saved Media Gallery file URL protocols</li>
         </ul>
     </div>
     <br>

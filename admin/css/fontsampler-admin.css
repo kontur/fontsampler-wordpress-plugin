@@ -873,7 +873,7 @@
   width: 100%;
 }
 #fontsampler-admin footer .fontsampler-donate {
-  padding: 0 2em 1.5em;
+  padding: 0.5em 2em 1.5em;
   margin: 1em 0;
   background: white;
   text-align: left;
@@ -882,7 +882,7 @@
 #fontsampler-admin footer .fontsampler-donate form {
   display: inline-block;
   position: relative;
-  top: 0.85em;
+  top: 0.5em;
 }
 #fontsampler-admin footer .fontsampler-donate input {
   border: 0;

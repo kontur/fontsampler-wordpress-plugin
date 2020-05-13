@@ -1,3 +1,7 @@
+# 0.4.9
+- FIX: Fixed an issue where a hyphen in a font name would prevent the style from rendering correctly
+- FIX: Made all font file resource requests protocol agnostic to avoid mixed content problems on misconfigured WP sites where the http/s setting differs from the saved Media Gallery file URL protocols
+
 # 0.4.7 & 0.4.8
 - FEATURE: Added 'Duplicate' button to admin UI for cloning Fontsamplers
 - FIX: Fixed an issue with Media Gallery uploads prevented by Fontsampler mime type filters
