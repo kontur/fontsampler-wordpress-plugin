@@ -50,7 +50,7 @@ define([
                 overwrites[o] = {
                     'names': {
                       'postScriptName':  {
-                        'en': overwrites[o]
+                        'en': overwrites[o].replace("-", "___")
                       }
                     },
                     'tables': {
@@ -64,6 +64,7 @@ define([
                             // family + style + italic?
                             // Overwrite this to remove everything after the forced "Regular", 
                             // including the optional italic
+                            str = str.replace("___", "-")
                             var lastIndex = str.lastIndexOf(" Regular");
                             return lastIndex !== -1 ? str.substring(0, lastIndex) : str;
                         }
