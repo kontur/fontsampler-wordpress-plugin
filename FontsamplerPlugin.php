@@ -216,7 +216,7 @@ class FontsamplerPlugin {
             $css = $this->helpers->get_custom_css($set); // returns false or link to generated custom css
             // $fonts = $this->helpers->get_best_file_from_fonts($this->db->get_fontset_for_set(intval($attributes['id'])));
 
-            $fonts = $this->db->get_fontset_for_set((int)($attributes['id']));
+            $fonts = array_values($this->db->get_fontset_for_set((int)($attributes['id'])));
 
             if ($initial = (int)$set['initial_font']) {
                 foreach ($fonts as $font) {
@@ -225,7 +225,7 @@ class FontsamplerPlugin {
                     }
                 }
             }
-
+            
             // TODO do this filtering already in get_fontset_for_set…
             $fonts = array_map(function ($item) use ($set) {
                 if (!array_key_exists('name', $item)) {
@@ -236,14 +236,21 @@ class FontsamplerPlugin {
                     'files' => array()
                 );
                 if (array_key_exists('woff', $item)) {
-                    array_push($return['files'], $item['woff']);
+                    array_push(
+                        $return['files'],
+                    str_replace(array('https:', 'http:'), '', $item['woff'])
+                    );
                 }
                 if (array_key_exists('woff2', $item)) {
-                    array_push($return['files'], $item['woff2']);
+                    array_push(
+                        $return['files'],
+                    str_replace(array('https:', 'http:'), '', $item['woff2'])
+                    );
                 }
 
                 return $return;
-            }, $this->db->get_fontset_for_set(intval($attributes['id'])));
+            // }, $this->db->get_fontset_for_set(intval($attributes['id'])));
+            }, $fonts);
 
             if (false !== $css) {
                 wp_enqueue_style('fontsampler-interface-' . $id, $css, array(), false);
@@ -264,6 +271,7 @@ class FontsamplerPlugin {
             $layout = new FontsamplerLayout();
             $blocks = $layout->stringToArray($set['ui_order'], $set);
 
+
             // get the calculated initial values for data-font-size- etc, where the set overwrites options
             // where available
             $data_initial = array();
@@ -273,39 +281,36 @@ class FontsamplerPlugin {
                     $data_initial[$key] = $options[$key];
                 }
             }
-            echo '<pre>';
-            var_dump($data_initial['fontsize']);
-            echo '</pre>';
-
             $fsoptions = array(
                 'multiline' => (bool)$data_initial['multiline'],
-                'ui' => array(
+                'order' => array_keys($blocks), # FIXME
+                'config' => array(
                     'fontfamily' => array(
                         'init' => $initial ? $initial : false,
-                        'render' => (bool)$data_initial['fontpicker'],
+                        'render' => (bool)$data_initial['fontpicker']
                     ),
                     'fontsize' => array(
                         'min' => $data_initial['fontsize_min'],
                         'max' => $data_initial['fontsize_max'],
                         'unit' => $data_initial['fontsize_unit'],
                         'init' => $data_initial['fontsize_initial'],
-                        'step' => "1", // TODO editable via backend
+                        'step' => '1', // TODO editable via backend
                         'render' => (bool)$data_initial['fontsize'],
                     ),
                     'letterspacing' => array(
-                        "min" => $data_initial['letterspacing_min'],
-                        "max" => $data_initial['letterspacing_max'],
-                        "unit" => $data_initial['letterspacing_unit'],
-                        "init" => $data_initial['letterspacing_initial'],
-                        "step" => "1", // TODO editable via backend
+                        'min' => $data_initial['letterspacing_min'],
+                        'max' => $data_initial['letterspacing_max'],
+                        'unit' => $data_initial['letterspacing_unit'],
+                        'init' => $data_initial['letterspacing_initial'],
+                        'step' => '1', // TODO editable via backend
                         'render' => (bool)$data_initial['letterspacing'],
                     ),
                     'lineheight' => array(
-                        "min" => $data_initial['lineheight_min'],
-                        "max" => $data_initial['lineheight_max'],
-                        "unit" => $data_initial['lineheight_unit'],
-                        "init" => $data_initial['lineheight_initial'],
-                        "step" => 1, // TODO editable via backend
+                        'min' => $data_initial['lineheight_min'],
+                        'max' => $data_initial['lineheight_max'],
+                        'unit' => $data_initial['lineheight_unit'],
+                        'init' => $data_initial['lineheight_initial'],
+                        'step' => 1, // TODO editable via backend
                         'render' => false,
                     ),
                     // alignment: {
@@ -334,27 +339,49 @@ class FontsamplerPlugin {
                     // },
                 )
             );
- 
-            // echo '<pre>';
-            // var_dump(json_encode($fsoptions['ui']['lineheight']));
-            // echo '</pre>';       
+            
+            foreach ($blocks as $key => $class) {
+                // var_dump($key, $class, array_key_exists($key, $fsoptions['config']));
+                // echo '<br>';
+                if (array_key_exists($key, $fsoptions['config'])) {
+                    $fsoptions['config'][$key]['classes'] = $class;
+                }
+            }
 
             // buffer output until return
-            ob_start(); ?>
-			<div class='fontsampler-wrapper'
-			    data-fonts='<?php echo json_encode($fonts); ?>'
-                data-options='<?php echo json_encode($fsoptions); ?>'
-			>
+            ob_start();
+            $rand = rand(); ?>
+			<div id="<?php echo $rand; ?>" class='fontsampler-wrapper fontsampler-interface columns-<?php echo !empty($set['ui_columns']) ? $set['ui_columns'] : '3';
+echo ' fontsampler-id-' . $set['id']; ?>' data-fontsampler-id="<?php echo $set['id']; ?>">
 			<?php
 
             // include, aka echo, template with replaced values from $replace above
-            include 'includes/interface.php';
+            // include 'includes/interface.php';
+            $initial_text_db = isset($set['initial']) ? $set['initial'] : '';
+            if (isset($set['multiline']) && $set['multiline'] == 1) {
+                $initial_text = str_replace("\n", '<br>', $initial_text_db);
+            } else {
+                $initial_text = preg_replace('/\n/', ' ', $initial_text_db);
+            }
 
-            echo '</div>';
+            // if the shortcode had a [ text=""] attribute passed in, use that overwrite
+            if (isset($attribute_text) && $attribute_text !== null) {
+                $initial_text = $attribute_text;
+            }
+            echo $initial_text;
+
+            echo '</div>'; ?>
+            <script>
+            var fonts_<?php echo $rand; ?> = <?php echo json_encode($fonts); ?>;
+            var options_<?php echo $rand; ?> = <?php echo json_encode($fsoptions); ?>;
+            </script>
+            <?php
 
             // return all that's been buffered
             return ob_get_clean();
-        } elseif ($attributes['fonts'] !== null) {
+        }
+        /*
+        elseif ($attributes['fonts'] !== null) {
             // you cannot pass in a json encoded string (because the square brackets would
             // be interpreted as the end of the shortcode), so the json encoded string is
             // EXPECTED to be a json encoded array, but missing the opening and ending
@@ -406,18 +433,18 @@ class FontsamplerPlugin {
 
             ob_start(); ?>
 
-			<div class='fontsampler-wrapper on-loading'
-			     data-fonts='<?php echo implode(',', $fonts); ?>'
-				<?php if ($initialFont) : ?>
-					data-initial-font='<?php echo $initialFont; ?>'
-				<?php endif; ?>
-				<?php if (!empty($fontNameOverwrites)): ?>
-					data-overwrites='<?php echo json_encode($fontNameOverwrites); ?>'
-					data-initial-font-name-overwrite='<?php echo $initialFontNameOverwrite; ?>'
-				<?php endif; ?>
-			>
+            <div class='fontsampler-wrapper on-loading'
+                 data-fonts='<?php echo implode(',', $fonts); ?>'
+                <?php if ($initialFont) : ?>
+                    data-initial-font='<?php echo $initialFont; ?>'
+                <?php endif; ?>
+                <?php if (!empty($fontNameOverwrites)): ?>
+                    data-overwrites='<?php echo json_encode($fontNameOverwrites); ?>'
+                    data-initial-font-name-overwrite='<?php echo $initialFontNameOverwrite; ?>'
+                <?php endif; ?>
+            >
 
-			<?php
+            <?php
 
             // include, aka echo, template with replaced values from $replace above
             include 'includes/interface.php';
@@ -426,6 +453,7 @@ class FontsamplerPlugin {
 
             return ob_get_clean();
         }
+        */
     }
 
     /**
@@ -545,13 +573,12 @@ class FontsamplerPlugin {
         return $existing_mimes;
     }
 
-
     /**
      * Fix Upload MIME detection
      *
      * A workaround needed in addition to adding upload_mimes since 4.7.1
      * Still required in 5.3.x
-     * 
+     *
      * After adding the font mime types to allowed mimes in the check for validity
      * of a file check here explicitly if the file extension of the file is listed
      * in the allowed mime types (which it is after we added it)
@@ -561,7 +588,7 @@ class FontsamplerPlugin {
      * @param filename
      * @param mimes
      */
-    function check_upload_extension($checked, $file, $filename, $mimes) {
+    public function check_upload_extension($checked, $file, $filename, $mimes) {
         if (false === $checked['ext'] && false === $checked['type'] && false === $checked['proper_filename']) {
             $filetype = wp_check_filetype($filename);
             $wp_mimes = get_allowed_mime_types();
@@ -575,7 +602,6 @@ class FontsamplerPlugin {
 
         return $checked;
     }
-    
 
     /*
      * Augment the plugin description links
@@ -612,7 +638,7 @@ class FontsamplerPlugin {
     /**
      * Rewriting the custom proxy endpoint to serve a files
      */
-    public function fontsampler_template_redirect() {        
+    public function fontsampler_template_redirect() {
         $id = get_query_var($this::FONTSAMPLER_PROXY_QUERY_VAR);
         if ($id) {
             $post = get_post($id);
@@ -630,9 +656,9 @@ class FontsamplerPlugin {
     /**
      * Add the rewrite query var to the allowed vars
      */
-    function fontsampler_query_vars($vars) {
+    public function fontsampler_query_vars($vars) {
         $vars[] = $this::FONTSAMPLER_PROXY_QUERY_VAR;
-    
+
         return $vars;
     }
 

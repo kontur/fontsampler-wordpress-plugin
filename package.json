@@ -6,6 +6,7 @@
   "scripts": {
     "test": "libs",
     "js": "watchify js/main.js -o 'uglifyjs -c > js/fontsampler.js' -v -s 'Fontsampler'",
+    "js-dev": "watchify js/main.js -o 'js/fontsampler.js' -v -s 'Fontsampler'",
     "build": "node r.js -o build.js",
     "build-admin": "node r.js -o build-admin.js",
     "less": "lessc css/fontsampler-css.less css/fontsampler-css.css",

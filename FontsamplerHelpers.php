@@ -321,7 +321,7 @@ class FontsamplerHelpers {
 					$best = $font[ $check ];
 				}
 			}
-			if ( false !== $best ) {
+            if ( false !== $best ) {
                 $best = str_replace(array('https:', 'http:'), '', $best);
 				$fontsFiltered[ $font['id'] ] = $best;
 			}

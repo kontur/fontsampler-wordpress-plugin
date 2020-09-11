@@ -20,31 +20,31 @@
 @css_value_row_gutter: 10px;
 
 /* css_color_text */
-.fontsampler-interface .type-tester__content {
+.fontsampler-interface .fsjs-block-tester {
     color: @css_color_text;
 }
 
-.fontsampler-wrapper .fontsampler-interface .type-tester__content.invert {
+.fontsampler-wrapper .fontsampler-interface .fsjs-block-tester.invert {
     color: @css_color_background;
 }
 
 /* css_color_background */
-.fontsampler-interface .type-tester__content {
+.fontsampler-interface .fsjs-block-tester {
     background: @css_color_background;
 }
 
-.fontsampler-wrapper .fontsampler-interface .type-tester__content.invert {
+.fontsampler-wrapper .fontsampler-interface .fsjs-block-tester.invert {
     background: @css_color_text;
 }
 
 /* css_color_label */
 /* css_size_label */
 /* css_fontfamily_label */
-.fontsampler-interface .fontsampler-slider .slider-label,
-.fontsampler-interface .fontsampler-slider .slider-value,
+.fontsampler-interface .fsjs-block-type-slider .slider-label,
+.fontsampler-interface .fsjs-block-type-slider .slider-value,
 .fontsampler-interface .selectric .label,
 .fontsampler-interface .selectric-items li,
-.fontsampler-interface .fontsampler-ui-block-fontpicker .fontsampler-font-label label,
+.fontsampler-interface .fsjs-block-fontpicker .fontsampler-font-label label,
 .fontsampler-interface .fontsampler-opentype-features {
     color: @css_color_label;
     font-size: @css_value_size_label;
@@ -68,9 +68,9 @@
 .fontsampler-interface .selectric .button,
 .fontsampler-wrapper .fontsampler-interface .fontsampler-multiselect > button,
 .fontsampler-interface .rangeslider__fill,
-.fontsampler-interface .fontsampler-ui-block-fontpicker .fontsampler-font-label label,
-.fontsampler-interface .fontsampler-ui-block-buy a,
-.fontsampler-interface .fontsampler-ui-block-specimen a {
+.fontsampler-interface .fsjs-block-fontpicker .fontsampler-font-label label,
+.fontsampler-interface .fsjs-block-buy a,
+.fontsampler-interface .fsjs-block-specimen a {
     // border-bottom: 1px solid @css_color_line;
 }
 
@@ -90,7 +90,7 @@
 /* css_color_icon_active */
 /* css_color_icon_inactive */
 
-.fontsampler-interface .fontsampler-ui-block {
+.fontsampler-interface .fsjs-block {
     height: @css_value_row_height;
     margin-bottom: @css_value_row_gutter;
     padding-right: @css_value_column_gutter;
@@ -105,23 +105,25 @@
 .fontsampler-interface .selectric > .button {
     background: @css_color_button_background;
 }
-.fontsampler-interface .fontsampler-ui-block .fontsampler-multiselect > button {
+
+.fontsampler-interface .fsjs-block .fontsampler-multiselect > button {
     background: @css_color_button_background_inactive;
 }
-.fontsampler-interface .fontsampler-ui-block .fontsampler-multiselect > button.fontsampler-multiselect-selected,
-.fontsampler-interface .fontsampler-ui-block .fontsampler-multiselect > button.fsjs-button-selected {
+
+.fontsampler-interface .fsjs-block .fontsampler-multiselect > button.fontsampler-multiselect-selected,
+.fontsampler-interface .fsjs-block .fontsampler-multiselect > button.fsjs-button-selected {
     background: @css_color_button_background;
 }
 
 /* label line-height */
-.fontsampler-interface label.fontsampler-slider .slider-label,
-.fontsampler-interface label.fontsampler-slider .slider-value,
+.fontsampler-interface label.fsjs-block-type-slider .slider-label,
+.fontsampler-interface label.fsjs-block-type-slider .slider-value,
 .fontsampler-interface .fontsampler-font-label label {
     line-height: @css_value_lineheight_label;
 }
 
 .fontsampler-interface .selectric > .label {
-    line-height: @css_value_lineheight_label !important;
+    line-height: @css_value_lineheight_label  !important;
 }
 
 /* button icon colors */
