@@ -4082,8 +4082,8 @@ window.addEventListener("load", function() {
     // store this method globally, so it can be called again
     window.fontsamplers = []
     window.fontsamplerSetup = function(node) {
-        var fonts = window["fonts_" + node.id],
-            options = window["options_" + node.id]
+        var fonts = window[node.id + "_fonts"],
+            options = window[node.id + "_options"]
 
         console.log("id", node.id)
         console.log("fonts", fonts)

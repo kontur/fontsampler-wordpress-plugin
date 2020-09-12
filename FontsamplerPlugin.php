@@ -33,6 +33,8 @@ class FontsamplerPlugin {
         $this->wpdb = $wpdb;
         $this->twig = $twig;
 
+        $this->initialized = false;
+
         // TODO combined default_features and boolean options as array of objects
         // with "isBoolean" attribute
         $this->default_features = array(
@@ -130,6 +132,10 @@ class FontsamplerPlugin {
     }
 
     public function init() {
+        if ($this->initialized) {
+            return;
+        }
+
         // instantiate all needed helper subclasses
         $this->msg = new FontsamplerMessages();
         $this->helpers = new FontsamplerHelpers($this);
@@ -177,6 +183,8 @@ class FontsamplerPlugin {
         // hoist some of those settings defaults to the twig engine, so some things
         // are available globally in all twig templates
         $this->helpers->extend_twig($this->twig);
+
+        $this->initialied = true;
     }
 
     /*
@@ -186,8 +194,22 @@ class FontsamplerPlugin {
     /*
      * Register the [fontsampler id=XX] hook for use in pages and posts
      */
-    public function fontsampler_shortcode($atts) {
+    public function shortcode($atts) {
+        if (array_key_exists('fonts', $atts)) {
+            $deprecation = "Fontsampler shortcodes no longer support the 'fonts' attribute. Read the CHANGELOG to find out how to pass in custom font data.";
+            error_log($deprecation);
+            echo "<!-- $deprecation -->";
+
+            return;
+        }
+
+        echo $this->render($atts);
+    }
+
+    public function render($atts) {
         global $wp_styles;
+
+        $this->init();
 
         // on printing the shortcode enqueue the scripts to be output to the footer
         wp_enqueue_script('fontsampler-js');
@@ -200,186 +222,224 @@ class FontsamplerPlugin {
             $this->enqueue_styles();
         }
 
-        // merge in possibly passed in attributes
-        $attributes = shortcode_atts(array('id' => '0', 'fonts' => null, 'text' => null), $atts);
-        $id = intval($attributes['id']);
+        $atts = array_change_key_case((array)$atts, CASE_LOWER);
 
-        // store any text that was passed in as part of the shortcode
-        // this will overwrite the text defined in the settings of this fontsampler
-        // or if only fonts are passed in as part of the shortcode the fontsampler
-        // will used that text
-        $attribute_text = $attributes['text'];
-
-        // do nothing if missing id
-        if (0 != $id) {
-            $set = $this->db->get_set($id);
-            $css = $this->helpers->get_custom_css($set); // returns false or link to generated custom css
-            // $fonts = $this->helpers->get_best_file_from_fonts($this->db->get_fontset_for_set(intval($attributes['id'])));
-
-            $fonts = array_values($this->db->get_fontset_for_set((int)($attributes['id'])));
-
-            if ($initial = (int)$set['initial_font']) {
-                foreach ($fonts as $font) {
-                    if ((int)$font['id'] === (int)$initial) {
-                        $initial = $font['name'];
-                    }
-                }
+        $id = null;
+        $fonts = array();
+        $options = array();
+        if (array_key_exists('id', $atts)) {
+            $id = (int)$atts['id'];
+            $fontset = $this->db->get_fontset_for_set($id);
+            if ($fontset) {
+                $fonts = array_values($fontset);
             }
-            
-            // TODO do this filtering already in get_fontset_for_set…
-            $fonts = array_map(function ($item) use ($set) {
-                if (!array_key_exists('name', $item)) {
-                    return false;
-                }
-                $return = array(
-                    'name' => $item['name'],
-                    'files' => array()
-                );
-                if (array_key_exists('woff', $item)) {
-                    array_push(
-                        $return['files'],
-                    str_replace(array('https:', 'http:'), '', $item['woff'])
-                    );
-                }
-                if (array_key_exists('woff2', $item)) {
-                    array_push(
-                        $return['files'],
-                    str_replace(array('https:', 'http:'), '', $item['woff2'])
-                    );
-                }
-
-                return $return;
-            // }, $this->db->get_fontset_for_set(intval($attributes['id'])));
-            }, $fonts);
-
-            if (false !== $css) {
-                wp_enqueue_style('fontsampler-interface-' . $id, $css, array(), false);
-            }
-
-            if (false == $set || false == $fonts) {
-                if (current_user_can('edit_posts') || current_user_can('edit_pages')) {
-                    return '<div class="fontsampler-warning"><strong>The typesampler with ID ' . $attributes['id'] . ' can not be displayed because some files or the type sampler set are missing!</strong> <em>You are seeing this notice because you have rights to edit posts - regular users will see an empty spot here.</em></div>';
-                } else {
-                    return '<!-- typesampler #' . $attributes['id'] . ' failed to render -->';
-                }
-            }
-
-            // some of these get overwritten from defaults, but list them all here explicitly
-            $options = array_merge($set, $this->settings_defaults, $this->db->get_settings());
-
-            $settings = $this->db->get_settings();
-            $layout = new FontsamplerLayout();
-            $blocks = $layout->stringToArray($set['ui_order'], $set);
-
-
-            // get the calculated initial values for data-font-size- etc, where the set overwrites options
-            // where available
-            $data_initial = array();
-            foreach ($set as $key => $value) {
-                $data_initial[$key] = $value;
-                if ($value === null && $options[$key] !== null) {
-                    $data_initial[$key] = $options[$key];
-                }
-            }
-            $fsoptions = array(
-                'multiline' => (bool)$data_initial['multiline'],
-                'order' => array_keys($blocks), # FIXME
-                'config' => array(
-                    'fontfamily' => array(
-                        'init' => $initial ? $initial : false,
-                        'render' => (bool)$data_initial['fontpicker']
-                    ),
-                    'fontsize' => array(
-                        'min' => $data_initial['fontsize_min'],
-                        'max' => $data_initial['fontsize_max'],
-                        'unit' => $data_initial['fontsize_unit'],
-                        'init' => $data_initial['fontsize_initial'],
-                        'step' => '1', // TODO editable via backend
-                        'render' => (bool)$data_initial['fontsize'],
-                    ),
-                    'letterspacing' => array(
-                        'min' => $data_initial['letterspacing_min'],
-                        'max' => $data_initial['letterspacing_max'],
-                        'unit' => $data_initial['letterspacing_unit'],
-                        'init' => $data_initial['letterspacing_initial'],
-                        'step' => '1', // TODO editable via backend
-                        'render' => (bool)$data_initial['letterspacing'],
-                    ),
-                    'lineheight' => array(
-                        'min' => $data_initial['lineheight_min'],
-                        'max' => $data_initial['lineheight_max'],
-                        'unit' => $data_initial['lineheight_unit'],
-                        'init' => $data_initial['lineheight_initial'],
-                        'step' => 1, // TODO editable via backend
-                        'render' => false,
-                    ),
-                    // alignment: {
-                    //     choices: ["left|Left", "center|Centered", "right|Right"],
-                    //     init: "left",
-                    //     label: "Alignment",
-                    //     render: true,
-                    // },
-                    // direction: {
-                    //     choices: ["ltr|Left to right", "rtl|Right to left"],
-                    //     init: "ltr",
-                    //     label: "Direction",
-                    //     render: true,
-                    // },
-                    // language: {
-                    //     choices: ["en-GB|English", "de-De|Deutsch", "nl-NL|Dutch"],
-                    //     init: "en-Gb",
-                    //     label: "Language",
-                    //     render: true,
-                    // },
-                    // opentype: {
-                    //     choices: ["liga|Ligatures", "frac|Fractions"],
-                    //     init: ["liga"],
-                    //     label: "Opentype features",
-                    //     render: true,
-                    // },
-                )
-            );
-            
-            foreach ($blocks as $key => $class) {
-                // var_dump($key, $class, array_key_exists($key, $fsoptions['config']));
-                // echo '<br>';
-                if (array_key_exists($key, $fsoptions['config'])) {
-                    $fsoptions['config'][$key]['classes'] = $class;
-                }
-            }
-
-            // buffer output until return
-            ob_start();
-            $rand = rand(); ?>
-			<div id="<?php echo $rand; ?>" class='fontsampler-wrapper fontsampler-interface columns-<?php echo !empty($set['ui_columns']) ? $set['ui_columns'] : '3';
-echo ' fontsampler-id-' . $set['id']; ?>' data-fontsampler-id="<?php echo $set['id']; ?>">
-			<?php
-
-            // include, aka echo, template with replaced values from $replace above
-            // include 'includes/interface.php';
-            $initial_text_db = isset($set['initial']) ? $set['initial'] : '';
-            if (isset($set['multiline']) && $set['multiline'] == 1) {
-                $initial_text = str_replace("\n", '<br>', $initial_text_db);
-            } else {
-                $initial_text = preg_replace('/\n/', ' ', $initial_text_db);
-            }
-
-            // if the shortcode had a [ text=""] attribute passed in, use that overwrite
-            if (isset($attribute_text) && $attribute_text !== null) {
-                $initial_text = $attribute_text;
-            }
-            echo $initial_text;
-
-            echo '</div>'; ?>
-            <script>
-            var fonts_<?php echo $rand; ?> = <?php echo json_encode($fonts); ?>;
-            var options_<?php echo $rand; ?> = <?php echo json_encode($fsoptions); ?>;
-            </script>
-            <?php
-
-            // return all that's been buffered
-            return ob_get_clean();
         }
+
+        if (array_key_exists('fonts', $atts)) {
+            $fonts = $atts['fonts'];
+        }
+
+        if (array_key_exists('options', $atts)) {
+            $options = $atts['options'];
+        }
+
+        if (!$id && !$fonts) {
+            error_log("Fontsampler ($id) failed to render, no id, fonts or options");
+        }
+
+        // some of these get overwritten from defaults, but list them all here explicitly
+        $set = $this->db->get_set( $id );
+        // var_dump("SET", $set);
+        
+        if (!$id) {
+            // No id passed in
+            $set['id'] = 0;
+        } else {
+            // Id passed in
+            // $set = $this->db->get_set($id);
+            // var_dump('FROM ID', $set);
+            $css = $this->helpers->get_custom_css($set); // returns false or link to generated custom css
+        }
+
+        // if (!$set) {
+        //     $set = $this->db->get_settings();
+        // }
+        
+        // $options = array_merge($set, $this->settings_defaults, $this->db->get_settings());
+        // $settings = $this->db->get_settings();
+        $layout = new FontsamplerLayout();
+        $blocks = $layout->stringToArray($set['ui_order'], $set);
+
+
+        // TODO do this filtering already in get_fontset_for_set…
+        $fonts = array_map(function ($item) use ($set) {
+            if (!array_key_exists('name', $item)) {
+                return false;
+            }
+            $return = array(
+                'name' => $item['name'],
+                'files' => array()
+            );
+            if (array_key_exists('woff', $item)) {
+                array_push(
+                    $return['files'],
+                str_replace(array('https:', 'http:'), '', $item['woff'])
+                );
+            }
+            if (array_key_exists('woff2', $item)) {
+                array_push(
+                    $return['files'],
+                str_replace(array('https:', 'http:'), '', $item['woff2'])
+                );
+            }
+
+            return $return;
+        // }, $this->db->get_fontset_for_set(intval($attributes['id'])));
+        }, $fonts);
+
+        // $fonts = $this->helpers->get_best_file_from_fonts($this->db->get_fontset_for_set(intval($attributes['id'])));
+        $initial = null;
+        if (array_key_exists("initial_font", $set)) {
+            $i = (int)$set['initial_font'];
+            foreach ($fonts as $font) {
+                if ((int)$font['id'] === (int)$i) {
+                    $initial = $font['name'];
+                }
+            }
+        } 
+        if (!$initial) {
+            $initial = $fonts[0]['name'];
+        }
+
+        // var_dump($fonts);
+
+        // if (false !== $css) {
+        //     wp_enqueue_style('fontsampler-interface-' . $id, $css, array(), false);
+        // }
+
+        // if (false == $set || false == $fonts) {
+        //     if (current_user_can('edit_posts') || current_user_can('edit_pages')) {
+        //         return '<div class="fontsampler-warning"><strong>The typesampler with ID ' . $id . ' can not be displayed because some files or the type sampler set are missing!</strong> <em>You are seeing this notice because you have rights to edit posts - regular users will see an empty spot here.</em></div>';
+        //     } else {
+        //         return '<!-- typesampler #' . $id . ' failed to render -->';
+        //     }
+        // }
+
+        // some of these get overwritten from defaults, but list them all here explicitly
+        // $options = array_merge($set, $this->settings_defaults, $this->db->get_settings());
+
+        // $settings = $this->db->get_settings();
+        // $layout = new FontsamplerLayout();
+        // $blocks = $layout->stringToArray($set['ui_order'], $set);
+
+        // get the calculated initial values for data-font-size- etc, where the set overwrites options
+        // where available
+        $data_initial = array();
+        foreach ($set as $key => $value) {
+            $data_initial[$key] = $value;
+            if ($value === null && $options[$key] !== null) {
+                $data_initial[$key] = $options[$key];
+            }
+        }
+        $fsoptions = array(
+            'multiline' => (bool)$data_initial['multiline'],
+            'order' => array_keys($blocks), // FIXME
+            'config' => array(
+                'fontfamily' => array(
+                    'init' => $initial ? $initial : false,
+                    'render' => (bool)$data_initial['fontpicker']
+                ),
+                'fontsize' => array(
+                    'min' => $data_initial['fontsize_min'],
+                    'max' => $data_initial['fontsize_max'],
+                    'unit' => $data_initial['fontsize_unit'],
+                    'init' => $data_initial['fontsize_initial'],
+                    'step' => '1', // TODO editable via backend
+                    'render' => (bool)$data_initial['fontsize'],
+                ),
+                'letterspacing' => array(
+                    'min' => $data_initial['letterspacing_min'],
+                    'max' => $data_initial['letterspacing_max'],
+                    'unit' => $data_initial['letterspacing_unit'],
+                    'init' => $data_initial['letterspacing_initial'],
+                    'step' => '1', // TODO editable via backend
+                    'render' => (bool)$data_initial['letterspacing'],
+                ),
+                'lineheight' => array(
+                    'min' => $data_initial['lineheight_min'],
+                    'max' => $data_initial['lineheight_max'],
+                    'unit' => $data_initial['lineheight_unit'],
+                    'init' => $data_initial['lineheight_initial'],
+                    'step' => 1, // TODO editable via backend
+                    'render' => false,
+                ),
+                // alignment: {
+                //     choices: ["left|Left", "center|Centered", "right|Right"],
+                //     init: "left",
+                //     label: "Alignment",
+                //     render: true,
+                // },
+                // direction: {
+                //     choices: ["ltr|Left to right", "rtl|Right to left"],
+                //     init: "ltr",
+                //     label: "Direction",
+                //     render: true,
+                // },
+                // language: {
+                //     choices: ["en-GB|English", "de-De|Deutsch", "nl-NL|Dutch"],
+                //     init: "en-Gb",
+                //     label: "Language",
+                //     render: true,
+                // },
+                // opentype: {
+                //     choices: ["liga|Ligatures", "frac|Fractions"],
+                //     init: ["liga"],
+                //     label: "Opentype features",
+                //     render: true,
+                // },
+            )
+        );
+
+        foreach ($blocks as $key => $class) {
+            // var_dump($key, $class, array_key_exists($key, $fsoptions['config']));
+            // echo '<br>';
+            if (array_key_exists($key, $fsoptions['config'])) {
+                $fsoptions['config'][$key]['classes'] = $class;
+            }
+        }
+
+        // buffer output until return
+        ob_start();
+        $rand = $id ? $id : rand(); ?>
+        <div id="fs_<?php echo $rand; ?>" class='fontsampler-wrapper fontsampler-interface columns-<?php echo !empty($set['ui_columns']) ? $set['ui_columns'] : '3';
+        echo ' fontsampler-id-' . $set['id']; ?>' data-fontsampler-id="<?php echo $set['id']; ?>">
+        <?php
+
+        // include, aka echo, template with replaced values from $replace above
+        // include 'includes/interface.php';
+        $initial_text_db = isset($set['initial']) ? $set['initial'] : '';
+        if (isset($set['multiline']) && $set['multiline'] == 1) {
+            $initial_text = str_replace("\n", '<br>', $initial_text_db);
+        } else {
+            $initial_text = preg_replace('/\n/', ' ', $initial_text_db);
+        }
+
+        // if the shortcode had a [ text=""] attribute passed in, use that overwrite
+        if (isset($attribute_text) && $attribute_text !== null) {
+            $initial_text = $attribute_text;
+        }
+        echo $initial_text;
+
+        echo '</div>'; ?>
+        <script>
+        var fs_<?php echo $rand; ?>_fonts = <?php echo json_encode($fonts); ?>;
+        var fs_<?php echo $rand; ?>_options = <?php echo json_encode($fsoptions); ?>;
+        </script>
+        <?php
+
+        // return all that's been buffered
+        return ob_get_clean();
+
         /*
         elseif ($attributes['fonts'] !== null) {
             // you cannot pass in a json encoded string (because the square brackets would
@@ -474,6 +534,9 @@ echo ' fontsampler-id-' . $set['id']; ?>' data-fontsampler-id="<?php echo $set['
      * The actual style enqueue
      */
     public function enqueue_styles() {
+        if (!$this->helpers) {
+            $this->helpers = new FontsamplerHelpers($this);
+        }
         wp_enqueue_style('fontsampler-css', $this->helpers->get_css_file());
     }
 

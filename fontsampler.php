@@ -68,22 +68,22 @@ if ( version_compare( PHP_VERSION, "7.0.0" ) < 0 ) {
 }
 
 function fontsampler_init() {
-	global $wpdb, $fontsampler;
+	global $wpdb, $Fontsampler;
 
 	// It's not entirely clear why $fontsampler is not available form the previous init above,
 	// but using the wp CLI not re-initializing the instance causes nasty errors
 	// hook all plugin classes init to when Wordpress is ready
 	$loader 	 = new Twig_Loader_Filesystem( __DIR__ . '/includes' );
 	$twig   	 = new Twig_Environment( $loader );
-	$fontsampler = new FontsamplerPlugin( $wpdb, $twig );
-	$fontsampler->init();
+	$Fontsampler = new FontsamplerPlugin( $wpdb, $twig );
+	$Fontsampler->init();
 
 	// register the shortcode hook
-	add_shortcode( 'fontsampler', array( $fontsampler, 'fontsampler_shortcode' ) );
+	add_shortcode( 'fontsampler', array( $Fontsampler, 'shortcode' ) );
 	
-    if (get_option($fontsampler::FONTSAMPLER_OPTION_PROXY_URLS) && !empty(get_option( 'permalink_structure' ))) {
+    if (get_option($Fontsampler::FONTSAMPLER_OPTION_PROXY_URLS) && !empty(get_option( 'permalink_structure' ))) {
         // register an endpoint for custom webfont URLs, if enabled
-		add_rewrite_rule('^' . $fontsampler::FONTSAMPLER_PROXY_URL . '/(\d+)', 'index.php?' . $fontsampler::FONTSAMPLER_PROXY_QUERY_VAR . '=$matches[1]', 'top');
+		add_rewrite_rule('^' . $Fontsampler::FONTSAMPLER_PROXY_URL . '/(\d+)', 'index.php?' . $Fontsampler::FONTSAMPLER_PROXY_QUERY_VAR . '=$matches[1]', 'top');
     }
 
 	// register front end styles and scripts, but don't load them yet
@@ -92,13 +92,13 @@ function fontsampler_init() {
 	// register hook to check if a shortcode is present and attempt to enqueue styles
 	// then; scripts can be enqueued in the shortcode itself, since they are okay to 
 	// be in the footer
-	add_action( 'wp', array( $fontsampler, 'check_shortcodes_enqueue_styles' ));
+	add_action( 'wp', array( $Fontsampler, 'check_shortcodes_enqueue_styles' ));
     
 	// backend	
-	add_action( 'admin_menu', array( $fontsampler, 'fontsampler_plugin_setup_menu' ) );
-	add_action( 'admin_enqueue_scripts', array( $fontsampler, 'fontsampler_admin_enqueues' ) );
-	add_action( 'wp_ajax_get_mock_fontsampler', array( $fontsampler, 'ajax_get_mock_fontsampler' ) );
-	add_filter( 'upload_mimes', array( $fontsampler, 'allow_font_upload_types' ) );
-	add_filter( 'wp_check_filetype_and_ext', array( $fontsampler, 'check_upload_extension' ), 10, 4 );
-	add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $fontsampler, 'add_action_links' ) );
+	add_action( 'admin_menu', array( $Fontsampler, 'fontsampler_plugin_setup_menu' ) );
+	add_action( 'admin_enqueue_scripts', array( $Fontsampler, 'fontsampler_admin_enqueues' ) );
+	add_action( 'wp_ajax_get_mock_fontsampler', array( $Fontsampler, 'ajax_get_mock_fontsampler' ) );
+	add_filter( 'upload_mimes', array( $Fontsampler, 'allow_font_upload_types' ) );
+	add_filter( 'wp_check_filetype_and_ext', array( $Fontsampler, 'check_upload_extension' ), 10, 4 );
+	add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $Fontsampler, 'add_action_links' ) );
 }

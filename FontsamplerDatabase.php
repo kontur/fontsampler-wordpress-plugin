@@ -636,6 +636,7 @@ class FontsamplerDatabase {
 				ON s.id = settings.set_id
 				WHERE s.id = ' . $id;
 		$set = $this->wpdb->get_row( $sql, ARRAY_A );
+        $defaults = $this->get_default_settings();
 
 		if ( 0 == $this->wpdb->num_rows ) {
 			return false;
@@ -644,7 +645,13 @@ class FontsamplerDatabase {
 		// if this set uses default features, the join clause returned a bunch of NULL values
 		// supplement those with the actual defaults, so they are available
 		if ( intval( $set['use_defaults'] ) === 1 ) {
-			$set = array_merge( $set, $this->get_default_settings() );
+			$set = array_merge( $set, $defaults() );
+		}
+
+		foreach ($set as $key => $val) {
+			if (is_null($val)) {
+				$set[$key] = $defaults[$key];
+			}
 		}
 
 		if ( ! $including_fonts ) {
