@@ -12,3 +12,5 @@ node_modules
 .vscode
 
 README.md
+
+vendor/twig/twig/doc

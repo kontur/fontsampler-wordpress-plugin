@@ -376,97 +376,6 @@ class FontsamplerHelpers {
 
 	function extend_twig( $twig ) {
 
-		// mount some helpers to twig
-		$twig->addFunction( new Twig_SimpleFunction( 'fontfiles_json', function ( $fontset ) {
-			return $this->fontfiles_json( $fontset );
-		} ) );
-
-		$twig->addFunction( new Twig_SimpleFunction( 'file_from_path', function ( $font, $format ) {
-			return substr( $font[ $format ], strrpos( $font[ $format ], '/' ) + 1 );
-		} ) );
-
-		$twig->addFunction( new Twig_SimpleFunction( 'submit_button',
-				function ( $label = 'Submit', $type = 'primary' ) {
-					return submit_button( $label, $type );
-				} )
-		);
-
-		$twig->addFunction( new Twig_SimpleFunction( 'is_current', function ( $current ) {
-			$subpages = explode( ',', $current );
-			if ( ! isset( $_GET['subpage'] ) && in_array( 'index', $subpages ) ||
-			     isset( $_GET['subpage'] ) && in_array( $_GET['subpage'], $subpages )
-			) {
-				return ' class=current ';
-			} else {
-				return '';
-			}
-		} ) );
-
-		$twig->addFunction( new Twig_SimpleFunction( 'wp_nonce_field', function ( $field ) {
-			return function_exists( 'wp_nonce_field' ) ? wp_nonce_field( $field ) : false;
-		} ) );
-
-		$twig->addFunction( new Twig_SimpleFunction( 'is_legacy_format', function ( $format ) {
-			return $this->is_legacy_format( $format );
-		} ) );
-
-		$twig->addFunction( new Twig_SimpleFunction( 'upload_link', function () {
-			return esc_url( get_upload_iframe_src( 'image' ) );
-		} ) );
-
-		$twig->addFunction( new Twig_SimpleFunction( 'image_src', function ( $image_id ) {
-            if ($image_id) {
-                return wp_get_attachment_image_src($image_id, 'full')[0];
-			}
-
-            return '';
-		} ) );
-
-		$twig->addFunction( new Twig_SimpleFunction( 'admin_hide_legacy_formats', function () {
-			return $this->fontsampler->admin_hide_legacy_formats;
-		} ) );
-
-		$twig->addFunction( new Twig_SimpleFunction( 'admin_proxy_urls', function () {
-            return get_option($this->fontsampler::FONTSAMPLER_OPTION_PROXY_URLS);
-		} ) );
-
-		$twig->addFunction( new Twig_SimpleFunction( 'admin_no_permalinks', function () {
-            return empty( get_option( 'permalink_structure' ) );
-		} ) );
-
-		$twig->addFunction( new Twig_SimpleFunction( 'image', function ( $src ) {
-			return plugin_dir_url( __FILE__ ) . $src;
-		} ) );
-
-		$twig->addFunction( new Twig_SimpleFunction( 'num_notifications', function () {
-			return $this->fontsampler->notifications->get_notifications()['num_notifications'];
-		} ) );
-
-		$twig->addFunction( new Twig_SimpleFunction( 'has_new_changelog', function () {
-			$plugin = get_plugin_data( realpath( dirname( __FILE__ ) . "/fontsampler.php" ) );
-			$option = get_option( 'fontsampler_last_changelog' );
-
-			// if no previous changelog has been marked as viewed, or the previously marked
-			// changelog is smaller than the current fontsampler plugin version, show the changelog
-			if ( false === $option || version_compare( $plugin['Version'], $option ) > 0 ) {
-				return true;
-			}
-
-			return false;
-		} ) );
-
-		$twig->addFunction( new Twig_SimpleFunction( 'wp_get_attachment_image_src', function ( $id, $option = 'full' ) {
-			return wp_get_attachment_image_src( $id, $option )[0];
-		} ) );
-
-		$twig->addFunction( new Twig_SimpleFunction( 'has_messages', function () {
-			return $this->fontsampler->msg->has_messages();
-		} ) );
-
-		$twig->addFunction( new Twig_SimpleFunction( 'get_messages', function () {
-			return $this->fontsampler->msg->get_messages( true );
-		} ) );
-
 		$twig->addGlobal( 'block_classes', $this->layout->blocks );
 
 		$twig->addGlobal( 'block_labels', $this->layout->labels );
@@ -487,5 +396,89 @@ class FontsamplerHelpers {
 
 		$twig->addGlobal( 'notdef', $this->notdef_options );
 	}
+
+	/**
+	 * Twig functions called from the extension
+	 */
+
+    function fontset_fontfiles_json ( $fontset ) {
+        return $this->fontfiles_json( $fontset );
+    }
+
+    function file_from_path ( $font, $format ) {
+        return substr( $font[ $format ], strrpos( $font[ $format ], '/' ) + 1 );
+    } 
+
+    function submit_button ( $label = 'Submit', $type = 'primary' ) {
+        return submit_button( $label, $type );
+    }
+
+    function is_current ( $current ) {
+        $subpages = explode( ',', $current );
+        if ( ! isset( $_GET['subpage'] ) && in_array( 'index', $subpages ) ||
+                isset( $_GET['subpage'] ) && in_array( $_GET['subpage'], $subpages )
+        ) {
+            return ' class=current ';
+        } else {
+            return '';
+        }
+    }
+
+    function wp_nonce_field ( $field ) {
+        return function_exists( 'wp_nonce_field' ) ? wp_nonce_field( $field ) : false;
+    }
+
+    function upload_link () {
+        return esc_url( get_upload_iframe_src( 'image' ) );
+    }
+
+    function image_src ( $image_id ) {
+        if ($image_id) {
+            return wp_get_attachment_image_src($image_id, 'full')[0];
+        }
+
+        return '';
+    }
+
+    function admin_hide_legacy_formats () {
+        return $this->fontsampler->admin_hide_legacy_formats;
+    }
+
+    function admin_proxy_urls () {
+        return get_option($this->fontsampler::FONTSAMPLER_OPTION_PROXY_URLS);
+    }
+
+    function admin_no_permalinks () {
+        return empty( get_option( 'permalink_structure' ) );
+    }
+
+    function image ( $src ) {
+        return plugin_dir_url( __FILE__ ) . $src;
+    }
+
+    function num_notifications () {
+        return $this->fontsampler->notifications->get_notifications()['num_notifications'];
+    }
+
+    function has_new_changelog () {
+        $plugin = get_plugin_data( realpath( dirname( __FILE__ ) . "/fontsampler.php" ) );
+        $option = get_option( 'fontsampler_last_changelog' );
+
+        // if no previous changelog has been marked as viewed, or the previously marked
+        // changelog is smaller than the current fontsampler plugin version, show the changelog
+        if ( false === $option || version_compare( $plugin['Version'], $option ) > 0 ) {
+            return true;
+        }
+
+        return false;
+    }
+
+    function wp_get_attachment_image_src ( $id, $option = 'full' ) {
+        return wp_get_attachment_image_src( $id, $option )[0];
+    }
+
+    function get_messages () {
+        return $this->fontsampler->msg->get_messages( true );
+    }	
 
 }

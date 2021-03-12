@@ -48,13 +48,16 @@ if ( version_compare( PHP_VERSION, "7.0.0" ) < 0 ) {
 	require_once( 'FontsamplerPagination.php' );
 	require_once( 'FontsamplerMessages.php' );
 	require_once( 'FontsamplerNotifications.php' );
+	require_once( 'FontsamplerTwigExtension.php' );
 
 	require_once( 'vendor/oyejorge/less.php/lessc.inc.php' );
 	require_once( 'vendor/autoload.php' );
 
 	// hook all plugin classes init to when Wordpress is ready
-	$loader 	 = new Twig_Loader_Filesystem( __DIR__ . '/includes' );
-	$twig   	 = new Twig_Environment( $loader );
+	// $loader 	 = new Twig_Loader_Filesystem( __DIR__ . '/includes' );
+	$loader 	 = new \Twig\Loader\FilesystemLoader( __DIR__ . '/includes' );
+	$twig   	 = new \Twig\Environment( $loader );
+    $twig->addExtension(new Fontsampler_Twig_Extension());
 	$fontsampler = new FontsamplerPlugin( $wpdb, $twig );
 
 	// load translations, then kick off actual Fontsampler setup and hooks
@@ -73,8 +76,9 @@ function fontsampler_init() {
 	// It's not entirely clear why $fontsampler is not available form the previous init above,
 	// but using the wp CLI not re-initializing the instance causes nasty errors
 	// hook all plugin classes init to when Wordpress is ready
-	$loader 	 = new Twig_Loader_Filesystem( __DIR__ . '/includes' );
-	$twig   	 = new Twig_Environment( $loader );
+	$loader 	 = new \Twig\Loader\FilesystemLoader( __DIR__ . '/includes' );
+	$twig   	 = new \Twig\Environment( $loader );
+    $twig->addExtension(new Fontsampler_Twig_Extension());
 	$fontsampler = new FontsamplerPlugin( $wpdb, $twig );
 	$fontsampler->init();
 
