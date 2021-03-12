@@ -428,7 +428,7 @@ class FontsamplerFormhandler {
 			$settings_fields   = array_keys( $this->fontsampler->db->get_default_settings() );
 			$checkbox_features = $this->fontsampler->helpers->get_checkbox_features();
 
-			foreach ( $settings_fields as $field ) {
+            foreach ( $settings_fields as $field ) {
 				if ( in_array( $field, $checkbox_features ) ) {
 					$data[ $field ] = ( isset( $this->post[ $field ] ) && $this->post[ $field ] == 1 ) ? 1 : 0;
 				} else {					

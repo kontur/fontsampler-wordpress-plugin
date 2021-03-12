@@ -231,8 +231,8 @@
                             endif; ?>"
 						    contenteditable="true"
 							<?php if (!$set['is_ltr']): echo ' dir="rtl" '; endif; ?>
-
-							style="text-align: <?php echo isset($set['alignment_initial']) ? $set['alignment_initial'] : ''; ?>;
+                            
+							style="text-align: <?php echo !empty($set['alignment_initial']) ? $set['alignment_initial'] : $options['alignment_initial']; ?>;
 								<?php if (isset($data_initial)): ?>
 								    font-size: <?php echo $data_initial['fontsize_initial'] . $data_initial['fontsize_unit']; ?>;
 								    letter-spacing: <?php echo $data_initial['letterspacing_initial'] . $data_initial['letterspacing_unit']; ?>;

@@ -409,9 +409,8 @@ define(['jquery', 'rangeslider', 'selectric', 'validate', 'fontsampler'],
             var $this = $(this),
                 name = $this.find('input').attr('name'),
                 $all = $('.fontsampler-image-radio').has('input[name="' + name + '"]');
-
-            $all.removeClass("active").find("input:checked").removeAttr("checked");
-            $this.addClass("active").find('input').attr('checked', 'checked').trigger('change');
+            $all.removeClass("active").find("input:checked").prop("checked", false);
+            $this.addClass("active").find('input').prop('checked', true).trigger('change');
         });
 
 
