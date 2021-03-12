@@ -1,4 +1,5 @@
-# 0.4.10
+# 0.4.10 & 0.4.11
+- (0.4.11) HOTFIX: Added missing dependency files
 - FIX: Fixed saving alignment settings in admin
 - FIX: Fontsamplers using the default alignment will now render correctly
 - TWEAK: Updated Twig and Less libraries shipped with the plugin
