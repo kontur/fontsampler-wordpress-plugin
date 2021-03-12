@@ -212,8 +212,11 @@ class FontsamplerHelpers {
 
 				return false;
 			}
-			if ( false !== file_put_contents( $output, $css ) ) {
+            $wrote = @file_put_contents($output, $css);
+			if ( false !== $wrote) {
 				return $output;
+			} else {
+                $m->error("Failed to write CSS file to $output - make sure the file and directory it is in are writeable.");
 			}
 		}
 
