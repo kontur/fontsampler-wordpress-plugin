@@ -43,9 +43,8 @@
   "homepage": "https://github.com/kontur/fontsampler-wordpress-plugin",
   "devDependencies": {
     "browserify": "^16.2.3",
-    "fontsampler-js": "git+https://github.com/kontur/fontsampler-js.git",
+    "fontsampler-js": "file:../../../../../Packages/fontsampler-js",
     "npm-watch": "^0.3.0",
     "uglify-js": "^3.5.4"
-  },
-  "dependencies": {}
+  }
 }

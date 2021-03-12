@@ -61,24 +61,28 @@ define(['jquery'], function ($) {
                     var file = attachment.filename;
                     var format = file.substr(file.lastIndexOf(".") + 1, file.length);
 
-                    preview.html('<div data-fonts="' + attachment.url +'" data-initial-font="' + attachment.url + '" ' +
-                        'class="fontsampler-wrapper">' +
-                        '<div class="type-tester"><div class="fontsampler-interface">' +
-                        '   <div autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"' +
-                            'class="current-font type-tester__content">Preview</div></div></div></div>');
+                    // preview.html('<div data-fonts="' + attachment.url +'" data-initial-font="' + attachment.url + '" ' +
+                    //     'class="fontsampler-wrapper">' +
+                    //     '<div class="type-tester"><div class="fontsampler-interface">' +
+                    //     '   <div autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"' +
+                    //         'class="current-font type-tester__content">Preview</div></div></div></div>');
+                    preview.html(file)
 
                     // speciment tools extracts the postscript name and adds it (by default) as
                     // data attribute; get that value and insert it as suggestion into name input
-                    specimentools(window, (function () {
-                        var fontName = nameContainer.closest(".fontsampler-font-set").find(".fontsampler-wrapper").data("initial-font-name")
-                        var val = $.trim(nameContainer.val())
-                        if ($.trim(nameContainer.val()) === "") {
-                            nameContainer.val(fontName);
+                    // specimentools(window, (function () {
+                    //     var fontName = nameContainer.closest(".fontsampler-font-set").find(".fontsampler-wrapper").data("initial-font-name")
+                    //     var val = $.trim(nameContainer.val())
+                    //     if ($.trim(nameContainer.val()) === "") {
+                    //         nameContainer.val(fontName);
 
-                            // trigger blur to trigger validation
-                            nameContainer.trigger("blur");
-                        }
-                    }).bind(this));
+                    //         // trigger blur to trigger validation
+                    //         nameContainer.trigger("blur");
+                    //     }
+                    // }).bind(this));
+                    console.log("SELECT")
+                    // var fontName = nameContainer.closest(".fontsampler-font-set").find(".fontsampler-wrapper").data("initial-font-name")
+                    // nameContainer.val(fontName)
 
                 }).bind(this));
 

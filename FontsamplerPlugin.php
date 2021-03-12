@@ -53,7 +53,7 @@ class FontsamplerPlugin {
         );
         // note: font_formats order matters: most preferred to least preferred
         // note: so far no feature detection and no fallbacks, so woff2 last until fixed
-        $this->font_formats = array('woff', 'ttf', 'eot');//, 'woff2' );
+        $this->font_formats = array('woff2', 'woff', 'ttf', 'eot');
         $this->font_formats_legacy = array('eot', 'ttf');
 
         $this->settings_defaults = array(
@@ -209,6 +209,8 @@ class FontsamplerPlugin {
     public function render($atts) {
         global $wp_styles;
 
+        $atts = array_change_key_case((array)$atts, CASE_LOWER);
+
         $this->init();
 
         // on printing the shortcode enqueue the scripts to be output to the footer
@@ -219,12 +221,13 @@ class FontsamplerPlugin {
         // via do_shortcode()) then add them now, regardless of them getting added
         // to the html body, which is less ideal
         if (is_null($wp_styles) || !in_array('fontsampler-css', array_keys($wp_styles->registered))) {
-            $this->enqueue_styles();
+            if (!array_key_exists('styles', $atts) || $atts['styles'] != false) {
+                $this->enqueue_styles();
+            }
         }
 
-        $atts = array_change_key_case((array)$atts, CASE_LOWER);
-
         $id = null;
+        $rand = $id ? $id : rand(); 
         $fonts = array();
         $options = array();
         if (array_key_exists('id', $atts)) {
@@ -239,47 +242,47 @@ class FontsamplerPlugin {
             $fonts = $atts['fonts'];
         }
 
-        if (array_key_exists('options', $atts)) {
-            $options = $atts['options'];
-        }
-
         if (!$id && !$fonts) {
-            error_log("Fontsampler ($id) failed to render, no id, fonts or options");
+            error_log("Fontsampler ($id) failed to render, no id or fonts");
         }
 
         // some of these get overwritten from defaults, but list them all here explicitly
         $set = $this->db->get_set( $id );
-        // var_dump("SET", $set);
+        if (array_key_exists('options', $atts)) {
+            foreach($atts['options'] as $option => $value) {
+                $set[$option] = $value;
+            }
+        }
         
         if (!$id) {
             // No id passed in
             $set['id'] = 0;
         } else {
             // Id passed in
-            // $set = $this->db->get_set($id);
-            // var_dump('FROM ID', $set);
             $css = $this->helpers->get_custom_css($set); // returns false or link to generated custom css
         }
 
-        // if (!$set) {
-        //     $set = $this->db->get_settings();
-        // }
-        
-        // $options = array_merge($set, $this->settings_defaults, $this->db->get_settings());
-        // $settings = $this->db->get_settings();
         $layout = new FontsamplerLayout();
         $blocks = $layout->stringToArray($set['ui_order'], $set);
-
+        // var_dump($blocks);
+        // var_dump('SET ORDER', $set['order']);
+        $order = isset($set['order']) ? $set['order'] : $layout->orderFromString($set['ui_order'], $set);
+        // $order = $layout->orderFromString($set['ui_order'], $set);
+        // var_dump($order);
+        
 
         // TODO do this filtering already in get_fontset_for_set…
         $fonts = array_map(function ($item) use ($set) {
             if (!array_key_exists('name', $item)) {
+                error_log("Fontsampler->render() font without 'name'.");
                 return false;
             }
-            $return = array(
-                'name' => $item['name'],
-                'files' => array()
-            );
+            // $return = array(
+            //     'name' => $item['name'],
+            //     'files' => array()
+            // );
+            $return = $item;
+            $return['files'] = array();
             if (array_key_exists('woff', $item)) {
                 array_push(
                     $return['files'],
@@ -292,99 +295,123 @@ class FontsamplerPlugin {
                 str_replace(array('https:', 'http:'), '', $item['woff2'])
                 );
             }
+            if (!array_key_exists("woff", $item) && !array_key_exists("woff2", $item)) {
+                error_log('Fontsampler->render() without woff/2 files.');
+
+                return false;
+            }
 
             return $return;
-        // }, $this->db->get_fontset_for_set(intval($attributes['id'])));
         }, $fonts);
 
-        // $fonts = $this->helpers->get_best_file_from_fonts($this->db->get_fontset_for_set(intval($attributes['id'])));
+        // The initial_font can be provided either as as font id or font name
         $initial = null;
         if (array_key_exists("initial_font", $set)) {
-            $i = (int)$set['initial_font'];
+            $i = $set['initial_font'];
             foreach ($fonts as $font) {
-                if ((int)$font['id'] === (int)$i) {
-                    $initial = $font['name'];
+                if (is_numeric($i)) {
+                    $i = (int)$i;
+                    if (isset($font['id']) && (int)$font['id'] === (int)$i) {
+                        $initial = $font['name'];
+                    }
+                } else {
+                    if ($font['name'] === $i) {
+                        $initial = $font['name'];
+                    }
                 }
             }
-        } 
+        }
+        // Fallback to first font
         if (!$initial) {
             $initial = $fonts[0]['name'];
         }
 
-        // var_dump($fonts);
-
-        // if (false !== $css) {
-        //     wp_enqueue_style('fontsampler-interface-' . $id, $css, array(), false);
-        // }
-
-        // if (false == $set || false == $fonts) {
-        //     if (current_user_can('edit_posts') || current_user_can('edit_pages')) {
-        //         return '<div class="fontsampler-warning"><strong>The typesampler with ID ' . $id . ' can not be displayed because some files or the type sampler set are missing!</strong> <em>You are seeing this notice because you have rights to edit posts - regular users will see an empty spot here.</em></div>';
-        //     } else {
-        //         return '<!-- typesampler #' . $id . ' failed to render -->';
-        //     }
-        // }
-
-        // some of these get overwritten from defaults, but list them all here explicitly
-        // $options = array_merge($set, $this->settings_defaults, $this->db->get_settings());
-
-        // $settings = $this->db->get_settings();
-        // $layout = new FontsamplerLayout();
-        // $blocks = $layout->stringToArray($set['ui_order'], $set);
-
-        // get the calculated initial values for data-font-size- etc, where the set overwrites options
-        // where available
-        $data_initial = array();
-        foreach ($set as $key => $value) {
-            $data_initial[$key] = $value;
-            if ($value === null && $options[$key] !== null) {
-                $data_initial[$key] = $options[$key];
-            }
+        // Initial text
+        $initial_text_db = isset($set['initial']) ? $set['initial'] : '';
+        if (!empty($set['multiline'])) {
+            $initial_text = str_replace("\n", '<br>', $initial_text_db);
+        } else {
+            $initial_text = preg_replace('/\n/', ' ', $initial_text_db);
         }
+
+        // Sample texts
+        if ($set['sampletexts']):
+            $samples = explode("\n", $set['sample_texts']);
+            ob_start(); 
+            $sampletext_id = "sampletexts-$rand";
+            ?>
+
+            <div id="<?php echo $sampletext_id; ?>" class="fontsampler-ui-block-type-dropdown fontsampler-ui-block-sampletexts">
+                <select name="sample-text" data-fsjs-ui="dropdown">
+                    <?php /* translators: The first and visible entry in the sample text drop down in the frontend */ ?>
+                    <option selected="selected"><?php echo !empty($set['sample_texts_default_option']) ? $set['sample_texts_default_option'] : $options['sample_texts_default_option']; ?></option>
+                    <?php foreach ($samples as $sample) : ?>
+                        <option value='<?php echo json_encode(trim($sample)); ?>'><?php echo $sample; ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <?php $sampletextdropdown = ob_get_clean();
+            
+            $order = $this->helpers->replace_custom_elements($order, $rand);
+            
+        endif;
+
+        if (empty($set["config"])) {
+            $set['config'] = array();
+        }
+
         $fsoptions = array(
-            'multiline' => (bool)$data_initial['multiline'],
-            'order' => array_keys($blocks), // FIXME
-            'config' => array(
+            'classes' => array(
+                'blockClass' => "fontsampler-ui-block",
+            ),
+            'initialText' => $initial_text,
+            'multiline' => (bool)$set['multiline'],
+            'order' => $order, // FIXME missing custom blocks
+            // If a config was passed in via a direct call merge them
+            'config' => array_merge(
+                // The "defaults"
+                array(
                 'fontfamily' => array(
                     'init' => $initial ? $initial : false,
-                    'render' => (bool)$data_initial['fontpicker']
+                    'render' => (bool)$set['fontpicker'],
+                    'label' => false // TODO read all label options from DB
                 ),
                 'fontsize' => array(
-                    'min' => $data_initial['fontsize_min'],
-                    'max' => $data_initial['fontsize_max'],
-                    'unit' => $data_initial['fontsize_unit'],
-                    'init' => $data_initial['fontsize_initial'],
+                    'min' => $set['fontsize_min'],
+                    'max' => $set['fontsize_max'],
+                    'unit' => $set['fontsize_unit'],
+                    'init' => $set['fontsize_initial'],
                     'step' => '1', // TODO editable via backend
-                    'render' => (bool)$data_initial['fontsize'],
+                    'render' => (bool)$set['fontsize'],
                 ),
                 'letterspacing' => array(
-                    'min' => $data_initial['letterspacing_min'],
-                    'max' => $data_initial['letterspacing_max'],
-                    'unit' => $data_initial['letterspacing_unit'],
-                    'init' => $data_initial['letterspacing_initial'],
+                    'min' => $set['letterspacing_min'],
+                    'max' => $set['letterspacing_max'],
+                    'unit' => $set['letterspacing_unit'],
+                    'init' => $set['letterspacing_initial'],
                     'step' => '1', // TODO editable via backend
-                    'render' => (bool)$data_initial['letterspacing'],
+                    'render' => (bool)$set['letterspacing'],
                 ),
                 'lineheight' => array(
-                    'min' => $data_initial['lineheight_min'],
-                    'max' => $data_initial['lineheight_max'],
-                    'unit' => $data_initial['lineheight_unit'],
-                    'init' => $data_initial['lineheight_initial'],
+                    'min' => $set['lineheight_min'],
+                    'max' => $set['lineheight_max'],
+                    'unit' => $set['lineheight_unit'],
+                    'init' => $set['lineheight_initial'],
                     'step' => 1, // TODO editable via backend
-                    'render' => false,
+                    'render' => (bool)$set['lineheight'],
                 ),
-                // alignment: {
-                //     choices: ["left|Left", "center|Centered", "right|Right"],
-                //     init: "left",
-                //     label: "Alignment",
-                //     render: true,
-                // },
-                // direction: {
-                //     choices: ["ltr|Left to right", "rtl|Right to left"],
-                //     init: "ltr",
-                //     label: "Direction",
-                //     render: true,
-                // },
+                'alignment' => array(
+                    'choices' => ["left|", "center|", "right|"],
+                    'init' => $set['alignment_initial'],
+                    'label' => "Alignment",
+                    'render' => (bool)$set['alignment'],
+                ),
+                'direction' => array(
+                    'choices' => ["ltr|Left to right", "rtl|Right to left"],
+                    'init' => $set['is_ltr'] ? "ltr" : "rtl",
+                    'label' => "Direction",
+                    'render' => false,
+                )
                 // language: {
                 //     choices: ["en-GB|English", "de-De|Deutsch", "nl-NL|Dutch"],
                 //     init: "en-Gb",
@@ -397,40 +424,30 @@ class FontsamplerPlugin {
                 //     label: "Opentype features",
                 //     render: true,
                 // },
+                ), $set['config']
             )
         );
 
-        foreach ($blocks as $key => $class) {
-            // var_dump($key, $class, array_key_exists($key, $fsoptions['config']));
-            // echo '<br>';
-            if (array_key_exists($key, $fsoptions['config'])) {
-                $fsoptions['config'][$key]['classes'] = $class;
+        if (!empty($blocks)) {
+            foreach ($blocks as $key => $class) {
+                // var_dump($key, $class, array_key_exists($key, $fsoptions['config']));
+                // echo '<br>';
+                if (array_key_exists($key, $fsoptions['config'])) {
+                    $fsoptions['config'][$key]['classes'] = $class;
+                }
             }
         }
 
         // buffer output until return
         ob_start();
-        $rand = $id ? $id : rand(); ?>
+        ?>
+
         <div id="fs_<?php echo $rand; ?>" class='fontsampler-wrapper fontsampler-interface columns-<?php echo !empty($set['ui_columns']) ? $set['ui_columns'] : '3';
         echo ' fontsampler-id-' . $set['id']; ?>' data-fontsampler-id="<?php echo $set['id']; ?>">
-        <?php
+        <?php echo '</div>';
 
-        // include, aka echo, template with replaced values from $replace above
-        // include 'includes/interface.php';
-        $initial_text_db = isset($set['initial']) ? $set['initial'] : '';
-        if (isset($set['multiline']) && $set['multiline'] == 1) {
-            $initial_text = str_replace("\n", '<br>', $initial_text_db);
-        } else {
-            $initial_text = preg_replace('/\n/', ' ', $initial_text_db);
-        }
+        if ($set['sampletexts']) : echo $sampletextdropdown; endif; ?>
 
-        // if the shortcode had a [ text=""] attribute passed in, use that overwrite
-        if (isset($attribute_text) && $attribute_text !== null) {
-            $initial_text = $attribute_text;
-        }
-        echo $initial_text;
-
-        echo '</div>'; ?>
         <script>
         var fs_<?php echo $rand; ?>_fonts = <?php echo json_encode($fonts); ?>;
         var fs_<?php echo $rand; ?>_options = <?php echo json_encode($fsoptions); ?>;
@@ -440,80 +457,6 @@ class FontsamplerPlugin {
         // return all that's been buffered
         return ob_get_clean();
 
-        /*
-        elseif ($attributes['fonts'] !== null) {
-            // you cannot pass in a json encoded string (because the square brackets would
-            // be interpreted as the end of the shortcode), so the json encoded string is
-            // EXPECTED to be a json encoded array, but missing the opening and ending
-            // square brackets
-            $fonts_passed_in = json_decode('[' . $attributes['fonts'] . ']');
-
-            $fonts_passed_in = array_map(function ($item, $index) {
-                $item = (array) $item;
-                // the fake font id is needed for fontsampler internals,
-                // but since these are not fonts exising in the DB the
-                // passed in array index will suffice as ID
-                $item['id'] = $index;
-
-                return $item;
-            }, $fonts_passed_in, array_keys($fonts_passed_in));
-
-            // retrieve an array with the must suitable webfont files
-            $fonts = $this->helpers->get_best_file_from_fonts($fonts_passed_in);
-
-            // some of these get overwritten from defaults, but list them all here explicitly
-            // $set   = $this->db->get_set( $id );
-            $set = $this->db->get_settings();
-            $set['id'] = 0;
-
-            $options = array_merge($set, $this->settings_defaults, $this->db->get_settings());
-            $settings = $this->db->get_settings();
-            $layout = new FontsamplerLayout();
-            $blocks = $layout->stringToArray($set['ui_order'], $set);
-
-            $initialFont = array_filter($fonts_passed_in, function ($item) {
-                return isset($item['initial']) && $item['initial'] === true;
-            });
-            $initialFont = array_shift($initialFont) ;
-            $initialFontNameOverwrite = $initialFont['name'];
-            $initialFont = $this->helpers->get_best_file_from_fonts(array($initialFont));
-            $initialFont = is_array($initialFont) ? array_shift($initialFont) : '';
-
-            $data_initial = $settings;
-
-            // create an array for fontnames to overwrite
-            $fontNameOverwrites = array();
-            foreach ($fonts_passed_in as $font) {
-                foreach ($this->font_formats as $format) {
-                    if (!empty($font[$format])) {
-                        $fontNameOverwrites[$font[$format]] = $font['name'];
-                    }
-                }
-            }
-
-            ob_start(); ?>
-
-            <div class='fontsampler-wrapper on-loading'
-                 data-fonts='<?php echo implode(',', $fonts); ?>'
-                <?php if ($initialFont) : ?>
-                    data-initial-font='<?php echo $initialFont; ?>'
-                <?php endif; ?>
-                <?php if (!empty($fontNameOverwrites)): ?>
-                    data-overwrites='<?php echo json_encode($fontNameOverwrites); ?>'
-                    data-initial-font-name-overwrite='<?php echo $initialFontNameOverwrite; ?>'
-                <?php endif; ?>
-            >
-
-            <?php
-
-            // include, aka echo, template with replaced values from $replace above
-            include 'includes/interface.php';
-
-            echo '</div>';
-
-            return ob_get_clean();
-        }
-        */
     }
 
     /**
@@ -1000,6 +943,9 @@ class FontsamplerPlugin {
      */
     public function ajax_get_mock_fontsampler() {
         check_ajax_referer('ajax_get_mock_fontsampler', 'action', false);
+
+
+        return '';
 
         $layout = new FontsamplerLayout();
 

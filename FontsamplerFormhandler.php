@@ -39,7 +39,7 @@ class FontsamplerFormhandler {
 	function font_edit( $id = null, $offset = 0 ) {
 		$data = array(
 			'woff'  => $this->post['woff'][ $offset ],
-//			'woff2' => $this->post['woff2'][ $offset ],
+			'woff2' => $this->post['woff2'][ $offset ],
 			'eot'   => $this->post['eot'][ $offset ],
 			'ttf'   => $this->post['ttf'][ $offset ],
 			'name'  => $this->post['fontname'][ $offset ]

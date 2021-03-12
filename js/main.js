@@ -15,7 +15,37 @@ window.addEventListener("load", function() {
         console.log("fonts", fonts)
         console.log("options", options)
 
+        if (options && "order" in options) {
+            // Any element in order that starts with an # is a custom DOM
+            // element with that ID, so get it and replace it into the order
+            // for FS JS to parse and render in the Fontsampler UI
+            function replace_ids_with_element(value) {
+                console.log("value", value, typeof(value))
+                // if (typeof(value))
+                if (typeof(value) !== "string" && value.length > 0) {
+                    return value.map(replace_ids_with_element)
+                }
+
+                if (value.substr(0, 1) !== "#") {
+                    // Return unchanged otherwise
+                    return value 
+                }
+
+                try {
+                    var el = document.getElementById(value.substr(1))
+                    console.log("custom element", el)
+                    return el
+                } catch (e) {
+                    error.log("Custom element " + value + " not found.")
+                    return ""
+                }
+            }
+
+            options.order = options.order.map(replace_ids_with_element)
+        }
+
         var fs = new Fontsampler(node, fonts, options)
+        console.log("FS OPTIONS", options)
 
         FontsamplerSkin(fs)
         fs.init()
@@ -24,7 +54,7 @@ window.addEventListener("load", function() {
         var sampleTextSelect = fs.root.querySelector("select[name='sample-text']")
         if (sampleTextSelect) {
             sampleTextSelect.addEventListener("change", function() {
-                fs.setText(sampleTextSelect.value)
+                fs.setText(JSON.parse(sampleTextSelect.value))
             })
         }
 

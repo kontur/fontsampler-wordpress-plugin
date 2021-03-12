@@ -49,6 +49,20 @@ class FontsamplerLayout {
 			'buy'           => 'Buy link',
 			'specimen'      => 'Specimen link',
 		);
+
+		$this->remap = array(
+			"fontpicker" => "fontfamily"
+		);
+	}
+
+	private function mapKey($key) {
+		if (array_key_exists($key, $this->remap)) {
+
+            return $this->remap[$key];
+		}
+
+
+        return $key;
 	}
 
 
@@ -64,11 +78,11 @@ class FontsamplerLayout {
 
 		$arr = explode( ',', $string );
 
-		foreach ( $arr as $item ) {
-			if ( $item != "|" ) {
-				$pos           = strpos( $item, '_' );
-				$key           = substr( $item, 0, $pos );
-				$class         = substr( $item, $pos + 1, strlen( $item ) - $pos );
+		foreach ( $arr as $block ) {
+			if ( $block != "|" ) {
+				$pos           = strpos( $block, '_' );
+				$key           = $this->mapKey(substr( $block, 0, $pos ));
+				$class         = substr( $block, $pos + 1, strlen( $block ) - $pos );
 				$array[ $key ] = $class;
 			} else {
 				$array["|"] = "";
@@ -76,6 +90,30 @@ class FontsamplerLayout {
 		}
 
 		return $array;
+	}
+
+	public function orderFromString($string, $set) {
+		$string = $this->sanitizeString( $string, $set );
+		$array  = array();
+		$rows = explode( '|', $string );
+		foreach ($rows as $row) {
+			$keys = array();
+			$arr = explode(',', $row);
+			foreach ($arr as $block) {
+				$pos           = strpos( $block, '_' );
+				$key           = $this->mapKey(substr( $block, 0, $pos ));
+				$class         = substr( $block, $pos + 1, strlen( $block ) - $pos );
+                if ($key) {
+                    array_push($keys, $key);
+                }
+			}
+            if (!empty($keys)) {
+                array_push($array, $keys);
+            }
+		}
+        // var_dump('ARR', $array);
+		# FIXME
+        return $array[0];
 	}
 
 

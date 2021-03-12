@@ -631,6 +631,11 @@ class FontsamplerDatabase {
 
 
 	function get_set( $id, $including_fonts = true ) {
+		if (!$id) {
+
+            return $this->get_default_settings();
+		}
+        // var_dump('get_set', $id);
 		$sql = 'SELECT * FROM ' . $this->table_sets . ' s
 				LEFT JOIN ' . $this->table_settings . ' settings
 				ON s.id = settings.set_id
@@ -645,7 +650,7 @@ class FontsamplerDatabase {
 		// if this set uses default features, the join clause returned a bunch of NULL values
 		// supplement those with the actual defaults, so they are available
 		if ( intval( $set['use_defaults'] ) === 1 ) {
-			$set = array_merge( $set, $defaults() );
+			$set = array_merge( $set, $defaults );
 		}
 
 		foreach ($set as $key => $val) {

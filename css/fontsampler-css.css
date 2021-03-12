@@ -721,6 +721,9 @@
   justify-content: space-between;
   flex-wrap: wrap;
 }
+.fontsampler-wrapper.fontsampler-interface .fsjs-wrapper {
+  width: 100%;
+}
 .fontsampler-wrapper.fontsampler-interface .fsjs-block {
   margin-left: 0;
   margin-right: 0;
@@ -904,6 +907,9 @@
   position: absolute;
   left: 0;
   top: 0;
+}
+.fontsampler-wrapper [data-fsjs="alignment"] button {
+  font-family: "fontsampler-icons";
 }
 /**
  * The base less file that gets augmented/overwritten with variables from
