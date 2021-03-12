@@ -2,9 +2,9 @@
 Contributors: kontur
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LSK5YQHHCGGYS
 Tags: fonts, font, typeface, preview, shortcode
-Requires at least: 4.8
-Tested up to: 5.4.1
-Stable tag: 0.4.9
+Requires at least: 5.0
+Tested up to: 5.7
+Stable tag: 0.4.10
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -106,6 +106,11 @@ The [Github repository](https://github.com/kontur/fontsampler-wordpress-plugin) 
 6. This is how you include a Fontsampler in a page or post: Simply add the shortcode for the created Fontsampler to your text
 
 == Changelog ==
+
+= 0.4.10 =
+* FIX: Fixed saving alignment settings in admin
+* FIX: Fontsamplers using the default alignment will now render correctly
+* TWEAK: Updated Twig and Less libraries shipped with the plugin
 
 = 0.4.9 =
 * FIX: Fixed an issue where a hyphen in a font name would prevent the style from rendering correctly

@@ -3,10 +3,10 @@
 Plugin Name: Fontsampler
 Plugin URI:  http://fontsampler.johannesneumeier.com
 Description: Create interactive webfont previews via shortcodes. Create and edit previews from the &para; Fontsampler sidebar menu or click "Settings" on the left.
-Version:     0.4.9
+Version:     0.4.10
 Author:      Underscore
 Author URI:  https://underscoretype.com
-Copyright:   Copyright 2016-2020 Johannes Neumeier
+Copyright:   Copyright 2016-2021 Johannes Neumeier
 Text Domain: fontsampler
 */
 defined( 'ABSPATH' ) or die( 'Access denied.' );

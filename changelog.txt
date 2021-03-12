@@ -1,3 +1,8 @@
+# 0.4.10
+- FIX: Fixed saving alignment settings in admin
+- FIX: Fontsamplers using the default alignment will now render correctly
+- TWEAK: Updated Twig and Less libraries shipped with the plugin
+
 # 0.4.9
 - FIX: Fixed an issue where a hyphen in a font name would prevent the style from rendering correctly
 - FIX: Made all font file resource requests protocol agnostic to avoid mixed content problems on misconfigured WP sites where the http/s setting differs from the saved Media Gallery file URL protocols
