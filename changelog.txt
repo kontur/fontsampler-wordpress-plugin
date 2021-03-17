@@ -2,6 +2,7 @@
 - FIX: Minor fix to the loaded default CSS for the Fontsampler
 - FIX: Updates to Twig library and polyfills after some users reported PHP conflicts
 - FIX: Fix failed compile of JS asset in plugin
+- WORKAROUND: Since the WP SVN does not allow PHP 8 code some dependencies in vendor/symfony/polyfills have manually been overwritten to not include PHP 8 code. Sad times.
 
 # 0.4.10 & 0.4.11
 - (0.4.11) HOTFIX: Added missing dependency files
