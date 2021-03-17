@@ -1,6 +1,7 @@
 {
     "require": {
         "twig/twig": "^3.3",
-        "oyejorge/less.php": "v1.7.0.14"
+        "oyejorge/less.php": "v1.7.0.14",
+        "symfony/polyfill-iconv": "^1.22"
     }
 }
