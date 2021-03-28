@@ -50,7 +50,7 @@ if ( version_compare( PHP_VERSION, "7.0.0" ) < 0 ) {
 	require_once( 'FontsamplerNotifications.php' );
 	require_once( 'FontsamplerTwigExtension.php' );
 
-	require_once( 'vendor/oyejorge/less.php/lessc.inc.php' );
+	// require_once( 'vendor/oyejorge/less.php/lessc.inc.php' );
 	require_once( 'vendor/autoload.php' );
 
 	// hook all plugin classes init to when Wordpress is ready

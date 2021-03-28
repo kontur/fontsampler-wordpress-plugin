@@ -1,3 +1,6 @@
+# 0.4.13
+- FIX: Fixed an issue that prevented CSS files from being re-written with changed settings
+
 # 0.4.12
 - FIX: Minor fix to the loaded default CSS for the Fontsampler
 - FIX: Updates to Twig library and polyfills after some users reported PHP conflicts

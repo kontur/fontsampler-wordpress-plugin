@@ -91,7 +91,7 @@ class FontsamplerHelpers {
 			// check path for existing file
 			// if not, create it by merging css template with settings
 			if ( ! file_exists( plugin_dir_path( __FILE__ ) . 'css/fontsampler-css.css' ) ) {
-				$default_settings = $this->get_settings();
+				$default_settings = $this->fontsampler->db->get_settings();
 				if ( ! $this->write_css_from_settings( $default_settings ) ) {
 					// if creating the missing file failed return the base styles by themselves
 					return plugin_dir_url( __FILE__ ) . 'css/fontsampler-interface.css';
