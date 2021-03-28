@@ -397,6 +397,7 @@ class FontsamplerPlugin {
             'jquery-ui-accordion',
             'fontsampler-clipboard', // make clipboard a global requirement
         ), false, true);
+        wp_localize_script('fontsampler-admin-main-js', 'nonce', wp_create_nonce('fontsampler-admin-ajax'));
 
         wp_enqueue_style('wp-color-picker');
         wp_enqueue_style('jquery-ui-accordion');
@@ -841,7 +842,12 @@ class FontsamplerPlugin {
      * for layout previewing
      */
     public function ajax_get_mock_fontsampler() {
-        check_ajax_referer('ajax_get_mock_fontsampler', 'action', false);
+        check_ajax_referer('fontsampler-admin-ajax', 'security');
+
+        if (!current_user_can('edit_posts')) {
+
+            die();
+        }
 
         $layout = new FontsamplerLayout();
 

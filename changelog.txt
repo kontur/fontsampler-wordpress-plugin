@@ -1,5 +1,6 @@
 # 0.4.13
 - FIX: Fixed an issue that prevented CSS files from being re-written with changed settings
+- FIX: Fixed an issue preventing a cross site request forgery with WP's check_ajax_referer method
 
 # 0.4.12
 - FIX: Minor fix to the loaded default CSS for the Fontsampler

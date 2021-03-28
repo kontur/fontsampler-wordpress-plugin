@@ -3,19 +3,15 @@
 {% block content %}
 <h1>Thanks for updating Fontsampler!</h1>
     <div class="text-box">
-        <div class="notice notice-info">
-            <p>This update only includes minor fixes and updated. You might want to check the alignment options of your Fontsamplers are displayed as intended. No other action required, hurray!</p>
+        <div class="notice notice-warning">
+            <p>This updated fixes an issue with writing CSS files. If you had Fontsampler settings that did not get correctly applied, please re-save the general and specific settings. Furthermore, there is no indication the other fixed issue has caused any security exploits on any installs of Fontsampler, but is merely a precaution to make the code of Fontsampler even more bullet proof.</p>
         </div>
     </div>
-    <h2>Here is what changed with this latest releases 0.4.10-0.4.12:</h2>
+    <h2>Here is what changed with this latest release 0.4.13:</h2>
     <div class="text-box">
         <ul class="real-list">
-            <li class="fontsampler-changelog-fix"><strong>FIX:</strong> Minor fix to the loaded default CSS for the Fontsampler</li>
-            <li class="fontsampler-changelog-fix"><strong>FIX:</strong> Updates to Twig library and polyfills after some users reported PHP conflicts</li>
-            <li class="fontsampler-changelog-fix"><strong>FIX:</strong> Fix failed compile of JS asset in plugin</li>
-            <li class="fontsampler-changelog-fix"><strong>FIX:</strong> Fixed saving alignment settings in admin</li>
-            <li class="fontsampler-changelog-fix"><strong>FIX:</strong> Fontsamplers using the default alignment will now render correctly</li>
-            <li class="fontsampler-changelog-tweak"><strong>TWEAK:</strong> Updated Twig and Less libraries shipped with the plugin</li>
+            <li class="fontsampler-changelog-fix"><strong>FIX:</strong> Fixed an issue that prevented CSS files from being re-written with changed settings</li>
+            <li class="fontsampler-changelog-fix"><strong>FIX:</strong> Fixed an issue preventing a cross site request forgery with WP's check_ajax_referer method</li>
         </ul>
     </div>
     <br>

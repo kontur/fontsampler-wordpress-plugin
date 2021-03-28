@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: fonts, font, typeface, preview, shortcode
 Requires at least: 5.0
 Tested up to: 5.7
-Stable tag: 0.4.12
+Stable tag: 0.4.13
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -106,6 +106,10 @@ The [Github repository](https://github.com/kontur/fontsampler-wordpress-plugin) 
 6. This is how you include a Fontsampler in a page or post: Simply add the shortcode for the created Fontsampler to your text
 
 == Changelog ==
+
+= 0.4.13 =
+* FIX: Fixed an issue that prevented CSS files from being re-written with changed settings
+* FIX: Fixed an issue preventing a cross site request forgery with WP's check_ajax_referer method
 
 = 0.4.12 =
 * FIX: Minor fix to the loaded default CSS for the Fontsampler

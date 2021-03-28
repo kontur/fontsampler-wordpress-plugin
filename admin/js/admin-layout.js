@@ -111,6 +111,7 @@ define(['jquery'], function ($) {
 
                 data = {
                     'action': 'get_mock_fontsampler',
+                    'security': nonce,
                     'data': {
                         "ui_columns": ui_columns,
                         "ui_order": ui_order,
