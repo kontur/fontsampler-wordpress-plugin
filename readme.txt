@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: fonts, font, typeface, preview, shortcode
 Requires at least: 5.0
 Tested up to: 5.7
-Stable tag: 0.4.13
+Stable tag: 0.4.14
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
