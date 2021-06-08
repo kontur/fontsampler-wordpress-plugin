@@ -9,6 +9,7 @@ admin/css/*
 bower_components
 node_modules
 
+vendor/twig/twig/doc
 .vscode
 
 README.md

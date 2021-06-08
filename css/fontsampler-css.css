@@ -476,7 +476,7 @@
   color: #333;
   text-align: center;
   box-sizing: border-box;
-  *font: 1px Lucida Sans Unicode, Arial Unicode MS, Arial;
+  *font: 30px/30px Lucida Sans Unicode, Arial Unicode MS, Arial;
 }
 .selectric .button:after {
   /*
@@ -740,7 +740,7 @@
   width: 100%;
 }
 .fontsampler-wrapper.fontsampler-interface.columns-1 .fsjs-block.column {
-  width: 100% !important;
+  width: 100% / 1 !important;
 }
 .fontsampler-wrapper.fontsampler-interface.columns-1 .fsjs-block.inline {
   width: auto !important;
@@ -749,7 +749,7 @@
   width: 100%;
 }
 .fontsampler-wrapper.fontsampler-interface.columns-2 .fsjs-block.column {
-  width: 50% !important;
+  width: 100% / 2 !important;
 }
 .fontsampler-wrapper.fontsampler-interface.columns-2 .fsjs-block.inline {
   width: auto !important;
@@ -758,7 +758,7 @@
   width: 100%;
 }
 .fontsampler-wrapper.fontsampler-interface.columns-3 .fsjs-block.column {
-  width: 33.33333333% !important;
+  width: 100% / 3 !important;
 }
 .fontsampler-wrapper.fontsampler-interface.columns-3 .fsjs-block.inline {
   width: auto !important;
@@ -767,7 +767,7 @@
   width: 100%;
 }
 .fontsampler-wrapper.fontsampler-interface.columns-4 .fsjs-block.column {
-  width: 25% !important;
+  width: 100% / 4 !important;
 }
 .fontsampler-wrapper.fontsampler-interface.columns-4 .fsjs-block.inline {
   width: auto !important;
@@ -777,7 +777,7 @@
 }
 @media screen and (max-width: 768px) {
   .fontsampler-wrapper.fontsampler-interface .fsjs-block.column {
-    width: 100% !important;
+    width: 100% / 1 !important;
   }
   .fontsampler-wrapper.fontsampler-interface .fsjs-block.inline {
     width: auto !important !important;
