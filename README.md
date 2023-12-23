@@ -1,3 +1,7 @@
+# Development discontinued
+
+As of December 2023 the development of this plugin has been discontinued after 7 years in use by many type foundries and print shops. There are currently no plans to release updates nor Gutenberg block version of this plugin. Developers can use [fontsampler-js](https://github.com/underscoretype/fontsampler-js) to implement similar tester frontends.
+
 # Fontsampler Wordpress Plugin (v 0.4.13)
 This plugin allows Wordpress users to embed interactive webfont previews in their websites.
 
